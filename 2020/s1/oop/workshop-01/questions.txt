@@ -1,0 +1,4 @@
+1. To remember what changed in the file you just committed.
+2. Accurate and concise message stating everything that has been changed.
+3. Whenever a meaningful change has been made to the file.
+4. True.
