@@ -8,7 +8,10 @@ void print_class(std::string courses[4], std::string students[], int report_card
 	std::cout << "Report Card ";
 
 	for(i=0; i<4; i++){
-		std::cout << courses[i] << " ";
+		std::cout << courses[i];
+		if(i<3){
+			std::cout << " ";
+		}
 	}
 
 	std::cout << std::endl;
@@ -18,7 +21,10 @@ void print_class(std::string courses[4], std::string students[], int report_card
 			if(j==0){
 				std::cout << students[i] << " ";
 			}else{
-				std::cout << report_card[i][j-1] << " ";
+				std::cout << report_card[i][j-1];
+				if(j<4){
+					std::cout << " ";
+				}
 			}
 		}
 	std::cout << std::endl;
