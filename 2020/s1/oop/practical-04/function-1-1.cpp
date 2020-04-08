@@ -9,8 +9,6 @@ void copy_2d_strings(string first[][2], string second[][2], int n){
 	for(i=0;i<3;i++){
 		for(j=0;j<n;j++){
 			second[i][j]=first[i][j];
-			std::cout << second[i][j] << " ";
 		}
-		std::cout << std::endl;
 	}
 }

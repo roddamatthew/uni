@@ -12,10 +12,10 @@ void cpyia(int old_array[],int new_array[],int length){
 		// iterating this over the length of the array, changing the next value in memory (4 bytes later)
 		*(newptr+i)=*(oldptr+i);
 		
-		// displaying the address in memory
-		std::cout << newptr+i << std::endl;
-		// displaying the value stored in that memory address
-		// note that *(newptr+i) could also be accessed using new_array[i]
-		std::cout << *(newptr+i) << std::endl;
+		// // displaying the address in memory
+		// std::cout << newptr+i << std::endl;
+		// // displaying the value stored in that memory address
+		// // note that *(newptr+i) could also be accessed using new_array[i]
+		// std::cout << *(newptr+i) << std::endl;
 	}
 }
