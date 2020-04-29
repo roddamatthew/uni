@@ -14,7 +14,6 @@ public:
 	person pilot, copilot;
 
 	aircraft(string callsign,person thePilot,person theCoPilot);
-	string getName();						// getname of aircraft
 	void setPilot(person thePilot);      // change the pilot
 	person getPilot();
 	void setCoPilot(person theCoPilot);  // change the co-pilot

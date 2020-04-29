@@ -1,24 +1,9 @@
 #include <iostream>
 #include "person.h"
-#include "aircraft.h"
+#include "aircraft.h"	
 
 using namespace std;
 
-aircraft::aircraft(string callsign, person thePilot,person theCoPilot)
-{
-	person *pilot, *copilot;
-	pilot = new person();
-	copilot = new person();
-
-	name=callsign;
-	pilot=&thePilot;
-	copilot=&theCoPilot;
-}
-
-string aircraft::getName()
-{
-	return name;
-}
 
 void aircraft::setPilot(person thePilot)
 {
@@ -40,9 +25,21 @@ person aircraft::getCoPilot()
 	return copilot;
 }
 
+aircraft::aircraft(string callsign, person thePilot,person theCoPilot)
+{
+	person *pilot, *copilot;
+
+	name=callsign;
+	pilot= new person("John",100);
+	copilot= new person("Jim",200);
+
+	setPilot(thePilot);
+	setCoPilot(theCoPilot);
+}
+
 void aircraft::printDetails()
 {
 	std::cout << name << std::endl;
-	std::cout << pilot.getName() << std::endl;
-	std::cout << copilot.getName() << std::endl;
+	std::cout << getPilot().getName() << std::endl;
+	std::cout << getCoPilot().getName() << std::endl;
 }
