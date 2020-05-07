@@ -29,7 +29,7 @@ void months(int* monthNumbers,int length){
 
 			switch(monthNumbers[i]){
 				case 1:
-				std::cout << monthNumbers[i] << " Januray" << std::endl;
+				std::cout << monthNumbers[i] << " January" << std::endl;
 				break;
 
 				case 2:
