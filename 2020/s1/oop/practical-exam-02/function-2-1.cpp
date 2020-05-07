@@ -6,7 +6,6 @@ int* readNumbers(int n){
 	array = new int[n];
 
 	for(i=0;i<n;i++){
-		std::cout << "Enter your " << i << "th input: " ;
 		std::cin >> array[i];
 	}
 
