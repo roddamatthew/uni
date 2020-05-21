@@ -1,0 +1,3 @@
+Testing 4:
+Added portals to the map where pac man can exit one side and be transported to the other.
+Added a score object that increments when a pellet is removed from the maze.

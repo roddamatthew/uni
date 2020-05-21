@@ -1,0 +1,5 @@
+Testing 3:
+Add collision to pac man
+Added super pellets but they do not do anything yet
+Added non-functional Red, Blue, Pink and Orange ghosts
+Removed the trail left by pac man as he moves.

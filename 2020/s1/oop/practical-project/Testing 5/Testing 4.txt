@@ -1,0 +1,8 @@
+Testing 5:
+- Added procedural generation to the maze object so that each time the program is run a new map is created.
+
+Rules for generation:
+- paths can only be one unit wide.
+- the map is symmetrical about its vertical centre line
+- the map always has 8 portals on its boundaries that are symmetrical about the centre of the map
+- the map is approximately 1/3 pellets

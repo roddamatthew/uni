@@ -1,0 +1,52 @@
+Pac Man Game Plan:
+
+1. Build empty board and display to terminal using cout.
+
+2. Create "entity" base class for Pacman and all ghosts to inherit from:
+- Has a row and column position
+- Can move based on a user input
+- Can access the position of any entity using int getrow() and int getcolumn()
+
+3. Create a "Pacman" subclass of entity:
+- Pacman has an additional score variable
+- Pacman can return the score through "int getScore()"
+- Pacman can increment the score when eating pellets by calling "void scorePellet"
+- Similarly for a ghost with "void scoreGhost"
+
+4. Create a "Maze" class:
+- Stores a 2D array of ints that represent each space
+- Has a function that displays the map
+- Has a function that updates positions in the map after "entities" have moved
+- Has a function that can return what number is within a specific coordinate in the array.
+
+5. Create a "Ghost" class:
+- Superclass with virtual functions for chase and scatter (these functions vary dependant on the colour of ghost)
+- Has common functionality: scared and eaten (triggered after pacman collects a superpellet and after pacman eats a ghost respectively)
+- Has a private "pathing" function that moves the ghost while obeying the rules:
+	- Ghost cannot backtrack / cannot turn 180˚ in one move.
+	- Ghost cannot walk through walls.
+	- Ghost should always move towards the target space unless there is a wall or it must backtrack.
+
+6. Create a "Red" subclass of Ghost:
+- Has a specific chase and scatter function.
+- Find the specific behaviour through research.
+- Is released into the maze after x moves.
+
+7. Create a "Blue" subclass of Ghost:
+- Has a specific chase and scatter function.
+- Find the specific behaviour through research.
+- Is released into the maze after x moves.
+
+8. Create a "Pink" subclass of Ghost:
+- Has a specific chase and scatter function.
+- Find the specific behaviour through research.
+- Is released into the maze after x moves.
+
+9. Create an "Orange" subclass of Ghost:
+- Has a specific chase and scatter function.
+- Find the specific behaviour through research.
+- Is released into the maze after x moves.
+
+10. Add functionality to the super pellet:
+- Allows pacman to eat any ghost
+- Lasts a finite amount of moves: Find the number through research.

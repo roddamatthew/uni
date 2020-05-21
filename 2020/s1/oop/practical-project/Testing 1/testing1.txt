@@ -1,0 +1,47 @@
+Test 1:
+x_size=12
+y_size=12
+
+Expect a 12x12 box of "." characters followed by a space, then endline.
+
+Output:
+. . . . . . . . . . . . 
+. . . . . . . . . . . . 
+. . . . . . . . . . . . 
+. . . . . . . . . . . . 
+. . . . . . . . . . . . 
+. . . . . . . . . . . . 
+. . . . . . . . . . . . 
+. . . . . . . . . . . . 
+. . . . . . . . . . . . 
+. . . . . . . . . . . . 
+. . . . . . . . . . . . 
+. . . . . . . . . . . . 
+
+Success.
+
+Test 2:
+x_size=4;
+y_size=16;
+
+Expect a 16x4 box of "." characters followed by a space, then endline.
+
+Output:
+. . . . 
+. . . . 
+. . . . 
+. . . . 
+. . . . 
+. . . . 
+. . . . 
+. . . . 
+. . . . 
+. . . . 
+. . . . 
+. . . . 
+. . . . 
+. . . . 
+. . . . 
+. . . . 
+
+Success.
