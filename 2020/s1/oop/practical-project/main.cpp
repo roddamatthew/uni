@@ -3,6 +3,11 @@
 #include "pac.h"
 #include "entity.h"
 #include "ghost.h"
+#include "red.h"
+#include "blue.h"
+#include "pink.h"
+#include "orange.h"
+
 
 using namespace std;
 
@@ -20,7 +25,7 @@ int main(){
 	Maze* pacmap;
 	Pac* pacman;
 	Entity* collision;
-	Ghost* red;
+	Red* red;
 
 	pacmap = new Maze();
 	
@@ -30,7 +35,7 @@ int main(){
 
 	collision = new Entity();
 
-	red = new Ghost();
+	red = new Red();
 
 	red -> setrow(10);
 	red -> setcolumn(13);

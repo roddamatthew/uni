@@ -13,7 +13,7 @@ class Ghost: public Entity
 // int row;
 // int column;
 
-private:
+protected:
 	void pathing(int rowtarget, int columntarget); //Moves the ghost towards a target position
 	char lastDirection;	//Stores the last direction moved in
 	bool ate;
