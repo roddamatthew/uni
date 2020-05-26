@@ -12,7 +12,7 @@ class Red: public Ghost
 
 public:
 	Red();
-	void chase();
+	void chase(int pacRow, int pacColumn);
 	void scatter();
 	void eaten();
 };

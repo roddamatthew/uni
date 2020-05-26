@@ -12,7 +12,7 @@ class Pink: public Ghost
 
 public:
 	Pink();
-	void chase();
+	void chase(int pacRow, int pacColumn, char pacLastDirection);
 	void scatter();
 	void eaten();
 };

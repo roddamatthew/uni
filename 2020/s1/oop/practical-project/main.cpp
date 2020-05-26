@@ -8,7 +8,6 @@
 #include "pink.h"
 #include "orange.h"
 
-
 using namespace std;
 
 int main(){
@@ -22,12 +21,15 @@ int main(){
 	bool win = false;
 	int nPellets;
 	
-	Maze* pacmap;
+	Maze* map;
 	Pac* pacman;
 	Entity* collision;
 	Red* red;
+	Blue* blue;
+	Pink* pink;
+	Orange* orange;
 
-	pacmap = new Maze();
+	map = new Maze();
 	
 	pacman = new Pac();
 	pacman -> setrow(22);
@@ -45,13 +47,13 @@ int main(){
 		std::cout << "row: " << pacman -> getrow() << " column: " << pacman -> getcolumn() << std::endl; //Display pacman position (for debugging)
 
 		//Print the map for the user
-		pacmap -> mazeUpdate(pacman->getrow(), pacman->getcolumn(), 'm'); //Update maze position of pacman
-		pacmap -> mazeUpdate(red->getrow(), red->getcolumn(), 'r'); //Update maze position of red ghost
-		// pacmap -> mazeUpdate(blue->getrow(), blue->getcolumn(), blue); //Update maze position of blue ghost
-		// pacmap -> mazeUpdate(pink->getrow(), pink->getcolumn(), pink); //Update maze position of pink ghost
-		// pacmap -> mazeUpdate(orange->getrow(), orange->getcolumn(), orange); //Update maze position of orange ghost
+		map -> mazeUpdate(pacman->getrow(), pacman->getcolumn(), 'm'); //Update maze position of pacman
+		map -> mazeUpdate(red->getrow(), red->getcolumn(), 'r'); //Update maze position of red ghost
+		// map -> mazeUpdate(blue->getrow(), blue->getcolumn(), blue); //Update maze position of blue ghost
+		// map -> mazeUpdate(pink->getrow(), pink->getcolumn(), pink); //Update maze position of pink ghost
+		// map -> mazeUpdate(orange->getrow(), orange->getcolumn(), orange); //Update maze position of orange ghost
 		
-		pacmap->mazePrinter(); //Print the map to the terminal
+		map->mazePrinter(); //Print the map to the terminal
 
 		std::cin >> input; //Get an input direction from user
 		
@@ -59,11 +61,11 @@ int main(){
 		collision -> setcolumn(pacman->getcolumn());
 		collision -> movement(input,rows,columns);
 
-		if(pacmap -> getPosition(collision -> getrow(), collision -> getcolumn()) != 0){ //If collision doesnt collide:
+		if(map -> getPosition(collision -> getrow(), collision -> getcolumn()) != 0){ //If collision doesnt collide:
 			pacman -> pacMovement(input); //Move pacman
 		}
 
-		if(pacmap -> getPosition(pacman -> getrow(), pacman -> getcolumn()) == 8){
+		if(map -> getPosition(pacman -> getrow(), pacman -> getcolumn()) == 8){
 			pacman -> scoreSuper();
 		}
 
@@ -103,7 +105,7 @@ int main(){
 			red -> eaten();
 		}
 
-		if(pacmap -> getPosition(pacman -> getrow(), pacman -> getcolumn()) == 1){
+		if(map -> getPosition(pacman -> getrow(), pacman -> getcolumn()) == 1){
 			pacman -> scorePellet();
 		}
 
@@ -111,7 +113,7 @@ int main(){
 
 		for(i = 0; i < 31; i++){
 			for(j = 0; j < 28; j++){
-				if(pacmap -> getPosition(i,j) == 1){
+				if(map -> getPosition(i,j) == 1){
 					nPellets++;
 
 				}

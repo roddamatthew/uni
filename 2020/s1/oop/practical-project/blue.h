@@ -12,7 +12,7 @@ class Blue: public Ghost
 
 public:
 	Blue();
-	void chase();
+	void chase(int pacRow, int pacColumn, char pacLastDirection, int redRow, int redColumn);
 	void scatter();
 	void eaten();
 };

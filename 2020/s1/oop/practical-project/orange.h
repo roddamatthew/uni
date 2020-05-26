@@ -10,7 +10,7 @@ class Orange: public Ghost
 {
 public:
 	Orange();
-	void chase();
+	void chase(int pacRow, int pacColumn);
 	void scatter();
 	void eaten();
 };

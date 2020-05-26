@@ -53,22 +53,27 @@ void Entity::movement(char direction, int rows, int columns)
 	}
 }
 
+//Returns the row of an entity
 int Entity::getrow(){
 	return row;
 }
 
+//Returns the column of an entity
 int Entity::getcolumn(){
 	return column;
 }
 
+//Sets the row of an entity to an input parameter
 void Entity::setrow(int rowinput){
 	row = rowinput;
 }
 
+//Sets the column of an entity to an input parameter
 void Entity::setcolumn(int columninput){
 	column = columninput;
 }
 
+//Defualt Destructor
 Entity::~Entity(){
 	std::cout << "Deleted an entity at " << row << "," << column << std::endl;
 }
