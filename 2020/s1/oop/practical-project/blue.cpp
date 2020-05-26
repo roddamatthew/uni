@@ -10,12 +10,15 @@ using namespace std;
 Blue::Blue(){
 }
 
-void Blue::chase(){
+void Blue::chase(int pacRow, int pacColumn, char pacLastDirection, int redRow, int redColumn){
+	//Turn 180 degrees on the first move
+	// Then move towards a square that is the opposite of red's position centred around the position two tiles ahead of pacman
+
 
 }
 
 void Blue::scatter(){
-
+	pathing(31,28);
 }
 
 void Blue::eaten(){

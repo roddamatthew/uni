@@ -10,12 +10,14 @@ using namespace std;
 Red::Red(){
 }
 
-void Red::chase(){
-
+void Red::chase(int pacRow, int pacColumn){
+	// First move needs to be in lastDirection then move towards pacman:
+	pathing(pacRow, pacColumn);
 }
 
 void Red::scatter(){
-
+	// Scatters to certain tile
+	pathing(0,28);
 }
 
 void Red::eaten(){

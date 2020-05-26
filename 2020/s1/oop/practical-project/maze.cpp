@@ -66,8 +66,6 @@ Maze::Maze()
 			// std::cout << maze[i][j] << " ";
 		}
 	}
-
-
 }
 
 void Maze::mazePrinter()
@@ -160,11 +158,13 @@ void Maze::mazeUpdate(int row, int column, char character)
 	}
 }
 
+//Returns the integer representing what is within a chosen tile of the maze
 int Maze::getPosition(int row, int column){
 	return maze[row][column];
 }
 
-void Maze::setPosition(int row, int column, int value){ //Changes a position within the array to an inputted value
+//Changes a position within the array to an inputted value
+void Maze::setPosition(int row, int column, int value){
 
 	if(value >= 0 && value <= 8){
 		maze[row][column] = value;

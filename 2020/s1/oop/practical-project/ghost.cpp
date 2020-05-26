@@ -77,19 +77,6 @@ void Ghost::scared(int rowtarget, int columntarget){
 	pathing(rowtarget,columntarget);
 }
 
-void Ghost::eaten(){
-	if(ate == false){
-		lastDirection = 0;
-		setAte();
-	}
-	
-	pathing(10,12);
-
-	if(getrow() == 10 && getcolumn() == 12){
-		ate = false;
-	}
-}
-
 void Ghost::setAte(){
 	ate = true;
 	std::cout << "Ate is: " << ate << std::endl;

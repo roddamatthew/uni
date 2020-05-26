@@ -10,12 +10,14 @@ using namespace std;
 Orange::Orange(){
 }
 
-void Orange::chase(){
-
+void Orange::chase(int pacRow, int pacColumn){
+	//Turn 180 degrees when first called
+	//Then move towards pacman if OUTSIDE a distance of 8 tiles in radius
+	//If within the 8 tile radius move towards the scatter position: (31,0)
 }
 
 void Orange::scatter(){
-
+	pathing(31,0);
 }
 
 void Orange::eaten(){
