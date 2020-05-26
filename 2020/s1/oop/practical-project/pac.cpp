@@ -34,6 +34,7 @@ int Pac::getSuper(){
 void Pac::pacMovement(char direction){ //Movement specific to pacman
 
 	movement(direction,31,28);
+	lastDirection = direction;
 
 	if(superMoves == 0){
 
@@ -41,4 +42,8 @@ void Pac::pacMovement(char direction){ //Movement specific to pacman
 		superMoves--;
 	}
 	std::cout << "Number of Supermoves: " << superMoves << std::endl;
+}
+
+char Pac::getLastDirection(){
+	return lastDirection;
 }

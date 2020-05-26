@@ -73,8 +73,7 @@ void Ghost::pathing(int rowtarget, int columntarget){
 	}
 }
 
-void Ghost::scared(int rowtarget, int columntarget){
-	pathing(rowtarget,columntarget);
+void Ghost::scared(){
 }
 
 void Ghost::setAte(){

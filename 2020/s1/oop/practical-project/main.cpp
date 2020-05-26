@@ -137,10 +137,10 @@ int main(){
 					red -> eaten();					//call eaten function
 				}else if(pacman -> getSuper() > 0){	//If pacman has supermoves
 					red -> scared();				//call scared function
-				}else if(turncounter % 27 > 0 && turncounter % 27 < 8){	//Every 27 turn cycle, first 7 moves are scatter
+				}else if(turnCounter % 27 > 0 && turnCounter % 27 < 8){	//Every 27 turn cycle, first 7 moves are scatter
 					red -> scatter();				//call scatter fucntion
 				}else{
-					red -> chase();					//moves 8 - 27 are chase pacman
+					red -> chase(pacman -> getrow(), pacman -> getcolumn());					//moves 8 - 27 are chase pacman
 				}
 			}
 
@@ -153,10 +153,10 @@ int main(){
 					blue -> eaten();
 				}else if(pacman -> getSuper() > 0){
 					blue -> scared();
-				}else if(turncounter % 27 > 0 && turncounter % 27 < 8){
+				}else if(turnCounter % 27 > 0 && turnCounter % 27 < 8){
 					blue -> scatter();
 				}else{
-					blue -> chase();
+					blue -> chase(pacman -> getrow(), pacman -> getcolumn(), pacman -> getLastDirection(), red -> getrow(), red -> getcolumn());
 				}
 			}
 
@@ -169,10 +169,10 @@ int main(){
 					pink -> eaten();
 				}else if(pacman -> getSuper() > 0){
 					pink -> scared();
-				}else if(turncounter % 27 > 0 && turncounter % 27 < 8){
+				}else if(turnCounter % 27 > 0 && turnCounter % 27 < 8){
 					pink -> scatter();
 				}else{
-					pink -> chase();
+					pink -> chase(pacman -> getrow(), pacman -> getcolumn(), pacman -> getLastDirection());
 				}
 			}
 
@@ -183,12 +183,12 @@ int main(){
 			}else if(turnCounter > 35){
 				if(orange -> getAte() == true){
 					orange -> eaten();
-				}else if(orange -> getSuper() > 0){
+				}else if(pacman -> getSuper() > 0){
 					orange -> scared();
-				}else if(turncounter % 27 > 0 && turncounter % 27 < 8){
+				}else if(turnCounter % 27 > 0 && turnCounter % 27 < 8){
 					orange -> scatter();
 				}else{
-					orange -> chase();
+					orange -> chase(pacman -> getrow(), pacman -> getcolumn());
 				}
 			}
 

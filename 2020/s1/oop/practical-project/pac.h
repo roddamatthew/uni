@@ -11,6 +11,7 @@ class Pac: public Entity //Subclass of Entity
 private:
 	int score;
 	int superMoves;
+	char lastDirection;
 
 public:
 	Pac(); //Default Constructor
@@ -20,5 +21,6 @@ public:
 	int getSuper(); //Returns the number of superMoves
 	int getscore();	//Returns score
 	void pacMovement(char direction); //Movement specific to pacman
+	char getLastDirection();
 };
 #endif //PAC_H

@@ -22,7 +22,7 @@ public:
 	Ghost();
 	// virtual void chase();
 	// virtual void scatter();
-	void scared(int rowtarget, int columntarget); //Moves the ghost away from pacman
+	void scared(); //Moves the ghost away from pacman
 	//virtual void eaten(); //Moves the ghost towards the centre of the map.
 
 	void setAte();
