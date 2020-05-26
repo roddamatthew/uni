@@ -16,13 +16,18 @@ class Ghost: public Entity
 private:
 	void pathing(int rowtarget, int columntarget); //Moves the ghost towards a target position
 	char lastDirection;	//Stores the last direction moved in
+	bool ate;
 
 public:
 	Ghost();
 	// virtual void chase();
 	// virtual void scatter();
 	void scared(int rowtarget, int columntarget); //Moves the ghost away from pacman
-	void eaten(); //Moves the ghost towards the centre of the map.
+	//virtual void eaten(); //Moves the ghost towards the centre of the map.
+
+	void setAte();
+	bool getAte();
+
 
 };
 #endif //GHOST_H

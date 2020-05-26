@@ -15,7 +15,6 @@ void Ghost::pathing(int rowtarget, int columntarget){
 	int columndistance = columntarget - column;	//Stores the x distance between current position and target
 
 	int distance = abs(rowdistance) + abs(columndistance); //Stores the total distance between current and target positions
-	std::cout << distance << std::endl;
 
 	Maze* mazeTemplate;
 	mazeTemplate = new Maze(); //Creating a maze copy to check for collision with walls
@@ -32,42 +31,42 @@ void Ghost::pathing(int rowtarget, int columntarget){
 
 
 	if(abs(rowdistance) >= abs(columndistance)){ //If further away in the y direction, favour moving in the y direction
-		if(distance >= abs(rowdistance + 1) + abs(columndistance) && lastDirection != 's' && mazeTemplate -> wallCheck(row - 1, column) == false){  
+		if(distance >= abs(rowdistance + 1) + abs(columndistance) && lastDirection != 's' && mazeTemplate -> getPosition(row - 1, column) != 0){  
 			movement('w',35,35);
 			lastDirection = 'w';
-		}else if(lastDirection != 'w' && mazeTemplate -> wallCheck(row + 1, column) == false){
+		}else if(lastDirection != 'w' && mazeTemplate -> getPosition(row + 1, column) != 0){
 			movement('s',35,35);
 			lastDirection = 's';
-		}else if(distance >= abs(rowdistance) + abs(columndistance + 1) && lastDirection != 'd' && mazeTemplate -> wallCheck(row, column - 1) == false){
+		}else if(distance >= abs(rowdistance) + abs(columndistance + 1) && lastDirection != 'd' && mazeTemplate -> getPosition(row, column - 1) != 0){
 			movement('a',35,35);
 			lastDirection = 'a';
-		}else if(lastDirection != 'a' && mazeTemplate -> wallCheck(row, column + 1) == false){ //Move in a direction that doesn't backtrack or hit a wall
+		}else if(lastDirection != 'a' && mazeTemplate -> getPosition(row, column + 1) != 0){ //Move in a direction that doesn't backtrack or hit a wall
 			movement('d',35,35);
 			lastDirection = 'd';
-		}else if(lastDirection != 's' && mazeTemplate -> wallCheck(row - 1, column) == false){ //Move in a direction that doesn't backtrack or hit a wall
+		}else if(lastDirection != 's' && mazeTemplate -> getPosition(row - 1, column) != 0){ //Move in a direction that doesn't backtrack or hit a wall
 			movement('w',35,35);
 			lastDirection = 'w';
-		}else if(lastDirection != 'd' && mazeTemplate -> wallCheck(row, column - 1) == false){ //Move in a direction that doesn't backtrack or hit a wall
+		}else if(lastDirection != 'd' && mazeTemplate -> getPosition(row, column - 1) != 0){ //Move in a direction that doesn't backtrack or hit a wall
 			movement('a',35,35);
 			lastDirection = 'a';
 		}
 	}else{ //Must be further in the x direction, so favour moving in the x direction
-		if(distance >= abs(rowdistance) + abs(columndistance + 1) && lastDirection != 'd' && mazeTemplate -> wallCheck(row, column - 1) == false){
+		if(distance >= abs(rowdistance) + abs(columndistance + 1) && lastDirection != 'd' && mazeTemplate -> getPosition(row, column - 1) != 0){
 			movement('a',35,35);
 			lastDirection = 'a';
-		}else if(lastDirection != 'a' && mazeTemplate -> wallCheck(row, column + 1) == false){
+		}else if(lastDirection != 'a' && mazeTemplate -> getPosition(row, column + 1) != 0){
 			movement('d',35,35);
 			lastDirection = 'd';
-		}else if(distance >= abs(rowdistance + 1) + abs(columndistance) && lastDirection != 's' && mazeTemplate -> wallCheck(row - 1, column) == false){
+		}else if(distance >= abs(rowdistance + 1) + abs(columndistance) && lastDirection != 's' && mazeTemplate -> getPosition(row - 1, column) != 0){
 			movement('w',35,35);
 			lastDirection = 'w';
-		}else if(lastDirection != 'w' && mazeTemplate -> wallCheck(row + 1, column) == false){
+		}else if(lastDirection != 'w' && mazeTemplate -> getPosition(row + 1, column) != 0){
 			movement('s',35,35);
 			lastDirection = 's';
-		}else if(lastDirection != 'd' && mazeTemplate -> wallCheck(row, column - 1) == false){
+		}else if(lastDirection != 'd' && mazeTemplate -> getPosition(row, column - 1) != 0){
 			movement('a',35,35);
 			lastDirection = 'a';
-		}else if(lastDirection != 's' && mazeTemplate -> wallCheck(row - 1, column) == false){
+		}else if(lastDirection != 's' && mazeTemplate -> getPosition(row - 1, column) != 0){
 			movement('w',35,35);
 			lastDirection = 'w';
 		}
@@ -79,5 +78,24 @@ void Ghost::scared(int rowtarget, int columntarget){
 }
 
 void Ghost::eaten(){
+	if(ate == false){
+		lastDirection = 0;
+		setAte();
+	}
+	
+	pathing(10,12);
 
+	if(getrow() == 10 && getcolumn() == 12){
+		ate = false;
+	}
+}
+
+void Ghost::setAte(){
+	ate = true;
+	std::cout << "Ate is: " << ate << std::endl;
+}
+
+bool Ghost::getAte(){
+	std::cout << "Ate is: " << ate << std::endl;
+	return ate;
 }

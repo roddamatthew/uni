@@ -10,11 +10,15 @@ class Pac: public Entity //Subclass of Entity
 {
 private:
 	int score;
+	int superMoves;
 
 public:
 	Pac(); //Default Constructor
-	void scorepellet(); //Increments score for a pellet
-	void scoreghost(); //Increments score for a ghost
+	void scorePellet(); //Increments score for a pellet
+	void scoreGhost(); //Increments score for a ghost
+	void scoreSuper(); //Increments score and makes Pacman invincible
+	int getSuper(); //Returns the number of superMoves
 	int getscore();	//Returns score
+	void pacMovement(char direction); //Movement specific to pacman
 };
 #endif //PAC_H

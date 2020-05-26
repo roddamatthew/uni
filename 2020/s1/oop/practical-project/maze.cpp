@@ -160,20 +160,8 @@ void Maze::mazeUpdate(int row, int column, char character)
 	}
 }
 
-bool Maze::wallCheck(int row,int column){
-	if(maze[row][column]==0){
-		return true;
-	}else{
-		return false;
-	}
-}
-
-bool Maze::pelletCheck(int row, int column){
-	if(maze[row][column] == 1){
-		return true;
-	}else{
-		return false;
-	}
+int Maze::getPosition(int row, int column){
+	return maze[row][column];
 }
 
 void Maze::setPosition(int row, int column, int value){ //Changes a position within the array to an inputted value

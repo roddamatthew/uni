@@ -50,3 +50,7 @@ Pac Man Game Plan:
 10. Add functionality to the super pellet:
 - Allows pacman to eat any ghost
 - Lasts a finite amount of moves: Find the number through research.
+
+11. Win condition and Loss Condition
+- Lose if ghost and pacman coincide 
+- Win if all the pellets are gone
