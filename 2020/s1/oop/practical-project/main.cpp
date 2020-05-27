@@ -65,14 +65,14 @@ int main(){
 		std::cout << "row: " << pacman -> getrow() << " column: " << pacman -> getcolumn() << std::endl; //Display pacman position (for debugging) DELETE FOR FINAL PRES
 
 		//Update positions of all the ghosts and pacman in the maze for printing
-		map -> mazeUpdate(pacman -> getrow(), pacman->getcolumn(), 'm', 0); //Update maze position of pacman
-		map -> mazeUpdate(red -> getrow(), red -> getcolumn(), 'r', red -> getPellet()); //Update maze position of red ghost
-		map -> mazeUpdate(blue -> getrow(), blue -> getcolumn(), 'b', blue -> getPellet()); //Update maze position of blue ghost
-		map -> mazeUpdate(pink -> getrow(), pink -> getcolumn(), 'p', pink -> getPellet()); //Update maze position of pink ghost
-		map -> mazeUpdate(orange -> getrow(), orange -> getcolumn(), 'o', orange -> getPellet()); //Update maze position of orange ghost
+		map -> mazeUpdate(pacman -> getrow(), pacman->getcolumn(), 'm', 0,0); //Update maze position of pacman
+		map -> mazeUpdate(red -> getrow(), red -> getcolumn(), 'r', red -> getPellet(), red -> getState()); //Update maze position of red ghost
+		map -> mazeUpdate(blue -> getrow(), blue -> getcolumn(), 'b', blue -> getPellet(), blue -> getState()); //Update maze position of blue ghost
+		map -> mazeUpdate(pink -> getrow(), pink -> getcolumn(), 'p', pink -> getPellet(), pink -> getState()); //Update maze position of pink ghost
+		map -> mazeUpdate(orange -> getrow(), orange -> getcolumn(), 'o', orange -> getPellet(), orange -> getState()); //Update maze position of orange ghost
 		
 		//Print the map to the terminal
-		map -> mazePrinter();
+		map -> mazePrinter(red -> getState(), blue -> getState(), pink -> getState(), orange -> getState());
 
 
 		//PACMAN MOVEMENT:
@@ -134,15 +134,21 @@ int main(){
 			if(turnCounter == 5){					//Spawns at turn 5
 					red -> setrow(10); 				//spawns in at (10,12)
 					red -> setcolumn(12);
+					red -> setState(0);
+					map -> setPosition(13,12,2);	//Removing the old ghost position
 			}else if(turnCounter > 5){ 				//After spawning
 				if(red -> getAte() == true){		//If eaten by pacman
 					red -> eaten();					//call eaten function
+					red -> setState('e');
 				}else if(pacman -> getSuper() > 0){	//If pacman has supermoves
-					red -> scared();				//call scared function
+					red -> scared();	
+					red -> setState('f');			//call scared function
 				}else if(turnCounter % 27 > 0 && turnCounter % 27 < 8){	//Every 27 turn cycle, first 7 moves are scatter
 					red -> scatter();				//call scatter fucntion
+					red -> setState(0);
 				}else{
 					red -> chase(pacman -> getrow(), pacman -> getcolumn());					//moves 8 - 27 are chase pacman
+					red -> setState(0);
 				}
 			}
 
@@ -150,15 +156,21 @@ int main(){
 			if(turnCounter == 15){ //Spawns at turn 15
 					blue -> setrow(10); //spawns in at (10,13)
 					blue -> setcolumn(13);
+					blue -> setState(0);
+					map -> setPosition(13,13,2);
 			}else if(turnCounter > 15){
 				if(blue -> getAte() == true){
 					blue -> eaten();
+					blue -> setState('e');
 				}else if(pacman -> getSuper() > 0){
 					blue -> scared();
+					blue -> setState('f');
 				}else if(turnCounter % 27 > 0 && turnCounter % 27 < 8){
 					blue -> scatter();
+					blue -> setState(0);
 				}else{
 					blue -> chase(pacman -> getrow(), pacman -> getcolumn(), pacman -> getLastDirection(), red -> getrow(), red -> getcolumn());
+					blue -> setState(0);
 				}
 			}
 
@@ -166,15 +178,21 @@ int main(){
 			if(turnCounter == 25){ //Spawns at turn 25
 					pink -> setrow(10); //spawns in at (10,14)
 					pink -> setcolumn(14);
+					pink -> setState(0);
+					map -> setPosition(13,14,2);
 			}else if(turnCounter > 25){
 				if(pink -> getAte() == true){
 					pink -> eaten();
+					pink -> setState('e');
 				}else if(pacman -> getSuper() > 0){
 					pink -> scared();
+					pink -> setState('f');
 				}else if(turnCounter % 27 > 0 && turnCounter % 27 < 8){
 					pink -> scatter();
+					pink -> setState(0);
 				}else{
 					pink -> chase(pacman -> getrow(), pacman -> getcolumn(), pacman -> getLastDirection());
+					pink -> setState(0);
 				}
 			}
 
@@ -182,15 +200,21 @@ int main(){
 			if(turnCounter == 35){ //Spawns at turn 35
 					orange -> setrow(10); //spawns in at (10,15)
 					orange -> setcolumn(15);
+					orange -> setState(0);
+					map -> setPosition(13,15,2);
 			}else if(turnCounter > 35){
 				if(orange -> getAte() == true){
 					orange -> eaten();
+					orange -> setState('e');
 				}else if(pacman -> getSuper() > 0){
 					orange -> scared();
+					orange -> setState('f');
 				}else if(turnCounter % 27 > 0 && turnCounter % 27 < 8){
 					orange -> scatter();
+					orange -> setState(0);
 				}else{
 					orange -> chase(pacman -> getrow(), pacman -> getcolumn());
+					orange -> setState(0);
 				}
 			}
 
@@ -258,6 +282,10 @@ int main(){
 
 	pacman -> ~Pac();
 	collision -> ~Entity();
+	red -> ~Red();
+	blue -> ~Blue();
+	pink -> ~Pink();
+	orange -> ~Orange();
 
 	return 0;
 }

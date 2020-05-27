@@ -25,10 +25,11 @@ private:
 
 public:
 	Maze(); //Constructor for the maze
-	void mazeUpdate(int row, int column, char character, int onPellet); //Updates elements within the maze
-	void mazePrinter();	//Prints the maze out to user
+	void mazeUpdate(int row, int column, char character, int onPellet, char state); //Updates elements within the maze
+	void mazePrinter(char redState, char blueState, char pinkState, char orangeState);	//Prints the maze out to user
 	int getPosition(int row, int column); //Returns the integer at a input position in the array
 	void setPosition(int row, int column, int value); //Changes a position within the array to an inputted value
+	~Maze();
 
 };
 #endif //MAZE_H

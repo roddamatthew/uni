@@ -68,7 +68,7 @@ Maze::Maze()
 	}
 }
 
-void Maze::mazePrinter()
+void Maze::mazePrinter(char redState, char blueState, char pinkState, char orangeState)
 {
 	int i;
 	int j;
@@ -93,30 +93,55 @@ void Maze::mazePrinter()
 				break;
 
 				case 4: //Red ghost
-				std::cout << "R ";
+				if(redState == 'e'){
+					std::cout << "E ";
+				}else if(redState == 'f'){
+					std::cout << "F ";
+				}else{
+					std::cout << "R ";
+				}
 				break;
 
 				case 5: //Blue Ghost
-				std::cout << "B ";
+				if(blueState == 'e'){
+					std::cout << "E ";
+				}else if(blueState == 'f'){
+					std::cout << "F ";
+				}else{
+					std::cout << "B ";
+				}
 				break;
 
 				case 6: //Pink Ghost
-				std::cout << "P ";
+				if(pinkState == 'e'){
+					std::cout << "E ";
+				}else if(pinkState == 'f'){
+					std::cout << "F ";
+				}else{
+					std::cout << "P ";
+				}
 				break;
 
 				case 7: //Orange Ghost
-				std::cout << "O ";
+				if(orangeState == 'e'){
+					std::cout << "E ";
+				}else if(orangeState == 'f'){
+					std::cout << "F ";
+				}else{
+					std::cout << "O ";
+				}
 				break;
 
-				case 8:
+				case 8: //Superpellet
 				std::cout << "§ ";
+				break;
 			}
 		}
 		std::cout << std::endl;
 	}
 }
 
-void Maze::mazeUpdate(int row, int column, char character, int onPellet)
+void Maze::mazeUpdate(int row, int column, char character, int onPellet, char state)
 {
 	int i,j;
 
@@ -124,19 +149,19 @@ void Maze::mazeUpdate(int row, int column, char character, int onPellet)
 		for(j = 0; j < columns; j++){
 			if(maze[i][j] == pac && (character == 'm' || character == 'M')){
 				maze[i][j] = 2;
-			}else if(maze[i][j] == red && (character == 'r' || character == 'R') && (onPellet == 0 || onPellet == 2)){
+			}else if(maze[i][j] == red && (character == 'r' || character == 'R') && (onPellet != 1 && onPellet != 8)){
 				maze[i][j] = 2;
 			}else if(maze[i][j] == red && (character == 'r' || character == 'R') && (onPellet == 1 || onPellet == 8)){
 				maze[i][j] = onPellet;
-			}else if(maze[i][j] == blue && (character == 'b' || character == 'B') && (onPellet == 0 || onPellet == 2)){
+			}else if(maze[i][j] == blue && (character == 'b' || character == 'B') && (onPellet != 1 && onPellet != 8)){
 				maze[i][j] = 2;
 			}else if(maze[i][j] == blue && (character == 'b' || character == 'B') && (onPellet == 1 || onPellet == 8)){
 				maze[i][j] = onPellet;
-			}else if(maze[i][j] == pink && (character == 'p' || character == 'P') && (onPellet == 0 || onPellet == 2)){
+			}else if(maze[i][j] == pink && (character == 'p' || character == 'P') && (onPellet != 1 && onPellet != 8)){
 				maze[i][j] = 2;
 			}else if(maze[i][j] == pink && (character == 'p' || character == 'P') && (onPellet == 1 || onPellet == 8)){
 				maze[i][j] = onPellet;
-			}else if(maze[i][j] == orange && (character == 'o' || character == 'O') && (onPellet == 0 || onPellet == 2)){
+			}else if(maze[i][j] == orange && (character == 'o' || character == 'O') && (onPellet != 1 && onPellet != 8)){
 				maze[i][j] = 2;
 			}else if(maze[i][j] == orange && (character == 'o' || character == 'O') && (onPellet == 1 || onPellet == 8)){
 				maze[i][j] = onPellet;
@@ -186,4 +211,8 @@ void Maze::setPosition(int row, int column, int value){
 		std::cout << "Error has occured in Maze::setPosition" << std::endl;
 	}
 
+}
+
+Maze::~Maze(){
+	std::cout << "Deleted a maze object" <<std::endl; 
 }

@@ -12,8 +12,39 @@ Pink::Pink(){
 
 void Pink::chase(int pacRow, int pacColumn, char pacLastDirection){
 	// turn 180 degress
-	// then moves towards the tile 4 moves infront of the pacman position in the direction pacman is moving
-	// will need to add a new function and variable to pacman to store the last direction
+	switch (pacLastDirection){
+		case 'w':
+		if (pacRow-4>0){
+			pathing(pacRow-4, pacColumn);
+		} else {
+			pathing(1, pacColumn);
+		}
+		break;
+
+		case 'a':
+		if (pacColumn-4>0){
+			pathing(pacRow, pacColumn-4);
+		} else {
+			pathing(pacRow, 1);
+		}
+		break;
+
+		case 's':
+		if (pacRow+4<29){
+			pathing(pacRow+4, pacColumn);
+		} else {
+			pathing(29, pacColumn);
+		}
+		break;
+
+		case 'd':
+		if (pacColumn+4<26){
+			pathing(pacRow, pacColumn+4);
+		} else {
+			pathing(pacRow, 26);
+		}
+		break;
+	}
 }
 
 void Pink::scatter(){

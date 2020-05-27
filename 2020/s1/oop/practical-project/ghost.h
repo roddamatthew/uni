@@ -18,6 +18,7 @@ protected:
 	char lastDirection;	//Stores the last direction moved in
 	bool ate;
 	int* onPellet;
+	char state;
 
 public:
 	Ghost();
@@ -30,6 +31,9 @@ public:
 	bool getAte();
 	void setPellet(int whichPellet);
 	int getPellet();
+
+	void setState(char input);
+	char getState();
 
 };
 #endif //GHOST_H

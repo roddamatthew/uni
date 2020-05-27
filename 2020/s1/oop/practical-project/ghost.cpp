@@ -79,6 +79,11 @@ void Ghost::pathing(int rowtarget, int columntarget){
 }
 
 void Ghost::scared(){
+
+	int random_row = rand() % 31 + 1;
+	int random_column = rand() % 28 + 1;
+
+	pathing(random_row, random_column);
 }
 
 void Ghost::setAte(){
@@ -98,4 +103,12 @@ int Ghost::getPellet(){
 	onPellet[0] = onPellet[1];
 	onPellet[1] = 0;
 	return pellet;
+}
+
+void Ghost::setState(char input){
+	state = input;
+}
+
+char Ghost::getState(){
+	return state;
 }

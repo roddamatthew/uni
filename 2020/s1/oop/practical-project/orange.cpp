@@ -4,6 +4,7 @@
 #include "entity.h"
 #include "maze.h"
 #include "orange.h"
+#include <cmath>
 
 using namespace std;
 
@@ -12,8 +13,21 @@ Orange::Orange(){
 
 void Orange::chase(int pacRow, int pacColumn){
 	//Turn 180 degrees when first called
-	//Then move towards pacman if OUTSIDE a distance of 8 tiles in radius
-	//If within the 8 tile radius move towards the scatter position: (31,0)
+	int current_row=row;
+	int current_col=column;
+
+	int distRows=pow((pacRow-current_row),2);
+	int distCols=pow((pacColumn-current_col),2)-1;
+
+	int totalDist = ceil(pow(distRows+distCols, 0.5));
+
+	std::cout << "Distance: " << totalDist <<std::endl;
+
+	if (totalDist>8){
+		pathing(pacRow, pacColumn);
+	} else {
+		pathing(31,0);
+	}
 
 }
 
