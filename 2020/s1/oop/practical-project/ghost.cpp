@@ -7,7 +7,12 @@
 using namespace std;
 
 Ghost::Ghost(){
-	lastDirection=0;
+	lastDirection = 0;
+
+	onPellet = new int[2];
+
+	onPellet[0] = 0;
+	onPellet[1] = 0;
 }
 
 void Ghost::pathing(int rowtarget, int columntarget){
@@ -78,10 +83,19 @@ void Ghost::scared(){
 
 void Ghost::setAte(){
 	ate = true;
-	std::cout << "Ate is: " << ate << std::endl;
 }
 
 bool Ghost::getAte(){
-	std::cout << "Ate is: " << ate << std::endl;
 	return ate;
+}
+
+void Ghost::setPellet(int whichPellet){
+	onPellet[1] = whichPellet;
+}
+
+int Ghost::getPellet(){
+	int pellet = onPellet[0];
+	onPellet[0] = onPellet[1];
+	onPellet[1] = 0;
+	return pellet;
 }

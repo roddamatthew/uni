@@ -65,11 +65,11 @@ int main(){
 		std::cout << "row: " << pacman -> getrow() << " column: " << pacman -> getcolumn() << std::endl; //Display pacman position (for debugging) DELETE FOR FINAL PRES
 
 		//Update positions of all the ghosts and pacman in the maze for printing
-		map -> mazeUpdate(pacman -> getrow(), pacman->getcolumn(), 'm'); //Update maze position of pacman
-		map -> mazeUpdate(red -> getrow(), red -> getcolumn(), 'r'); //Update maze position of red ghost
-		map -> mazeUpdate(blue -> getrow(), blue -> getcolumn(), 'b'); //Update maze position of blue ghost
-		map -> mazeUpdate(pink -> getrow(), pink -> getcolumn(), 'p'); //Update maze position of pink ghost
-		map -> mazeUpdate(orange -> getrow(), orange -> getcolumn(), 'o'); //Update maze position of orange ghost
+		map -> mazeUpdate(pacman -> getrow(), pacman->getcolumn(), 'm', 0); //Update maze position of pacman
+		map -> mazeUpdate(red -> getrow(), red -> getcolumn(), 'r', red -> getPellet()); //Update maze position of red ghost
+		map -> mazeUpdate(blue -> getrow(), blue -> getcolumn(), 'b', blue -> getPellet()); //Update maze position of blue ghost
+		map -> mazeUpdate(pink -> getrow(), pink -> getcolumn(), 'p', pink -> getPellet()); //Update maze position of pink ghost
+		map -> mazeUpdate(orange -> getrow(), orange -> getcolumn(), 'o', orange -> getPellet()); //Update maze position of orange ghost
 		
 		//Print the map to the terminal
 		map -> mazePrinter();
@@ -89,11 +89,13 @@ int main(){
 			pacman -> pacMovement(input); //Move pacman
 		}
 
-		if(map -> getPosition(pacman -> getrow(), pacman -> getcolumn()) == 8){			//If pacman eats a superpellet call scoreSuper()
+		if(map -> getPosition(pacman -> getrow(), pacman -> getcolumn()) == 8){			//If pacman eats a superpellet call scoreSuper
 			pacman -> scoreSuper();
 		}else if(map -> getPosition(pacman -> getrow(), pacman -> getcolumn()) == 1){	 //If pacmans new position has a pellet, increase the score
 			pacman -> scorePellet();
 		}
+
+		//PACMAN COLLIDES WITH GHOST
 
 		//If pacman and ghost are in the same tile, eat the ghost if pacman has supermoves, or lose if pacman does not have supermoves
 		if(pacman -> getSuper() == 0){
@@ -192,6 +194,14 @@ int main(){
 				}
 			}
 
+			//Setting ghosts onPellet variable to the type of tile they now occupy in the map so it can be replaced after their next move.
+
+			red -> setPellet(map -> getPosition(red -> getrow(), red -> getcolumn()));
+			blue -> setPellet(map -> getPosition(blue -> getrow(), blue -> getcolumn()));
+			pink -> setPellet(map -> getPosition(pink -> getrow(), pink -> getcolumn()));
+			orange -> setPellet(map -> getPosition(orange -> getrow(), orange -> getcolumn()));
+
+		//PACMAN COLLIDES WITH GHOST AFTER GHOSTS MOVE:
 
 		//Repeated from above: If pacman and ghost are in the same tile, eat the ghost if pacman has supermoves, or lose if pacman does not have supermoves
 		if(pacman -> getSuper() == 0){

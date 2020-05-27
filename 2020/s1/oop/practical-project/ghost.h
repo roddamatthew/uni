@@ -17,6 +17,7 @@ protected:
 	void pathing(int rowtarget, int columntarget); //Moves the ghost towards a target position
 	char lastDirection;	//Stores the last direction moved in
 	bool ate;
+	int* onPellet;
 
 public:
 	Ghost();
@@ -27,7 +28,8 @@ public:
 
 	void setAte();
 	bool getAte();
-
+	void setPellet(int whichPellet);
+	int getPellet();
 
 };
 #endif //GHOST_H

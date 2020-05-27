@@ -116,22 +116,30 @@ void Maze::mazePrinter()
 	}
 }
 
-void Maze::mazeUpdate(int row, int column, char character)
+void Maze::mazeUpdate(int row, int column, char character, int onPellet)
 {
 	int i,j;
 
 	for(i = 0; i < rows; i++){
 		for(j = 0; j < columns; j++){
 			if(maze[i][j] == pac && (character == 'm' || character == 'M')){
-				maze[i][j]=2;
-			}else if(maze[i][j] == red && (character == 'r' || character == 'R')){
-				maze[i][j]=2;
-			}else if(maze[i][j] == red && (character == 'b' || character == 'B')){
-				maze[i][j]=2;
-			}else if(maze[i][j] == red && (character == 'p' || character == 'P')){
-				maze[i][j]=2;
-			}else if(maze[i][j] == red && (character == 'o' || character == 'O')){
-				maze[i][j]=2;
+				maze[i][j] = 2;
+			}else if(maze[i][j] == red && (character == 'r' || character == 'R') && (onPellet == 0 || onPellet == 2)){
+				maze[i][j] = 2;
+			}else if(maze[i][j] == red && (character == 'r' || character == 'R') && (onPellet == 1 || onPellet == 8)){
+				maze[i][j] = onPellet;
+			}else if(maze[i][j] == blue && (character == 'b' || character == 'B') && (onPellet == 0 || onPellet == 2)){
+				maze[i][j] = 2;
+			}else if(maze[i][j] == blue && (character == 'b' || character == 'B') && (onPellet == 1 || onPellet == 8)){
+				maze[i][j] = onPellet;
+			}else if(maze[i][j] == pink && (character == 'p' || character == 'P') && (onPellet == 0 || onPellet == 2)){
+				maze[i][j] = 2;
+			}else if(maze[i][j] == pink && (character == 'p' || character == 'P') && (onPellet == 1 || onPellet == 8)){
+				maze[i][j] = onPellet;
+			}else if(maze[i][j] == orange && (character == 'o' || character == 'O') && (onPellet == 0 || onPellet == 2)){
+				maze[i][j] = 2;
+			}else if(maze[i][j] == orange && (character == 'o' || character == 'O') && (onPellet == 1 || onPellet == 8)){
+				maze[i][j] = onPellet;
 			}
 		}
 	}
