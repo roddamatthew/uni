@@ -61,8 +61,8 @@ void Maze::mazePrinter()
 	int i;
 	int j;
 
-	for(i=0;i<y_size;i++){
-		for(j=0;j<x_size;j++){
+	for(i=0;i<rows;i++){
+		for(j=0;j<columns;j++){
 			if(maze[i][j]==pellet){
 				std::cout << ". ";
 			}else if(maze[i][j]==wall){

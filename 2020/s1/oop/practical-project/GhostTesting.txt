@@ -1,0 +1,89 @@
+To test the targeted cell, a small line of code was placed into the chase function to output the exact row and column being 'targeted' at any time. This allowed verification of successful targeting
+
+Red Ghost:
+Test 1:
+pacman position: 5, 1
+
+expected targeting: 5,1
+actual targeting: 5,1 SUCCESS
+
+Test 2:
+pacman position: 13, 9
+
+expected targeting: 13, 9
+actual targeting: 13, 9 SUCCESS
+
+Test 3:
+pacman position: 17, 10
+
+expected targeting: 17, 10 
+actual targeting: 17, 10 SUCCESS
+
+Pink Ghost:
+Test 1:
+pacman position: 1, 3
+last key: a
+
+expected targeting: 1,1
+actual targeting: 1,1 SUCCESS
+
+Test 2:
+pacman position: 27, 1
+last key: s
+
+expected targeting: 29,1
+actual targeting: 29,1 SUCCESS
+
+Test 3:
+pacman position: 15, 7
+last key: d
+
+expected targeting: 15, 11
+actual targeting: 15,11 SUCCESS
+
+Blue Ghost:
+Test 1:
+pacman position: 3, 19
+last key pressed: w
+red ghost position: 1, 3
+
+expected targeting: 5, 19 
+actual targeting: 5, 19 SUCCESS
+
+Test 2:
+pacman position: 17, 12
+last key pressed: s
+red ghost position: 8, 11
+
+expected targeting: 15, 12
+actual targeting: 15, 12 SUCCESS
+
+Test 3:
+pacman position: 6, 21
+last key pressed: a
+red ghost position: 16, 12
+
+expected targeting: 3, 23 
+actual targeting: 3, 23 SUCCESS
+
+Orange Ghost:
+Test 1:
+pacman position: 1, 1
+ghost position: 1, 3
+
+expected targeting: 31,0
+actual targeting: 31,0 SUCCESS
+
+Test 2:
+pacman position: 1, 1
+ghost position: 7, 10
+
+expected targeting: 1, 1
+actual targeting: 1, 1 SUCCESS
+
+Test 3:
+pacman position: 7, 10
+ghost position: 25, 26
+
+expected targeting: 7, 10 
+actual targeting: 7, 10 SUCCESS
