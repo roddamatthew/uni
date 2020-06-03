@@ -57,6 +57,7 @@ void Blue::chase(int pacRow, int pacColumn, char pacLastDirection, int redRow, i
 		}
 		break;
 	}
+	
 	int targetrow = redRow - 2*(redRow - pacExtendedRow);
 	int targetcolumn = redColumn - 2*(redColumn - pacExtendedColumn);
 
