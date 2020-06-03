@@ -5,12 +5,12 @@
 
 using namespace std;
 
-class Hunter:: public Animal
+class hunter:: public animal
 {
 private:
 	int kills;
 	static int nextID;
 public:
-	Hunter(string n, int v);
+	hunter(string n, int v);
 };
 #endif //HUNTER_H

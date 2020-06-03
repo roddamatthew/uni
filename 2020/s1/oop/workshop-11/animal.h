@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class Animal
+class animal
 {
 private:
 	string name ;
@@ -13,7 +13,7 @@ private:
 	int volume ;
 	static int currentID;
 public:
-	Animal(string n, int v);
+	animal(string n, int v);
 	void set_name(string n);
 	string get_name();
 	void set_volume(int v);
