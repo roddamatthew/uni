@@ -12,6 +12,8 @@ animal::animal(string n, int v){
 	currentID++;
 }
 
+animal::animal(){}
+
 void animal::set_name(string n){
 	name = n;
 }
