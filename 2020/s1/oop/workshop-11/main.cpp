@@ -3,6 +3,7 @@
 #include "vegie.h"
 #include "zoo.h"
 #include "sort_by_animalID.h"
+#include "sort_by_name.h"
 #include <iostream>
 #include <string>
 
