@@ -12,5 +12,6 @@ private:
 	static int nextID;
 public:
 	Coach(string n, int sl);
+	int get_salary();
 };
 #endif //COACH_H

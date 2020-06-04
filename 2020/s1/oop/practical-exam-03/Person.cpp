@@ -38,10 +38,6 @@ using namespace std;
 		salary = s;
 	}
 
-	int Person::get_salary(){
-		return salary;
-	}
-
 	void Person::set_serviceLength(int sl){
 		serviceLength = sl;
 	}
