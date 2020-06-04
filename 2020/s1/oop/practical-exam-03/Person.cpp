@@ -35,7 +35,9 @@ using namespace std;
 	}
 
 	void Person::set_salary(int s){
-		salary = s;
+		if(s>0){
+			salary = s;
+		}
 	}
 
 	void Person::set_serviceLength(int sl){
