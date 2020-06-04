@@ -1,5 +1,5 @@
 #include "Person.h"
-#include "SortPerson.cpp"
+#include "SortPerson.h"
 #include <algorithm>
 
 bool compareID(Person* a, Person* b){

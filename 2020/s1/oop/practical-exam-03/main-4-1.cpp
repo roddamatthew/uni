@@ -1,5 +1,5 @@
 #include "Person.h"
-#include "SortPerson.cpp"
+#include "SortPerson.h"
 
 int main(){
 	return 0;
