@@ -26,7 +26,7 @@ public:
 	string get_occupation();
 
 	void set_salary(int s);
-	virtual int get_salary() = 0;
+	virtual int get_salary();
 
 	void set_serviceLength(int sl);
 	int get_serviceLength();
