@@ -32,7 +32,7 @@ int Player::get_salary(){
 
 int Player::searchGame(int x){
 	for(int i=0; i<games; i++){
-		if(gametime[i] = x){
+		if(gametime[i] == x){
 			return i;
 		}
 	}
