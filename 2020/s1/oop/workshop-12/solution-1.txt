@@ -1,0 +1,7 @@
+Events for the program to handle:
+1. Thrusting spaceship
+2. Turning spaceship
+3. Spaceship firing
+4. Spaceship entering hyperspace state
+5. Spaceship colliding with a rock
+6. Spaceship fired projectile colliding with a rock

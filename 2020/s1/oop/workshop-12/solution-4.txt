@@ -1,0 +1,4 @@
+Have the server deal with only projectile's velocities and directions:
+Hence, latency will have a lower effect as only a very small amount of data needs to be communicated.
+
+All collisions can be calculated on the client-side of the program but they will be consistent with the server's copy as velocities and directions are still updated.

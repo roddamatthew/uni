@@ -1,0 +1,15 @@
+Gameplay Loop:
+
+While(gameover != true && wincondition != true){
+
+//Player Movement
+
+//Check if player has fired
+
+//Check if player has entered hyperspace
+
+//Check collision of ship with boulders
+
+//Check collision of player projectiles with boulders
+
+}

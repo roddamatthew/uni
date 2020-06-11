@@ -1,0 +1,14 @@
+Shield Functionality:
+
+Check if a given key is pressed for example 's' for shield.
+
+if(input == 's'){
+	//Call a function of the spaceship object that makes it invulnerable
+	spaceship -> becomeInvulnerable();
+}
+
+//Check the spaceship objects vulnerable state when it collides with an asteroid to see if the player should lose:
+
+if(spaceshipPosition == asteroidPosition && spaceship -> getVulnerability() == false){
+	gameover = true;
+}

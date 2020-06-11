@@ -1,0 +1,7 @@
+Reduce the amount of processing power required to run the program:
+Cheaper Production
+Easier Production
+
+Easier for the player to understand and play the game:
+Rocks colliding with each other introduces more complexity especially in dodging
+Makes the game feel harder and possibly more unfair as random events could possibly trap the player more often
