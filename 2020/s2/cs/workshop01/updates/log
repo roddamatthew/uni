@@ -69,3 +69,78 @@
 200730-000545 updater:  Creating: And.hdl
 200730-000545 updater:  Updating: updates/README
 200730-000545 updater:  Update installed
+200730-110341 Modified: MmU0MmNkYzRmYWVlMDdhY2QwMmYyNTIyNjNiMjBmMzUzMjE5OTlhYSAgLi9Ob3QuaGRsCjdlY2I5
+NTBkYjhlYTRhN2U0NWFkOGUxMmZkOGFjZDFkNmY1NjQxODMgIC4vQW5kLmhkbApkNTQ5ZTkwYTA2
+NTE3NzQ5NTA2ZDJjMmY4YTU4Mzk3YmFlNzQ1Mjg5ICAuL01ha2VmaWxlCjIzYjY1Y2U5MzNiMzIz
+NGY0YjlmNmUxMWJiYTdhM2QxMTc4YTFlOGIgIC4vTm90MTYuaGRsCmViZWVlMDcyM2U1OTZkMjMy
+ZWZmNDZjNzFhNWQxNTU5NjJlYjdmNWYgIC4vWG9yLmhkbAo0YjMzNTVkNjNhZDIyOGQ1NjlmMjgy
+NTQ1MTE2ZmY1MWQ2MDk5OWU1ICAuL0FuZDE2LmhkbAo1MDlmNTJiMDVjY2QwZmJmZGM5ODAyZGQ5
+ZDQ4ZGMxODYyZWRkMjkyICAuL011eC5oZGwKZGY1ZDYwYTk3OGQ2NmE4YjllOTIyNjMyNWNhY2Yz
+OGE4ZTQzZmVmMSAgLi9ETXV4LmhkbAoxY2U4MDcwN2NkYjc3YWI1NTQ1MDRiYTk5MjEwMjhlNWNl
+ZDdjMjhlICAuL011eDE2LmhkbAphYWI5OTZjODk5NTAyMjcxMzllYWExNWEyNzEwNmUzN2M3MmZl
+MjQyICAuL09yLmhkbApmMWIxODQ1NDYyY2I2Y2YyOTY1NzgwMzMyMzY0YTY5Y2JmZDQ0MWRiICAu
+L0RNdXg0V2F5LmhkbAo5NGI1YTNiNmIwYTE3YTc5NDA4NzI3OGQyNGYzNzYxYjJhMzQ4ZGM3ICAu
+L011eDRXYXkxNi5oZGwKNjRjNjkxNDhjMzU0MTQ3ZTMxNTFiZWY0MGM3ODk3OGFjMTg1N2ZlMSAg
+Li9ETXV4OFdheS5oZGwKMDI0MDQ4NTc5OTczOTE4ODk5OTMxY2IwZTYyMTg3YTNmMTkzM2JmMSAg
+Li9PcjE2LmhkbAoxMTYwNjFkMDVhZDU2ZjkzOGEzYWY4NmFkMThhYjE1MjNmZDA3NWQxICAuL011
+eDhXYXkxNi5oZGwKN2RmMzYzMWM5OWQwNzk5YzI5MTQ5OTgxNjQ4YzhiMTg2NDE1ZGQ2MyAgLi9P
+cjhXYXkuaGRsCg==
+200730-110341 make 
+200730-110341 SVN user: a1773620, repository path: 2020/s2/cs/workshop01
+200730-110341 updater:  Directory: ./bin
+200730-110341 updater:  Directory: ./originals
+200730-110341 updater:  Creating: ./Xor.cmp
+200730-110341 updater:  Creating: ./Mux.tst
+200730-110341 updater:  Creating: ./Not16.tst
+200730-110341 updater:  Creating: ./DMux8Way.tst
+200730-110341 updater:  Creating: ./DMux4Way.tst
+200730-110341 updater:  Creating: ./Mux4Way16.tst
+200730-110341 updater:  Creating: ./And.cmp
+200730-110341 updater:  Creating: ./bin/run-tests
+200730-110341 updater:  Creating: ./DMux.tst
+200730-110341 updater:  Creating: updates/Makefile
+200730-110341 updater:  Creating: ./Not.tst
+200730-110341 updater:  Creating: ./originals/Mux.hdl
+200730-110341 updater:  Creating: ./originals/Not16.hdl
+200730-110341 updater:  Creating: ./originals/Mux4Way16.hdl
+200730-110341 updater:  Creating: ./originals/DMux4Way.hdl
+200730-110341 updater:  Creating: ./originals/DMux8Way.hdl
+200730-110341 updater:  Creating: ./originals/DMux.hdl
+200730-110341 updater:  Creating: ./originals/Mux8Way16.hdl
+200730-110341 updater:  Creating: ./originals/Not.hdl
+200730-110341 updater:  Creating: ./originals/Or16.hdl
+200730-110341 updater:  Creating: ./originals/Or8Way.hdl
+200730-110341 updater:  Creating: ./originals/Or.hdl
+200730-110341 updater:  Creating: ./originals/Mux16.hdl
+200730-110341 updater:  Creating: ./originals/And16.hdl
+200730-110341 updater:  Creating: ./originals/Xor.hdl
+200730-110341 updater:  Creating: ./originals/And.hdl
+200730-110341 updater:  Creating: ./Mux8Way16.tst
+200730-110341 updater:  Creating: ./Mux16.cmp
+200730-110341 updater:  Creating: ./And16.cmp
+200730-110341 updater:  Creating: ./Or16.tst
+200730-110341 updater:  Creating: ./Or.tst
+200730-110341 updater:  Creating: ./Or8Way.tst
+200730-110341 updater:  Creating: ./Mux8Way16.cmp
+200730-110341 updater:  Creating: ./Mux16.tst
+200730-110341 updater:  Creating: ./Not.cmp
+200730-110341 updater:  Creating: ./Or.cmp
+200730-110341 updater:  Creating: ./Or8Way.cmp
+200730-110341 updater:  Creating: ./Or16.cmp
+200730-110341 updater:  Creating: ./And16.tst
+200730-110341 updater:  Creating: ./Not16.cmp
+200730-110341 updater:  Creating: ./Xor.tst
+200730-110341 updater:  Creating: ./Mux.cmp
+200730-110341 updater:  Creating: ./DMux.cmp
+200730-110341 updater:  Creating: ./And.tst
+200730-110341 updater:  Creating: ./Mux4Way16.cmp
+200730-110341 updater:  Creating: ./DMux8Way.cmp
+200730-110341 updater:  Creating: ./DMux4Way.cmp
+200730-110341 updater:  Made bin/run-tests executable
+200730-110341 updater:  Updating: updates/README
+200730-110341 updater:  Update installed
+200730-113938 Modified: N2Y5NDg4ZWIwODBjZTFkZWU2MzMzMGVkNjU3ZTMxNjdiZTdkNjU5ZiAgLi9Ob3QuaGRsCmYxN2Rj
+NzJjYzMwZDJmMzQ0NGZjZTAyY2QyNTYxM2MzMTA4M2Y3YTUgIC4vQW5kLmhkbAo3NTBjZDBhY2I5
+NTdjYTY0ZmEwZmM3ZDRlZTM0MzUxMTZiODJmODMzICAuL0FuZC5vdXQK
+200730-113938 make 
+200730-113938 SVN user: a1773620, repository path: 2020/s2/cs/workshop01
