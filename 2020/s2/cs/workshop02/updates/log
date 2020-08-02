@@ -1,0 +1,35 @@
+200802-202707 Modified: YTk2NTFmNzk0YzkzMzg2Y2Q5ZGEwZWVhNjc3N2NmMWQ3NDY3NjEwZCAgLi8uRFNfU3RvcmUKZWU1NDA2MTU1ZWYxYjUxYWZlZWVkYTMwMWJlNWJjYmYyY2IwZjRlYiAgLi9NYWtlZmlsZQo0OWZkMGUwZWE3NGJiM2E1YmYwOGI0MDY3MjRiYjcyMWY3MmY3ZjQ2ICAuL3VwZGF0ZXMvd29ya3Nob3AwMi0yMDIwMDcyNC0xOTMyNDQuemlwCg==
+200802-202707 make install
+200802-202707 SVN user: a1773620, repository path: 2020/s2/cs/workshop02
+200802-202707 updater:  Directory: ./bin
+200802-202707 updater:  Directory: ./originals
+200802-202707 updater:  Directory: ./originals/ALU
+200802-202707 updater:  Directory: ./ALU
+200802-202707 updater:  Creating: ./HalfAdder.tst
+200802-202707 updater:  Creating: ./Inc16.cmp
+200802-202707 updater:  Creating: ./bin/run-tests
+200802-202707 updater:  Creating: ./Add16.cmp
+200802-202707 updater:  Creating: ./FullAdder.cmp
+200802-202707 updater:  Creating: updates/Makefile
+200802-202707 updater:  Creating: ./originals/HalfAdder.hdl
+200802-202707 updater:  Creating: ./originals/FullAdder.hdl
+200802-202707 updater:  Creating: ./originals/Inc16.hdl
+200802-202707 updater:  Creating: ./originals/Add16.hdl
+200802-202707 updater:  Creating: ./originals/ALU/ALU.hdl
+200802-202707 updater:  Creating: ./FullAdder.tst
+200802-202707 updater:  Creating: ./HalfAdder.cmp
+200802-202707 updater:  Creating: ./Add16.tst
+200802-202707 updater:  Creating: ./Inc16.tst
+200802-202707 updater:  Creating: ./ALU/ALU.tst
+200802-202707 updater:  Creating: ./ALU/ALU-nostat.tst
+200802-202707 updater:  Creating: ./ALU/ALU-nostat.cmp
+200802-202707 updater:  Creating: ./ALU/ALU.cmp
+200802-202707 updater:  Made bin/run-tests executable
+200802-202707 updater:  Removing MacOS quarantine flags from the executables
+200802-202707 updater:  Creating: HalfAdder.hdl
+200802-202707 updater:  Creating: FullAdder.hdl
+200802-202707 updater:  Creating: Inc16.hdl
+200802-202707 updater:  Creating: Add16.hdl
+200802-202707 updater:  Creating: ALU/ALU.hdl
+200802-202707 updater:  Updating: updates/README
+200802-202707 updater:  Update installed
