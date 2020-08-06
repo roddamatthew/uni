@@ -33,3 +33,49 @@
 200802-202707 updater:  Creating: ALU/ALU.hdl
 200802-202707 updater:  Updating: updates/README
 200802-202707 updater:  Update installed
+200806-110852 Modified: MzM4Y2E3YWU2ZDcwNWZmYjE0YmRkYzdjNjU2MDkyODExNGQ2ZDBhNyAgLi9IYWxmQWRkZXIuaGRs
+CjQ5ZmQwZTBlYTc0YmIzYTViZjA4YjQwNjcyNGJiNzIxZjcyZjdmNDYgIC4vdXBkYXRlcy93b3Jr
+c2hvcDAyLTIwMjAwNzI0LTE5MzI0NC56aXAKNjAzNmIxYmJkZjdkY2M4OGE2OWVlNzJiMTQyOGM0
+ZjM5NzhhNmI2MyAgLi9JbmMxNi5oZGwKOTBkMGVlYTMxYWMzNjJhOTUxOTA1OWU2N2ViODc5MmNk
+ZDMyMjE3OSAgLi9GdWxsQWRkZXIuaGRsCmVlNTQwNjE1NWVmMWI1MWFmZWVlZGEzMDFiZTViY2Jm
+MmNiMGY0ZWIgIC4vTWFrZWZpbGUK
+200806-110852 make 
+200806-110852 SVN user: a1773620, repository path: 2020/s2/cs/workshop02
+200806-110852 updater:  Directory: ./bin
+200806-110852 updater:  Directory: ./originals
+200806-110852 updater:  Directory: ./originals/ALU
+200806-110852 updater:  Creating: ./HalfAdder.tst
+200806-110852 updater:  Creating: ./Inc16.cmp
+200806-110852 updater:  Creating: ./bin/run-tests
+200806-110852 updater:  Creating: ./Add16.cmp
+200806-110852 updater:  Creating: ./FullAdder.cmp
+200806-110852 updater:  Creating: updates/Makefile
+200806-110852 updater:  Creating: ./originals/HalfAdder.hdl
+200806-110852 updater:  Creating: ./originals/FullAdder.hdl
+200806-110852 updater:  Creating: ./originals/Inc16.hdl
+200806-110852 updater:  Creating: ./originals/Add16.hdl
+200806-110852 updater:  Creating: ./originals/ALU/ALU.hdl
+200806-110852 updater:  Creating: ./FullAdder.tst
+200806-110852 updater:  Creating: ./HalfAdder.cmp
+200806-110852 updater:  Creating: ./Add16.tst
+200806-110852 updater:  Creating: ./Inc16.tst
+200806-110852 updater:  Creating: ./ALU/ALU.tst
+200806-110852 updater:  Creating: ./ALU/ALU-nostat.tst
+200806-110852 updater:  Creating: ./ALU/ALU-nostat.cmp
+200806-110852 updater:  Creating: ./ALU/ALU.cmp
+200806-110852 updater:  Made bin/run-tests executable
+200806-110852 updater:  Updating: updates/README
+200806-110852 updater:  Update installed
+200806-111347 Modified: OGVlNDVhY2NlNTUwY2FjZTQ0ZDQzMWIzM2Q3NzAzMWU2ZDcwMjI1OSAgLi9GdWxsQWRkZXIuaGRs
+Cg==
+200806-111347 make 
+200806-111347 SVN user: a1773620, repository path: 2020/s2/cs/workshop02
+200806-112209 Modified: ODM0MjNiNGEzZWJmMDliOTcxZmQxYWJjNDczNzlmMDRjNTI4NjQ1ZSAgLi9BZGQxNi5oZGwK
+200806-112209 make 
+200806-112209 SVN user: a1773620, repository path: 2020/s2/cs/workshop02
+200806-112349 Modified: YTMyNTdiYTAxZTAxMjk3M2ZkNThjOWU4ZWY2YjhmNWEyZmY3Mjg5MCAgLi9BZGQxNi5oZGwK
+200806-112349 make 
+200806-112349 SVN user: a1773620, repository path: 2020/s2/cs/workshop02
+200806-112843 Modified: OWQyMjllZWZlZDg4YTg3MWI4ZGJiY2IxYTNkMWRjOWNmN2VlMTkwNSAgLi9JbmMxNi5oZGwK
+200806-112843 make 
+200806-112843 SVN user: a1773620, repository path: 2020/s2/cs/workshop02
