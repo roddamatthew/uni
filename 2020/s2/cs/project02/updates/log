@@ -1,0 +1,33 @@
+200806-103716 Modified: OGU1YTUxMDg2MWY4Nzg2NmEzZmEwNmZkZDIyOGU4MzQ2ZTI3ZDNkOSAgLi8uRFNfU3RvcmUKNWU5YWEyZThkMTA5YjkwZDdmMzUwMDliZThjYTZkYzljYzU4YWM1MiAgLi91cGRhdGVzLy5EU19TdG9yZQpiNWYxMzcxMmM5ZDg2NThlMzVkY2Y0YTI1OWIwOGJmOGFlYzAzODM4ICAuL3VwZGF0ZXMvcHJvamVjdDAyLTIwMjAwODA2LTEwMTUwNC56aXAK
+200806-103716 make install
+200806-103716 SVN user: a1773620, repository path: 2020/s2/cs/project02
+200806-103716 updater:  Directory: ./bin
+200806-103716 updater:  Directory: ./originals
+200806-103716 updater:  Creating: ./HalfAdder.tst
+200806-103716 updater:  Creating: ./ALU.tst
+200806-103716 updater:  Creating: ./Inc16.cmp
+200806-103716 updater:  Creating: ./bin/run-tests
+200806-103716 updater:  Creating: ./Add16.cmp
+200806-103716 updater:  Creating: ./FullAdder.cmp
+200806-103716 updater:  Creating: updates/Makefile
+200806-103716 updater:  Creating: ./ALU-nostat.tst
+200806-103716 updater:  Creating: ./originals/HalfAdder.hdl
+200806-103716 updater:  Creating: ./originals/ALU.hdl
+200806-103716 updater:  Creating: ./originals/FullAdder.hdl
+200806-103716 updater:  Creating: ./originals/Inc16.hdl
+200806-103716 updater:  Creating: ./originals/Add16.hdl
+200806-103716 updater:  Creating: ./ALU-nostat.cmp
+200806-103716 updater:  Creating: ./FullAdder.tst
+200806-103716 updater:  Creating: ./ALU.cmp
+200806-103716 updater:  Creating: ./HalfAdder.cmp
+200806-103716 updater:  Creating: ./Add16.tst
+200806-103716 updater:  Creating: ./Inc16.tst
+200806-103716 updater:  Made bin/run-tests executable
+200806-103716 updater:  Removing MacOS quarantine flags from the executables
+200806-103716 updater:  Creating: HalfAdder.hdl
+200806-103716 updater:  Creating: ALU.hdl
+200806-103716 updater:  Creating: FullAdder.hdl
+200806-103716 updater:  Creating: Inc16.hdl
+200806-103716 updater:  Creating: Add16.hdl
+200806-103716 updater:  Updating: updates/README
+200806-103716 updater:  Update installed
