@@ -18,7 +18,6 @@ HumanPlayer:: HumanPlayer(){
 	for(int i=0; i<length; i++){
 		std::cin >> currentmove;
 		moves.push_back(currentmove);
-		std::cout << moves[i] << " ";
 	}
 	std::cout << std::endl;
 }
@@ -27,7 +26,7 @@ char HumanPlayer:: makeMove(){
 	int length = moves.size();
 	char thismove;
 	
-	if(counter == length -1){
+	if(counter == length){
 		counter = 0;
 	}
 

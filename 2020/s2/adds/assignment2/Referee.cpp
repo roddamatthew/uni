@@ -12,7 +12,7 @@ char Referee:: refGame(HumanPlayer& player1, ComputerPlayer& player2){
 	
 	if(move1 == move2){
 		// std::cout << "Both Players chose the same move! You drew." << std::endl;
-		return 'D';
+		return 'T';
 	}else if(move1 == 'R' && move2 == 'P'){
 		//std::cout << "Player 1 chose rock, Player 2 chose paper. Player 1 lost." << std::endl;
 		return 'L';
