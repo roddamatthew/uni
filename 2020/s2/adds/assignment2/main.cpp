@@ -1,5 +1,5 @@
-#include "ComputerPlayer.h"
-#include "HumanPlayer.h"
+#include "Computer.h"
+#include "Human.h"
 #include "Referee.h"
 
 #include <iostream>
