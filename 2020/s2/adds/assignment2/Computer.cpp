@@ -1,4 +1,4 @@
-#include "ComputerPlayer.h"
+#include "Computer.h"
 #include <string>
 #include <iostream>
 #include <cstdlib>
@@ -6,12 +6,12 @@
 
 using namespace std;
 
-ComputerPlayer:: ComputerPlayer(string Name){
+Computer:: Computer(string Name){
 	name = Name;
 	move = '0';
 }
 
-char ComputerPlayer:: makeMove(){
+char Computer:: makeMove(){
 	std::cout << "Computer is deciding its move..." << std::endl;
 	srand (time(NULL));
 	int random = rand() % 4;
@@ -26,6 +26,6 @@ char ComputerPlayer:: makeMove(){
 	return move;
 }
 
-string ComputerPlayer:: getName(){
+string Computer:: getName(){
 	return name;
 }
