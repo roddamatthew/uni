@@ -9,17 +9,17 @@ using namespace std;
 
 int main(){
 	Human* Matt;
-	Computer* Computer;
+	Computer* Comp;
 	Referee* Ref;
 
 	Matt = new Human("Matt");
-	Computer = new Computer("Computer");
+	Comp = new Computer("Comp");
 	Ref = new Referee();
 
 	std::cout << Matt -> getName() << std::endl;
-	std::cout << Computer -> getName() << std::endl;
+	std::cout << Comp -> getName() << std::endl;
 
-	Ref -> refGame(Matt,Computer);
+	Ref -> refGame(Matt,Comp);
 
 	return 0;
 }
