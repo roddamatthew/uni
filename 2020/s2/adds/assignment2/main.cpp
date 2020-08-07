@@ -8,13 +8,11 @@
 using namespace std;
 
 int main(){
-	HumanPlayer* Matt;
-	ComputerPlayer* Comp;
+	HumanPlayer Matt = HumanPlayer();
+	ComputerPlayer Comp = ComputerPlayer();
 	Referee* Ref;
 	int numberofgames=4;
 
-	Matt = new HumanPlayer();
-	Comp = new ComputerPlayer();
 	Ref = new Referee();
 
 	for(int i=0; i< numberofgames; i++){

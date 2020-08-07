@@ -6,9 +6,9 @@
 
 Referee:: Referee(){};
 
-char Referee:: refGame(HumanPlayer* player1, ComputerPlayer* player2){
-	char move1 = player1 -> makeMove();
-	char move2 = player2 -> makeMove();
+char Referee:: refGame(HumanPlayer player1, ComputerPlayer player2){
+	char move1 = player1.makeMove();
+	char move2 = player2.makeMove();
 
 	if(move1 == move2){
 		// std::cout << "Both Players chose the same move! You drew." << std::endl;
