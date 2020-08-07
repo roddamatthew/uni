@@ -6,12 +6,12 @@
 
 using namespace std;
 
-Computer:: Computer(string Name){
+ComputerPlayer:: ComputerPlayer(string Name){
 	name = Name;
 	move = '0';
 }
 
-char Computer:: makeMove(){
+char ComputerPlayer:: makeMove(){
 	std::cout << "Computer is deciding its move..." << std::endl;
 	srand (time(NULL));
 	int random = rand() % 4;
@@ -26,6 +26,6 @@ char Computer:: makeMove(){
 	return move;
 }
 
-string Computer:: getName(){
+string ComputerPlayer:: getName(){
 	return name;
 }

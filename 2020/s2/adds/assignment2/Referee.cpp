@@ -6,7 +6,7 @@
 
 Referee:: Referee(){};
 
-char Referee:: refGame(Human* player1, Computer* player2){
+char Referee:: refGame(HumanPlayer* player1, ComputerPlayer* player2){
 	char move1 = player1 -> makeMove();
 	char move2 = player2 -> makeMove();
 

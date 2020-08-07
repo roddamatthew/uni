@@ -4,17 +4,17 @@
 
 using namespace std;
 
-Human:: Human(string Name){
+HumanPlayer:: HumanPlayer(string Name){
 	name = Name;
 	move = '0';
 }
 
-char Human:: makeMove(){
+char HumanPlayer:: makeMove(){
 	std::cout << "Please enter your move: ";
 	std::cin >> move ;
 	return move;
 }
 
-string Human:: getName(){
+string HumanPlayer:: getName(){
 	return name;
 }

@@ -8,12 +8,12 @@
 using namespace std;
 
 int main(){
-	Human* Matt;
-	Computer* Comp;
+	HumanPlayer* Matt;
+	ComputerPlayer* Comp;
 	Referee* Ref;
 
-	Matt = new Human("Matt");
-	Comp = new Computer("Comp");
+	Matt = new HumanPlayer("Matt");
+	Comp = new ComputerPlayer("Comp");
 	Ref = new Referee();
 
 	std::cout << Matt -> getName() << std::endl;

@@ -3,13 +3,13 @@
 
 #include <string>
 
-class Computer
+class ComputerPlayer
 {
 private:
 	std::string name;
 	char move;
 public:
-	Computer(std::string Name);
+	ComputerPlayer(std::string Name);
 	char makeMove();
 	std::string getName();
 };

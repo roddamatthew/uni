@@ -8,6 +8,6 @@ class Referee
 {
 public:
 	Referee();
-	char refGame(Human* player1, Computer* player2);
+	char refGame(HumanPlayer* player1, ComputerPlayer* player2);
 };
 #endif //REFEREE_H
