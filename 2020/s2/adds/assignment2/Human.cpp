@@ -11,7 +11,7 @@ HumanPlayer:: HumanPlayer(){
 	int length;
 	char currentmove;
 
-	std::cin >> input ;
+	std::cin >> input;
 
 	length = input.at(0) - 48;
 
@@ -19,7 +19,6 @@ HumanPlayer:: HumanPlayer(){
 		std::cin >> currentmove;
 		moves.push_back(currentmove);
 	}
-	std::cout << std::endl;
 }
 
 char HumanPlayer:: makeMove(){

@@ -14,7 +14,7 @@ int main(){
 	int numberofgames=5;
 
 	for(int i=0; i< numberofgames; i++){
-		std::cout << Ref.refGame(Matt,Comp) << std::endl;
+		std::cout << Ref.refGame(Matt,Comp) << " ";
 	}
 
 	return 0;
