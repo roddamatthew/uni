@@ -2,15 +2,14 @@
 #define HUMAN_H
 
 #include <string>
+#include <vector>
 
 class HumanPlayer
 {
 private:
-	std::string name;
-	char move;
+	std::vector<char> moves;
 public:
-	HumanPlayer(std::string Name);
+	HumanPlayer();
 	char makeMove();
-	std::string getName();
 };
 #endif //HUMAN_H

@@ -6,11 +6,9 @@
 class ComputerPlayer
 {
 private:
-	std::string name;
 	char move;
 public:
-	ComputerPlayer(std::string Name);
+	ComputerPlayer();
 	char makeMove();
-	std::string getName();
 };
 #endif //COMPUTER_H
