@@ -8,10 +8,8 @@ Referee:: Referee(){};
 
 char Referee:: refGame(HumanPlayer& player1, ComputerPlayer& player2){
 	char move1 = player1.makeMove();
-	std::cout << "Ref recieved from player1 the move: " << move1 << std::endl;
 	char move2 = player2.makeMove();
-	std::cout << "Ref recieved from player1 the move: " << move2 << std::endl;
-
+	
 	if(move1 == move2){
 		// std::cout << "Both Players chose the same move! You drew." << std::endl;
 		return 'D';

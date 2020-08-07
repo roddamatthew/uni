@@ -15,7 +15,6 @@ int main(){
 
 	for(int i=0; i< numberofgames; i++){
 		std::cout << Ref.refGame(Matt,Comp) << std::endl;
-		std::cout << Matt.getCounter() << std::endl;
 	}
 
 	return 0;
