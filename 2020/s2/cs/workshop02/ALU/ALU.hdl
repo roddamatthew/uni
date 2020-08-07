@@ -43,4 +43,36 @@ CHIP ALU {
 
     PARTS:
    // Put you code here:
+	
+	//Using or zeroing the x input based on zx signal
+	Mux16(a=x, b=false, sel=zx, out=XorFalse);
+	//Using or zeroing the y input based on zy signal
+	Mux16(a=y, b=false, sel=zy, out=YorFalse);
+	//Inverting XorFalse signal
+	Not16(in=XorFalse, out=NotXorFalse);
+	//Inverting YorFalse signal
+	Not16(in=YorFalse, out=NotYorFalse);
+	//Using original or inverted x signal based on nx signal
+	Mux16(a=XorFalse, b=NotXorFalse, sel=nx, out=XaddSignal);
+	//Using original or inverted y signal based on ny signal
+	Mux16(a=YorFalse, b=NotYorFalse, sel=ny, out=YaddSignal);
+
+	//Adding X and Y signal
+	Add16(a=XaddSignal, b=YaddSignal, out=addSignal);
+	//Anding X and Y signal
+	And16(a=XaddSignal, b=YaddSignal, out=andSignal);
+
+	//Using And or Add based on f signal
+	Mux16(a=andSignal, b=addSignal, sel=f, out=arithmeticSignal);
+
+	//Inverting arithmeticSignal
+	Not16(in=arithmeticSignal, out=NotarithmeticSignal);
+	//Using inverted signal or original signal based on no	
+	Mux16(a=arithmeticSignal, b=NotarithmeticSignal, sel=no, out=out, out[15]=ng, out[0..7]=or8a, out[8..15]=or8b);
+	
+	//Finding zr
+	Or8Way(in=output[0..7], out=or8a);
+	Or8Way(in=output[8..15], out=or8b);
+	Or(a=or8a, b=or=8b, out=Notzr);
+	Not(in=Notzr, out=zr);	
 }
