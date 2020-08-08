@@ -1,0 +1,133 @@
+#!/bin/bash
+# runs chosen tokeniser over test files or regenerates them
+# it assumes this directory is SOMEWHERE/bin
+# it assumes tests directory is SOMEWHERE/tests, ie ../tests
+# it assumes that the executable is in the parent directory SOMEWHERE/
+
+# display messages or hide them
+case $2 in
+quiet)
+    loud="quiet"
+    ;;
+loud)
+    loud="loud"
+    ;;
+*)
+    loud="loud"
+    ;;
+esac
+
+# work out relative path to tests directory
+THISPWD=`pwd`
+
+# cd to the bin directory - where this script is
+BINDIR=`dirname $0`
+cd "$BINDIR"
+BINPWD=`pwd`
+
+# find the parent directory name
+PARENTDIR=`dirname "${BINPWD}"`
+
+# cd to parent dir
+cd ".."
+TESTPWD=`pwd`
+
+# fix up pathnames to be displayed to the user
+if [ "$THISPWD" != "$TESTPWD" ] ; then
+    echo "Execute the following command first if you want to cut-paste the test commands:"
+    echo "cd ${TESTPWD}"
+    echo
+fi
+
+# check we have a tokeniser first
+#if [ ! -x "${tokeniser}" ] ; then
+#    echo Cannot find executable ${PARENTDIR}${tokeniser_path}
+#    exit -1
+#fi
+
+### PRETTY STUFF ###
+
+# construct the diff command to display
+if [ -x ../bin/diffc ] ; then
+    diffcmd=${PARENTDIR}bin/diffc
+else
+    # if no diffc command, just use tell students to use diff
+    diffcmd=diff
+fi
+
+
+# if using an xterm - use headings and colour coded test results
+if [ "${TERM:0:5}" == "xterm" -o "${TERM:0:2}" == "vt" ] ; then
+    colorboldblack="\x1b[1;7;30m"
+    colorboldgreen="\x1b[1;7;32m"
+    colorboldred="\x1b[1;7;31m"
+    undocolor="\x1b[0m"
+else
+    colorboldblack=
+    colorboldgreen=
+    colorboldred=
+    undocolor=
+fi
+
+# make a string of whitespace matching the longest string parameter
+padding=
+setpadding()
+{
+    padding=
+    while [ "${#@}" -gt 0 ] ; do
+        while [ "${#padding}" -lt "${#1}" ] ; do
+            padding="${padding} "
+        done
+        shift 1
+    done
+}
+
+# column1 - blank
+setpadding "Checking"
+col1="${padding}"
+
+# column2 - test input file
+setpadding "HardwareSimulator.sh a/Register.tst"
+input_padding="${padding}"
+
+col2="                     Test Input"
+col2="${col2}${input_padding:${#col2}}"
+
+# column 5 - test result
+setpadding " test passed " " test failed "
+result_padding="${padding}"
+col5=" Test Result"
+col5="${col5}${result_padding:${#col5}}"
+
+# nullglob is set so nothing runs if there are no test files
+shopt -s nullglob
+
+banner="NO"
+header=
+columns=
+display_banner()
+{
+    if [ "${banner}" == "YES" ] ; then return ; fi
+
+    banner="YES"
+    if [ ${#header} -gt 0 ] ; then echo "${header}" ; fi
+    if [ ${#columns} -gt 0 ] ; then echo -e "${columns}" ; fi
+}
+
+# run all tst scripts
+header="Testing all .hdl files using matching .tst test scripts"
+columns="${colorboldblack}${col1}| ${col2}   | ${col5}${undocolor}"
+echo "End of script - Comparison ended successfully" > success
+display_banner
+for input in ?/*.tst ; do
+    display_input="HardwareSimulator.sh ${input}"
+    display_input="${display_input}${input_padding:${#display_input}}"
+
+    testmessage="Checking \"${display_input} \" - "
+    if HardwareSimulator.sh ${input} 2> /dev/null | diff -qw - success > /dev/null 2> /dev/null ; then
+        echo -e "${testmessage} ${colorboldgreen}test passed${undocolor}" ;
+    else
+	display_banner
+	echo -e "${testmessage} ${colorboldred}test failed${undocolor}"
+    fi
+done
