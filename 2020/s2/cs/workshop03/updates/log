@@ -1,0 +1,47 @@
+200808-162922 Modified: ZGM2NGM2ZWUyNDVhNTkyNWFkZjgyYmI5MGRmYWM0M2EwYmM4ZGM1MCAgLi8uRFNfU3RvcmUKNjIyZDE4ZWI2NWIwOTZiZThiNjc5ODZhNWU4YmQ0OGQ3ZDgyZTVjMiAgLi91cGRhdGVzL3dvcmtzaG9wMDMtMjAyMDA4MDYtMTA1MDQ2LnppcAo=
+200808-162922 make install
+200808-162922 SVN user: a1773620, repository path: 2020/s2/cs/workshop03
+200808-162922 updater:  Directory: ./bin
+200808-162922 updater:  Directory: ./originals
+200808-162922 updater:  Directory: ./originals/a
+200808-162922 updater:  Directory: ./originals/b
+200808-162922 updater:  Directory: ./a
+200808-162922 updater:  Directory: ./b
+200808-162922 updater:  Creating: ./bin/run-tests
+200808-162922 updater:  Creating: updates/Makefile
+200808-162922 updater:  Creating: ./originals/a/PC.hdl
+200808-162922 updater:  Creating: ./originals/a/RAM64.hdl
+200808-162922 updater:  Creating: ./originals/a/RAM8.hdl
+200808-162922 updater:  Creating: ./originals/a/Bit.hdl
+200808-162922 updater:  Creating: ./originals/a/Register.hdl
+200808-162922 updater:  Creating: ./originals/b/RAM512.hdl
+200808-162922 updater:  Creating: ./originals/b/RAM4K.hdl
+200808-162922 updater:  Creating: ./originals/b/RAM16K.hdl
+200808-162922 updater:  Creating: ./a/RAM8.cmp
+200808-162922 updater:  Creating: ./a/PC.tst
+200808-162922 updater:  Creating: ./a/Bit.cmp
+200808-162922 updater:  Creating: ./a/Register.cmp
+200808-162922 updater:  Creating: ./a/RAM64.tst
+200808-162922 updater:  Creating: ./a/RAM64.cmp
+200808-162922 updater:  Creating: ./a/PC.cmp
+200808-162922 updater:  Creating: ./a/RAM8.tst
+200808-162922 updater:  Creating: ./a/Register.tst
+200808-162922 updater:  Creating: ./a/Bit.tst
+200808-162922 updater:  Creating: ./b/RAM512.tst
+200808-162922 updater:  Creating: ./b/RAM4K.tst
+200808-162922 updater:  Creating: ./b/RAM16K.cmp
+200808-162922 updater:  Creating: ./b/RAM4K.cmp
+200808-162922 updater:  Creating: ./b/RAM16K.tst
+200808-162922 updater:  Creating: ./b/RAM512.cmp
+200808-162922 updater:  Made bin/run-tests executable
+200808-162922 updater:  Removing MacOS quarantine flags from the executables
+200808-162922 updater:  Creating: a/PC.hdl
+200808-162922 updater:  Creating: a/RAM64.hdl
+200808-162922 updater:  Creating: a/RAM8.hdl
+200808-162922 updater:  Creating: a/Bit.hdl
+200808-162922 updater:  Creating: a/Register.hdl
+200808-162922 updater:  Creating: b/RAM512.hdl
+200808-162922 updater:  Creating: b/RAM4K.hdl
+200808-162922 updater:  Creating: b/RAM16K.hdl
+200808-162922 updater:  Updating: updates/README
+200808-162922 updater:  Update installed
