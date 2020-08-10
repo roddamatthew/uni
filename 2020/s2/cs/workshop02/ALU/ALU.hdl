@@ -71,8 +71,8 @@ CHIP ALU {
 	Mux16(a=arithmeticSignal, b=NotarithmeticSignal, sel=no, out=out, out[15]=ng, out[0..7]=or8a, out[8..15]=or8b);
 	
 	//Finding zr
-	Or8Way(in=output[0..7], out=or8a);
-	Or8Way(in=output[8..15], out=or8b);
-	Or(a=or8a, b=or=8b, out=Notzr);
+	Or8Way(in=or8a, out=orOut1);
+	Or8Way(in=or8b, out=orOut2);
+	Or(a=orOut1, b=orOut2, out=Notzr);
 	Not(in=Notzr, out=zr);	
 }
