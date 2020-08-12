@@ -1,0 +1,47 @@
+200812-231802 Modified: ZjkxN2E4MTQwMDJlMmEzMWU2MTllNTMwMzc1M2MyYzA3M2JkMjg3YyAgLi8uRFNfU3RvcmUKZDU4MDBkNmNhYWM3ZTExYWFlZWFmOTcwNDkxMDU0ZTQ4MzNiYTIzYiAgLi91cGRhdGVzL3Byb2plY3QwMy0yMDIwMDgwNi0xMDUwNTIuemlwCg==
+200812-231802 make install
+200812-231802 SVN user: a1773620, repository path: 2020/s2/cs/project03
+200812-231802 updater:  Directory: ./bin
+200812-231802 updater:  Directory: ./originals
+200812-231802 updater:  Directory: ./originals/a
+200812-231802 updater:  Directory: ./originals/b
+200812-231802 updater:  Directory: ./a
+200812-231802 updater:  Directory: ./b
+200812-231802 updater:  Creating: ./bin/run-tests
+200812-231802 updater:  Creating: updates/Makefile
+200812-231802 updater:  Creating: ./originals/a/PC.hdl
+200812-231802 updater:  Creating: ./originals/a/RAM64.hdl
+200812-231802 updater:  Creating: ./originals/a/RAM8.hdl
+200812-231802 updater:  Creating: ./originals/a/Bit.hdl
+200812-231802 updater:  Creating: ./originals/a/Register.hdl
+200812-231802 updater:  Creating: ./originals/b/RAM512.hdl
+200812-231802 updater:  Creating: ./originals/b/RAM4K.hdl
+200812-231802 updater:  Creating: ./originals/b/RAM16K.hdl
+200812-231802 updater:  Creating: ./a/RAM8.cmp
+200812-231802 updater:  Creating: ./a/PC.tst
+200812-231802 updater:  Creating: ./a/Bit.cmp
+200812-231802 updater:  Creating: ./a/Register.cmp
+200812-231802 updater:  Creating: ./a/RAM64.tst
+200812-231802 updater:  Creating: ./a/RAM64.cmp
+200812-231802 updater:  Creating: ./a/PC.cmp
+200812-231802 updater:  Creating: ./a/RAM8.tst
+200812-231802 updater:  Creating: ./a/Register.tst
+200812-231802 updater:  Creating: ./a/Bit.tst
+200812-231802 updater:  Creating: ./b/RAM512.tst
+200812-231802 updater:  Creating: ./b/RAM4K.tst
+200812-231802 updater:  Creating: ./b/RAM16K.cmp
+200812-231802 updater:  Creating: ./b/RAM4K.cmp
+200812-231802 updater:  Creating: ./b/RAM16K.tst
+200812-231802 updater:  Creating: ./b/RAM512.cmp
+200812-231802 updater:  Made bin/run-tests executable
+200812-231802 updater:  Removing MacOS quarantine flags from the executables
+200812-231802 updater:  Creating: a/PC.hdl
+200812-231802 updater:  Creating: a/RAM64.hdl
+200812-231802 updater:  Creating: a/RAM8.hdl
+200812-231802 updater:  Creating: a/Bit.hdl
+200812-231802 updater:  Creating: a/Register.hdl
+200812-231802 updater:  Creating: b/RAM512.hdl
+200812-231802 updater:  Creating: b/RAM4K.hdl
+200812-231802 updater:  Creating: b/RAM16K.hdl
+200812-231802 updater:  Updating: updates/README
+200812-231802 updater:  Update installed
