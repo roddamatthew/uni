@@ -1,7 +1,8 @@
+#include "Player.h"
 #include "Human.h"
+#include <string>
 #include <iostream>
 #include <vector>
-#include <string>
 
 using namespace std;
 
@@ -19,22 +20,10 @@ HumanPlayer:: HumanPlayer(){
 		std::cin >> currentmove;
 		moves.push_back(currentmove);
 	}
-}
 
-char HumanPlayer:: makeMove(){
-	int length = moves.size();
-	char thismove;
-	
-	if(counter == length){
-		counter = 0;
+	std::cout << "Human Player's moves are: ";
+	for(int i=0; i<length; i++){
+		std::cout << moves[i] << " ";
 	}
-
-	thismove = moves[counter];
-
-	counter++;
-	return thismove;
-}
-
-int HumanPlayer:: getCounter(){
-	return counter;
+	std::cout << std::endl;
 }

@@ -1,7 +1,6 @@
 #ifndef HUMAN_H
 #define HUMAN_H
 
-#include <string>
 #include <vector>
 
 class HumanPlayer
