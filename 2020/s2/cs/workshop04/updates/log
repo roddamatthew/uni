@@ -1,0 +1,43 @@
+200816-151530 Modified: YjE2MDNkODQyZmFmNzU3ODFhN2QwNmMwYzg5NjUxMDkwNmUyMTY4ZSAgLi8uRFNfU3RvcmUKNDFmZGI2NDMxYmQ0NDZlMTMzYzM2YzFkMWZmYWUzZGMxMDc1MjAxNSAgLi91cGRhdGVzL3dvcmtzaG9wMDQtMjAyMDA4MTUtMTUxNzI5LnppcAo3MGYxYzBkZjc2NzY2MGRmOGFkZThjZDE3ZDFjMjVmODQ1MjBjMTYyICAuL3VwZGF0ZXMvLkRTX1N0b3JlCg==
+200816-151530 make install
+200816-151530 SVN user: a1773620, repository path: 2020/s2/cs/workshop04
+200816-151530 updater:  Directory: ./bin
+200816-151530 updater:  Directory: ./originals
+200816-151530 updater:  Creating: ./ComputerRect.tst
+200816-151530 updater:  Creating: ./ComputerAdd.tst
+200816-151530 updater:  Creating: ./CPU-external.cmp
+200816-151530 updater:  Creating: ./Memoryx.tst
+200816-151530 updater:  Creating: ./bin/run-tests
+200816-151530 updater:  Creating: ./ComputerAdd-external.tst
+200816-151530 updater:  Creating: updates/Makefile
+200816-151530 updater:  Creating: ./Add.hack
+200816-151530 updater:  Creating: ./ComputerMax-external.tst
+200816-151530 updater:  Creating: ./originals/Memory.hdl
+200816-151530 updater:  Creating: ./originals/Computer.hdl
+200816-151530 updater:  Creating: ./originals/CPU.hdl
+200816-151530 updater:  Creating: ./Memory.tst
+200816-151530 updater:  Creating: ./CPU.cmp
+200816-151530 updater:  Creating: ./ComputerRect-external.tst
+200816-151530 updater:  Creating: ./ComputerMax.cmp
+200816-151530 updater:  Creating: ./ComputerMax-external.cmp
+200816-151530 updater:  Creating: ./Max.hack
+200816-151530 updater:  Creating: ./ComputerMax.tst
+200816-151530 updater:  Creating: ./Rect.hack
+200816-151530 updater:  Creating: ./Memory.cmp
+200816-151530 updater:  Creating: ./CPU.tst
+200816-151530 updater:  Creating: ./ComputerRect-external.cmp
+200816-151530 updater:  Creating: ./ComputerAdd-external.cmp
+200816-151530 updater:  Creating: ./CPU-external.tst
+200816-151530 updater:  Creating: ./Memoryx.cmp
+200816-151530 updater:  Creating: ./ComputerRect.cmp
+200816-151530 updater:  Creating: ./ComputerAdd.cmp
+200816-151530 updater:  Made Add.hack executable
+200816-151530 updater:  Made Max.hack executable
+200816-151530 updater:  Made Rect.hack executable
+200816-151530 updater:  Made bin/run-tests executable
+200816-151530 updater:  Removing MacOS quarantine flags from the executables
+200816-151530 updater:  Creating: Memory.hdl
+200816-151530 updater:  Creating: Computer.hdl
+200816-151530 updater:  Creating: CPU.hdl
+200816-151530 updater:  Updating: updates/README
+200816-151530 updater:  Update installed
