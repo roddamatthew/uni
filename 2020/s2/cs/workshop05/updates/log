@@ -1,0 +1,134 @@
+200823-184608 Modified: YWFkZjE0ZDA2ZmFmZDVhZDk0ZjA2ZWQ4ZGNjYTYzZjEyNDUxOGJlYyAgLi8uRFNfU3RvcmUKYWVjNmU3MjI5MmE1MDc4NmE2ZmI5NGRkMzk3Zjk2ZTMxMTM0YmY2MyAgLi91cGRhdGVzLy5EU19TdG9yZQo2YzNmY2ZiOTcyY2QzZWYzN2YyZmZmMDA5ZjgyMjc4NjgyOTM5YmRiICAuL3VwZGF0ZXMvd29ya3Nob3AwNS0yMDIwMDgxNy0xNDI2MTMuemlwCg==
+200823-184608 make updates
+200823-184608 SVN user: a1773620, repository path: 2020/s2/cs/workshop05
+200823-184608 updater:  Directory: ./bin
+200823-184608 updater:  Directory: ./originals
+200823-184608 updater:  Directory: ./tests
+200823-184608 updater:  Directory: ./includes
+200823-184608 updater:  Directory: ./lib
+200823-184608 updater:  Directory: ./lib/cats
+200823-184608 updater:  Directory: ./lib/cats/bin
+200823-184608 updater:  Directory: ./lib/macos
+200823-184608 updater:  Directory: ./lib/macos/bin
+200823-184608 updater:  Directory: ./lib/centos8
+200823-184608 updater:  Directory: ./lib/centos8/bin
+200823-184608 updater:  Creating: ./tokeniser
+200823-184608 updater:  Creating: ./bin/tokeniser
+200823-184608 updater:  Creating: ./bin/diffc
+200823-184608 updater:  Creating: ./bin/diff-colours
+200823-184608 updater:  Creating: ./bin/Compiler-check.bash
+200823-184608 updater:  Creating: ./bin/run-tests
+200823-184608 updater:  Creating: updates/Makefile
+200823-184608 updater:  Creating: ./originals/tokeniser.cpp
+200823-184608 updater:  Creating: ./tests/MemoryTest-Main.jack.tokens
+200823-184608 updater:  Creating: ./tests/Average-Main.jack
+200823-184608 updater:  Creating: ./tests/1char-varops
+200823-184608 updater:  Creating: ./tests/ExplsSquare-Main.jack.tokens
+200823-184608 updater:  Creating: ./tests/MathTest-Main.jack
+200823-184608 updater:  Creating: ./tests/0keywords
+200823-184608 updater:  Creating: ./tests/ComplexArrays-Main.jack.tokens
+200823-184608 updater:  Creating: ./tests/StringTest-Main.jack.tokens
+200823-184608 updater:  Creating: ./tests/StringTest-Main.jack
+200823-184608 updater:  Creating: ./tests/1char-ops
+200823-184608 updater:  Creating: ./tests/Seven-Main.jack.tokens
+200823-184608 updater:  Creating: ./tests/MemoryTest-Main.jack
+200823-184608 updater:  Creating: ./tests/Address.asm
+200823-184608 updater:  Creating: ./tests/Numerical.asm
+200823-184608 updater:  Creating: ./tests/Square-Main.jack.tokens
+200823-184608 updater:  Creating: ./tests/Rect.asm
+200823-184608 updater:  Creating: ./tests/Jump.asm.tokens
+200823-184608 updater:  Creating: ./tests/ExplsSquare-Square.jack.tokens
+200823-184608 updater:  Creating: ./tests/ExplsSquare-Square.jack
+200823-184608 updater:  Creating: ./tests/1char-ops.tokens
+200823-184608 updater:  Creating: ./tests/Jump.asm
+200823-184608 updater:  Creating: ./tests/ConvertToBin-Main.jack
+200823-184608 updater:  Creating: ./tests/ScreenTest-Main.jack
+200823-184608 updater:  Creating: ./tests/0identifiers
+200823-184608 updater:  Creating: ./tests/Numerical.asm.tokens
+200823-184608 updater:  Creating: ./tests/Square-Main.jack
+200823-184608 updater:  Creating: ./tests/Add.asm
+200823-184608 updater:  Creating: ./tests/0numbers
+200823-184608 updater:  Creating: ./tests/MathTest-Main.jack.tokens
+200823-184608 updater:  Creating: ./tests/OutputTest-Main.jack
+200823-184608 updater:  Creating: ./tests/DestComp.asm.tokens
+200823-184608 updater:  Creating: ./tests/KeyboardTest-Main.jack.tokens
+200823-184608 updater:  Creating: ./tests/ExplsSquare-SquareGame.jack.tokens
+200823-184608 updater:  Creating: ./tests/SysTest-Main.jack
+200823-184608 updater:  Creating: ./tests/ArrayTest-Main.jack
+200823-184608 updater:  Creating: ./tests/Pong-PongGame.jack.tokens
+200823-184608 updater:  Creating: ./tests/0numbers.tokens
+200823-184608 updater:  Creating: ./tests/MaxL.asm.tokens
+200823-184608 updater:  Creating: ./tests/SysTest-Main.jack.tokens
+200823-184608 updater:  Creating: ./tests/Square-SquareGame.jack
+200823-184608 updater:  Creating: ./tests/1char-symbols
+200823-184608 updater:  Creating: ./tests/0identifiers.tokens
+200823-184608 updater:  Creating: ./tests/1char-symbols.tokens
+200823-184608 updater:  Creating: ./tests/Rect.asm.tokens
+200823-184608 updater:  Creating: ./tests/Pong-Bat.jack.tokens
+200823-184608 updater:  Creating: ./tests/0keywords.tokens
+200823-184608 updater:  Creating: ./tests/ExplsSquare-Main.jack
+200823-184608 updater:  Creating: ./tests/Square-Square.jack
+200823-184608 updater:  Creating: ./tests/RectL.asm.tokens
+200823-184608 updater:  Creating: ./tests/Comp.asm.tokens
+200823-184608 updater:  Creating: ./tests/Pong-Ball.jack
+200823-184608 updater:  Creating: ./tests/1char-varops.tokens
+200823-184608 updater:  Creating: ./tests/Average-Main.jack.tokens
+200823-184608 updater:  Creating: ./tests/Seven-Main.jack
+200823-184608 updater:  Creating: ./tests/Dest.asm
+200823-184608 updater:  Creating: ./tests/Pong-Main.jack
+200823-184608 updater:  Creating: ./tests/OutputTest-Main.jack.tokens
+200823-184608 updater:  Creating: ./tests/ComplexArrays-Main.jack
+200823-184608 updater:  Creating: ./tests/Pong-Bat.jack
+200823-184608 updater:  Creating: ./tests/ConvertToBin-Main.jack.tokens
+200823-184608 updater:  Creating: ./tests/ArrayTest-Main.jack.tokens
+200823-184608 updater:  Creating: ./tests/ScreenTest-Main.jack.tokens
+200823-184608 updater:  Creating: ./tests/2char-varops.tokens
+200823-184608 updater:  Creating: ./tests/DestComp.asm
+200823-184608 updater:  Creating: ./tests/Max.asm.tokens
+200823-184608 updater:  Creating: ./tests/Square-SquareGame.jack.tokens
+200823-184608 updater:  Creating: ./tests/RectL.asm
+200823-184608 updater:  Creating: ./tests/KeyboardTest-Main.jack
+200823-184608 updater:  Creating: ./tests/Pong-Main.jack.tokens
+200823-184608 updater:  Creating: ./tests/Square-Square.jack.tokens
+200823-184608 updater:  Creating: ./tests/Max.asm
+200823-184608 updater:  Creating: ./tests/Comp.asm
+200823-184608 updater:  Creating: ./tests/Add.asm.tokens
+200823-184608 updater:  Creating: ./tests/MaxL.asm
+200823-184608 updater:  Creating: ./tests/2char-varops
+200823-184608 updater:  Creating: ./tests/Pong-Ball.jack.tokens
+200823-184608 updater:  Creating: ./tests/Pong-PongGame.jack
+200823-184608 updater:  Creating: ./tests/ExplsSquare-SquareGame.jack
+200823-184608 updater:  Creating: ./tests/Address.asm.tokens
+200823-184608 updater:  Creating: ./tests/Dest.asm.tokens
+200823-184608 updater:  Creating: ./includes/tokeniser-extras.h
+200823-184608 updater:  Creating: ./includes/tokeniser.h
+200823-184608 updater:  Creating: ./includes/iobuffer.h
+200823-184608 updater:  Creating: ./lib/cats/bin/tokeniser
+200823-184608 updater:  Creating: ./lib/cats/bin/diff-colours
+200823-184608 updater:  Creating: ./lib/cats/lib.a
+200823-184608 updater:  Creating: ./lib/macos/bin/tokeniser
+200823-184608 updater:  Creating: ./lib/macos/bin/diff-colours
+200823-184608 updater:  Creating: ./lib/macos/lib.a
+200823-184608 updater:  Creating: ./lib/centos8/bin/tokeniser
+200823-184608 updater:  Creating: ./lib/centos8/bin/diff-colours
+200823-184608 updater:  Creating: ./lib/centos8/lib.a
+200823-184608 updater:  Creating: ./tokens.cpp
+200823-184608 updater:  Made tokeniser executable
+200823-184608 updater:  Made bin/Compiler-check.bash executable
+200823-184608 updater:  Made bin/diff-colours executable
+200823-184608 updater:  Made bin/diffc executable
+200823-184608 updater:  Made bin/run-tests executable
+200823-184608 updater:  Made bin/tokeniser executable
+200823-184608 updater:  Made lib/cats/bin/diff-colours executable
+200823-184608 updater:  Made lib/cats/bin/tokeniser executable
+200823-184608 updater:  Made lib/centos8/bin/diff-colours executable
+200823-184608 updater:  Made lib/centos8/bin/tokeniser executable
+200823-184608 updater:  Made lib/macos/bin/diff-colours executable
+200823-184608 updater:  Made lib/macos/bin/tokeniser executable
+200823-184608 updater:  Removing MacOS quarantine flags from the executables
+200823-184608 updater:  Creating: tokeniser.cpp
+200823-184608 updater:  Updating: updates/README
+200823-184608 updater:  Update installed
+200823-184644 Modified: Y2MwNTIzYTMxMDJiMDVkMjc4ZDAyOGEwOTQxNjA3YmQ5YzU2NGY3MSAgLi8uRFNfU3RvcmUKZjQzM2U5ZjlkYTczNjllNDlkNzAxMjk2ZGQzMTUzMDg2NzAyOTJlNCAgLi91cGRhdGVzLy5EU19TdG9yZQo=
+200823-184644 make install
+200823-184644 SVN user: a1773620, repository path: 2020/s2/cs/workshop05
