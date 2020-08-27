@@ -34,7 +34,11 @@ namespace Workshop_Tokeniser
     // ch is the first character of the identifier
     static void parse_identifier()
     {
-        c_did_not_find(cg_start_of_identifier) ;
+        // we are parsing an identifier
+        new_token_kind = tk_identifier ;
+
+        // read characters until we read past the end of the identifier
+        do nextch() ; while ( c_have(cg_extends_identifier) ) ;
     }
 
     // parse a number - always read one extra character
@@ -54,7 +58,11 @@ namespace Workshop_Tokeniser
     // ch is the single character operator
     static void parse_op(TokenKind kind)
     {
-        c_did_not_find(cg_op) ;
+        // we are parsing an operator
+        new_token_kind = kind ;
+
+        // move forward a character for the next token
+        nextch();
     }
 
     // parse < or <= - always read one extra character
@@ -62,7 +70,18 @@ namespace Workshop_Tokeniser
     // ch is '<'
     static void parse_lt_lte()
     {
-        c_did_not_find(cg_start_of_varop) ;
+        if(c_have('<')){                    // if first character is <
+            nextch();                       // go to the next character
+
+            if(c_have('=')){                // if the next character is =
+                new_token_kind = tk_le;     // we have "<="
+                nextch();                   // move forward a character for the next token
+            }else{                          // if not
+                new_token_kind = tk_lt;     // we have "<"
+            }
+        }else{                              // Error case
+            c_did_not_find(cg_start_of_varop);
+        }
     }
 
     // parse = or == - always read one extra character
@@ -70,7 +89,18 @@ namespace Workshop_Tokeniser
     // ch is '='
     static void parse_assign_eq()
     {
-        c_did_not_find(cg_start_of_varop) ;
+        if(c_have('=')){                    // if first character is '='
+            nextch();                       // go to the next character
+
+            if(c_have('=')){                // if the next character is '='
+                new_token_kind = tk_eq;     // we have '=='
+                nextch();                   // move forward a character for the next token
+            }else{                          // if not
+                new_token_kind = tk_assign;     // we have "="
+            }
+        }else{                              // Error case
+            c_did_not_find(cg_start_of_varop);
+        }
     }
 
     // parse ! or != - always read one extra character
@@ -78,7 +108,18 @@ namespace Workshop_Tokeniser
     // ch is '!'
     static void parse_not_ne()
     {
-        c_did_not_find(cg_start_of_varop) ;
+        if(c_have('!')){                    // if first character is '!'
+            nextch();                       // go to the next character
+
+            if(c_have('=')){                // if the next character is '='
+                new_token_kind = tk_ne;     // we have '!='
+                nextch();                   // move forward a character for the next token
+            }else{                          // if not
+                new_token_kind = tk_not;     // we have "<"
+            }
+        }else{                              // Error case
+            c_did_not_find(cg_start_of_varop);
+        }
     }
 
     // parse > or >= - always read one extra character
@@ -86,7 +127,18 @@ namespace Workshop_Tokeniser
     // ch is '>'
     static void parse_gt_gte()
     {
-        c_did_not_find(cg_start_of_varop) ;
+        if(c_have('>')){                    // if first character is '>'
+            nextch();                       // go to the next character
+
+            if(c_have('=')){                // if the next character is =
+                new_token_kind = tk_ge;     // we have '>='
+                nextch();                   // move forward a character for the next token
+            }else{                          // if not
+                new_token_kind = tk_gt;     // we have '>'
+            }
+        }else{                              // Error case
+            c_did_not_find(cg_start_of_varop);
+        }
     }
 
     // parse a varop - this is redundant, the case labels could be placed inside next_token()
@@ -120,7 +172,11 @@ namespace Workshop_Tokeniser
     // ch is the single character symbol
     static void parse_symbol(TokenKind kind)
     {
-        c_did_not_find(cg_symbol) ;
+        // we have a symbol of the paramater type 'kind'
+        new_token_kind = kind;
+
+        // move forward a character for next token
+        nextch(); 
     }
 
     // return the next Token object by reading more of the input
@@ -140,7 +196,7 @@ namespace Workshop_Tokeniser
             break ;
 
         case 'a'...'z':         // identifier tokens
-        // * replace * this comment with case labels for the other characters that start an identifier
+        case 'A'...'Z':
             parse_identifier() ;
             break ;
 
@@ -151,12 +207,29 @@ namespace Workshop_Tokeniser
         case '+':               // op tokens
             parse_op(tk_add) ;
             break ;
-        // * replace * this comment with case labels and parse calls for the other op tokens
+        // added code:
+        case '-':
+            parse_op(tk_sub) ;
+            break ;
+
+        case '*':
+            parse_op(tk_times) ;
+            break ;
+
+        case '/':
+            parse_op(tk_divide);
+            break ;
 
         case '>':               // var op tokens
+        case '>=':
+        case '==':
+        case '!=':
+        case '<':
+        case '<=':
+        case '!':
+        case '=':
             parse_varop() ;
             break ;
-        // * replace * this comment with case labels and parse calls for the other varop tokens
 
         case '{':               // the start of a symbol token
             parse_symbol(tk_lcb) ;
@@ -164,7 +237,30 @@ namespace Workshop_Tokeniser
         case '}':
             parse_symbol(tk_rcb) ;
             break ;
-        // * replace * this comment with case labels and parse calls for the other symbol tokens
+        case '@':
+            parse_symbol(tk_at) ;
+            break ;
+        case '(':
+            parse_symbol(tk_lrb) ;
+            break ;
+        case ')':
+            parse_symbol(tk_rrb) ;
+            break ;
+        case ':':
+            parse_symbol(tk_colon) ;
+            break ;
+        case ';':
+            parse_symbol(tk_semi) ;
+            break ;
+        case '.':
+            parse_symbol(tk_dot) ;
+            break ;
+        case ',':
+            parse_symbol(tk_comma) ;
+            break ;
+        case '"':
+            parse_symbol(tk_dquote) ;
+            break ;
 
         case EOF:
             new_token_kind = tk_eoi ;
@@ -189,9 +285,20 @@ namespace Workshop_Tokeniser
         // set_token_spelling() will let you change the token's spelling
         // set_token_kind() will let you change the token's kind
 
-        // ...
+        string spelling = token_spelling(token);
+
+        if(spelling == "var"){
+            set_token_kind(token, tk_var);
+        }else if(spelling == "while"){
+            set_token_kind(token, tk_while);
+        }else if(spelling == "if"){
+            set_token_kind(token, tk_if);
+        }else if(spelling == "else"){
+            set_token_kind(token, tk_else);
+        }else if(spelling == "let"){
+            set_token_kind(token, tk_let);
+        }
  
         return token ;
     }
 }
-
