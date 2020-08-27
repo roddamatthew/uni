@@ -1,7 +1,7 @@
 #include "EfficientTruckLoads.h"
 #include <iostream>
 
-EfficientTruckLoads :: EfficientTruckLoads(){
+EfficientTruckloads :: EfficientTruckloads(){
 	// Initializing the 2D array for numTrucks records.
 	array = new int*[10];	// Assuming there will only be 10 different calls of this function per run.
 	for(int i = 0; i < 10; i++){
@@ -16,7 +16,7 @@ EfficientTruckLoads :: EfficientTruckLoads(){
 	index = 0;
 }
 
-int EfficientTruckLoads :: numTrucks(int numCrates, int loadSize){
+int EfficientTruckloads :: numTrucks(int numCrates, int loadSize){
 	int trucks;
 
 	// Checking array for whether a previous call of numTrucks with the same parameters has been made and using that.
@@ -40,7 +40,7 @@ int EfficientTruckLoads :: numTrucks(int numCrates, int loadSize){
 	}
 }
 
-int EfficientTruckLoads :: numTrucksHelper(int numCrates, int loadSize){
+int EfficientTruckloads :: numTrucksHelper(int numCrates, int loadSize){
 	// base case:
 	if(numCrates <= loadSize){
 		return 1;

@@ -1,12 +1,12 @@
 #ifndef TRUCKLOADS_H
 #define TRUCKLOADS_H
 
-class TruckLoads
+class Truckloads
 {
 private:
 	int numTrucksHelper(int numCrates, int loadSize);
 public:
-	TruckLoads();
+	Truckloads();
 	int numTrucks(int numCrates, int loadSize);
 };
 #endif //TRUCKLOADS

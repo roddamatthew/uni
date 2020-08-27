@@ -11,8 +11,8 @@ int main(){
 	int loadSize;
 
 	Reverse R;
-	TruckLoads T;
-	EfficientTruckLoads E;
+	Truckloads T;
+	EfficientTruckloads E;
 
 	std::cin >> i;
 	std::cin >> s;

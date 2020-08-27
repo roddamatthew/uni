@@ -1,9 +1,9 @@
 #include "TruckLoads.h"
 #include <iostream>
 
-TruckLoads :: TruckLoads(){}
+Truckloads :: Truckloads(){}
 
-int TruckLoads :: numTrucks(int numCrates, int loadSize){
+int Truckloads :: numTrucks(int numCrates, int loadSize){
 	if(numCrates > 2 && loadSize >= 1){
 		return numTrucksHelper(numCrates, loadSize);
 	}else{
@@ -12,7 +12,7 @@ int TruckLoads :: numTrucks(int numCrates, int loadSize){
 	}
 }
 
-int TruckLoads :: numTrucksHelper(int numCrates, int loadSize){
+int Truckloads :: numTrucksHelper(int numCrates, int loadSize){
 	// base case:
 	if(numCrates <= loadSize){
 		return 1;

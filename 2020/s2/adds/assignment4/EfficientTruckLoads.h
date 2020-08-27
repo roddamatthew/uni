@@ -3,14 +3,14 @@
 
 #include <vector>
 
-class EfficientTruckLoads
+class EfficientTruckloads
 {
 private:
 	int** array;
 	int index;
 	int numTrucksHelper(int numCrates, int loadSize);
 public:
-	EfficientTruckLoads();
+	EfficientTruckloads();
 	int numTrucks(int numCrates, int loadSize);
 
 };
