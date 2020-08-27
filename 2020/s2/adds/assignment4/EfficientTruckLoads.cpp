@@ -35,7 +35,7 @@ int EfficientTruckloads :: numTrucks(int numCrates, int loadSize){
 
 		return trucks;
 	}else{
-		std::cout << "ERROR" << std::endl;
+		std::cout << "ERROR";
 		return 0;
 	}
 }

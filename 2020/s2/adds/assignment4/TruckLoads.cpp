@@ -7,7 +7,7 @@ int Truckloads :: numTrucks(int numCrates, int loadSize){
 	if(numCrates > 2 && loadSize >= 1){
 		return numTrucksHelper(numCrates, loadSize);
 	}else{
-		std::cout << "ERROR" << std::endl;
+		std::cout << "ERROR";
 		return 0;
 	}
 }
