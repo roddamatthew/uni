@@ -8,7 +8,7 @@ int Reverse :: reverseDigit(int value){
 	if(value > 0){
 		return reverseDigitHelper(value, 0);
 	}else{
-		std::cout << "ERROR" <<;
+		std::cout << "ERROR";
 		return 0;
 	}
 }
@@ -31,7 +31,7 @@ std::string Reverse :: reverseString(std::string letters){
 	if(letters.length() > 0){
 		return reverseStringHelper(letters, "");
 	}else{
-		std::cout << "ERROR" <<;
+		std::cout << "ERROR";
 		return 0;
 	}
 }
