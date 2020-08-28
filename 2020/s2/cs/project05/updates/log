@@ -1,0 +1,47 @@
+200828-140348 Modified: ZGM2NGM2ZWUyNDVhNTkyNWFkZjgyYmI5MGRmYWM0M2EwYmM4ZGM1MCAgLi8uRFNfU3RvcmUKNzhlMGVlYzQxM2I0MDBlZGM0YzUwODRmNzRjOTE3ZGUzNjIwMmIwYSAgLi91cGRhdGVzL3Byb2plY3QwNS0yMDIwMDgxNC0xMDE2MzMuemlwCg==
+200828-140348 make install
+200828-140348 SVN user: a1773620, repository path: 2020/s2/cs/project05
+200828-140348 updater:  Directory: ./bin
+200828-140348 updater:  Directory: ./originals
+200828-140348 updater:  Creating: ./ComputerRect.tst
+200828-140348 updater:  Creating: ./ComputerAdd.tst
+200828-140348 updater:  Creating: ./CPU-external.cmp
+200828-140348 updater:  Creating: ./Memoryx.tst
+200828-140348 updater:  Creating: ./bin/run-tests
+200828-140348 updater:  Creating: ./ComputerAdd-external.tst
+200828-140348 updater:  Creating: updates/Makefile
+200828-140348 updater:  Creating: ./Add.hack
+200828-140348 updater:  Creating: ./ComputerMax-external.tst
+200828-140348 updater:  Creating: ./originals/Memory.hdl
+200828-140348 updater:  Creating: ./originals/Computer.hdl
+200828-140348 updater:  Creating: ./originals/CPU.hdl
+200828-140348 updater:  Creating: ./Memory.tst
+200828-140348 updater:  Creating: ./CPU.cmp
+200828-140348 updater:  Creating: ./ComputerRect-external.tst
+200828-140348 updater:  Creating: ./ComputerMax.cmp
+200828-140348 updater:  Creating: ./ComputerMax-external.cmp
+200828-140348 updater:  Creating: ./Max.hack
+200828-140348 updater:  Creating: ./ComputerMax.tst
+200828-140348 updater:  Creating: ./Rect.hack
+200828-140348 updater:  Creating: ./Memory.cmp
+200828-140348 updater:  Creating: ./CPU.tst
+200828-140348 updater:  Creating: ./ComputerRect-external.cmp
+200828-140348 updater:  Creating: ./ComputerAdd-external.cmp
+200828-140348 updater:  Creating: ./CPU-external.tst
+200828-140348 updater:  Creating: ./Memoryx.cmp
+200828-140348 updater:  Creating: ./ComputerRect.cmp
+200828-140348 updater:  Creating: ./ComputerAdd.cmp
+200828-140348 updater:  Made Add.hack executable
+200828-140348 updater:  Made Max.hack executable
+200828-140348 updater:  Made Rect.hack executable
+200828-140348 updater:  Made bin/run-tests executable
+200828-140348 updater:  Removing MacOS quarantine flags from the executables
+200828-140348 updater:  Creating: Memory.hdl
+200828-140348 updater:  Creating: Computer.hdl
+200828-140348 updater:  Creating: CPU.hdl
+200828-140348 updater:  Updating: updates/README
+200828-140348 updater:  Update installed
+200828-140420 make 
+200828-140420 SVN user: a1773620, repository path: 2020/s2/cs/project05
+200828-140526 make 
+200828-140526 SVN user: a1773620, repository path: 2020/s2/cs/project05
