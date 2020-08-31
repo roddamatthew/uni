@@ -29,7 +29,7 @@ int main(){
 
 	if(numCrates < 2 || numCrates > 10000){
 		std::cout << "ERROR ERROR";
-	}else if(loadSize < 1 || loadSize >= numCrates){
+	}else if(loadSize < 1 || loadSize > numCrates){
 		std::cout << "ERROR ERROR";
 	}else{
 		std::cout << T.numTrucks(numCrates,loadSize) << " " << E.numTrucks(numCrates,loadSize) << " " << std::endl;

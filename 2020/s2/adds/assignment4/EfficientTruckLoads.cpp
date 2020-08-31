@@ -26,7 +26,6 @@ int EfficientTruckloads :: numTrucks(int numCrates, int loadSize){
 		}
 	}
 
-	if(numCrates > 2 && loadSize >= 1){	// If it hasnt been called before, do the recursive function and store the data
 		trucks = numTrucksHelper(numCrates, loadSize);
 		array[index][0] = numCrates;
 		array[index][1] = loadSize;
@@ -34,10 +33,6 @@ int EfficientTruckloads :: numTrucks(int numCrates, int loadSize){
 		index++;
 
 		return trucks;
-	}else{
-		std::cout << "ERROR";
-		return 0;
-	}
 }
 
 int EfficientTruckloads :: numTrucksHelper(int numCrates, int loadSize){
@@ -46,14 +41,11 @@ int EfficientTruckloads :: numTrucksHelper(int numCrates, int loadSize){
 		return 1;
 	}
 
-	int newCrates1;
-	int newCrates2;
+	int newCrates1 = numCrates/2;
+	int newCrates2 = numCrates/2;
 
 	// Recursion
-	if(numCrates % 2 == 0){
-		newCrates1 = numCrates/2;
-		newCrates2 = numCrates/2;
-	}else if(numCrates % 2 > 0){
+	if(numCrates % 2 > 0){
 		newCrates1 = (numCrates + 1)/2;
 		newCrates2 = (numCrates - 1)/2;
 	}
