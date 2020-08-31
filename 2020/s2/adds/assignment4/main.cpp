@@ -6,6 +6,7 @@
 
 int main(){
 	int i;
+	std::string input;
 	std::string s;
 	int numCrates;
 	int loadSize;
@@ -14,31 +15,35 @@ int main(){
 	Truckloads T;
 	EfficientTruckloads E;
 
-	std::cin >> i;
+	std::cin >> input;
 
-	if (std::cin.fail()) {
-		i = 0;
-		std::cin.clear(); //clear bad input flag
-        std::cin.ignore(); //discard input
+	if(isdigit(input)){
+		std::cout << "Yes" << std::endl;
 	}
 
-	std::cin >> s;
-	std::cin >> numCrates;
-	std::cin >> loadSize;
+	// if (std::cin.fail()) {
+	// 	i = 0;
+	// 	std::cin.clear(); //clear bad input flag
+ // 	 std::cin.ignore(); //discard input
+	// }
 
-	if(i > 0){
-		std::cout << R.reverseDigit(i) << " ";
-	}else{
-		std::cout << "ERROR ";
-	}
+	// std::cin >> s;
+	// std::cin >> numCrates;
+	// std::cin >> loadSize;
+
+	// if(i > 0){
+	// 	std::cout << R.reverseDigit(i) << " ";
+	// }else{
+	// 	std::cout << "ERROR ";
+	// }
 		 
-	std::cout << R.reverseString(s) << " ";
+	// std::cout << R.reverseString(s) << " ";
 
-	if(numCrates > 2 && loadSize >= 1){
-		std::cout << T.numTrucks(numCrates,loadSize) << " " << E.numTrucks(numCrates,loadSize) << " " << std::endl;
-	}else{
-		std::cout << "ERROR ERROR" << std::endl;
-	}
+	// if(numCrates > 2 && loadSize >= 1){
+	// 	std::cout << T.numTrucks(numCrates,loadSize) << " " << E.numTrucks(numCrates,loadSize) << " " << std::endl;
+	// }else{
+	// 	std::cout << "ERROR ERROR" << std::endl;
+	// }
 
 	return 0;
 }
