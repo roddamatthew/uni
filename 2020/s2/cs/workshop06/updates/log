@@ -1,0 +1,47 @@
+200831-163524 Modified: OGU1YTUxMDg2MWY4Nzg2NmEzZmEwNmZkZDIyOGU4MzQ2ZTI3ZDNkOSAgLi8uRFNfU3RvcmUKNjBkYjU0OGYwYmIxMWQ1YWRmNTBmZDg5ODYxNzE1YWM5M2Y4YjhmNiAgLi91cGRhdGVzL3dvcmtzaG9wMDYtMjAyMDA4MjgtMTIyOTM5LnppcAo=
+200831-163524 make install
+200831-163524 SVN user: a1773620, repository path: 2020/s2/cs/workshop06
+200831-163524 updater:  Directory: ./bin
+200831-163524 updater:  Directory: ./originals
+200831-163524 updater:  Creating: ./question11.cmp
+200831-163524 updater:  Creating: ./question01.asm
+200831-163524 updater:  Creating: ./question10.cmp
+200831-163524 updater:  Creating: ./question06.cmp
+200831-163524 updater:  Creating: ./question07.cmp
+200831-163524 updater:  Creating: ./question08.tst
+200831-163524 updater:  Creating: ./question09.tst
+200831-163524 updater:  Creating: ./question05.asm
+200831-163524 updater:  Creating: ./bin/run-tests
+200831-163524 updater:  Creating: ./question04.asm
+200831-163524 updater:  Creating: updates/Makefile
+200831-163524 updater:  Creating: ./originals/question03.txt
+200831-163524 updater:  Creating: ./originals/question06.asm
+200831-163524 updater:  Creating: ./originals/question07.asm
+200831-163524 updater:  Creating: ./originals/question11.asm
+200831-163524 updater:  Creating: ./originals/question10.asm
+200831-163524 updater:  Creating: ./originals/answer05.hack
+200831-163524 updater:  Creating: ./originals/answer04.hack
+200831-163524 updater:  Creating: ./originals/question09.asm
+200831-163524 updater:  Creating: ./originals/question08.asm
+200831-163524 updater:  Creating: ./question07.tst
+200831-163524 updater:  Creating: ./question06.tst
+200831-163524 updater:  Creating: ./question10.tst
+200831-163524 updater:  Creating: ./question11.tst
+200831-163524 updater:  Creating: ./question09.cmp
+200831-163524 updater:  Creating: ./question08.cmp
+200831-163524 updater:  Made question01.asm executable
+200831-163524 updater:  Made question04.asm executable
+200831-163524 updater:  Made question05.asm executable
+200831-163524 updater:  Made bin/run-tests executable
+200831-163524 updater:  Removing MacOS quarantine flags from the executables
+200831-163524 updater:  Creating: question03.txt
+200831-163524 updater:  Creating: question06.asm
+200831-163524 updater:  Creating: question07.asm
+200831-163524 updater:  Creating: question11.asm
+200831-163524 updater:  Creating: question10.asm
+200831-163524 updater:  Creating: answer05.hack
+200831-163524 updater:  Creating: answer04.hack
+200831-163524 updater:  Creating: question09.asm
+200831-163524 updater:  Creating: question08.asm
+200831-163524 updater:  Updating: updates/README
+200831-163524 updater:  Update installed
