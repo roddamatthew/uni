@@ -19,20 +19,18 @@ int main(){
 	std::cin >> numCrates;
 	std::cin >> loadSize;
 
-	if(i < 0){
-		std::cout << "ERROR ";
-	}else{
+	if(i > 0){
 		std::cout << R.reverseDigit(i) << " ";
+	}else{
+		std::cout << "ERROR ";
 	}
 
 	std::cout << R.reverseString(s) << " ";
 
-	if(numCrates < 2){
-		std::cout << "ERROR ERROR";
-	}else if(loadSize < 1){
-		std::cout << "ERROR ERROR";
-	}else{
+	if(numCrates > 2 && loadSize >= 1){
 		std::cout << T.numTrucks(numCrates,loadSize) << " " << E.numTrucks(numCrates,loadSize) << " " << std::endl;
+	}else{
+		std::cout << "ERROR ERROR";
 	}
 
 	return 0;
