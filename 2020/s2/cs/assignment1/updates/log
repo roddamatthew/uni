@@ -1,0 +1,192 @@
+200901-150953 Modified: OGU1YTUxMDg2MWY4Nzg2NmEzZmEwNmZkZDIyOGU4MzQ2ZTI3ZDNkOSAgLi8uRFNfU3RvcmUKNmVhNTNkYjY4NjEyNmRkNDQwNDVjYjAzY2UwMDQ0M2MyNjY2MjMxNiAgLi91cGRhdGVzLy5EU19TdG9yZQpmYTNlYWQ5N2Y3MjA4N2NhMGEyYzA3MDNlODVlZmQ5MTBkZjI3OThkICAuL3VwZGF0ZXMvYXNzaWdubWVudDEtMjAyMDA5MDEtMTQyMzUyLnppcAo=
+200901-150953 make install
+200901-150953 SVN user: a1773620, repository path: 2020/s2/cs/assignment1
+200901-150953 updater:  Directory: ./bin
+200901-150953 updater:  Directory: ./originals
+200901-150953 updater:  Directory: ./tests
+200901-150953 updater:  Directory: ./includes
+200901-150953 updater:  Directory: ./lib
+200901-150953 updater:  Directory: ./lib/cats
+200901-150953 updater:  Directory: ./lib/cats/bin
+200901-150953 updater:  Directory: ./lib/macos
+200901-150953 updater:  Directory: ./lib/macos/bin
+200901-150953 updater:  Directory: ./lib/centos8
+200901-150953 updater:  Directory: ./lib/centos8/bin
+200901-150953 updater:  Creating: ./bin/diffc
+200901-150953 updater:  Creating: ./bin/diff-colours
+200901-150953 updater:  Creating: ./bin/Compiler-check.bash
+200901-150953 updater:  Creating: ./bin/run-tests
+200901-150953 updater:  Creating: ./bin/tokens
+200901-150953 updater:  Creating: ./bin/tokens-context
+200901-150953 updater:  Creating: updates/Makefile
+200901-150953 updater:  Creating: ./originals/tokeniser-basics.cpp
+200901-150953 updater:  Creating: ./originals/tokeniser.cpp
+200901-150953 updater:  Creating: ./tests/ConvertToBin-Main.final
+200901-150953 updater:  Creating: ./tests/MathTest-Main.final.context
+200901-150953 updater:  Creating: ./tests/Add.final
+200901-150953 updater:  Creating: ./tests/Comp.milestone.context
+200901-150953 updater:  Creating: ./tests/Rect.final.context
+200901-150953 updater:  Creating: ./tests/ExplsSquare-Square.final.context
+200901-150953 updater:  Creating: ./tests/Square-SquareGame.final
+200901-150953 updater:  Creating: ./tests/Square-Square.final.tokens
+200901-150953 updater:  Creating: ./tests/MathTest-Main.final.tokens
+200901-150953 updater:  Creating: ./tests/1keywords.final
+200901-150953 updater:  Creating: ./tests/MaxL.milestone
+200901-150953 updater:  Creating: ./tests/ExplsSquare-SquareGame.final.context
+200901-150953 updater:  Creating: ./tests/0numbers.milestone
+200901-150953 updater:  Creating: ./tests/Square-SquareGame.final.context
+200901-150953 updater:  Creating: ./tests/0numbers.milestone.tokens
+200901-150953 updater:  Creating: ./tests/OutputTest-Main.final
+200901-150953 updater:  Creating: ./tests/DestComp.milestone.context
+200901-150953 updater:  Creating: ./tests/Seven-Main.final.tokens
+200901-150953 updater:  Creating: ./tests/1identifiers.milestone.tokens
+200901-150953 updater:  Creating: ./tests/ComplexArrays-Main.final.tokens
+200901-150953 updater:  Creating: ./tests/Average-Main.final.context
+200901-150953 updater:  Creating: ./tests/RectL.milestone.context
+200901-150953 updater:  Creating: ./tests/Pong-Ball.final
+200901-150953 updater:  Creating: ./tests/0numbers.final
+200901-150953 updater:  Creating: ./tests/StringTest-Main.final.tokens
+200901-150953 updater:  Creating: ./tests/Seven-Main.final.context
+200901-150953 updater:  Creating: ./tests/empty.milestone.tokens
+200901-150953 updater:  Creating: ./tests/ExplsSquare-SquareGame.final
+200901-150953 updater:  Creating: ./tests/Add.final.tokens
+200901-150953 updater:  Creating: ./tests/elephants.milestone.tokens
+200901-150953 updater:  Creating: ./tests/Address.milestone.tokens
+200901-150953 updater:  Creating: ./tests/empty.milestone
+200901-150953 updater:  Creating: ./tests/Dest.milestone.tokens
+200901-150953 updater:  Creating: ./tests/0ops.final
+200901-150953 updater:  Creating: ./tests/Pong-Main.final
+200901-150953 updater:  Creating: ./tests/Add.final.context
+200901-150953 updater:  Creating: ./tests/ExplsSquare-SquareGame.final.tokens
+200901-150953 updater:  Creating: ./tests/Label.milestone.tokens
+200901-150953 updater:  Creating: ./tests/Pong-Main.final.context
+200901-150953 updater:  Creating: ./tests/0ops.final.context
+200901-150953 updater:  Creating: ./tests/ScreenTest-Main.final.tokens
+200901-150953 updater:  Creating: ./tests/Comp.milestone
+200901-150953 updater:  Creating: ./tests/Square-Square.final.context
+200901-150953 updater:  Creating: ./tests/0numbers.final.context
+200901-150953 updater:  Creating: ./tests/ExplsSquare-Square.final
+200901-150953 updater:  Creating: ./tests/1keywords.final.context
+200901-150953 updater:  Creating: ./tests/KeyboardTest-Main.final.context
+200901-150953 updater:  Creating: ./tests/Rect.final
+200901-150953 updater:  Creating: ./tests/RectL.milestone.tokens
+200901-150953 updater:  Creating: ./tests/Numerical.milestone.context
+200901-150953 updater:  Creating: ./tests/Max.final.tokens
+200901-150953 updater:  Creating: ./tests/0identifiers.milestone.tokens
+200901-150953 updater:  Creating: ./tests/Pong-Bat.final.tokens
+200901-150953 updater:  Creating: ./tests/ArrayTest-Main.final.context
+200901-150953 updater:  Creating: ./tests/KeyboardTest-Main.final
+200901-150953 updater:  Creating: ./tests/Numerical.milestone.tokens
+200901-150953 updater:  Creating: ./tests/ScreenTest-Main.final.context
+200901-150953 updater:  Creating: ./tests/ArrayTest-Main.final
+200901-150953 updater:  Creating: ./tests/Square-SquareGame.final.tokens
+200901-150953 updater:  Creating: ./tests/RectL.milestone
+200901-150953 updater:  Creating: ./tests/StringTest-Main.final.context
+200901-150953 updater:  Creating: ./tests/elephants.milestone
+200901-150953 updater:  Creating: ./tests/ExplsSquare-Main.final
+200901-150953 updater:  Creating: ./tests/Average-Main.final
+200901-150953 updater:  Creating: ./tests/1char-symbols.milestone.tokens
+200901-150953 updater:  Creating: ./tests/Pong-Bat.final.context
+200901-150953 updater:  Creating: ./tests/MathTest-Main.final
+200901-150953 updater:  Creating: ./tests/Square-Main.final.context
+200901-150953 updater:  Creating: ./tests/ConvertToBin-Main.final.context
+200901-150953 updater:  Creating: ./tests/Max.final
+200901-150953 updater:  Creating: ./tests/Average-Main.final.tokens
+200901-150953 updater:  Creating: ./tests/Address.milestone.context
+200901-150953 updater:  Creating: ./tests/0numbers.milestone.context
+200901-150953 updater:  Creating: ./tests/0doubles.final.tokens
+200901-150953 updater:  Creating: ./tests/0doubles.final
+200901-150953 updater:  Creating: ./tests/KeyboardTest-Main.final.tokens
+200901-150953 updater:  Creating: ./tests/1identifiers.milestone.context
+200901-150953 updater:  Creating: ./tests/Dest.milestone.context
+200901-150953 updater:  Creating: ./tests/ExplsSquare-Main.final.tokens
+200901-150953 updater:  Creating: ./tests/1char-symbols.milestone.context
+200901-150953 updater:  Creating: ./tests/Numerical.milestone
+200901-150953 updater:  Creating: ./tests/MemoryTest-Main.final
+200901-150953 updater:  Creating: ./tests/ExplsSquare-Main.final.context
+200901-150953 updater:  Creating: ./tests/0keywords.final.tokens
+200901-150953 updater:  Creating: ./tests/Rect.final.tokens
+200901-150953 updater:  Creating: ./tests/1identifiers.milestone
+200901-150953 updater:  Creating: ./tests/0identifiers.milestone.context
+200901-150953 updater:  Creating: ./tests/MaxL.milestone.tokens
+200901-150953 updater:  Creating: ./tests/Square-Square.final
+200901-150953 updater:  Creating: ./tests/ScreenTest-Main.final
+200901-150953 updater:  Creating: ./tests/ExplsSquare-Square.final.tokens
+200901-150953 updater:  Creating: ./tests/ComplexArrays-Main.final
+200901-150953 updater:  Creating: ./tests/Jump.milestone.context
+200901-150953 updater:  Creating: ./tests/Square-Main.final
+200901-150953 updater:  Creating: ./tests/Pong-Ball.final.context
+200901-150953 updater:  Creating: ./tests/elephants.milestone.context
+200901-150953 updater:  Creating: ./tests/ArrayTest-Main.final.tokens
+200901-150953 updater:  Creating: ./tests/0keywords.final.context
+200901-150953 updater:  Creating: ./tests/OutputTest-Main.final.tokens
+200901-150953 updater:  Creating: ./tests/Max.final.context
+200901-150953 updater:  Creating: ./tests/Jump.milestone
+200901-150953 updater:  Creating: ./tests/MaxL.milestone.context
+200901-150953 updater:  Creating: ./tests/Address.milestone
+200901-150953 updater:  Creating: ./tests/Comp.milestone.tokens
+200901-150953 updater:  Creating: ./tests/DestComp.milestone
+200901-150953 updater:  Creating: ./tests/DestComp.milestone.tokens
+200901-150953 updater:  Creating: ./tests/Pong-Main.final.tokens
+200901-150953 updater:  Creating: ./tests/0identifiers.milestone
+200901-150953 updater:  Creating: ./tests/ComplexArrays-Main.final.context
+200901-150953 updater:  Creating: ./tests/Label.milestone.context
+200901-150953 updater:  Creating: ./tests/1keywords.final.tokens
+200901-150953 updater:  Creating: ./tests/Pong-Ball.final.tokens
+200901-150953 updater:  Creating: ./tests/1char-symbols.milestone
+200901-150953 updater:  Creating: ./tests/0ops.final.tokens
+200901-150953 updater:  Creating: ./tests/StringTest-Main.final
+200901-150953 updater:  Creating: ./tests/ConvertToBin-Main.final.tokens
+200901-150953 updater:  Creating: ./tests/0numbers.final.tokens
+200901-150953 updater:  Creating: ./tests/0keywords.final
+200901-150953 updater:  Creating: ./tests/OutputTest-Main.final.context
+200901-150953 updater:  Creating: ./tests/Jump.milestone.tokens
+200901-150953 updater:  Creating: ./tests/Pong-Bat.final
+200901-150953 updater:  Creating: ./tests/MemoryTest-Main.final.context
+200901-150953 updater:  Creating: ./tests/0doubles.final.context
+200901-150953 updater:  Creating: ./tests/Label.milestone
+200901-150953 updater:  Creating: ./tests/MemoryTest-Main.final.tokens
+200901-150953 updater:  Creating: ./tests/Square-Main.final.tokens
+200901-150953 updater:  Creating: ./tests/Seven-Main.final
+200901-150953 updater:  Creating: ./tests/Dest.milestone
+200901-150953 updater:  Creating: ./includes/tokeniser-extras.h
+200901-150953 updater:  Creating: ./includes/tokeniser.h
+200901-150953 updater:  Creating: ./includes/iobuffer.h
+200901-150953 updater:  Creating: ./lib/cats/bin/diff-colours
+200901-150953 updater:  Creating: ./lib/cats/bin/tokens
+200901-150953 updater:  Creating: ./lib/cats/bin/tokens-context
+200901-150953 updater:  Creating: ./lib/cats/lib.a
+200901-150953 updater:  Creating: ./lib/macos/bin/diff-colours
+200901-150953 updater:  Creating: ./lib/macos/bin/tokens
+200901-150953 updater:  Creating: ./lib/macos/bin/tokens-context
+200901-150953 updater:  Creating: ./lib/macos/lib.a
+200901-150953 updater:  Creating: ./lib/centos8/bin/diff-colours
+200901-150953 updater:  Creating: ./lib/centos8/bin/tokens
+200901-150953 updater:  Creating: ./lib/centos8/bin/tokens-context
+200901-150953 updater:  Creating: ./lib/centos8/lib.a
+200901-150953 updater:  Creating: ./tokens-context.cpp
+200901-150953 updater:  Creating: ./tokens
+200901-150953 updater:  Creating: ./tokens-context
+200901-150953 updater:  Creating: ./tokens.cpp
+200901-150953 updater:  Made tokens executable
+200901-150953 updater:  Made tokens-context executable
+200901-150953 updater:  Made bin/Compiler-check.bash executable
+200901-150953 updater:  Made bin/diff-colours executable
+200901-150953 updater:  Made bin/diffc executable
+200901-150953 updater:  Made bin/run-tests executable
+200901-150953 updater:  Made bin/tokens executable
+200901-150953 updater:  Made bin/tokens-context executable
+200901-150953 updater:  Made lib/cats/bin/diff-colours executable
+200901-150953 updater:  Made lib/cats/bin/tokens executable
+200901-150953 updater:  Made lib/cats/bin/tokens-context executable
+200901-150953 updater:  Made lib/centos8/bin/diff-colours executable
+200901-150953 updater:  Made lib/centos8/bin/tokens executable
+200901-150953 updater:  Made lib/centos8/bin/tokens-context executable
+200901-150953 updater:  Made lib/macos/bin/diff-colours executable
+200901-150953 updater:  Made lib/macos/bin/tokens executable
+200901-150953 updater:  Made lib/macos/bin/tokens-context executable
+200901-150953 updater:  Removing MacOS quarantine flags from the executables
+200901-150953 updater:  Creating: tokeniser-basics.cpp
+200901-150953 updater:  Creating: tokeniser.cpp
+200901-150953 updater:  Updating: updates/README
+200901-150953 updater:  Update installed
