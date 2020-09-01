@@ -11,12 +11,37 @@ namespace Assignment_Tokeniser
 {
 
     static TokenKind new_token_kind ;
+    
+    // parse one extra character so that ch is the start of the next token
+    static void parse_extra(TokenKind kind)
+    {
+        new_token_kind = kind ;
+        nextch() ;
+    }
+
+    // Parse a single character of white space
+    // * wspace ::= '\n' | ' '
+    static void parse_wspace(TokenKind kind)
+    {
+        parse_extra(kind) ;
+    }
+
+    // Parse an identifier
+    // * identifier ::= (letter|'$') (letter|digit|'-'|'$'|'.')*
+    static void parse_identifier()
+    {
+        new_token_kind = tk_identifier ;
+
+        // Read characters until we get one that cannot extend the identifier
+        do nextch() ; while ( c_have(cg_extends_identifier) ) ;
+    }
+
 
     // Parse a single character symbol
     static void parse_symbol(TokenKind kind)
     {
-        new_token_kind = kind;
-        nextch();
+        new_token_kind = kind ;
+        nextch() ;
     }
 
     // return the next Token object by reading more of the input
@@ -34,9 +59,24 @@ namespace Assignment_Tokeniser
                         // call a parse_*() function to parse the token
                         
                         //
-        case cg_digit:
+        case ' ':
+            parse_wspace(tk_space) ;
+            break ;
+
+        case '\n':
+            parse_wspace(tk_newline) ;
+            break ;
+
+        case 'a' ... 'z':
+        case 'A' ... 'Z':
+            parse_identifier() ;
+            break ;
+
+        case '0' ... '9':
             new_token_kind = tk_integer ;
             break ;
+
+
 
         case '@':
             parse_symbol(tk_at) ;
