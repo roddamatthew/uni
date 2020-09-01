@@ -36,8 +36,36 @@ namespace Assignment_Tokeniser
         do nextch() ; while ( c_have(cg_extends_identifier) ) ;
     }
 
+    // Parse a number
+    // * number ::= integer | scientific
+    static void parse_number()
+    {
+        // To be completed later
+        // new_token_kind = tk_number? ;
+    }
+
+    // Parse an integer
+    // * integer ::= zero | digits
+    //   - zero ::= '0'
+    //   - digits ::= digit19 digit*
+    //   - digit19  ::= '1'-'9'
+    //   - digit  ::= '0'-'9'
+    static void parse_integer()
+    {
+        new_token_kind = tk_integer ;
+
+        if(c_have('0')){
+            // Integer token must finish
+            nextch() ;
+        }else if( c_have(cg_digit19)){
+            // Integer token may extend
+            do nextch() ; while ( c_have(cg_digit) ) ;
+        }
+    }
+
 
     // Parse a single character symbol
+    // * symbol ::= '@'|'-='|'+='|'*='|'/='|'!='|'=='|'<<<'|'<<'|'>>>'|'>>'|'{'|'}'|'('|')'|'['|']'|'.'
     static void parse_symbol(TokenKind kind)
     {
         new_token_kind = kind ;
@@ -69,11 +97,12 @@ namespace Assignment_Tokeniser
 
         case 'a' ... 'z':
         case 'A' ... 'Z':
+        case '$':
             parse_identifier() ;
             break ;
 
         case '0' ... '9':
-            new_token_kind = tk_integer ;
+            parse_integer() ;
             break ;
 
 
