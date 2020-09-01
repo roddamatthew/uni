@@ -12,6 +12,13 @@ namespace Assignment_Tokeniser
 
     static TokenKind new_token_kind ;
 
+    // Parse a single character symbol
+    static void parse_symbol(TokenKind kind)
+    {
+        new_token_kind = kind;
+        nextch();
+    }
+
     // return the next Token object by reading more of the input
     // you must read input using the nextch() function
     // the last character read is in the static variable ch
@@ -25,8 +32,43 @@ namespace Assignment_Tokeniser
                         //
                         // add additional case labels here for characters that can start tokens
                         // call a parse_*() function to parse the token
+                        
                         //
+        case cg_digit:
+            new_token_kind = tk_integer ;
+            break ;
 
+        case '@':
+            parse_symbol(tk_at) ;
+            break ;
+
+        case '.':
+            parse_symbol(tk_stop) ;
+            break ;
+
+        case '{':
+            parse_symbol(tk_lcb) ;
+            break ;
+
+        case '}':
+            parse_symbol(tk_rcb) ;
+            break ;
+
+        case '(':
+            parse_symbol(tk_lrb) ;
+            break ;
+
+        case ')':
+            parse_symbol(tk_rrb) ;
+            break ;
+
+        case '[':
+            parse_symbol(tk_lsb) ;
+            break ;
+
+        case ']':
+            parse_symbol(tk_rsb) ;
+            break ;
                         // End of Inptut
         case EOF:
             new_token_kind = tk_eoi ;
