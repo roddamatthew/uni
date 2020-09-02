@@ -63,13 +63,42 @@ namespace Assignment_Tokeniser
         }
     }
 
-
     // Parse a single character symbol
     // * symbol ::= '@'|'-='|'+='|'*='|'/='|'!='|'=='|'<<<'|'<<'|'>>>'|'>>'|'{'|'}'|'('|')'|'['|']'|'.'
     static void parse_symbol(TokenKind kind)
     {
         new_token_kind = kind ;
         nextch() ;
+
+        switch(kind)
+        {
+        case tk_sub_assign:
+            c_mustbe('=') ;
+            break ;
+
+        case tk_add_assign:
+            c_mustbe('=') ;
+            break ;
+
+        case tk_mult_assign:
+            c_mustbe('=') ;
+            break ;
+
+        case tk_div_assign:
+            c_mustbe('=') ;
+            break ;
+
+        case tk_not_eq:
+            c_mustbe('=') ;
+            break ;
+
+        case tk_eq:
+            c_mustbe('=') ;
+            break ;
+
+        default:
+            break ;
+        }
     }
 
     // return the next Token object by reading more of the input
@@ -105,8 +134,6 @@ namespace Assignment_Tokeniser
             parse_integer() ;
             break ;
 
-
-
         case '@':
             parse_symbol(tk_at) ;
             break ;
@@ -138,6 +165,52 @@ namespace Assignment_Tokeniser
         case ']':
             parse_symbol(tk_rsb) ;
             break ;
+
+        case '=':
+            parse_symbol(tk_eq) ;
+            break ;
+
+        case '-':
+            parse_symbol(tk_sub_assign) ;
+            break ;
+
+        case '+':
+            parse_symbol(tk_add_assign) ;
+            break ;
+
+        case '*':
+            parse_symbol(tk_mult_assign) ;
+            break ;
+
+        case '/':
+            parse_symbol(tk_div_assign) ;
+            break ;
+
+        case '!':
+            parse_symbol(tk_not_eq) ;
+            break ;
+
+        case '<':
+            c_mustbe('<') ;
+
+            if(c_have_next('<')){
+                parse_symbol(tk_lshift_l) ;
+            }else{
+                parse_symbol(tk_lshift) ;
+            }
+            break ;
+
+        case '>':
+            c_mustbe('>') ;
+
+            if(c_have_next('>')){
+                parse_symbol(tk_rshift_l) ;
+            }else{
+                parse_symbol(tk_rshift) ;
+            }
+            break ;
+
+
                         // End of Inptut
         case EOF:
             new_token_kind = tk_eoi ;
