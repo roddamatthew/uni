@@ -6,7 +6,7 @@
 class FilterGeneric
 {
 private:
-	virtual bool g(int n) = 0;
+	virtual bool g( int n ) = 0 ;
 	int index ;
 public:
 	FilterGeneric() ;

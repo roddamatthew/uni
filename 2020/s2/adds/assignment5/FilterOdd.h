@@ -9,6 +9,5 @@ private:
 	bool g( int n ) ;
 public:
 	FilterOdd() ;
-
 };
 #endif //FILTER_ODD

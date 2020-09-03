@@ -15,9 +15,7 @@ using namespace std;
 
 int main()
 {
-	MapTriple MT;
-	MapSquare MS;
-	MapAbsoluteValue MA;
+	MapAbsoluteValue MAV;
 
 	FilterOdd FO;
 	FilterNonPositive FNP;
@@ -38,22 +36,24 @@ int main()
 		}
 	}
 
-	v2 = MT.map( v1 );
-	v3 = MS.map( v1 );
-	v4 = MA.map( v1 );
+	v2 = FTDP.filter( v1 ) ;
+	v3 = MAV.map( v1 ) ;
+	v3 = FO.filter( v3 ) ;
+	v4 = FNP.filter( v1 ) ;
 
-	for(int i = 0; i < 20; i++)
-	{
-		std::cout << "V = " << v1[i] << "	Triple = " << v2[i] << "	Square = " << v3[i] << "	Absolute = " << v4[i] << std::endl;
+	for (int i = 0; i < 20; i++){
+		std::cout << "v1 = " << v1[i];
+
+		if( i < v2.size() ){
+			std::cout << "	v2 = " << v2[i];
+		}if( i < v3.size() ){
+			std::cout << "	v3 = " << v3[i];
+		}if( i < v4.size() ){
+			std::cout << "	v4 = " << v4[i];
+		}
+
+		std::cout << std::endl;
 	}
 
-	v2 = FO.filter( v1 );
-	v3 = FNP.filter( v1 );
-	v4 = FTDP.filter( v1 );
-
-	for(int i = 0; i < 20; i++)
-	{
-		std::cout << "V = " << v1[i] << "	Odd = " << v2[i] << "	NonPositive = " << v3[i] << "	TwoDigitPos = " << v4[i] << std::endl;
-	}
 	return 0;
 }

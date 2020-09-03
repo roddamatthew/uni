@@ -6,8 +6,8 @@ FilterOdd :: FilterOdd() {}
 bool FilterOdd :: g( int n )
 {
 	if( n % 2 == 1 ){
-		return false ;
-	}else{
 		return true ;
+	}else{
+		return false ;
 	}
 }
