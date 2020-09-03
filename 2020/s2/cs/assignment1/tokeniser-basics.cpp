@@ -20,6 +20,11 @@ namespace Assignment_Tokeniser
     // this minimal implementation just remembers the spelling of the current token
     static string spelling ;
 
+    // Added class variables:
+    int column ;
+    int line ;
+    int tabCounter ;
+
     // create a new token using characters remembered since the last token was created
     // in the final submission tests new_token() will require the correct line and column numbers
     // this will require keeping an entire history of the input, not just the latest spelling
@@ -46,7 +51,7 @@ namespace Assignment_Tokeniser
     // NOTE: it is a good idea to build a data structure to remember where each line starts
     string token_context(Token token)
     {
-        
+
         return "" ;
     }
 
@@ -55,18 +60,33 @@ namespace Assignment_Tokeniser
     // in some cases you may wish to remember a character to use next time instead of calling read_char()
     void nextch()
     {
+        column++;                           // Increment the column counter
         if ( ch == EOF ) return ;           // stop reading once we have read EOF
 
         spelling += ch ;                    // remember the old ch, it is part of the current token being parsed
 
-        ch = read_char() ;                  // read the next character
+        if( ch == '\t'){
+            ch = ' ' ;
+        }else if( ch == '\r'){
+            ch = ' ' ;
+        }else{
+            ch = read_char() ;
+        }
+
+        if(ch == '\n')
+        {                                   // If a newline character is stored
+            line++;                         // Increment the line counter
+            column = 1;                     // And reset the column counter
+        }
     }
 
     // initialise the tokeniser
     void initialise_tokeniser()
     {
                                             // add any other initialisation code you need here
-                                            // ...
+        column = 0 ;
+        line = 1 ;
+        tabCounter = 0 ;
         ch = '\n' ;                         // initialise ch to avoid accidents
         nextch() ;                          // make first call to nextch to initialise ch using the input
         spelling = "" ;                     // discard the initial '\n', it is not part of the input

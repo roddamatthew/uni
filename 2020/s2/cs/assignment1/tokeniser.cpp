@@ -66,6 +66,7 @@ namespace Assignment_Tokeniser
             new_token_kind = tk_scientific ;
             do nextch() ; while ( c_have(cg_digit) ) ;
 
+            // Check for exponent
             c_mustbe(cg_start_of_exponent) ;
                 // Check for + or -
             c_have_next(cg_sign) ;
@@ -78,6 +79,7 @@ namespace Assignment_Tokeniser
             }
         }
 
+        // Check for exponent
         if(c_have_next(cg_start_of_exponent)){
             new_token_kind = tk_scientific ;
                 // Check for + or -
@@ -166,12 +168,6 @@ namespace Assignment_Tokeniser
             case '\n':
             parse_wspace(tk_newline) ;
             break ;
-
-            // case '\t':
-            // break ;
-
-            // case '\r':
-            // break ;
 
                         // Identifier
             case 'a' ... 'z':
@@ -290,7 +286,6 @@ namespace Assignment_Tokeniser
                     new_token_kind = tk_this ;
                 }
             }
-
 
             return token ;
         }
