@@ -115,98 +115,100 @@ namespace Assignment_Tokeniser
                         // add additional case labels here for characters that can start tokens
                         // call a parse_*() function to parse the token
                         
-                        //
+                        // White space
         case ' ':
             parse_wspace(tk_space) ;
             break ;
-
+                        // Newline character
         case '\n':
             parse_wspace(tk_newline) ;
             break ;
-
+                        // Identifier
         case 'a' ... 'z':
         case 'A' ... 'Z':
         case '$':
             parse_identifier() ;
             break ;
-
+                        // Integer (will later have to be replaced with number)
         case '0' ... '9':
             parse_integer() ;
             break ;
-
+                        // At character
         case '@':
             parse_symbol(tk_at) ;
             break ;
-
+                        // Fullstop character
         case '.':
             parse_symbol(tk_stop) ;
             break ;
-
+                        // Left curly brace
         case '{':
             parse_symbol(tk_lcb) ;
             break ;
-
+                        // Right curly brace
         case '}':
             parse_symbol(tk_rcb) ;
             break ;
-
+                        // Left round brace
         case '(':
             parse_symbol(tk_lrb) ;
             break ;
-
+                        // Right round brace
         case ')':
             parse_symbol(tk_rrb) ;
             break ;
-
+                        // Left square brace
         case '[':
             parse_symbol(tk_lsb) ;
             break ;
-
+                        // Right square brace
         case ']':
             parse_symbol(tk_rsb) ;
             break ;
-
+                        // Equals sign
         case '=':
             parse_symbol(tk_eq) ;
             break ;
-
+                        // Minus sign
         case '-':
             parse_symbol(tk_sub_assign) ;
             break ;
-
+                        // Addition sign
         case '+':
             parse_symbol(tk_add_assign) ;
             break ;
-
+                        // Multiply sign
         case '*':
             parse_symbol(tk_mult_assign) ;
             break ;
-
+                        // Division sign
         case '/':
             parse_symbol(tk_div_assign) ;
             break ;
-
+                        // Exclamation point
         case '!':
             parse_symbol(tk_not_eq) ;
             break ;
-
+                        // Less than sign
         case '<':
-            c_mustbe('<') ;
+            nextch() ;
+            c_mustbe('<') ; // Must be followed by at least one more '<'
 
-            if(c_have_next('<')){
-                parse_symbol(tk_lshift_l) ;
+            if(c_have('<')){ // May be followed by a third '<'
+                parse_symbol(tk_lshift_l) ; // Then we have '<<<'
             }else{
-                parse_symbol(tk_lshift) ;
+                parse_symbol(tk_lshift) ; // If not then we have '<<'
             }
             break ;
-
+                        // Greater than sign
         case '>':
-            c_mustbe('>') ;
+            nextch() ;
+            c_mustbe('>') ; // Must be followed by at least one more '>'
 
-            if(c_have_next('>')){
-                parse_symbol(tk_rshift_l) ;
+            if(c_have('>')){ // May be followed by a third '>'
+                parse_symbol(tk_rshift_l) ; // Then we have '>>>'
             }else{
-                parse_symbol(tk_rshift) ;
+                parse_symbol(tk_rshift) ; // If not then we have '>>'
             }
             break ;
 
