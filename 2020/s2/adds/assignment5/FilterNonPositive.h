@@ -1,11 +1,13 @@
-#ifndef **
-#define **
+#ifndef FILTER_NON_POSITIVE
+#define FILTER_NON_POSITIVE
 
-class 
+#include "FilterGeneric.h"
+
+class FilterNonPositive : public FilterGeneric
 {
 private:
-
+	bool g( int n ) ;
 public:
-
+	FilterNonPositive() ;
 };
-#endif //**
+#endif //FILTER_NON_POSITIVE

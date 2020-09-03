@@ -1,11 +1,15 @@
-#ifndef **
-#define **
+#ifndef FILTER_GENERIC
+#define FILTER_GENERIC
 
-class 
+#include <vector>
+
+class FilterGeneric
 {
 private:
-
+	virtual bool g(int n) = 0;
+	int index ;
 public:
-
+	FilterGeneric() ;
+	std::vector<int> filter( std::vector<int> v ) ;
 };
-#endif //**
+#endif //FILTER_GENERIC

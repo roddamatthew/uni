@@ -1,11 +1,14 @@
-#ifndef **
-#define **
+#ifndef FILTER_ODD
+#define FILTER_ODD
 
-class 
+#include "FilterGeneric.h"
+
+class FilterOdd : public FilterGeneric
 {
 private:
-
+	bool g( int n ) ;
 public:
+	FilterOdd() ;
 
 };
-#endif //**
+#endif //FILTER_ODD
