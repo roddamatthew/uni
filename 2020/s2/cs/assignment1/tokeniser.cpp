@@ -36,21 +36,20 @@ namespace Assignment_Tokeniser
         do nextch() ; while ( c_have(cg_extends_identifier) ) ;
     }
 
-    // Parse a number
     // * number ::= integer | scientific
-    static void parse_number()
-    {
-        // To be completed later
-        // new_token_kind = tk_number? ;
-    }
-
-    // Parse an integer
+    //
     // * integer ::= zero | digits
     //   - zero ::= '0'
     //   - digits ::= digit19 digit*
     //   - digit19  ::= '1'-'9'
     //   - digit  ::= '0'-'9'
-    static void parse_integer()
+    //
+    // * scientific ::= integer fraction? exponent
+    //   - fraction ::= '.' digit*
+    //   - exponent ::= ('e'|'E') ('+'|'-')? digits0123
+    //   - digits0123 ::= zero | digits123
+    //   - digits123 ::= digit19 digit? digit?
+    static void parse_number()
     {
         new_token_kind = tk_integer ;
 
@@ -60,6 +59,25 @@ namespace Assignment_Tokeniser
         }else if( c_have(cg_digit19)){
             // Integer token may extend
             do nextch() ; while ( c_have(cg_digit) ) ;
+        }
+
+        // Check for fraction
+        if(c_have('.')){
+            new_token_kind = tk_scientific ;
+            do nextch() ; while ( c_have(cg_digit) ) ;
+        }
+
+        if(c_have_next(cg_start_of_exponent)){
+            new_token_kind = tk_scientific ;
+                // Check for + or -
+            c_have_next(cg_sign) ;
+            // Check for digits0123
+            if(c_have('0')){
+                nextch();
+            }else if(c_have(cg_digit19)){
+                c_have_next(cg_digit);
+                c_have_next(cg_digit);
+            }
         }
     }
 
@@ -107,10 +125,10 @@ namespace Assignment_Tokeniser
             new_token_kind = tk_div_assign ;
         }else if(c_have('/')){
             new_token_kind = tk_eol_comment ;
-                // logic for moving through characters until comment ends
+            do nextch() ; while ( c_have(cg_eol_comment_char) ) ;
         }else if(c_have('*')){
             new_token_kind = tk_adhoc_comment ;
-                // logic for moving through characters until comment ends
+            do nextch() ; while ( c_have(cg_adhoc_comment_char) ) ;
         }
 
     }
@@ -128,7 +146,7 @@ namespace Assignment_Tokeniser
                         //
                         // add additional case labels here for characters that can start tokens
                         // call a parse_*() function to parse the token
-            
+
                         // White space
             case ' ':
             parse_wspace(tk_space) ;
@@ -137,6 +155,13 @@ namespace Assignment_Tokeniser
             case '\n':
             parse_wspace(tk_newline) ;
             break ;
+
+            // case '\t':
+            // break ;
+
+            // case '\r':
+            // break ;
+
                         // Identifier
             case 'a' ... 'z':
             case 'A' ... 'Z':
@@ -145,7 +170,7 @@ namespace Assignment_Tokeniser
             break ;
                         // Integer (will later have to be replaced with number)
             case '0' ... '9':
-            parse_integer() ;
+            parse_number() ;
             break ;
                         // At character
             case '@':
@@ -241,7 +266,7 @@ namespace Assignment_Tokeniser
                         // before returning a token check if the kind or spelling needs updating
                         // ...
             if(new_token_kind == tk_identifier){    //Checking identifier tokens for keywords
-                
+
                 if(token_spelling(token) == "done"){
                     new_token_kind = tk_done ;
                 }else if(token_spelling(token) == "while"){
