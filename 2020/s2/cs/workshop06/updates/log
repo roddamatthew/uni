@@ -63,3 +63,70 @@
 200903-103448 Modified: YWZiMjBjNDFmMzBhNWEzNmU3YTNlNzYxM2FiZWYzNzViNTE1NDFjZCAgLi9xdWVzdGlvbjA3LmFzbQo=
 200903-103448 make 
 200903-103448 SVN user: a1773620, repository path: 2020/s2/cs/workshop06
+200903-112337 Modified: ODhmYWFiZDYzMjIyYWY1NTNjN2U2ZmU2MjM5ZmNmOGIxOGYzY2ZjZSAgLi9xdWVzdGlvbjA4LmFz
+bQo2NWM4NzA4ODQzYTM2OGVkYTY0ZmY4MjJiOGFjMzdmOGIzYTE1OWRiICAuL3F1ZXN0aW9uMTAu
+YXNtCjcxZTg2ZjRmOTAyMjgzZDVhM2Y2YWQzZjgwZDQxZTgxZDczMmY0YzAgIC4vYW5zd2VyMDQu
+aGFjawozNzhmNDJlMmY5OWQyY2ZkN2EyOWYwMzgxNDNkNzcyNzk2MWQwZDQxICAuL3F1ZXN0aW9u
+MDMudHh0CjY1Yzg3MDg4NDNhMzY4ZWRhNjRmZjgyMmI4YWMzN2Y4YjNhMTU5ZGIgIC4vcXVlc3Rp
+b24xMS5hc20K
+200903-112337 make 
+200903-112337 SVN user: a1773620, repository path: 2020/s2/cs/workshop06
+200903-112337 updater:  Directory: ./bin
+200903-112337 updater:  Directory: ./originals
+200903-112337 updater:  Creating: ./question11.cmp
+200903-112337 updater:  Creating: ./question01.asm
+200903-112337 updater:  Creating: ./question10.cmp
+200903-112337 updater:  Creating: ./question06.cmp
+200903-112337 updater:  Creating: ./question07.cmp
+200903-112337 updater:  Creating: ./question08.tst
+200903-112337 updater:  Creating: ./question09.tst
+200903-112337 updater:  Creating: ./question05.asm
+200903-112337 updater:  Creating: ./bin/run-tests
+200903-112337 updater:  Creating: ./question04.asm
+200903-112337 updater:  Creating: updates/Makefile
+200903-112337 updater:  Creating: ./originals/question03.txt
+200903-112337 updater:  Creating: ./originals/question06.asm
+200903-112337 updater:  Creating: ./originals/question07.asm
+200903-112337 updater:  Creating: ./originals/question11.asm
+200903-112337 updater:  Creating: ./originals/question10.asm
+200903-112337 updater:  Creating: ./originals/answer05.hack
+200903-112337 updater:  Creating: ./originals/answer04.hack
+200903-112337 updater:  Creating: ./originals/question09.asm
+200903-112337 updater:  Creating: ./originals/question08.asm
+200903-112337 updater:  Creating: ./question07.tst
+200903-112337 updater:  Creating: ./question06.tst
+200903-112337 updater:  Creating: ./question10.tst
+200903-112337 updater:  Creating: ./question11.tst
+200903-112337 updater:  Creating: ./question09.cmp
+200903-112337 updater:  Creating: ./question08.cmp
+200903-112337 updater:  Made question01.asm executable
+200903-112337 updater:  Made question04.asm executable
+200903-112337 updater:  Made question05.asm executable
+200903-112337 updater:  Made bin/run-tests executable
+200903-112337 updater:  Updating: updates/README
+200903-112337 updater:  Update installed
+200903-112905 Modified: ZTIyNTE4Y2RiOTQ5OGE3MWFmNGFhNWI5ZDk5OTVlM2VmOWQxMDQ1MCAgLi9xdWVzdGlvbjA4LmFz
+bQo4MjllNDMwMzgzYTIxMjBjNWQwNWEzMTExNGYzNDJiYWU2OGZlNjM3ICAuL3F1ZXN0aW9uMDgu
+b3V0Cg==
+200903-112905 make 
+200903-112905 SVN user: a1773620, repository path: 2020/s2/cs/workshop06
+200903-113649 Modified: NmQ2NjUyOWNlODlkNjAzZDA3YzEyZDBiMjBhYjc5YzQxYzQwY2NjNyAgLi9xdWVzdGlvbjA5LmFz
+bQo=
+200903-113649 make 
+200903-113649 SVN user: a1773620, repository path: 2020/s2/cs/workshop06
+200903-113930 Modified: YTBkZDRkZDAwYWYyMjhmNDVkOTA0ZTIzZDRkZjVhNjYxZDcyZDYxMyAgLi9xdWVzdGlvbjEwLmFz
+bQo=
+200903-113930 make 
+200903-113930 SVN user: a1773620, repository path: 2020/s2/cs/workshop06
+200903-114229 Modified: YjdjZjQ0Mjk5NmJhOGM0NGQ0NTc1MzFlMmIyYWNmY2MyMmMzMGRmOSAgLi9xdWVzdGlvbjEwLmFz
+bQo=
+200903-114229 make 
+200903-114229 SVN user: a1773620, repository path: 2020/s2/cs/workshop06
+200903-114439 Modified: MTNlMWEzM2Y0ZmJiM2U3YWJiYTVhNGY3ZDVkNjJkMDI0NDI0NWEzOSAgLi9xdWVzdGlvbjEwLmFz
+bQo=
+200903-114439 make 
+200903-114439 SVN user: a1773620, repository path: 2020/s2/cs/workshop06
+200903-114814 Modified: Yjc5NjFlM2U5OWNmM2NiZjU2ZDBhNWE4NTY5MzhiYzI0NDdjYjEzNSAgLi9xdWVzdGlvbjEwLmFz
+bQo=
+200903-114814 make 
+200903-114814 SVN user: a1773620, repository path: 2020/s2/cs/workshop06
