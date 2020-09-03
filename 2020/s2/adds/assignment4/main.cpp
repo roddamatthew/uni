@@ -15,27 +15,25 @@ int main(){
 	Truckloads T;
 	EfficientTruckloads E;
 
-	std::cin >> input;
+	std::cin >> i;
 
-	if(isdigit(input)){
-		std::cout << "Yes" << std::endl;
+	if (std::cin.fail()) {
+		i = 0;
+		std::cin.clear(); //clear bad input flag
+ 	 	std::cin.ignore(); //discard input
 	}
 
-	// if (std::cin.fail()) {
-	// 	i = 0;
-	// 	std::cin.clear(); //clear bad input flag
- // 	 std::cin.ignore(); //discard input
-	// }
+	std::cout << i << std::endl;
 
 	// std::cin >> s;
 	// std::cin >> numCrates;
 	// std::cin >> loadSize;
 
-	// if(i > 0){
-	// 	std::cout << R.reverseDigit(i) << " ";
-	// }else{
-	// 	std::cout << "ERROR ";
-	// }
+	if(i > 0){
+		std::cout << R.reverseDigit(i) << " ";
+	}else{
+		std::cout << "ERROR ";
+	}
 		 
 	// std::cout << R.reverseString(s) << " ";
 
