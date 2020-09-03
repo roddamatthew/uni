@@ -63,7 +63,7 @@ namespace Assignment_Tokeniser
         }
     }
 
-    // Parse a single character symbol
+    // Parse a single or multicharacter character symbol
     // * symbol ::= '@'|'-='|'+='|'*='|'/='|'!='|'=='|'<<<'|'<<'|'>>>'|'>>'|'{'|'}'|'('|')'|'['|']'|'.'
     static void parse_symbol(TokenKind kind)
     {
@@ -72,33 +72,47 @@ namespace Assignment_Tokeniser
 
         switch(kind)
         {
-        case tk_sub_assign:
+            case tk_sub_assign:
             c_mustbe('=') ;
             break ;
 
-        case tk_add_assign:
+            case tk_add_assign:
             c_mustbe('=') ;
             break ;
 
-        case tk_mult_assign:
+            case tk_div_assign:
             c_mustbe('=') ;
             break ;
 
-        case tk_div_assign:
+            case tk_not_eq:
             c_mustbe('=') ;
             break ;
 
-        case tk_not_eq:
+            case tk_eq:
             c_mustbe('=') ;
             break ;
 
-        case tk_eq:
-            c_mustbe('=') ;
-            break ;
-
-        default:
+            default:
             break ;
         }
+    }
+
+    // Parse a token that starts with a forward slash
+    // /= | // | /*
+    static void parse_slash()
+    {
+        nextch() ;
+
+        if(c_have('=')){
+            new_token_kind = tk_div_assign ;
+        }else if(c_have('/')){
+            new_token_kind = tk_eol_comment ;
+                // logic for moving through characters until comment ends
+        }else if(c_have('*')){
+            new_token_kind = tk_adhoc_comment ;
+                // logic for moving through characters until comment ends
+        }
+
     }
 
     // return the next Token object by reading more of the input
@@ -114,110 +128,111 @@ namespace Assignment_Tokeniser
                         //
                         // add additional case labels here for characters that can start tokens
                         // call a parse_*() function to parse the token
-                        
+            
                         // White space
-        case ' ':
+            case ' ':
             parse_wspace(tk_space) ;
             break ;
                         // Newline character
-        case '\n':
+            case '\n':
             parse_wspace(tk_newline) ;
             break ;
                         // Identifier
-        case 'a' ... 'z':
-        case 'A' ... 'Z':
-        case '$':
+            case 'a' ... 'z':
+            case 'A' ... 'Z':
+            case '$':
             parse_identifier() ;
             break ;
                         // Integer (will later have to be replaced with number)
-        case '0' ... '9':
+            case '0' ... '9':
             parse_integer() ;
             break ;
                         // At character
-        case '@':
+            case '@':
             parse_symbol(tk_at) ;
             break ;
                         // Fullstop character
-        case '.':
+            case '.':
             parse_symbol(tk_stop) ;
             break ;
                         // Left curly brace
-        case '{':
+            case '{':
             parse_symbol(tk_lcb) ;
             break ;
                         // Right curly brace
-        case '}':
+            case '}':
             parse_symbol(tk_rcb) ;
             break ;
                         // Left round brace
-        case '(':
+            case '(':
             parse_symbol(tk_lrb) ;
             break ;
                         // Right round brace
-        case ')':
+            case ')':
             parse_symbol(tk_rrb) ;
             break ;
                         // Left square brace
-        case '[':
+            case '[':
             parse_symbol(tk_lsb) ;
             break ;
                         // Right square brace
-        case ']':
+            case ']':
             parse_symbol(tk_rsb) ;
             break ;
                         // Equals sign
-        case '=':
+            case '=':
             parse_symbol(tk_eq) ;
             break ;
                         // Minus sign
-        case '-':
+            case '-':
             parse_symbol(tk_sub_assign) ;
             break ;
                         // Addition sign
-        case '+':
+            case '+':
             parse_symbol(tk_add_assign) ;
             break ;
                         // Multiply sign
-        case '*':
+            case '*':
             parse_symbol(tk_mult_assign) ;
             break ;
-                        // Division sign
-        case '/':
-            parse_symbol(tk_div_assign) ;
-            break ;
                         // Exclamation point
-        case '!':
+            case '!':
             parse_symbol(tk_not_eq) ;
             break ;
                         // Less than sign
-        case '<':
+            case '<':
             nextch() ;
             c_mustbe('<') ; // Must be followed by at least one more '<'
 
             if(c_have('<')){ // May be followed by a third '<'
                 parse_symbol(tk_lshift_l) ; // Then we have '<<<'
-            }else{
+        }else{
                 parse_symbol(tk_lshift) ; // If not then we have '<<'
             }
             break ;
                         // Greater than sign
-        case '>':
+            case '>':
             nextch() ;
             c_mustbe('>') ; // Must be followed by at least one more '>'
 
             if(c_have('>')){ // May be followed by a third '>'
                 parse_symbol(tk_rshift_l) ; // Then we have '>>>'
-            }else{
+        }else{
                 parse_symbol(tk_rshift) ; // If not then we have '>>'
             }
             break ;
 
+                        // Forward slash
+            case '/':
+            parse_slash() ;
+            break ;
+
 
                         // End of Inptut
-        case EOF:
+            case EOF:
             new_token_kind = tk_eoi ;
             break ;
-        default:
+            default:
             c_did_not_find(cg_start_of_token) ;
         }
 
@@ -225,7 +240,22 @@ namespace Assignment_Tokeniser
 
                         // before returning a token check if the kind or spelling needs updating
                         // ...
+            if(new_token_kind == tk_identifier){    //Checking identifier tokens for keywords
+                
+                if(token_spelling(token) == "done"){
+                    new_token_kind = tk_done ;
+                }else if(token_spelling(token) == "while"){
+                    new_token_kind = tk_while ;
+                }else if(token_spelling(token) == "procedure"){
+                    new_token_kind = tk_procedure ;
+                }else if(token_spelling(token) == "if-goto"){
+                    new_token_kind = tk_if_goto ;
+                }else if(token_spelling(token) == "this"){
+                    new_token_kind = tk_this ;
+                }
+            }
 
-        return token ;
+
+            return token ;
+        }
     }
-}

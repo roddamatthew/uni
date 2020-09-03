@@ -46,6 +46,7 @@ namespace Assignment_Tokeniser
     // NOTE: it is a good idea to build a data structure to remember where each line starts
     string token_context(Token token)
     {
+        
         return "" ;
     }
 
