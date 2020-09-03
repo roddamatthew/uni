@@ -1,5 +1,5 @@
-run: MapGeneric.o MapTriple.o MapSquare.o MapAbsoluteValue.o FilterGeneric.o FilterOdd.o FilterNonPositive.o FilterForTwoDigitPositive.o main.o
-	g++ MapGeneric.o MapTriple.o MapSquare.o MapAbsoluteValue.o FilterGeneric.o FilterOdd.o FilterNonPositive.o FilterForTwoDigitPositive.o main.o -Wall -o run
+run: MapGeneric.o MapTriple.o MapSquare.o MapAbsoluteValue.o FilterGeneric.o FilterOdd.o FilterNonPositive.o FilterForTwoDigitPositive.o ReduceGeneric.o ReduceMinimum.o ReduceGCD.o main.o
+	g++ MapGeneric.o MapTriple.o MapSquare.o MapAbsoluteValue.o FilterGeneric.o FilterOdd.o FilterNonPositive.o FilterForTwoDigitPositive.o ReduceGeneric.o ReduceMinimum.o ReduceGCD.o main.o -Wall -o run
 
 MapGeneric.o: MapGeneric.cpp
 	g++ -c MapGeneric.cpp
@@ -24,6 +24,15 @@ FilterNonPositive.o: FilterNonPositive.cpp
 
 FilterForTwoDigitPositive.o: FilterForTwoDigitPositive.cpp
 	g++ -c FilterForTwoDigitPositive.cpp
+
+ReduceGeneric.o: ReduceGeneric.cpp
+	g++ -c ReduceGeneric.cpp
+
+ReduceMinimum.o: ReduceMinimum.cpp
+	g++ -c ReduceMinimum.cpp
+
+ReduceGCD.o: ReduceGCD.cpp
+	g++ -c ReduceGCD.cpp
 
 main.o: main.cpp
 	g++ -c main.cpp

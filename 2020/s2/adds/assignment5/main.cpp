@@ -8,6 +8,10 @@
 #include "FilterNonPositive.h"
 #include "FilterForTwoDigitPositive.h"
 
+#include "ReduceGeneric.h"
+#include "ReduceMinimum.h"
+#include "ReduceGCD.h"
+
 #include <vector>
 #include <iostream>
 
@@ -20,6 +24,8 @@ int main()
 	FilterOdd FO;
 	FilterNonPositive FNP;
 	FilterForTwoDigitPositive FTDP;
+
+	ReduceMinimum RM;
 
 	vector<int> v1;
 	vector<int> v2;
@@ -54,6 +60,8 @@ int main()
 
 		std::cout << std::endl;
 	}
+
+	std::cout << RM.reduce( v1 ) ;
 
 	return 0;
 }
