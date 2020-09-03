@@ -65,13 +65,24 @@ namespace Assignment_Tokeniser
         if(c_have('.')){
             new_token_kind = tk_scientific ;
             do nextch() ; while ( c_have(cg_digit) ) ;
+
+            c_mustbe(cg_start_of_exponent) ;
+                // Check for + or -
+            c_have_next(cg_sign) ;
+                // Check for digits0123
+            if(c_have('0')){
+                nextch();
+            }else if(c_have(cg_digit19)){
+                c_have_next(cg_digit);
+                c_have_next(cg_digit);
+            }
         }
 
         if(c_have_next(cg_start_of_exponent)){
             new_token_kind = tk_scientific ;
                 // Check for + or -
             c_have_next(cg_sign) ;
-            // Check for digits0123
+                // Check for digits0123
             if(c_have('0')){
                 nextch();
             }else if(c_have(cg_digit19)){
