@@ -20,12 +20,14 @@ using namespace std;
 int main()
 {
 	MapAbsoluteValue MAV;
+	MapSquare MS;
 
 	FilterOdd FO;
 	FilterNonPositive FNP;
 	FilterForTwoDigitPositive FTDP;
 
 	ReduceMinimum RM;
+	ReduceGCD RGCD;
 
 	vector<int> v1;
 	vector<int> v2;
@@ -36,32 +38,24 @@ int main()
 	for(int i = 0; i < 20; i++)
 	{
 		if( i % 2 == 0){
-			v1.push_back( i ) ;
+			v1.push_back( 2*i ) ;
 		}else{
-			v1.push_back( -i ) ;
+			v1.push_back( -2*i ) ;
 		}
 	}
 
-	v2 = FTDP.filter( v1 ) ;
-	v3 = MAV.map( v1 ) ;
-	v3 = FO.filter( v3 ) ;
-	v4 = FNP.filter( v1 ) ;
+	v2 = MS.map( v1 ) ;
+	v2 = FTDP.filter( v2 ) ;
 
-	for (int i = 0; i < 20; i++){
-		std::cout << "v1 = " << v1[i];
-
-		if( i < v2.size() ){
-			std::cout << "	v2 = " << v2[i];
-		}if( i < v3.size() ){
-			std::cout << "	v3 = " << v3[i];
-		}if( i < v4.size() ){
-			std::cout << "	v4 = " << v4[i];
-		}
-
-		std::cout << std::endl;
+	for(int i = 0; i < v2.size(); i++)
+	{
+		std::cout << v2[i] << " ";
 	}
+	std::cout << std::endl;
 
-	std::cout << RM.reduce( v1 ) ;
+	std::cout << RGCD.reduce( v2 ) << std::endl ;
+
+	std::cout << RM.reduce( v1 ) << std::endl ;
 
 	return 0;
 }

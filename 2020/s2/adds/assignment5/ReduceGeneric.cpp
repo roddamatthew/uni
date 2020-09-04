@@ -23,8 +23,6 @@ int ReduceGeneric :: reduce( vector<int> v )
 	// Call binaryOperator on first and second elements and then add what it returns to the end of the vector
 	v.push_back( binaryOperator( firstElement, secondElement ) ) ;
 
-	std::cout << v.size() << std::endl;
-
 	// Recursive call with the vector of length one less
 	return reduce( v ) ;
 }
