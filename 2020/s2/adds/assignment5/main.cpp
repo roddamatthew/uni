@@ -13,6 +13,7 @@
 #include "ReduceGCD.h"
 
 #include <vector>
+#include <string>
 #include <iostream>
 
 using namespace std;
@@ -21,6 +22,7 @@ int main()
 {
 	MapAbsoluteValue MAV;
 	MapSquare MS;
+	MapTriple MT;
 
 	FilterOdd FO;
 	FilterNonPositive FNP;
@@ -29,33 +31,62 @@ int main()
 	ReduceMinimum RM;
 	ReduceGCD RGCD;
 
-	vector<int> v1;
-	vector<int> v2;
-	vector<int> v3;
-	vector<int> v4;
+	vector<int> v1 ;
+	v1.clear() ;
 
+	string input ;
+	string number ;
+
+	int j = 0;
+
+	//Take input and remove spaces and commas
+	std::getline (std::cin, input) ;
 
 	for(int i = 0; i < 20; i++)
 	{
-		if( i % 2 == 0){
-			v1.push_back( 2*i ) ;
-		}else{
-			v1.push_back( -2*i ) ;
+		number.clear() ;
+		while(input[j] != ',')	//Read until a comma is found
+		{
+			number = number + input[j] ;
+			j++;
+
+			if(j == input.length() ){
+				break;
+			}
 		}
+		
+		if(number.length() > 0){
+			v1.push_back( stoi( number ) ) ;
+		}
+
+		j++;	//skipping the comma
 	}
 
-	v2 = MS.map( v1 ) ;
-	v2 = FTDP.filter( v2 ) ;
+	// Absolute Value
+	v1 = MAV.map( v1 ) ;
 
-	for(int i = 0; i < v2.size(); i++)
-	{
-		std::cout << v2[i] << " ";
+	// Triple
+	v1 = MT.map( v1 ) ;
+
+	std::cout << "L': " << std::endl;
+	for(int i = 0; i < v1.size(); i++){
+		std::cout << v1[i] << " ";
 	}
-	std::cout << std::endl;
 
-	std::cout << RGCD.reduce( v2 ) << std::endl ;
+	// Two digit positive
+	v1 = FTDP.filter( v1 );
 
-	std::cout << RM.reduce( v1 ) << std::endl ;
+	// Odds
+	v1 = FO.filter( v1 );
+
+	std::cout << std::endl << "L'': " << std::endl;
+	for(int i = 0; i < v1.size(); i++){
+		std::cout << v1[i] << " ";
+	}
+
+	std::cout << RM.reduce( v1 ) << " " << RGCD.reduce( v1 ) << std::endl;
+
+
 
 	return 0;
 }

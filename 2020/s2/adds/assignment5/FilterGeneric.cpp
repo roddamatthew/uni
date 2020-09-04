@@ -1,6 +1,5 @@
 #include "FilterGeneric.h"
 #include <vector>
-#include <iostream>
 
 using namespace std;
 
@@ -18,7 +17,6 @@ vector<int> FilterGeneric :: filter( vector<int> v )
 
 	if( g( v[index]) == false )
 	{
-		std::cout << "Erasing: " << v[index] << std::endl;
 		v.erase( v.begin() + index ) ;
 	}else{
 		index++;
