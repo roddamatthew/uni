@@ -68,10 +68,10 @@ int main()
 	// Triple
 	v1 = MT.map( v1 ) ;
 
-	std::cout << "L': " << std::endl;
-	for(int i = 0; i < v1.size(); i++){
-		std::cout << v1[i] << " ";
-	}
+	// std::cout << "L': " << std::endl;
+	// for(int i = 0; i < v1.size(); i++){
+	// 	std::cout << v1[i] << " ";
+	// }
 
 	// Two digit positive
 	v1 = FTDP.filter( v1 );
@@ -79,10 +79,10 @@ int main()
 	// Odds
 	v1 = FO.filter( v1 );
 
-	std::cout << std::endl << "L'': " << std::endl;
-	for(int i = 0; i < v1.size(); i++){
-		std::cout << v1[i] << " ";
-	}
+	// std::cout << std::endl << "L'': " << std::endl;
+	// for(int i = 0; i < v1.size(); i++){
+	// 	std::cout << v1[i] << " ";
+	// }
 
 	std::cout << RM.reduce( v1 ) << " " << RGCD.reduce( v1 ) << std::endl;
 

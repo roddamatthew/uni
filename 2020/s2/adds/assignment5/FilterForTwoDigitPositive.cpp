@@ -5,7 +5,7 @@ FilterForTwoDigitPositive :: FilterForTwoDigitPositive() {}
 
 bool FilterForTwoDigitPositive :: g( int n )
 {
-	if( n >= 10 ){
+	if( n >= 10 && n < 100){
 		return true ;
 	}else{
 		return false ;
