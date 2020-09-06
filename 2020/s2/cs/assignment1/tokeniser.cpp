@@ -268,12 +268,33 @@ namespace Assignment_Tokeniser
             c_did_not_find(cg_start_of_token) ;
         }
 
+
+
         Token token = new_token(new_token_kind) ;
 
-                        // before returning a token check if the kind or spelling needs updating
-                        // ...
-            if(new_token_kind == tk_identifier){    //Checking identifier tokens for keywords
-                new_token_kind = keyword_or_identifier( token_spelling(token) ) ;
+            // before returning a token check if the kind or spelling needs updating:
+
+            //Checking identifier tokens for keywords
+            if(new_token_kind == tk_identifier)
+            {
+                set_token_kind( token, keyword_or_identifier( token_spelling( token ) ) ) ;
+            }
+
+            // Check scientifics and put in standard scientific number form if required
+            // ie. move the decimal place so that the leading value is < 10 and alter the power accordingly
+
+            if(new_token_kind == tk_scientific)
+            {
+                // Check spelling for whether a dot point exists
+                // If it does, move it to the 2nd element of the spelling
+                // Remember where it was originally
+                // Increment the last value of the spelling by the change in position
+                string spelling = token_spelling( token ) ;
+
+
+                // Replace upper case E with lower case e
+
+                // If there is no sign after the last digit, add a positive sign
             }
 
             return token ;
