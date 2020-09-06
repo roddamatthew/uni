@@ -102,8 +102,12 @@ namespace Assignment_Tokeniser
         spelling += ch ;                    // remember the old ch, it is part of the current token being parsed
         currentInputLine += ch ;            // store the old ch in a string that remembers the whole line
 
-
-        ch = read_char() ;
+        if( tabCounter > 0){
+            ch = ' ' ;
+            tabCounter-- ;
+        }else{
+            ch = read_char() ;
+        }
 
         if( ch == '\n' )
         {                                   // If a newline character is stored
@@ -111,6 +115,12 @@ namespace Assignment_Tokeniser
             column = 0 ;                    // And reset the column counter
             lastInputLine = currentInputLine ;
             currentInputLine = "" ;
+        }
+
+        if( ch == '\t')
+        {
+            ch = ' ' ;
+            tabCounter = (column % 4) + 2;
         }
 
     }
