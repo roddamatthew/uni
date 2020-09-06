@@ -273,18 +273,7 @@ namespace Assignment_Tokeniser
                         // before returning a token check if the kind or spelling needs updating
                         // ...
             if(new_token_kind == tk_identifier){    //Checking identifier tokens for keywords
-
-                if(token_spelling(token) == "done"){
-                    new_token_kind = tk_done ;
-                }else if(token_spelling(token) == "while"){
-                    new_token_kind = tk_while ;
-                }else if(token_spelling(token) == "procedure"){
-                    new_token_kind = tk_procedure ;
-                }else if(token_spelling(token) == "if-goto"){
-                    new_token_kind = tk_if_goto ;
-                }else if(token_spelling(token) == "this"){
-                    new_token_kind = tk_this ;
-                }
+                new_token_kind = keyword_or_identifier( token_spelling(token) ) ;
             }
 
             return token ;

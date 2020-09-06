@@ -25,6 +25,8 @@ namespace Assignment_Tokeniser
     int column ;
     int line ;
     int tabCounter ;
+    string lastInputLine ;
+    string currentInputLine ;
 
     // create a new token using characters remembered since the last token was created
     // in the final submission tests new_token() will require the correct line and column numbers
@@ -33,7 +35,7 @@ namespace Assignment_Tokeniser
     Token new_token(TokenKind kind)
     {
         // create a new token object and reset spelling
-        Token token = new_token( kind, spelling, 0, 0 ) ;
+        Token token = new_token( kind, spelling, line, column - spelling.length() ) ;
 
         // reset the spelling
         spelling = "" ;
@@ -53,27 +55,39 @@ namespace Assignment_Tokeniser
     string token_context(Token token)
     {
 
-        string lastLine ;
+        string lastLine = "";
         string currentLine = "   ";
         string position = "      ";
+        string result;
 
-        if( line > 1 ){
+        if( token_line( token ) > 1 ){
             lastLine = "   " ;
-            lastLine +=  line - 1 ;
+            // lastLine +=  to_string( token_line( token ) - 1 ) ;
             lastLine += ":  " ;
-            // lastLine += the token
+            // lastLine += lastInputLine ;
+            lastLine += "$" ;
+            lastLine += "\n" ;
         }
 
-        currentLine+= to_string(line) ;
+        // currentLine+= to_string( token_line( token ) ) ;
         currentLine += ":  " ;
+        currentLine += token_spelling( token ) ;
+        currentLine += "\n" ;
 
-        for(int i = 0; i < column ; i++)
+        // Have to reduce this so that it only adds spaces up to the start of the tokens spelling
+        int i = spelling.length() ;
+        
+        while( i < token_column( token ) )
         {
             position += " " ;
+            i++ ;
         }
+
         position += "^" ;
 
-        return lastLine + "\n" + currentLine + "\n" + position ;
+
+
+        return lastLine + currentLine + position ;
     }
 
     // read next character if not at the end of input and update the line and column numbers
@@ -81,24 +95,24 @@ namespace Assignment_Tokeniser
     // in some cases you may wish to remember a character to use next time instead of calling read_char()
     void nextch()
     {
-        column++;                           // Increment the column counter
         if ( ch == EOF ) return ;           // stop reading once we have read EOF
 
-        spelling += ch ;                    // remember the old ch, it is part of the current token being parsed
+        column++;                           // Increment the column counter
 
-        if( ch == '\t' ){
-            ch = ' ' ;
-        }else if( ch == '\r' ){
-            ch = ' ' ;
-        }else{
-            ch = read_char() ;
-        }
+        spelling += ch ;                    // remember the old ch, it is part of the current token being parsed
+        currentInputLine += ch ;            // store the old ch in a string that remembers the whole line
+
+
+        ch = read_char() ;
 
         if( ch == '\n' )
         {                                   // If a newline character is stored
             line++;                         // Increment the line counter
-            column = 1;                     // And reset the column counter
+            column = 0 ;                    // And reset the column counter
+            lastInputLine = currentInputLine ;
+            currentInputLine = "" ;
         }
+
     }
 
     // initialise the tokeniser
@@ -108,6 +122,8 @@ namespace Assignment_Tokeniser
         column = 0 ;
         line = 1 ;
         tabCounter = 0 ;
+        lastInputLine = "" ;
+        currentInputLine = "" ;
 
         ch = '\n' ;                         // initialise ch to avoid accidents
         nextch() ;                          // make first call to nextch to initialise ch using the input
