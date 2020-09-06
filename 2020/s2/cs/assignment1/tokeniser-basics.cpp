@@ -1,6 +1,7 @@
 // a skeleton implementation of a tokeniser
 
 #include "tokeniser-extras.h"
+#include <string>
 
 // to shorten the code
 using namespace std ;
@@ -32,7 +33,7 @@ namespace Assignment_Tokeniser
     Token new_token(TokenKind kind)
     {
         // create a new token object and reset spelling
-        Token token = new_token(kind,spelling,0,0) ;
+        Token token = new_token( kind, spelling, 0, 0 ) ;
 
         // reset the spelling
         spelling = "" ;
@@ -52,7 +53,27 @@ namespace Assignment_Tokeniser
     string token_context(Token token)
     {
 
-        return "" ;
+        string lastLine ;
+        string currentLine = "   ";
+        string position = "      ";
+
+        if( line > 1 ){
+            lastLine = "   " ;
+            lastLine +=  line - 1 ;
+            lastLine += ":  " ;
+            // lastLine += the token
+        }
+
+        currentLine+= to_string(line) ;
+        currentLine += ":  " ;
+
+        for(int i = 0; i < column ; i++)
+        {
+            position += " " ;
+        }
+        position += "^" ;
+
+        return lastLine + "\n" + currentLine + "\n" + position ;
     }
 
     // read next character if not at the end of input and update the line and column numbers
@@ -65,15 +86,15 @@ namespace Assignment_Tokeniser
 
         spelling += ch ;                    // remember the old ch, it is part of the current token being parsed
 
-        if( ch == '\t'){
+        if( ch == '\t' ){
             ch = ' ' ;
-        }else if( ch == '\r'){
+        }else if( ch == '\r' ){
             ch = ' ' ;
         }else{
             ch = read_char() ;
         }
 
-        if(ch == '\n')
+        if( ch == '\n' )
         {                                   // If a newline character is stored
             line++;                         // Increment the line counter
             column = 1;                     // And reset the column counter
@@ -87,6 +108,7 @@ namespace Assignment_Tokeniser
         column = 0 ;
         line = 1 ;
         tabCounter = 0 ;
+
         ch = '\n' ;                         // initialise ch to avoid accidents
         nextch() ;                          // make first call to nextch to initialise ch using the input
         spelling = "" ;                     // discard the initial '\n', it is not part of the input
