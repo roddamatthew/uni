@@ -2,6 +2,7 @@
 
 #include "tokeniser-extras.h"
 #include <string>
+#include <vector>
 
 // to shorten the code
 using namespace std ;
@@ -25,8 +26,9 @@ namespace Assignment_Tokeniser
     int column ;
     int line ;
     int tabCounter ;
-    string lastInputLine ;
-    string currentInputLine ;
+
+    string currentLine ;
+    vector<string> previousLines ;
 
     // create a new token using characters remembered since the last token was created
     // in the final submission tests new_token() will require the correct line and column numbers
@@ -55,39 +57,34 @@ namespace Assignment_Tokeniser
     string token_context(Token token)
     {
 
-        string lastLine = "";
-        string currentLine = "   ";
+        string last ;
+        string current ;
         string position = "      ";
-        string result;
 
-        if( token_line( token ) > 1 ){
-            lastLine = "   " ;
-            // lastLine +=  to_string( token_line( token ) - 1 ) ;
-            lastLine += ":  " ;
-            // lastLine += lastInputLine ;
-            lastLine += "$" ;
-            lastLine += "\n" ;
-        }
+        // if( token_line( token ) > 2 ){
+        //     last = "   " + std::to_string( token_line( token ) - 1 ) + ": ";    // formating and line number
+        //     // Adding last line of tokens
+        //     last += previousLines[ token_line( token ) - 2 ] ;
+        //     // Adding $ to denote end of line
+        //     last += "$\n" ;
+        // }
 
-        // currentLine+= to_string( token_line( token ) ) ;
-        currentLine += ":  " ;
-        currentLine += token_spelling( token ) ;
-        currentLine += "\n" ;
-
-        // Have to reduce this so that it only adds spaces up to the start of the tokens spelling
-        int i = spelling.length() ;
-        
-        while( i < token_column( token ) )
+        for(int i = 1; i < token_column(token); i++ )
         {
             position += " " ;
-            i++ ;
         }
+        position += "^\n" ;
 
-        position += "^" ;
+        current = "   " + std::to_string( token_line( token ) ) + ": " ; // formating and line number
+        // Adding characters up until the end of the current token:
+        // First adding the whole line
+        string line = previousLines[ token_line( token ) - 1 ] ;
+        // Add from the start of the line until the start of the current token + the length of the token
+        current += line.substr(0, token_column( token ) - 1 + token_spelling( token ).length() ) ;
+        current += "\n" ;
 
 
-
-        return lastLine + currentLine + position ;
+        return last + current + position ;
     }
 
     // read next character if not at the end of input and update the line and column numbers
@@ -100,9 +97,9 @@ namespace Assignment_Tokeniser
         column++;                           // Increment the column counter
 
         spelling += ch ;                    // remember the old ch, it is part of the current token being parsed
-        currentInputLine += ch ;            // store the old ch in a string that remembers the whole line
+        currentLine += ch ;                 // store the old ch in a string that remembers the whole line
 
-        if( tabCounter > 0){
+        if( tabCounter > 0){                // return a space if tabCounter is above 0
             ch = ' ' ;
             tabCounter-- ;
         }else{
@@ -113,8 +110,8 @@ namespace Assignment_Tokeniser
         {                                   // If a newline character is stored
             line++;                         // Increment the line counter
             column = 0 ;                    // And reset the column counter
-            lastInputLine = currentInputLine ;
-            currentInputLine = "" ;
+            previousLines.push_back( currentLine.substr(0, currentLine.length() - 1) ) ;
+            currentLine = "" ;
         }
 
         if( ch == '\t')
@@ -132,11 +129,12 @@ namespace Assignment_Tokeniser
         column = 0 ;
         line = 1 ;
         tabCounter = 0 ;
-        lastInputLine = "" ;
-        currentInputLine = "" ;
+        currentLine.clear() ;
+        previousLines.clear() ;
 
         ch = '\n' ;                         // initialise ch to avoid accidents
         nextch() ;                          // make first call to nextch to initialise ch using the input
         spelling = "" ;                     // discard the initial '\n', it is not part of the input
+        currentLine = "" ;
     }
 }
