@@ -1,0 +1,48 @@
+200907-200358 Modified: MDA2OGRiMDVlYzNkYmJkMTMwM2Q4MGIwNjY1MTIwOTg3N2MzZmU5MCAgLi8uRFNfU3RvcmUKY2U3YzUyYzg2ZGIzYTU0ZmJmNzNlNWQ1ZWUyOTA1NzdhZTM2YTljNCAgLi91cGRhdGVzLy5EU19TdG9yZQpiMDFjNDA2MGMxNjQzOTI3MmVmNjA0YWVmZTU3OTQwN2RhN2Q0ZjZhICAuL3VwZGF0ZXMvd29ya3Nob3AwNy0yMDIwMDgyOC0xNjA4NDQuemlwCg==
+200907-200358 make install
+200907-200358 SVN user: a1773620, repository path: 2020/s2/cs/workshop07
+200907-200358 updater:  Directory: ./bin
+200907-200358 updater:  Directory: ./originals
+200907-200358 updater:  Directory: ./lib
+200907-200358 updater:  Directory: ./lib/cats
+200907-200358 updater:  Directory: ./lib/cats/bin
+200907-200358 updater:  Directory: ./lib/macos
+200907-200358 updater:  Directory: ./lib/macos/bin
+200907-200358 updater:  Directory: ./lib/centos8
+200907-200358 updater:  Directory: ./lib/centos8/bin
+200907-200358 updater:  Creating: ./bin/assembler
+200907-200358 updater:  Creating: ./bin/simulator
+200907-200358 updater:  Creating: ./bin/run-tests
+200907-200358 updater:  Creating: updates/Makefile
+200907-200358 updater:  Creating: ./originals/question03.vm-asm
+200907-200358 updater:  Creating: ./originals/question01.vm-asm
+200907-200358 updater:  Creating: ./originals/question05.vm-asm
+200907-200358 updater:  Creating: ./originals/question02.vm-asm
+200907-200358 updater:  Creating: ./originals/question00.vm-asm
+200907-200358 updater:  Creating: ./originals/question04.vm-asm
+200907-200358 updater:  Creating: ./originals/question06.vm-asm
+200907-200358 updater:  Creating: ./lib/cats/bin/assembler
+200907-200358 updater:  Creating: ./lib/cats/bin/simulator
+200907-200358 updater:  Creating: ./lib/macos/bin/assembler
+200907-200358 updater:  Creating: ./lib/macos/bin/simulator
+200907-200358 updater:  Creating: ./lib/centos8/bin/assembler
+200907-200358 updater:  Creating: ./lib/centos8/bin/simulator
+200907-200358 updater:  Made bin/assembler executable
+200907-200358 updater:  Made bin/run-tests executable
+200907-200358 updater:  Made bin/simulator executable
+200907-200358 updater:  Made lib/cats/bin/assembler executable
+200907-200358 updater:  Made lib/cats/bin/simulator executable
+200907-200358 updater:  Made lib/centos8/bin/assembler executable
+200907-200358 updater:  Made lib/centos8/bin/simulator executable
+200907-200358 updater:  Made lib/macos/bin/assembler executable
+200907-200358 updater:  Made lib/macos/bin/simulator executable
+200907-200358 updater:  Removing MacOS quarantine flags from the executables
+200907-200358 updater:  Creating: question03.vm-asm
+200907-200358 updater:  Creating: question01.vm-asm
+200907-200358 updater:  Creating: question05.vm-asm
+200907-200358 updater:  Creating: question02.vm-asm
+200907-200358 updater:  Creating: question00.vm-asm
+200907-200358 updater:  Creating: question04.vm-asm
+200907-200358 updater:  Creating: question06.vm-asm
+200907-200358 updater:  Updating: updates/README
+200907-200358 updater:  Update installed

@@ -1,0 +1,4 @@
+function Silly.func 0
+(Silly.func)
+
+push static 6

@@ -1,0 +1,4 @@
+function Question.zero 0
+(Question.zero)
+
+if-goto trickiest
