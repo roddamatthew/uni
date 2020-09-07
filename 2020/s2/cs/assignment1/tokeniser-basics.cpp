@@ -61,13 +61,13 @@ namespace Assignment_Tokeniser
         string current ;
         string position = "      ";
 
-        // if( token_line( token ) > 2 ){
-        //     last = "   " + std::to_string( token_line( token ) - 1 ) + ": ";    // formating and line number
-        //     // Adding last line of tokens
-        //     last += previousLines[ token_line( token ) - 2 ] ;
-        //     // Adding $ to denote end of line
-        //     last += "$\n" ;
-        // }
+        if( token_line( token ) > 2 ){
+            last = "   " + std::to_string( token_line( token ) - 1 ) + ": ";    // formating and line number
+            // Adding last line of tokens
+            last += previousLines[ token_line( token ) - 2 ] ;
+            // Adding $ to denote end of line
+            last += "$\n" ;
+        }
 
         for(int i = 1; i < token_column(token); i++ )
         {
@@ -110,7 +110,7 @@ namespace Assignment_Tokeniser
         {                                   // If a newline character is stored
             line++;                         // Increment the line counter
             column = 0 ;                    // And reset the column counter
-            previousLines.push_back( currentLine.substr(0, currentLine.length() - 1) ) ;
+            previousLines.push_back( currentLine.substr(0, currentLine.length() - 1) ) ; // add the currentLine to the previousLines vector
             currentLine = "" ;
         }
 

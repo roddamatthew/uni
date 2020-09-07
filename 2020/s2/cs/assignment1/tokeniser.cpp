@@ -1,6 +1,7 @@
 // a skeleton implementation of a tokeniser
 
 #include "tokeniser-extras.h"
+#include <string>
 
 // to shorten the code
 using namespace std ;
@@ -139,6 +140,7 @@ namespace Assignment_Tokeniser
         }else if(c_have('/')){
             new_token_kind = tk_eol_comment ;
             do nextch() ; while ( c_have(cg_eol_comment_char) ) ;
+            c_mustbe('\n') ;
         }else if(c_have('*')){
             new_token_kind = tk_adhoc_comment ;
             do nextch() ; while ( c_have(cg_adhoc_comment_char) ) ;
@@ -295,6 +297,16 @@ namespace Assignment_Tokeniser
                 // Replace upper case E with lower case e
 
                 // If there is no sign after the last digit, add a positive sign
+            }
+
+            if( new_token_kind == tk_eol_comment )
+            {
+                string spelling = token_spelling( token ) ;
+                // Remove the initial "//" characters from spelling
+                spelling.erase( 0, 2 ) ;
+                spelling.erase( spelling.length() - 1, spelling.length() ) ;
+                set_token_spelling( token, spelling ) ;
+
             }
 
             return token ;
