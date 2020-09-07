@@ -114,10 +114,19 @@ namespace Assignment_Tokeniser
             currentLine = "" ;
         }
 
-        if( ch == '\t')
+        if( ch == '\t' )
         {
             ch = ' ' ;
             tabCounter = (column % 4) + 2;
+        }
+
+        if( ch == '\r' )
+        {
+            ch = read_char() ;
+            if( ch != '\n')
+            {
+                ch = '\n' ;
+            }
         }
 
     }

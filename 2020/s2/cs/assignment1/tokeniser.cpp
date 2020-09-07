@@ -303,10 +303,8 @@ namespace Assignment_Tokeniser
             {
                 string spelling = token_spelling( token ) ;
                 // Remove the initial "//" and final newline character from spelling
-                spelling = spelling.substr( 2, spelling.length() - 1) ;
-
-                // erase( 0, 2 ) ;
-                // spelling.erase( spelling.length() - 1, spelling.length() ) ;
+                spelling.erase( 0, 2 ) ;
+                spelling.erase( spelling.length() - 1, spelling.length() ) ;
                 set_token_spelling( token, spelling ) ;
 
             }
