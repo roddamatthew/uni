@@ -26,10 +26,8 @@ namespace Assignment_Tokeniser
     int column ;
     int line ;
     int tabCounter ;
-    char carriageReturn ;
-    bool newline ;
 
-    // Data structure to hold previous tokens
+    // Data structure to hold previous inputs
     vector <string> history ;
     string currentLine ;
 
@@ -41,7 +39,7 @@ namespace Assignment_Tokeniser
     Token new_token(TokenKind kind)
     {
         // create a new token object and reset spelling
-        Token token = new_token( kind, spelling, line, column - spelling.length() ) ;
+        Token token = new_token( kind, spelling, line, column ) ;
 
         // reset the spelling
         spelling = "" ;
@@ -74,7 +72,7 @@ namespace Assignment_Tokeniser
             last += "$\n" ;
         }
 
-        for(int i = 1; i < token_column(token); i++ )
+        for(int i = 1; i < token_column( token ); i++ )
         {
             position += " " ;
         }
@@ -104,49 +102,39 @@ namespace Assignment_Tokeniser
     {
         if ( ch == EOF ) return ;           // stop reading once we have read EOF
 
-        column++;                           // Increment the column counter
         spelling += ch ;                    // remember the old ch, it is part of the current token being parsed
         currentLine += ch ;
 
         if( tabCounter > 0){                // return a space if tabCounter is above 0
             ch = ' ' ;
             tabCounter-- ;
-        }else if( carriageReturn != 0){
-            ch = carriageReturn ;
-            carriageReturn = 0 ;
         }else{
             ch = read_char() ;
-        }
-
-        if( newline == true )
-        {
-            line++;                         // Increment the line counter
-            column = 1 ;                    // And reset the column counter
-            newline = false ;
-            history.push_back( currentLine ) ;
-            currentLine = "" ;
         }
 
         if( ch == '\t' )
         {
             ch = ' ' ;
-            tabCounter = (column % 4) + 2;
+            tabCounter = (column + 1) % 4 ;
         }
 
+        // Replace carriage return characters with newline characters
         if( ch == '\r' )
         {
             ch = read_char() ;
-            if( ch != '\n')
-            {
-                carriageReturn = ch ;
-                ch = '\n' ;
-            }
+            ch = '\n' ;
         }
 
+        // If the current character is a newline, next time nextch() is called, increment line and reset column
         if( ch == '\n' )
-        {                                   // If a newline character is stored
-            newline = true ;
+        {
+            line++;                                 // Increment the line counter
+            column = 1 ;                            // And reset the column counter
+            history.push_back( currentLine ) ;      // Add the current line to the history vector
+            currentLine = "" ;                      // Reset currenLine
         }
+
+        column++;                           // Increment the column counter
 
     }
 
@@ -157,8 +145,6 @@ namespace Assignment_Tokeniser
         column = 0 ;
         line = 1 ;
         tabCounter = 0 ;
-        carriageReturn = 0;
-        newline = false ;
         history.clear() ;
 
 
