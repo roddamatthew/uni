@@ -302,9 +302,11 @@ namespace Assignment_Tokeniser
             if( new_token_kind == tk_eol_comment )
             {
                 string spelling = token_spelling( token ) ;
-                // Remove the initial "//" characters from spelling
-                spelling.erase( 0, 2 ) ;
-                spelling.erase( spelling.length() - 1, spelling.length() ) ;
+                // Remove the initial "//" and final newline character from spelling
+                spelling = spelling.substr( 2, spelling.length() - 1) ;
+
+                // erase( 0, 2 ) ;
+                // spelling.erase( spelling.length() - 1, spelling.length() ) ;
                 set_token_spelling( token, spelling ) ;
 
             }
