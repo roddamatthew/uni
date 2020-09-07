@@ -26,6 +26,7 @@ namespace Assignment_Tokeniser
     int column ;
     int line ;
     int tabCounter ;
+    char carriageReturn ;
 
     string currentLine ;
     vector<string> previousLines ;
@@ -125,6 +126,7 @@ namespace Assignment_Tokeniser
             ch = read_char() ;
             if( ch != '\n')
             {
+                carriageReturn = ch ;
                 ch = '\n' ;
             }
         }
@@ -140,6 +142,7 @@ namespace Assignment_Tokeniser
         tabCounter = 0 ;
         currentLine.clear() ;
         previousLines.clear() ;
+        carriageReturn = 0;
 
         ch = '\n' ;                         // initialise ch to avoid accidents
         nextch() ;                          // make first call to nextch to initialise ch using the input

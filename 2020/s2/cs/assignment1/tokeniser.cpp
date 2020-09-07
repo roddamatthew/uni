@@ -137,15 +137,36 @@ namespace Assignment_Tokeniser
 
         if(c_have('=')){
             new_token_kind = tk_div_assign ;
-        }else if(c_have('/')){
+        }else if( c_have( '/' ) ){
             new_token_kind = tk_eol_comment ;
-            do nextch() ; while ( c_have(cg_eol_comment_char) ) ;
-            c_mustbe('\n') ;
-        }else if(c_have('*')){
+            do nextch() ; while ( c_have( cg_eol_comment_char ) ) ;
+            c_mustbe( '\n' ) ;
+        }else if(c_have( '*' ) ){
             new_token_kind = tk_adhoc_comment ;
-            do nextch() ; while ( c_have(cg_adhoc_comment_char) ) ;
-        }
 
+            bool exit = false ;
+            bool star ;
+            
+            while ( c_have( cg_adhoc_comment_char ) && exit == false )
+            {
+                nextch() ;
+                
+                if(c_have( '*' ) )
+                {
+                    star = true ;
+                } else if( c_have( '/' ) )
+                {
+                    if( star == true )
+                    {
+                        exit = true ;
+                    }
+                } else{
+                    star = false ;
+                }
+            }
+
+            nextch() ;
+        }
     }
 
     // return the next Token object by reading more of the input
@@ -307,6 +328,15 @@ namespace Assignment_Tokeniser
                 spelling.erase( spelling.length() - 1, spelling.length() ) ;
                 set_token_spelling( token, spelling ) ;
 
+            }
+
+            if( new_token_kind == tk_adhoc_comment )
+            {
+                string spelling = token_spelling( token ) ;
+                // Remove the first and last to characters from the spelling
+                spelling.erase( 0, 2 ) ;
+                spelling.erase( spelling.length() - 2, spelling.length() ) ;
+                set_token_spelling( token, spelling ) ;
             }
 
             return token ;
