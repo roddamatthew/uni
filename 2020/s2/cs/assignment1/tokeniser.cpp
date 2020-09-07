@@ -154,12 +154,9 @@ namespace Assignment_Tokeniser
                 if(c_have( '*' ) )
                 {
                     star = true ;
-                } else if( c_have( '/' ) )
+                } else if( c_have( '/' ) && star == true)
                 {
-                    if( star == true )
-                    {
                         exit = true ;
-                    }
                 } else{
                     star = false ;
                 }
@@ -320,20 +317,21 @@ namespace Assignment_Tokeniser
                 // If there is no sign after the last digit, add a positive sign
             }
 
+
+            // Remove the initial "//" and final newline character from spelling
             if( new_token_kind == tk_eol_comment )
             {
                 string spelling = token_spelling( token ) ;
-                // Remove the initial "//" and final newline character from spelling
                 spelling.erase( 0, 2 ) ;
                 spelling.erase( spelling.length() - 1, spelling.length() ) ;
                 set_token_spelling( token, spelling ) ;
 
             }
-
+            
+            // Remove the first and last to characters from the spelling
             if( new_token_kind == tk_adhoc_comment )
             {
                 string spelling = token_spelling( token ) ;
-                // Remove the first and last to characters from the spelling
                 spelling.erase( 0, 2 ) ;
                 spelling.erase( spelling.length() - 2, spelling.length() ) ;
                 set_token_spelling( token, spelling ) ;
