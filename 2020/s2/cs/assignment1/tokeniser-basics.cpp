@@ -72,7 +72,7 @@ namespace Assignment_Tokeniser
             tempLine = line ;
         }
 
-                // create a new token object and reset spelling
+        // create a new token object and reset spelling
         Token token = new_token( kind, spelling, tempLine, tempColumn ) ;
 
         // reset the spelling
@@ -93,9 +93,9 @@ namespace Assignment_Tokeniser
     string token_context(Token token)
     {
         // Initialising the strings that will make up the context
-        string last ;
-        string current ;
-        string position = "      ";
+        string last = "" ;
+        string current = "" ;
+        string position = "      " ;
 
         // Indexes for accessing the correct line/column
         int readLine = token_line( token ) - 1;
@@ -103,7 +103,11 @@ namespace Assignment_Tokeniser
 
         // Previous line string
         if( readLine > 0 ){
-            last = "   " + std::to_string( readLine ) + ": ";    // formating and line number
+            for(int i = 0; i < 4 - std::to_string( readLine ).length(); i++)
+            {
+                last += " " ;
+            }
+            last += std::to_string( readLine ) + ": ";    // formating and line number
            
             // Adding last line of tokens
             last += history[ readLine - 1 ] ;
@@ -121,7 +125,12 @@ namespace Assignment_Tokeniser
 
 
         // Current line up to the end of the current token
-        current = "   " + std::to_string( readLine + 1 ) + ": " ; // formating and line number
+        for(int i = 0; i < 4 - std::to_string( readLine + 1 ).length(); i++)
+            {
+                current += " " ;
+            }
+        current += std::to_string( readLine + 1 ) + ": " ; // formating and line number
+
         // Adding characters up until the end of the current token:
         current += history[ readLine ].substr( 0, readColumn ) ;
         
