@@ -13,7 +13,7 @@ namespace Assignment_Tokeniser
 {
 
     // the current input character
-    // the eof marker can be confused with a legal character but not one accepted by our tokeniser
+    // the EOF marker can be confused with a legal character but not one accepted by our tokeniser
     char ch ;
 
     // to create a new token we need the characters read since the last token was created
@@ -31,10 +31,11 @@ namespace Assignment_Tokeniser
     int newlineColumn ;
     int newlineLine ;
 
+    // Carriage return carry over character
+    char carriageReturnCarry ;
+
     // Data structure to hold previous inputs
     vector <string> history ;
-    string currentLine ;
-
 
     // create a new token using characters remembered since the last token was created
     // in the final submission tests new_token() will require the correct line and column numbers
@@ -49,7 +50,7 @@ namespace Assignment_Tokeniser
         {
             case tk_newline:
             tempColumn = newlineColumn ;
-            tempLine = newlineLine ;
+            tempLine = line - 1 ;
             break ;
 
             case tk_eol_comment:
@@ -106,6 +107,12 @@ namespace Assignment_Tokeniser
             // Adding last line of tokens
             last += history[ readLine - 1 ] ;
             
+            // Erase the last character (newline character)
+            // if(last.back() == '\n')
+            // {
+                last.erase( last.length() - 1, 1) ;
+            // }
+            
             // Adding $ to denote end of line
             last += "$\n" ;
         }
@@ -127,14 +134,30 @@ namespace Assignment_Tokeniser
 
         // Adding characters up until the end of the current token
         current += history[ readLine ].substr( 0, readColumn ) ;
+        // Erase the last character (newline character)
+        // if(current.back() == '\n')
+        // {
+            current.erase( current.length(), 1 ) ;
+        // }
         
         if( token_kind( token ) == tk_newline )
         {
+            current.erase( current.length() - 1, 1 ) ;
             current += '$' ;
         }
 
         current += "\n" ;
 
+        // print history for debugging
+        string str = "";
+        for( int i = 0; i < history.size(); i++)
+        {
+            str += history [i] ;
+        }
+
+        // return str ;
+        // return last ;
+        // return current ;
 
         return last + current + position ;
     }
@@ -144,55 +167,49 @@ namespace Assignment_Tokeniser
     // in some cases you may wish to remember a character to use next time instead of calling read_char()
     void nextch()
     {
-        if ( ch == EOF ) history.push_back( currentLine ) ;
-        if ( ch == EOF ) return ;           // stop reading once we have read EOF
+        if ( ch == EOF ) return ;
 
-        spelling += ch ;                    // remember the old ch, it is part of the current token being parsed
-        if(ch != '\n') currentLine += ch ;  // Also add the ch to currentLine string to be recorded later
+        spelling += ch ;                // remember the old ch, it is part of the current token being parsed
+        if( ch != '\n' ) history[ line ] += ch ;         // Add ch to history vector
 
         // return a space if tabCounter is above 0, otherwise read the next character
         if( tabCounter > 0){
             ch = ' ' ;
             tabCounter-- ;
+        }else if( carriageReturnCarry != 0 ){
+            ch = carriageReturnCarry ;
+            carriageReturnCarry = 0 ;
         }else{
             ch = read_char() ;
         }
 
-        // switch ( ch )
-        // {
-                            // Replace tab characters with the appropriate number of spaces
-        //     case '\t':
-        //     ch = ' ' ;
-        //     tabCounter = 4 - column % 4 ;
-        //     break ;
-
-
-        // }
-
-        // Replace tab characters with the appropriate number of spaces
-        if( ch == '\t' )
+        switch ( ch )
         {
+                            // Replace tab characters with the appropriate number of spaces
+            case '\t':
             ch = ' ' ;
             tabCounter = 4 - column % 4 ;
-        }
+            break ;
 
-        // Replace carriage return characters with newline characters
-        if( ch == '\r' )
-        {
+            case '\r':
             ch = read_char() ;
-            ch = '\n' ;
-        }
+            if( ch != '\n' )
+            {
+                carriageReturnCarry = ch ;
+                ch = '\n' ;
+            }
 
-        // If the current character is a newline, next time nextch() is called, increment line and reset column
-        if( ch == '\n' )
-        {
+            case '\n':
             newlineLine = line ;
             newlineColumn = column ;
 
+            history[ line ] += ch ;
+            history.push_back( "" ) ;               // Add a new empty line to history
+
             line++;                                 // Increment the line counter
             column = 0 ;                            // And reset the column counter
-            history.push_back( currentLine ) ;      // Add the current line to the history vector
-            currentLine = "" ;                      // Reset currentLine
+
+            break ;
         }
 
         // Increment the column counter
@@ -207,15 +224,17 @@ namespace Assignment_Tokeniser
         line = 1 ;
         tabCounter = 0 ;
         history.clear() ;
-        history.push_back("ACCESSING FIRST LINE") ;
+        history.push_back( "__ line for debugging __\n" ) ;
+        history.push_back( "" ) ;
 
         newlineLine = 0 ;
         newlineColumn = 0 ;
+
+        carriageReturnCarry = 0 ;
 
 
         ch = '\n' ;                         // initialise ch to avoid accidents
         nextch() ;                          // make first call to nextch to initialise ch using the input
         spelling = "" ;                     // discard the initial '\n', it is not part of the input
-        currentLine = "";
     }
 }
