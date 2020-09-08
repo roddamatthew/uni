@@ -310,6 +310,27 @@ namespace Assignment_Tokeniser
                 // Remember where it was originally
                 // Increment the last value of the spelling by the change in position
                 string spelling = token_spelling( token ) ;
+                int decimalPos = 1;
+
+                for(int i = 0; i < spelling.length(); i++)
+                {
+                    if( spelling[ i ] == '.' )
+                    {
+                        decimalPos = i ;
+                        spelling.erase( i, 1 ) ;
+                    }
+                }
+
+                spelling.insert(1, ".") ;
+
+                // char lastDigit = spelling.back() ;
+                // int power = (int) lastDigit - 48 + decimalPos ;
+                
+                // spelling.erase( spelling.length() ) ;
+                
+                // spelling += std::to_string( power ) ;
+
+                // set_token_spelling( token, spelling ) ;
 
 
                 // Replace upper case E with lower case e

@@ -52,15 +52,6 @@ namespace Assignment_Tokeniser
             tempLine = newlineLine ;
             break ;
 
-            case tk_identifier:
-            case tk_space:
-            case tg_keyword:
-            case tk_integer:
-            case tg_symbol:
-            tempColumn = column - spelling.length() - 1 ;
-            tempLine = line ;
-            break ;
-
             case tk_eol_comment:
             tempColumn = column ;
             tempLine = line ;
@@ -70,8 +61,9 @@ namespace Assignment_Tokeniser
             tempLine = line ;
 
             default:
-            tempColumn = column ;
+            tempColumn = column - spelling.length() - 1 ;
             tempLine = line ;
+            break ;
         }
 
         // create a new token object and reset spelling
@@ -144,7 +136,7 @@ namespace Assignment_Tokeniser
         current += "\n" ;
 
 
-        return last+current+position ;//std::to_string(token_spelling( token ).length()) + " " + std::to_string(readColumn) + " " + std::to_string(token_column(token));
+        return last + current + position ;
     }
 
     // read next character if not at the end of input and update the line and column numbers
