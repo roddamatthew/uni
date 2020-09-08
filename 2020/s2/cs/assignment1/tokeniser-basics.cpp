@@ -55,6 +55,8 @@ namespace Assignment_Tokeniser
             case tk_identifier:
             case tk_space:
             case tg_keyword:
+            case tk_integer:
+            case tg_symbol:
             tempColumn = column - spelling.length() - 1 ;
             tempLine = line ;
             break ;
@@ -98,16 +100,16 @@ namespace Assignment_Tokeniser
         string position = "      " ;
 
         // Indexes for accessing the correct line/column
-        int readLine = token_line( token ) - 1;
+        int readLine = token_line( token ) ;
         int readColumn = token_column( token ) - 1 + token_spelling( token ).length() ;
 
         // Previous line string
-        if( readLine > 0 ){
+        if( readLine > 1 ){
             for(int i = 0; i < 4 - std::to_string( readLine ).length(); i++)
             {
                 last += " " ;
             }
-            last += std::to_string( readLine ) + ": ";    // formating and line number
+            last += std::to_string( readLine - 1 ) + ": ";    // formating and line number
            
             // Adding last line of tokens
             last += history[ readLine - 1 ] ;
@@ -125,13 +127,13 @@ namespace Assignment_Tokeniser
 
 
         // Current line up to the end of the current token
-        for(int i = 0; i < 4 - std::to_string( readLine + 1 ).length(); i++)
+        for(int i = 0; i < 4 - std::to_string( readLine ).length(); i++)
             {
                 current += " " ;
             }
-        current += std::to_string( readLine + 1 ) + ": " ; // formating and line number
+        current += std::to_string( readLine ) + ": " ; // formating and line number
 
-        // Adding characters up until the end of the current token:
+        // Adding characters up until the end of the current token
         current += history[ readLine ].substr( 0, readColumn ) ;
         
         if( token_kind( token ) == tk_newline )
@@ -139,14 +141,10 @@ namespace Assignment_Tokeniser
             current += '$' ;
         }
 
-        //else{
-        //     current += token_spelling ( token ) ;
-        // }
-
         current += "\n" ;
 
 
-        return last + current + position ;
+        return last+current+position ;//std::to_string(token_spelling( token ).length()) + " " + std::to_string(readColumn) + " " + std::to_string(token_column(token));
     }
 
     // read next character if not at the end of input and update the line and column numbers
@@ -154,6 +152,7 @@ namespace Assignment_Tokeniser
     // in some cases you may wish to remember a character to use next time instead of calling read_char()
     void nextch()
     {
+        if ( ch == EOF ) history.push_back( currentLine ) ;
         if ( ch == EOF ) return ;           // stop reading once we have read EOF
 
         spelling += ch ;                    // remember the old ch, it is part of the current token being parsed
@@ -216,6 +215,7 @@ namespace Assignment_Tokeniser
         line = 1 ;
         tabCounter = 0 ;
         history.clear() ;
+        history.push_back("ACCESSING FIRST LINE") ;
 
         newlineLine = 0 ;
         newlineColumn = 0 ;
