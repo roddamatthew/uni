@@ -102,7 +102,7 @@ namespace Assignment_Tokeniser
 
         // Indexes for accessing the correct line/column
         int readLine = token_line( token ) ;
-        int readColumn = token_column( token ) - 1 + token_spelling( token ).length() ;
+        int readColumn = token_column( token ) - 1 + token_original( token ).length() ;
 
         // Previous line string
         if( readLine > 1 ){
@@ -142,11 +142,6 @@ namespace Assignment_Tokeniser
 
         // Adding characters up until the end of the current token
         current += history[ readLine ].substr( 0, readColumn ) ;
-        // Erase the last character (newline character)
-        // if(current.back() == '\n')
-        // {
-            current.erase( current.length(), 1 ) ;
-        // }
 
         if( token_kind( token ) == tk_eol_comment )
         {
