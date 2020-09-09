@@ -116,6 +116,10 @@ namespace Assignment_Tokeniser
             c_mustbe('=') ;
             break ;
 
+            case tk_mult_assign:
+            c_mustbe('=') ;
+            break ;
+
             case tk_not_eq:
             c_mustbe('=') ;
             break ;
@@ -135,8 +139,9 @@ namespace Assignment_Tokeniser
     {
         nextch() ;
 
-        if(c_have('=')){
+        if( c_have('=') ){
             new_token_kind = tk_div_assign ;
+            nextch() ;
         }else if( c_have( '/' ) ){
             new_token_kind = tk_eol_comment ;
             do nextch() ; while ( c_have( cg_eol_comment_char ) ) ;
@@ -163,6 +168,34 @@ namespace Assignment_Tokeniser
             }
 
             nextch() ;
+        }
+    }
+
+    static void parse_gt_or_lt( TokenKind kind )
+    {
+        // current character is either '<' or '>'
+        nextch() ;
+
+        if( kind == tk_lshift )
+        {
+            c_mustbe( '<' ) ;
+            if( c_have_next( '<' ) == true )
+            {
+                new_token_kind = tk_lshift_l ;
+            }else{
+                new_token_kind = tk_lshift ;
+            }
+        }
+
+        if( kind == tk_rshift )
+        {
+            c_mustbe( '>' ) ;
+            if( c_have_next( '>' ) == true )
+            {
+                new_token_kind = tk_rshift_l ;
+            }else{
+                new_token_kind = tk_rshift ;
+            }
         }
     }
 
@@ -253,25 +286,11 @@ namespace Assignment_Tokeniser
             break ;
                         // Less than sign
             case '<':
-            nextch() ;
-            c_mustbe('<') ; // Must be followed by at least one more '<'
-
-            if(c_have('<')){ // May be followed by a third '<'
-                parse_symbol(tk_lshift_l) ; // Then we have '<<<'
-        }else{
-                parse_symbol(tk_lshift) ; // If not then we have '<<'
-            }
+            parse_gt_or_lt( tk_lshift ) ;
             break ;
                         // Greater than sign
             case '>':
-            nextch() ;
-            c_mustbe('>') ; // Must be followed by at least one more '>'
-
-            if(c_have('>')){ // May be followed by a third '>'
-                parse_symbol(tk_rshift_l) ; // Then we have '>>>'
-        }else{
-                parse_symbol(tk_rshift) ; // If not then we have '>>'
-            }
+            parse_gt_or_lt( tk_rshift ) ;
             break ;
 
                         // Forward slash
