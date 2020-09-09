@@ -30,6 +30,9 @@ namespace Assignment_Tokeniser
     // Remember where a newline character was
     int newlineColumn ;
     int newlineLine ;
+    TokenKind lastKind ;
+
+    TokenKind currentKind ;
 
     // Carriage return carry over character
     char carriageReturnCarry ;
@@ -54,10 +57,13 @@ namespace Assignment_Tokeniser
             break ;
 
             case tk_eol_comment:
-            tempColumn = column ;
-            tempLine = line ;
+            tempColumn = 1 ;
+            tempLine = line - 1 ;
+            break ;
 
             case tk_adhoc_comment:
+            
+
             tempColumn = column ;
             tempLine = line ;
 
@@ -66,6 +72,8 @@ namespace Assignment_Tokeniser
             tempLine = line ;
             break ;
         }
+
+        lastKind = kind ;
 
         // create a new token object and reset spelling
         Token token = new_token( kind, spelling, tempLine, tempColumn ) ;
@@ -98,7 +106,7 @@ namespace Assignment_Tokeniser
 
         // Previous line string
         if( readLine > 1 ){
-            for(int i = 0; i < 4 - std::to_string( readLine ).length(); i++)
+            for(int i = 0; i < 4 - std::to_string( readLine - 1 ).length(); i++)
             {
                 last += " " ;
             }
@@ -139,8 +147,13 @@ namespace Assignment_Tokeniser
         // {
             current.erase( current.length(), 1 ) ;
         // }
+
+        if( token_kind( token ) == tk_eol_comment )
+        {
+            current += history[ readLine ].substr( readColumn, 3 ) ;
+        }
         
-        if( token_kind( token ) == tk_newline )
+        if( current.back() == '\n' )
         {
             current.erase( current.length() - 1, 1 ) ;
             current += '$' ;
@@ -176,22 +189,21 @@ namespace Assignment_Tokeniser
         if( tabCounter > 0){
             ch = ' ' ;
             tabCounter-- ;
-        }else if( carriageReturnCarry != 0 ){
-            ch = carriageReturnCarry ;
-            carriageReturnCarry = 0 ;
+        // }else if( carriageReturnCarry != 0 ){
+        //     ch = carriageReturnCarry ;
+        //     carriageReturnCarry = 0 ;
         }else{
             ch = read_char() ;
         }
 
         switch ( ch )
         {
-                            // Replace tab characters with the appropriate number of spaces
-            case '\t':
+            case '\t':                              // Replace tab characters with the appropriate number of spaces
             ch = ' ' ;
             tabCounter = 4 - column % 4 ;
             break ;
 
-            case '\r':
+            case '\r':                              // 
             ch = read_char() ;
             if( ch != '\n' )
             {
@@ -199,7 +211,7 @@ namespace Assignment_Tokeniser
                 ch = '\n' ;
             }
 
-            case '\n':
+            case '\n':                              // 
             newlineLine = line ;
             newlineColumn = column ;
 
@@ -208,7 +220,6 @@ namespace Assignment_Tokeniser
 
             line++;                                 // Increment the line counter
             column = 0 ;                            // And reset the column counter
-
             break ;
         }
 

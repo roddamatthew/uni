@@ -310,32 +310,58 @@ namespace Assignment_Tokeniser
                 // Remember where it was originally
                 // Increment the last value of the spelling by the change in position
                 string spelling = token_spelling( token ) ;
-                int decimalPos = 1;
+                int decimalPos = 0;
+                int ePos = 0 ;
 
                 for(int i = 0; i < spelling.length(); i++)
                 {
-                    if( spelling[ i ] == '.' )
+                    switch( spelling[ i ] )
                     {
+                        case '.':
                         decimalPos = i ;
-                        spelling.erase( i, 1 ) ;
+                        spelling.erase( decimalPos, 1) ;
+                        i = i - 1 ;
+                        break ;
+
+                        case 'e':
+                        case 'E':
+
+                        if( decimalPos == 0) decimalPos = i ;
+                        ePos = i + 1 ;
+                        spelling[ i ] = 'e' ;
+                        break ;
+
+                        default:
+                        break ;
                     }
                 }
 
-                spelling.insert(1, ".") ;
+                // integer part of the spelling
+                string integerString = spelling.substr( 0, ePos - 1 ) ;
+                int integerInt = std::stoi( integerString ) ;
 
-                // char lastDigit = spelling.back() ;
-                // int power = (int) lastDigit - 48 + decimalPos ;
+                integerString = std::to_string( integerInt ) ;
+                if( integerInt == 0 ) integerString = "00" ;
+
+                // put the exponent in a seperate string
+                string exponentString = spelling.substr( ePos, spelling.length() ) ;
+
+                // convert that string to an integer
+                int exponentInt = std::stoi( exponentString ) ;
+
+                // alter the power according to decimal place value
+                exponentInt += decimalPos - 1 ;
+                exponentString = std::to_string( exponentInt ) ;
+
+                // add all the components to a new string to return
+                string newSpelling = integerString + 'e' ;
+                // make the second character a decimal place
+                newSpelling.insert(1, ".") ;
                 
-                // spelling.erase( spelling.length() ) ;
-                
-                // spelling += std::to_string( power ) ;
+                if( exponentInt >= 0 ) newSpelling += '+' ;
+                newSpelling += exponentString ;
 
-                // set_token_spelling( token, spelling ) ;
-
-
-                // Replace upper case E with lower case e
-
-                // If there is no sign after the last digit, add a positive sign
+                set_token_spelling ( token, newSpelling ) ;
             }
 
 
