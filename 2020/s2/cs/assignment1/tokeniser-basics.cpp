@@ -225,10 +225,14 @@ namespace Assignment_Tokeniser
         if( tabCounter > 0){
             ch = ' ' ;
             tabCounter-- ;
-        }else if( carriageReturnCarry != 0 ){
+        }
+        else if( carriageReturnCarry != 0 )
+        {
             ch = carriageReturnCarry ;
             carriageReturnCarry = 0 ;
-        }else{
+        }
+        else
+        {
             ch = read_char() ;
         }
 

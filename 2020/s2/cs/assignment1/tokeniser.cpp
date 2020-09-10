@@ -43,16 +43,20 @@ namespace Assignment_Tokeniser
         // set token kind
         new_token_kind = tk_integer ;
 
-        if(c_have('0')){
+        if(c_have('0'))
+        {
             // Integer token must finish
             nextch() ;
-        }else if( c_have(cg_digit19)){
+        }
+        else if( c_have(cg_digit19))
+        {
             // Integer token may extend
             do nextch() ; while ( c_have(cg_digit) ) ;
         }
 
         // Check for fraction
-        if(c_have('.')){
+        if(c_have('.'))
+        {
             // then token is a scientific not an int
             new_token_kind = tk_scientific ;
             do nextch() ; while ( c_have(cg_digit) ) ;
@@ -62,23 +66,30 @@ namespace Assignment_Tokeniser
                 // Check for + or -
             c_have_next(cg_sign) ;
                 // Check for digits0123
-            if(c_have('0')){
+            if(c_have('0'))
+            {
                 nextch();
-            }else if(c_have(cg_digit19)){
+            }
+            else if(c_have(cg_digit19))
+            {
                 c_have_next(cg_digit);
                 c_have_next(cg_digit);
             }
         }
 
         // Check for exponent
-        if(c_have_next(cg_start_of_exponent)){
+        if(c_have_next(cg_start_of_exponent))
+        {
             new_token_kind = tk_scientific ;
                 // Check for + or -
             c_have_next(cg_sign) ;
                 // Check for digits0123
-            if(c_have('0')){
+            if(c_have('0'))
+            {
                 nextch();
-            }else if(c_have(cg_digit19)){
+            }
+            else if(c_have(cg_digit19))
+            {
                 c_have_next(cg_digit);
                 c_have_next(cg_digit);
             }
@@ -130,15 +141,20 @@ namespace Assignment_Tokeniser
         nextch() ;
 
         // Check for /=
-        if( c_have('=') ){
+        if( c_have('=') )
+        {
             new_token_kind = tk_div_assign ;
             nextch() ;
-        }else if( c_have( '/' ) ){
+        }
+        else if( c_have( '/' ) )
+        {
             // Check for //
             new_token_kind = tk_eol_comment ;
             do nextch() ; while ( c_have( cg_eol_comment_char ) ) ;
             c_mustbe( '\n' ) ;
-        }else if(c_have( '*' ) ){
+        }
+        else if(c_have( '*' ) )
+        {
             // Check for /*
             new_token_kind = tk_adhoc_comment ;
 
@@ -152,10 +168,13 @@ namespace Assignment_Tokeniser
                 if(c_have( '*' ) )
                 {
                     star = true ;
-                } else if( c_have( '/' ) && star == true)
+                }
+                else if( c_have( '/' ) && star == true)
                 {
                         exit = true ;
-                } else{
+                }
+                else
+                {
                     star = false ;
                 }
             }
@@ -336,14 +355,14 @@ namespace Assignment_Tokeniser
                     {
                         case '.':
                         decimalPos = i ;
-                        spelling.erase( decimalPos, 1) ;
+                        spelling.erase( decimalPos, 1 ) ;
                         i = i - 1 ;
                         break ;
 
                         case 'e':
                         case 'E':
 
-                        if( decimalPos == 0) decimalPos = i ;
+                        if( decimalPos == 0 ) decimalPos = i ;
                         ePos = i + 1 ;
                         spelling[ i ] = 'e' ;
                         break ;
