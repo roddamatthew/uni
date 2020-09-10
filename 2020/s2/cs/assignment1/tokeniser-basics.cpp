@@ -130,6 +130,8 @@ namespace Assignment_Tokeniser
             }
         current += std::to_string( readLine ) + ": " ; // formating and line number
 
+        if( readLine == 1 ) current += "#" ;
+
         // Up arrow string showing start of current token
         for(int i = 1; i < token_column( token ); i++ )
         {
