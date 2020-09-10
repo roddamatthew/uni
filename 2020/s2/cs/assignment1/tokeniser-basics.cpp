@@ -1,4 +1,4 @@
-// a skeleton implementation of a tokeniser
+// Authorship: Matthew Rodda a1773620, Computer Systems Assignment 1 2020 Sem 2
 
 #include "tokeniser-extras.h"
 #include <vector>
@@ -24,7 +24,6 @@ namespace Assignment_Tokeniser
 
     // Added class variables:
     int column ;
-    int line ;
     int tabCounter ;
 
     // Carriage return carry over character
@@ -55,22 +54,22 @@ namespace Assignment_Tokeniser
         }
 
         // variables to store line and column
-        int l = 1 ;
-        int c = 1 ;
+        int lineCount = 1 ;
+        int columnCount = 1 ;
 
         // count the columns and lines of the input
         for( int i = 0; i < input.length(); i++)
         {
-            c++ ;
+            columnCount++ ;
             if(input[ i ] == '\n')
             {
-                l++ ;
-                c = 1 ;
+                lineCount++ ;
+                columnCount = 1 ;
             }
         }
 
         // create a new token object with the correct line and column and reset spelling
-        Token token = new_token( kind, spelling, l, c ) ;
+        Token token = new_token( kind, spelling, lineCount, columnCount ) ;
 
         // add the original spelling of token to the history of inputs
         history.push_back( token_original( token ) ) ;
@@ -259,7 +258,6 @@ namespace Assignment_Tokeniser
     {
         // Initialise state variables
         column = 1 ;
-        line = 1 ;
         tabCounter = 0 ;
         history.clear() ;
         tokensPerLine.clear() ;

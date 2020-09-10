@@ -1,4 +1,4 @@
-// a skeleton implementation of a tokeniser
+// Authorship: Matthew Rodda a1773620, Computer Systems Assignment 1 2020 Sem 2
 
 #include "tokeniser-extras.h"
 #include <string>
@@ -90,6 +90,7 @@ namespace Assignment_Tokeniser
             }
             else if(c_have(cg_digit19))
             {
+                // exponents can only be 3 digits long
                 c_have_next(cg_digit);
                 c_have_next(cg_digit);
             }
@@ -105,27 +106,27 @@ namespace Assignment_Tokeniser
 
         switch(kind)
         {
-            case tk_sub_assign:
+            case tk_sub_assign:     // -= token
             c_mustbe('=') ;
             break ;
 
-            case tk_add_assign:
+            case tk_add_assign:     // += token
             c_mustbe('=') ;
             break ;
 
-            case tk_div_assign:
+            case tk_div_assign:     // /= token
             c_mustbe('=') ;
             break ;
 
-            case tk_mult_assign:
+            case tk_mult_assign:    // *= token
             c_mustbe('=') ;
             break ;
 
-            case tk_not_eq:
+            case tk_not_eq:         // != token
             c_mustbe('=') ;
             break ;
 
-            case tk_eq:
+            case tk_eq:             // == token
             c_mustbe('=') ;
             break ;
 
@@ -165,6 +166,7 @@ namespace Assignment_Tokeniser
             {
                 nextch() ;
                 
+                // If current character is a *, check the next character for a /
                 if(c_have( '*' ) )
                 {
                     star = true ;
@@ -182,6 +184,8 @@ namespace Assignment_Tokeniser
         }
     }
 
+    // Parsing a token beginning with a < or >
+    // possible tokens: '<<<'|'<<'|'>>>'|'>>'
     static void parse_gt_or_lt( TokenKind kind )
     {
         // current character is either '<' or '>'
@@ -234,6 +238,7 @@ namespace Assignment_Tokeniser
             case ' ':
             parse_wspace(tk_space) ;
             break ;
+
                         // Newline character
             case '\n':
             parse_wspace(tk_newline) ;
@@ -245,66 +250,82 @@ namespace Assignment_Tokeniser
             case '$':
             parse_identifier() ;
             break ;
+
                         // Integer (will later have to be replaced with number)
             case '0' ... '9':
             parse_number() ;
             break ;
+
                         // At character
             case '@':
             parse_symbol(tk_at) ;
             break ;
+
                         // Fullstop character
             case '.':
             parse_symbol(tk_stop) ;
             break ;
+
                         // Left curly brace
             case '{':
             parse_symbol(tk_lcb) ;
             break ;
+
                         // Right curly brace
             case '}':
             parse_symbol(tk_rcb) ;
             break ;
+
                         // Left round brace
             case '(':
             parse_symbol(tk_lrb) ;
             break ;
+
                         // Right round brace
             case ')':
             parse_symbol(tk_rrb) ;
             break ;
+
                         // Left square brace
             case '[':
             parse_symbol(tk_lsb) ;
             break ;
+
                         // Right square brace
             case ']':
             parse_symbol(tk_rsb) ;
             break ;
+
                         // Equals sign
             case '=':
             parse_symbol(tk_eq) ;
             break ;
+
                         // Minus sign
             case '-':
             parse_symbol(tk_sub_assign) ;
             break ;
+
                         // Addition sign
             case '+':
             parse_symbol(tk_add_assign) ;
             break ;
+
                         // Multiply sign
             case '*':
             parse_symbol(tk_mult_assign) ;
             break ;
+
                         // Exclamation point
             case '!':
             parse_symbol(tk_not_eq) ;
             break ;
+
                         // Less than sign
             case '<':
             parse_gt_or_lt( tk_lshift ) ;
             break ;
+
                         // Greater than sign
             case '>':
             parse_gt_or_lt( tk_rshift ) ;
@@ -314,7 +335,6 @@ namespace Assignment_Tokeniser
             case '/':
             parse_slash() ;
             break ;
-
 
                         // End of Inptut
             case EOF:
@@ -394,6 +414,7 @@ namespace Assignment_Tokeniser
                 // make the second character a decimal place
                 newSpelling.insert(1, ".") ;
                 
+                // If there is no sign, add a positive sign
                 if( exponentInt >= 0 ) newSpelling += '+' ;
                 newSpelling += exponentString ;
 
@@ -406,17 +427,22 @@ namespace Assignment_Tokeniser
             {
                 string spelling = token_spelling( token ) ;
                 spelling.erase( 0, 2 ) ;
+                // remove the last character (newline) from spelling
                 spelling.erase( spelling.length() - 1, spelling.length() ) ;
+
                 set_token_spelling( token, spelling ) ;
 
             }
+
             
             // Remove the first and last to characters from the spelling
             if( new_token_kind == tk_adhoc_comment )
             {
                 string spelling = token_spelling( token ) ;
                 spelling.erase( 0, 2 ) ;
+                // remove the last two characters
                 spelling.erase( spelling.length() - 2, spelling.length() ) ;
+
                 set_token_spelling( token, spelling ) ;
             }
 
