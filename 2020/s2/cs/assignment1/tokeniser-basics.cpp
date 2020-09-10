@@ -26,7 +26,6 @@ namespace Assignment_Tokeniser
     int column ;
     int line ;
     int tabCounter ;
-    int tokensOnCurrentLine ;
 
     // Carriage return carry over character
     char carriageReturnCarry ;
@@ -55,13 +54,14 @@ namespace Assignment_Tokeniser
             input += history[ i ] ;
         }
 
+        // variables to store line and column
         int l = 1 ;
         int c = 1 ;
 
+        // count the columns and lines of the input
         for( int i = 0; i < input.length(); i++)
         {
             c++ ;
-
             if(input[ i ] == '\n')
             {
                 l++ ;
@@ -69,7 +69,7 @@ namespace Assignment_Tokeniser
             }
         }
 
-        // create a new token object and reset spelling
+        // create a new token object with the correct line and column and reset spelling
         Token token = new_token( kind, spelling, l, c ) ;
 
         // add the original spelling of token to the history of inputs
@@ -82,6 +82,7 @@ namespace Assignment_Tokeniser
             tokensPerLine.push_back( total ) ;
         }
 
+        // count the token to the current line
         size = tokensPerLine.size() - 1 ;
         tokensPerLine[ size ]++ ;
 
@@ -111,8 +112,6 @@ namespace Assignment_Tokeniser
         int readLine = token_line( token ) ;
         int readColumn = token_column( token ) ;
 
-        // Adding formatting and line number:
-        // ------------------------------------------------------------------------------
         // Previous line formatting and line number
         if( readLine > 1 )
         {
@@ -129,7 +128,8 @@ namespace Assignment_Tokeniser
                 current += " " ;
             }
         current += std::to_string( readLine ) + ": " ; // formating and line number
-
+        
+        // If its the first line, add a junk character
         if( readLine == 1 ) current += "#" ;
 
         // Up arrow string showing start of current token
@@ -139,28 +139,7 @@ namespace Assignment_Tokeniser
         }
         position += "^\n" ;
 
-        // Bug fixing tools
-        // ------------------------------------------------------------------------------
-
-        // print history for debugging
-        string str = "";
-        for( int i = 0; i < history.size(); i++)
-        {
-            str += "Token number: " ;
-            str += std::to_string( i ) + ": " ;
-            str += history [i] ;
-            str += '\n' ;
-        }
-
-        string tk = "";
-        for( int i = 0; i < tokensPerLine.size(); i++)
-        {
-            tk += "Line Number " ;
-            tk += std::to_string( i ) + ": " ;
-            tk += std::to_string(tokensPerLine.at( i )) ;
-            tk += '\n' ;
-        }
-
+        // Create a string with the whole input
         string input = "" ;
         int tokensOnLine ;
         for( int i = 0; i < history.size(); i++)
@@ -168,6 +147,7 @@ namespace Assignment_Tokeniser
             input += history[ i ] ;
         }
 
+        // Remove all lines other than the current and previous one
         int lineCounter = 0;
         for( int i = 0; i < input.length(); i++)
         {
@@ -180,35 +160,47 @@ namespace Assignment_Tokeniser
             }
         }
 
-        // Split the input lines into previous and current lines
+        // Find the character where the last line ends and current line starts
         int newlinePos = 0 ;
         for( int i = 0; i < input.length(); i++)
         {
+            // Store the position in newlinePos
             if( input[ i ] == '\n') newlinePos = i ;
         }
 
+        // Construct the last line context string
         if( readLine > 1 )
         {
             last += input.substr(0, newlinePos) ;
+            // replace newlines with $
             for( int i = 0; i < last.length(); i++)
             {
                 if( last[i] == '\n') last[i] = '$' ;
             }
+            // remove the initial newline character from the previous line
             if( last[6] == '$' ) last.erase(6, 1) ;
+            // formatting
             last += "$\n" ;
         }
 
+        // build the current line context
+        // add the current line of input
         current += input.substr( newlinePos, input.length() ) ;
+        // remove all characters after readColumn
         current.erase(readColumn + 6, current.length() ) ;
+        // add the original spelling of the current token
         current += token_original( token ) ;
 
+        // replace newlines with $
         for( int i = 0; i < current.length(); i++)
         {
             if( current[i] == '\n') current[i] = '$' ;
         }
 
+        // erase the initial newline character from previous line
         current.erase(6, 1) ;
         
+        // ad hoc comment changes
         if( token_kind( token ) == tk_adhoc_comment )
         {
             current.erase(9, current.length() );
@@ -216,15 +208,6 @@ namespace Assignment_Tokeniser
         }
         
         current += "\n" ;
-
-
-
-
-        // return str ;
-        // return input ;
-        // return str ;
-        // return last ;
-        // return last + current + position ;
 
         return last + current + position ;
     }
@@ -234,9 +217,9 @@ namespace Assignment_Tokeniser
     // in some cases you may wish to remember a character to use next time instead of calling read_char()
     void nextch()
     {
-        if ( ch == EOF ) return ;
+        if ( ch == EOF ) return ;   // stop reading characters once EOF is read
 
-        spelling += ch ;                // remember the old ch, it is part of the current token being parsed
+        spelling += ch ;    // remember the old ch, it is part of the current token being parsed
 
         // return a space if tabCounter is above 0, otherwise read the next character
         if( tabCounter > 0){
@@ -251,25 +234,26 @@ namespace Assignment_Tokeniser
 
         switch ( ch )
         {
-            case '\t':                              // Replace tab characters with the appropriate number of spaces
+            case '\t':                      // Replace tab characters with the appropriate number of spaces
             ch = ' ' ;
             tabCounter = 4 - column % 4 ;
             break ;
 
-            case '\r':                              // Replace carraige return characters with a newline
+            case '\r':                      // Replace carraige return characters with a newline
             ch = read_char() ;
             if( ch != '\n' )
             {
-                carriageReturnCarry = ch ;          // If the next ch is not a newline, return it next time nextch() is called
+                carriageReturnCarry = ch ;  // If the next ch is not a newline, return it next time nextch() is called
                 ch = '\n' ;
             }
+            break ;
         }
     }
 
     // initialise the tokeniser
     void initialise_tokeniser()
     {
-                                            // add any other initialisation code you need here
+        // Initialise state variables
         column = 1 ;
         line = 1 ;
         tabCounter = 0 ;
