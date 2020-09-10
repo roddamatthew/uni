@@ -37,21 +37,10 @@ namespace Assignment_Tokeniser
         do nextch() ; while ( c_have(cg_extends_identifier) ) ;
     }
 
-    // * number ::= integer | scientific
-    //
-    // * integer ::= zero | digits
-    //   - zero ::= '0'
-    //   - digits ::= digit19 digit*
-    //   - digit19  ::= '1'-'9'
-    //   - digit  ::= '0'-'9'
-    //
-    // * scientific ::= integer fraction? exponent
-    //   - fraction ::= '.' digit*
-    //   - exponent ::= ('e'|'E') ('+'|'-')? digits0123
-    //   - digits0123 ::= zero | digits123
-    //   - digits123 ::= digit19 digit? digit?
+    // parse number token based on number grammar rules
     static void parse_number()
     {
+        // set token kind
         new_token_kind = tk_integer ;
 
         if(c_have('0')){
@@ -64,6 +53,7 @@ namespace Assignment_Tokeniser
 
         // Check for fraction
         if(c_have('.')){
+            // then token is a scientific not an int
             new_token_kind = tk_scientific ;
             do nextch() ; while ( c_have(cg_digit) ) ;
 
@@ -96,7 +86,7 @@ namespace Assignment_Tokeniser
     }
 
     // Parse a single or multicharacter character symbol
-    // * symbol ::= '@'|'-='|'+='|'*='|'/='|'!='|'=='|'<<<'|'<<'|'>>>'|'>>'|'{'|'}'|'('|')'|'['|']'|'.'
+    // * symbol ::= '@'|'-='|'+='|'*='|'/='|'!='|'=='|'{'|'}'|'('|')'|'['|']'|'.'
     static void parse_symbol(TokenKind kind)
     {
         new_token_kind = kind ;
@@ -139,19 +129,22 @@ namespace Assignment_Tokeniser
     {
         nextch() ;
 
+        // Check for /=
         if( c_have('=') ){
             new_token_kind = tk_div_assign ;
             nextch() ;
         }else if( c_have( '/' ) ){
+            // Check for //
             new_token_kind = tk_eol_comment ;
             do nextch() ; while ( c_have( cg_eol_comment_char ) ) ;
             c_mustbe( '\n' ) ;
         }else if(c_have( '*' ) ){
+            // Check for /*
             new_token_kind = tk_adhoc_comment ;
 
             bool exit = false ;
             bool star ;
-            
+            // Read characters until reading a */
             while ( c_have( cg_adhoc_comment_char ) && exit == false )
             {
                 nextch() ;
@@ -166,7 +159,6 @@ namespace Assignment_Tokeniser
                     star = false ;
                 }
             }
-
             nextch() ;
         }
     }
@@ -176,24 +168,30 @@ namespace Assignment_Tokeniser
         // current character is either '<' or '>'
         nextch() ;
 
+        // '<' case
         if( kind == tk_lshift )
         {
             c_mustbe( '<' ) ;
             if( c_have_next( '<' ) == true )
+            // check for '<<'
             {
                 new_token_kind = tk_lshift_l ;
             }else{
+                // if not the token must be '<<'
                 new_token_kind = tk_lshift ;
             }
         }
 
+        // '>' case
         if( kind == tk_rshift )
         {
             c_mustbe( '>' ) ;
+            // check for '>>>'
             if( c_have_next( '>' ) == true )
             {
                 new_token_kind = tk_rshift_l ;
             }else{
+                // if not the token must be '>>'
                 new_token_kind = tk_rshift ;
             }
         }
