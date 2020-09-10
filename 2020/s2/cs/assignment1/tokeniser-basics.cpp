@@ -45,40 +45,45 @@ namespace Assignment_Tokeniser
     // NOTE: the first character in the input is in column 1 of line 1
     Token new_token(TokenKind kind)
     {
-        int tempColumn ;
-        int tempLine ;
+        int size = tokensPerLine.size() - 1 ;
 
-        switch( kind )
+        // create a string of the entire input until the current token
+        string input = "" ;
+        int tokensOnLine ;
+        for( int i = 0; i < history.size(); i++)
         {
-            case tk_newline:
-            tempColumn = column ;
-            tempLine = line ;
-            tokensPerLine.push_back( tokensOnCurrentLine ) ;
-            tokensOnCurrentLine = 0 ;
-            line++ ;
-            break ;
+            input += history[ i ] ;
+        }
 
-            case tk_eol_comment:
-            tempColumn = 1 ;
-            tempLine = line - 1 ;
-            break ;
+        int l = 1 ;
+        int c = 1 ;
 
-            case tk_adhoc_comment:
-            tempColumn = column ;
-            tempLine = line ;
+        for( int i = 0; i < input.length(); i++)
+        {
+            c++ ;
 
-            default:
-            tempColumn = column - spelling.length() - 1 ;
-            tempLine = line ;
-            break ;
+            if(input[ i ] == '\n')
+            {
+                l++ ;
+                c = 1 ;
+            }
         }
 
         // create a new token object and reset spelling
-        Token token = new_token( kind, spelling, tempLine, tempColumn ) ;
+        Token token = new_token( kind, spelling, l, c ) ;
 
         // add the original spelling of token to the history of inputs
         history.push_back( token_original( token ) ) ;
-        tokensOnCurrentLine++ ;
+        
+        // If the current token is a newline, reset the tokens on current line counter
+        if( kind == tk_newline || kind == tk_eol_comment )
+        {
+            int total = tokensPerLine[ size ] ;
+            tokensPerLine.push_back( total ) ;
+        }
+
+        size = tokensPerLine.size() - 1 ;
+        tokensPerLine[ size ]++ ;
 
         // reset the spelling
         spelling = "" ;
@@ -102,61 +107,40 @@ namespace Assignment_Tokeniser
         string current = "" ;
         string position = "      " ;
 
-        // // Indexes for accessing the correct line/column
-        // int readLine = token_line( token ) ;
-        // int readColumn = token_column( token ) - 1 + token_original( token ).length() ;
+        // Indexes for accessing the correct line/column
+        int readLine = token_line( token ) ;
+        int readColumn = token_column( token ) ;
 
-        // // Previous line string
-        // if( readLine > 1 ){
-        //     for(int i = 0; i < 4 - std::to_string( readLine - 1 ).length(); i++)
-        //     {
-        //         last += " " ;
-        //     }
-        //     last += std::to_string( readLine - 1 ) + ": ";    // formating and line number
-           
-        //     // Adding last line of tokens
-        //     last += history[ readLine - 1 ] ;
-            
-        //     // Erase the last character (newline character)
-        //     // if(last.back() == '\n')
-        //     // {
-        //         last.erase( last.length() - 1, 1) ;
-        //     // }
-            
-        //     // Adding $ to denote end of line
-        //     last += "$\n" ;
-        // }
+        // Adding formatting and line number:
+        // ------------------------------------------------------------------------------
+        // Previous line formatting and line number
+        if( readLine > 1 )
+        {
+            for(int i = 0; i < 4 - std::to_string( readLine - 1 ).length(); i++)
+            {
+                last += " " ;
+            }
+            last += std::to_string( readLine - 1 ) + ": ";
+        }
 
-        // // Up arrow string showing start of current token
-        // for(int i = 1; i < token_column( token ); i++ )
-        // {
-        //     position += " " ;
-        // }
-        // position += "^\n" ;
+        // Current line formatting and line number
+        for(int i = 0; i < 4 - std::to_string( readLine ).length(); i++)
+            {
+                current += " " ;
+            }
+        current += std::to_string( readLine ) + ": " ; // formating and line number
 
+        current += "\n" ;
 
-        // // Current line up to the end of the current token
-        // for(int i = 0; i < 4 - std::to_string( readLine ).length(); i++)
-        //     {
-        //         current += " " ;
-        //     }
-        // current += std::to_string( readLine ) + ": " ; // formating and line number
+        // Up arrow string showing start of current token
+        for(int i = 1; i < token_column( token ); i++ )
+        {
+            position += " " ;
+        }
+        position += "^\n" ;
 
-        // // Adding characters up until the end of the current token
-        // current += history[ readLine ].substr( 0, readColumn ) ;
-
-        // if( token_kind( token ) == tk_eol_comment )
-        // {
-        //     current += history[ readLine ].substr( readColumn, 3 ) ;
-        // }
-        
-        // if( current.back() == '\n' )
-        // {
-        //     current.erase( current.length() - 1, 1 ) ;
-        //     current += '$' ;
-        // }
-
-        // current += "\n" ;
+        // Bug fixing tools
+        // ------------------------------------------------------------------------------
 
         // print history for debugging
         string str = "";
@@ -184,11 +168,35 @@ namespace Assignment_Tokeniser
             input += history[ i ] ;
         }
 
+        int lineCounter = 0;
+        for( int i = 0; i < input.length(); i++)
+        {
+            if( input[ i ] == '\n') lineCounter++ ;
+
+            if( lineCounter >= readLine || lineCounter < readLine - 2 )
+            {
+                input.erase( i , 1) ;
+                i-- ;
+            }
+        }
+
+        // Split the input lines into previous and current lines
+        int newlinePos = 0 ;
+        for( int i = 0; i < input.length(); i++)
+        {
+            if( input[ i ] == '\n') newlinePos = i ;
+        }
+
+        last += input.substr(0, newlinePos) ;
+
+        current += input.substr( newlinePos , input.length()) ;
 
 
+
+        // return tk + str ;
         // return input ;
         // return str ;
-        // return last ;
+        return last ;
         // return current ;
 
         // return last + current + position ;
@@ -239,9 +247,10 @@ namespace Assignment_Tokeniser
         line = 1 ;
         tabCounter = 0 ;
         history.clear() ;
+        tokensPerLine.clear() ;
+        tokensPerLine.push_back( 0 ) ;
 
         carriageReturnCarry = 0 ;
-        tokensOnCurrentLine = 0 ;
 
         ch = '\n' ;                         // initialise ch to avoid accidents
         nextch() ;                          // make first call to nextch to initialise ch using the input
