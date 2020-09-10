@@ -130,8 +130,6 @@ namespace Assignment_Tokeniser
             }
         current += std::to_string( readLine ) + ": " ; // formating and line number
 
-        current += "\n" ;
-
         // Up arrow string showing start of current token
         for(int i = 1; i < token_column( token ); i++ )
         {
@@ -187,9 +185,31 @@ namespace Assignment_Tokeniser
             if( input[ i ] == '\n') newlinePos = i ;
         }
 
-        last += input.substr(0, newlinePos) ;
+        if( readLine > 1 )
+        {
+            last += input.substr(0, newlinePos) ;
+            for( int i = 0; i < last.length(); i++)
+            {
+                if( last[i] == '\n') last[i] = '$' ;
+            }
+            if( last[6] == '$' ) last.erase(6, 1) ;
+            last += "$\n" ;
+        }
 
-        current += input.substr( newlinePos , input.length()) ;
+        current += input.substr( newlinePos, input.length() ) ;
+
+        current.erase(readColumn + 6, current.length() ) ;
+
+        current += token_original( token ) ;
+
+        for( int i = 0; i < current.length(); i++)
+        {
+            if( current[i] == '\n') current[i] = '$' ;
+        }
+
+        current.erase(6, 1) ;
+        current += "\n" ;
+
 
 
 
@@ -197,7 +217,7 @@ namespace Assignment_Tokeniser
         // return input ;
         // return str ;
         // return last ;
-        return current ;
+        return last + current + position ;
 
         // return last + current + position ;
     }
