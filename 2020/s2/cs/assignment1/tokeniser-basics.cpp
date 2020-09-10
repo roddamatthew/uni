@@ -199,9 +199,7 @@ namespace Assignment_Tokeniser
         }
 
         current += input.substr( newlinePos, input.length() ) ;
-
         current.erase(readColumn + 6, current.length() ) ;
-
         current += token_original( token ) ;
 
         for( int i = 0; i < current.length(); i++)
@@ -210,18 +208,25 @@ namespace Assignment_Tokeniser
         }
 
         current.erase(6, 1) ;
+        
+        if( token_kind( token ) == tk_adhoc_comment )
+        {
+            current.erase(9, current.length() );
+            current += "$" ;
+        }
+        
         current += "\n" ;
 
 
 
 
-        // return tk + str ;
+        // return str ;
         // return input ;
         // return str ;
         // return last ;
-        return last + current + position ;
-
         // return last + current + position ;
+
+        return last + current + position ;
     }
 
     // read next character if not at the end of input and update the line and column numbers
