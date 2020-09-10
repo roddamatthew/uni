@@ -196,8 +196,8 @@ namespace Assignment_Tokeniser
         // return tk + str ;
         // return input ;
         // return str ;
-        return last ;
-        // return current ;
+        // return last ;
+        return current ;
 
         // return last + current + position ;
     }
