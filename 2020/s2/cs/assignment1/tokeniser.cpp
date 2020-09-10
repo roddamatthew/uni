@@ -381,7 +381,6 @@ namespace Assignment_Tokeniser
 
                         case 'e':
                         case 'E':
-
                         if( decimalPos == 0 ) decimalPos = i ;
                         ePos = i + 1 ;
                         spelling[ i ] = 'e' ;
