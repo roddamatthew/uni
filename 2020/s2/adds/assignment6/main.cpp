@@ -22,23 +22,20 @@ int main(){
 	std::cin >> binarystr1 ;
 	std::cin >> k2 ;
 
-	Individual a ( binarystr1 ) ;
-	Individual b ( binarystr2 ) ;
+	Individual *  DNA1 = new Individual( binarystr1 ) ;
+	Individual *  DNA2 = new Individual( binarystr2 ) ;
 
 	BitFlip * BF = new BitFlip() ;
 	Rearrange * R = new Rearrange() ;
 
-	Individual * aptr = new Individual() ;
-	Individual * bptr = new Individual() ;
+	Individual * aptr = execute( DNA1, BF, k1 ) ;
+	Individual * aptr2 = execute( aptr, R, k1 ) ;
 
-	aptr = execute( &a, BF, k1 ) ;
-	aptr = execute( &a, R, k1 ) ;
-
-	bptr = execute( &b, BF, k2 ) ;
-	bptr = execute( &b, R, k2 ) ;
+	//Individual * bptr = execute( &DNA2, BF, k2 ) ;
+	//Individual * bptr2 = execute( bptr, R, k2 ) ;
 
 
-	std::cout << aptr -> getString() << bptr -> getString() << bptr -> getMaxOnes() << std::endl ;
+	std::cout << aptr2 -> getString() << std::endl;//<< bptr -> getString() << bptr -> getMaxOnes() << std::endl ;
 
 	return 0 ;
 }
