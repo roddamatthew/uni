@@ -9,46 +9,32 @@ Individual :: Individual() {}
 
 Individual :: Individual( int length )
 {
+	binaryString = "";
 	// Create a list zeroes of given length
 	for( int i = 0 ; i < length ; i++)
 	{
-		binaryString.push_back( 0 ) ;
+		binaryString += "0" ;
 	}
 }
 
 Individual :: Individual( string code )
 {
 	// Create a list with values of the input string
-	for( int i = 0 ; i < code.length() ; i++ )
-	{
-		binaryString.push_back( (char) code[ i ] ) ;
-	}
+	binaryString = code ;
 }
 
 string Individual :: getString()
 {
 	// Return the list as a string
-	string str = "";
-	list<int> :: iterator it = binaryString.begin() ;
-
-	for( int i = 0; i < binaryString.size() ; i++ )
-	{
-		str += *it ;
-		advance( it, 1 ) ;
-	}
-
-	return str ;
+	return binaryString ;
 }
 
 int Individual :: getBit( int pos )
 {
 	// Return the value of a bit at the input position
-	if( pos < binaryString.size() && pos >= 0 )
+	if( pos < binaryString.length() && pos >= 0 )
 	{
-		list<int> :: iterator it = binaryString.begin() ;
-		advance( it, pos ) ;
-
-		return *it ;
+		return binaryString[ pos ] ;
 	}
 	else	// return -1 if outside of range
 	{
@@ -59,20 +45,15 @@ int Individual :: getBit( int pos )
 void Individual :: flipBit( int pos )
 {
 	// Flip the value of the bit at the input position
-	if( pos < binaryString.size() && pos >= 0 )
+	if( pos < binaryString.length() && pos >= 0 )
 	{
-		list<int> :: iterator it = binaryString.begin() ;
-		advance( it, pos ) ;
-
-		if( (char) *it == '0' )
+		if( binaryString[ pos ] == '0' )
 		{
-			binaryString.erase( it ) ;
-			// insert 1
+			binaryString[ pos ] = '1' ;
 		}
-		else if( (char) *it == '1' )
+		else if( binaryString[ pos ] == '1' )
 		{
-			binaryString.erase( it ) ;
-			// insert 0
+			binaryString[ pos ] = '0' ;
 		}
 	}
 }
@@ -80,11 +61,20 @@ void Individual :: flipBit( int pos )
 int Individual :: getMaxOnes()
 {
 	// Return the length of the longest consecutive string of 1's
-	return 0 ;
+	int counter = 0 ;
+	int max = 0 ;
+
+	for( int i = 0; i < binaryString.length(); i++)
+	{
+		if( binaryString[ i ] == '1') counter++ ;
+		if( counter > max ) max = counter ;
+	}
+
+	return max ;
 }
 
 int Individual :: getLength()
 {
 	// Return the length of the list
-	return binaryString.size() ;
+	return binaryString.length() ;
 }

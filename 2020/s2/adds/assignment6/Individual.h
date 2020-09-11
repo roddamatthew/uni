@@ -2,12 +2,11 @@
 #define INDIVIDUAL_H
 
 #include <string>
-#include <list>
 
 class Individual
 {
 private:
-	std::list<int> binaryString ;
+	std::string binaryString ;
 
 public:
 	Individual() ;
