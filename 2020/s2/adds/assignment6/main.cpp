@@ -19,8 +19,10 @@ Individual * execute(Individual * indPtr, Mutator * mPtr, int k)
 int main(){
 	string str ;
 	string binarystr1 ;
+	string kone ;
 	int k1 ;
 	string binarystr2 ;
+	string ktwo ;
 	int k2 ;
 
 	// Input processing
@@ -34,15 +36,30 @@ int main(){
 		i++ ;
 	}
 	i++ ;
+
+	while( str[i] != ' ' )
+	{
+		kone += str[i] ;
+		i++ ;
+	}
+	i++ ;
 	
-	k1 = str[ i ] - 48 ;
-	i = i + 2 ;
+	k1 = stoi( kone ) ;
 
 	while( str[i] != ' ' )
 	{
 		binarystr2 += str[i] ;
 		i++ ;
 	}
+
+	while( str[i] != ' ' )
+	{
+		ktwo += str[i] ;
+		i++ ;
+	}
+	
+	k2 = stoi( ktwo ) ;
+
 
 	i++ ;
 	k2 = str[ i ] - 48 ;
