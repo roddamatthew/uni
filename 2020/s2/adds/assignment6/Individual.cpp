@@ -66,8 +66,9 @@ int Individual :: getMaxOnes()
 
 	for( int i = 0; i < binaryString.length(); i++)
 	{
-		if( binaryString[ i ] == '1') counter++ ;
+		if( binaryString[ i ] == '1' ) counter++ ;
 		if( counter > max ) max = counter ;
+		if( binaryString[ i ] == '0' ) counter = 0;
 	}
 
 	return max ;

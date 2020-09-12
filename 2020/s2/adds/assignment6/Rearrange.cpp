@@ -12,8 +12,9 @@ Individual Rearrange :: mutate( Individual ind, int k )
 {
 	string list = "" ;
 	string code = ind.getString() ;
+	k-- ;
 
-	while( k > ind.getLength() - 1 )
+	while( k >= ind.getLength() )
 	{
 		k = k - ind.getLength() ;
 	}

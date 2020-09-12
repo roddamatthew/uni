@@ -11,7 +11,7 @@ Individual BitFlip :: mutate( Individual ind, int k )
 		k = k - ind.getLength() ;
 	}
 
-	ind.flipBit( k ) ;
+	ind.flipBit( k - 1 ) ;
 
 	return ind ;
 }

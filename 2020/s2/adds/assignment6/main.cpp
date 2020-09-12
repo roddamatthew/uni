@@ -7,46 +7,66 @@
 #include <iostream>
 #include <string>
 
-extern Individual * execute(Individual * indPtr, Mutator * mPtr, int k) ;
-
 using namespace std;
 
+Individual * execute(Individual * indPtr, Mutator * mPtr, int k)
+{
+	string str = indPtr -> getString() ;
+
+	Individual ind = Individual( str );
+
+	ind = mPtr -> mutate( *indPtr, k ) ;
+	
+	return &ind ;
+}
+
 int main(){
+	string str ;
 	string binarystr1 ;
 	int k1 ;
 	string binarystr2 ;
 	int k2 ;
 
-	std::cin >> binarystr1 ;
-	std::cin >> k1 ;
-	std::cin >> binarystr1 ;
-	std::cin >> k2 ;
+	int i = 0 ;
 
-	// Individual *  DNA1 = new Individual( binarystr1 ) ;
-	// Individual *  DNA2 = new Individual( binarystr2 ) ;
+	getline(cin, str);
 
-	// BitFlip * BF = new BitFlip() ;
-	// Rearrange * R = new Rearrange() ;
+	while( str[i] != ' ' )
+	{
+		binarystr1 += str[i] ;
+		i++ ;
+	}
+	i++ ;
+	
+	k1 = str[ i ] - 48 ;
+	i = i + 2 ;
 
-	// Individual * aptr = execute( DNA1, BF, k1 ) ;
-	// Individual * aptr2 = execute( aptr, R, k1 ) ;
+	while( str[i] != ' ' )
+	{
+		binarystr2 += str[i] ;
+		i++ ;
+	}
 
-	// //Individual * bptr = execute( &DNA2, BF, k2 ) ;
-	// //Individual * bptr2 = execute( bptr, R, k2 ) ;
+	i++ ;
+	k2 = str[ i ] - 48 ;
 
+	BitFlip * BF = new BitFlip() ;
+	Rearrange * R = new Rearrange() ;
 
-	// std::cout << aptr2 -> getString() << std::endl;//<< bptr -> getString() << bptr -> getMaxOnes() << std::endl ;
+	Individual *  DNA1 = new Individual( binarystr1 ) ;
+	Individual *  DNA2 = new Individual( binarystr2 ) ;
+
+	std::cout << DNA1 -> getString() << " " << DNA2 -> getString() << " " << DNA2 -> getMaxOnes() << std::endl ;
+
+	Individual * aptr = execute( DNA1, BF, k1 ) ;
+	string a = aptr -> getString() ;
+	Individual *  DNA3 = new Individual( a ) ;
+
+	Individual * bptr = execute( DNA2, R, k2 ) ;
+	string b = bptr -> getString() ;
+	Individual *  DNA4 = new Individual( b ) ;
+
+	std::cout << DNA3 -> getString() << " " << DNA4 -> getString() << " " << DNA4 -> getMaxOnes() << std::endl ;
 
 	return 0 ;
-}
-
-Individual * execute(Individual * indPtr, Mutator * mPtr, int k)
-{
-	Individual ind ;
-
-	ind = mPtr -> mutate( *indPtr, k ) ;
-
-	Individual* indptr = &ind ;
-	
-	return indptr ;
 }
