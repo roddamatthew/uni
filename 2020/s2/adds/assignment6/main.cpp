@@ -43,26 +43,23 @@ int main(){
 		i++ ;
 	}
 	i++ ;
-	
-	k1 = stoi( kone ) ;
 
 	while( str[i] != ' ' )
 	{
 		binarystr2 += str[i] ;
 		i++ ;
 	}
+	i++ ;
 
-	while( str[i] != ' ' )
+	while( str[i] != ' ' && i < str.length() )
 	{
 		ktwo += str[i] ;
 		i++ ;
 	}
-	
+
+	k1 = stoi( kone ) ;
 	k2 = stoi( ktwo ) ;
 
-
-	i++ ;
-	k2 = str[ i ] - 48 ;
 
 	// Initialise classes
 	BitFlip * BF = new BitFlip() ;
