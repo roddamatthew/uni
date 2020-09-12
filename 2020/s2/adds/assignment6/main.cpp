@@ -56,8 +56,6 @@ int main(){
 	Individual *  DNA1 = new Individual( binarystr1 ) ;
 	Individual *  DNA2 = new Individual( binarystr2 ) ;
 
-	std::cout << DNA1 -> getString() << " " << DNA2 -> getString() << " " << DNA2 -> getMaxOnes() << std::endl ;
-
 	Individual * aptr = execute( DNA1, BF, k1 ) ;
 	string a = aptr -> getString() ;
 	Individual *  DNA3 = new Individual( a ) ;
