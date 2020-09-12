@@ -11,13 +11,9 @@ using namespace std;
 
 Individual * execute(Individual * indPtr, Mutator * mPtr, int k)
 {
-	string str = indPtr -> getString() ;
-
-	Individual ind = Individual( str );
-
-	ind = mPtr -> mutate( *indPtr, k ) ;
+	*indPtr = mPtr -> mutate( *indPtr, k ) ;
 	
-	return &ind ;
+	return indPtr ;
 }
 
 int main(){
@@ -27,6 +23,7 @@ int main(){
 	string binarystr2 ;
 	int k2 ;
 
+	// Input processing
 	int i = 0 ;
 
 	getline(cin, str);
@@ -50,12 +47,14 @@ int main(){
 	i++ ;
 	k2 = str[ i ] - 48 ;
 
+	// Initialise classes
 	BitFlip * BF = new BitFlip() ;
 	Rearrange * R = new Rearrange() ;
 
 	Individual *  DNA1 = new Individual( binarystr1 ) ;
 	Individual *  DNA2 = new Individual( binarystr2 ) ;
 
+	// Perform mutations
 	Individual * aptr = execute( DNA1, BF, k1 ) ;
 	string a = aptr -> getString() ;
 	Individual *  DNA3 = new Individual( a ) ;
@@ -64,6 +63,7 @@ int main(){
 	string b = bptr -> getString() ;
 	Individual *  DNA4 = new Individual( b ) ;
 
+	// Output
 	std::cout << DNA3 -> getString() << " " << DNA4 -> getString() << " " << DNA4 -> getMaxOnes() << std::endl ;
 
 	return 0 ;
