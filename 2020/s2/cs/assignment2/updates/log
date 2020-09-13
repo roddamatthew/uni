@@ -1,0 +1,98 @@
+200913-123918 Modified: ZjcwNmQ0OTg0MTY2MDY1YTBhMzA3ZWI4Mjc3NWZjZWIyMDRhZDk3ZiAgLi8uRFNfU3RvcmUKOWIxY2Q0MjBkYzM2OWU5ZjNkNTFhYWRlOTM1MmRmOWYwZThmNjc5YSAgLi91cGRhdGVzL2Fzc2lnbm1lbnQyLTIwMjAwODE0LTEwMTgzNi56aXAK
+200913-123918 make install
+200913-123918 SVN user: a1773620, repository path: 2020/s2/cs/assignment2
+200913-123918 updater:  Directory: ./bin
+200913-123918 updater:  Directory: ./originals
+200913-123918 updater:  Directory: ./tests
+200913-123918 updater:  Directory: ./includes
+200913-123918 updater:  Directory: ./lib
+200913-123918 updater:  Directory: ./lib/cats
+200913-123918 updater:  Directory: ./lib/cats/bin
+200913-123918 updater:  Directory: ./lib/macos
+200913-123918 updater:  Directory: ./lib/macos/bin
+200913-123918 updater:  Directory: ./lib/centos8
+200913-123918 updater:  Directory: ./lib/centos8/bin
+200913-123918 updater:  Creating: ./bin/diffc
+200913-123918 updater:  Creating: ./bin/assembler
+200913-123918 updater:  Creating: ./bin/diff-colours
+200913-123918 updater:  Creating: ./bin/dummy-translator
+200913-123918 updater:  Creating: ./bin/simulator
+200913-123918 updater:  Creating: ./bin/Compiler-check.bash
+200913-123918 updater:  Creating: ./bin/run-tests
+200913-123918 updater:  Creating: updates/Makefile
+200913-123918 updater:  Creating: ./originals/translator.cpp
+200913-123918 updater:  Creating: ./tests/08_CvrtBin.sim
+200913-123918 updater:  Creating: ./tests/10_Bat.sim
+200913-123918 updater:  Creating: ./tests/02_pc43.vm
+200913-123918 updater:  Creating: ./tests/01_example.sim
+200913-123918 updater:  Creating: ./tests/07_Cover.vm
+200913-123918 updater:  Creating: ./tests/11_Average.vm
+200913-123918 updater:  Creating: ./tests/00_xcall.sim
+200913-123918 updater:  Creating: ./tests/12_Square.vm
+200913-123918 updater:  Creating: ./tests/08_CvrtBin.vm
+200913-123918 updater:  Creating: ./tests/07_Cover.sim
+200913-123918 updater:  Creating: ./tests/03_Seven.vm
+200913-123918 updater:  Creating: ./tests/05_recfib.vm
+200913-123918 updater:  Creating: ./tests/13_PongGme.sim
+200913-123918 updater:  Creating: ./tests/09_SqGame.vm
+200913-123918 updater:  Creating: ./tests/05_recfib.sim
+200913-123918 updater:  Creating: ./tests/03_Seven.sim
+200913-123918 updater:  Creating: ./tests/02_pc43.sim
+200913-123918 updater:  Creating: ./tests/06_Pong.sim
+200913-123918 updater:  Creating: ./tests/10_Bat.vm
+200913-123918 updater:  Creating: ./tests/04_Square.sim
+200913-123918 updater:  Creating: ./tests/14_Ball.vm
+200913-123918 updater:  Creating: ./tests/09_SqGame.sim
+200913-123918 updater:  Creating: ./tests/11_Average.sim
+200913-123918 updater:  Creating: ./tests/12_Square.sim
+200913-123918 updater:  Creating: ./tests/04_Square.vm
+200913-123918 updater:  Creating: ./tests/14_Ball.sim
+200913-123918 updater:  Creating: ./tests/01_example.vm
+200913-123918 updater:  Creating: ./tests/13_PongGme.vm
+200913-123918 updater:  Creating: ./tests/00_xcall.vm
+200913-123918 updater:  Creating: ./tests/06_Pong.vm
+200913-123918 updater:  Creating: ./includes/symbols.h
+200913-123918 updater:  Creating: ./includes/assembler-internal.h
+200913-123918 updater:  Creating: ./includes/tokeniser.h
+200913-123918 updater:  Creating: ./includes/iobuffer.h
+200913-123918 updater:  Creating: ./includes/abstract-syntax-tree.h
+200913-123918 updater:  Creating: ./translator
+200913-123918 updater:  Creating: ./lib/cats/bin/assembler
+200913-123918 updater:  Creating: ./lib/cats/bin/diff-colours
+200913-123918 updater:  Creating: ./lib/cats/bin/dummy-translator
+200913-123918 updater:  Creating: ./lib/cats/bin/simulator
+200913-123918 updater:  Creating: ./lib/cats/lib.a
+200913-123918 updater:  Creating: ./lib/macos/bin/assembler
+200913-123918 updater:  Creating: ./lib/macos/bin/diff-colours
+200913-123918 updater:  Creating: ./lib/macos/bin/dummy-translator
+200913-123918 updater:  Creating: ./lib/macos/bin/simulator
+200913-123918 updater:  Creating: ./lib/macos/lib.a
+200913-123918 updater:  Creating: ./lib/centos8/bin/assembler
+200913-123918 updater:  Creating: ./lib/centos8/bin/diff-colours
+200913-123918 updater:  Creating: ./lib/centos8/bin/dummy-translator
+200913-123918 updater:  Creating: ./lib/centos8/bin/simulator
+200913-123918 updater:  Creating: ./lib/centos8/lib.a
+200913-123918 updater:  Made translator executable
+200913-123918 updater:  Made bin/Compiler-check.bash executable
+200913-123918 updater:  Made bin/assembler executable
+200913-123918 updater:  Made bin/diff-colours executable
+200913-123918 updater:  Made bin/diffc executable
+200913-123918 updater:  Made bin/dummy-translator executable
+200913-123918 updater:  Made bin/run-tests executable
+200913-123918 updater:  Made bin/simulator executable
+200913-123918 updater:  Made lib/cats/bin/assembler executable
+200913-123918 updater:  Made lib/cats/bin/diff-colours executable
+200913-123918 updater:  Made lib/cats/bin/dummy-translator executable
+200913-123918 updater:  Made lib/cats/bin/simulator executable
+200913-123918 updater:  Made lib/centos8/bin/assembler executable
+200913-123918 updater:  Made lib/centos8/bin/diff-colours executable
+200913-123918 updater:  Made lib/centos8/bin/dummy-translator executable
+200913-123918 updater:  Made lib/centos8/bin/simulator executable
+200913-123918 updater:  Made lib/macos/bin/assembler executable
+200913-123918 updater:  Made lib/macos/bin/diff-colours executable
+200913-123918 updater:  Made lib/macos/bin/dummy-translator executable
+200913-123918 updater:  Made lib/macos/bin/simulator executable
+200913-123918 updater:  Removing MacOS quarantine flags from the executables
+200913-123918 updater:  Creating: translator.cpp
+200913-123918 updater:  Updating: updates/README
+200913-123918 updater:  Update installed
