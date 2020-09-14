@@ -65,9 +65,26 @@ namespace Exam_Tokeniser
         nextch() ;
         c_mustbe( 'x' ) ;
 
-        while( c_have( cg_extends_number ) ) nextch() ;
+        while( c_have( cg_extends_number ) )
+        {
+            nextch() ;
+        }
+    }
 
-        nextch () ;
+    // ('Dr'|'Mr') ' ' ('A'-'Z')('a'-'z')* ' ' ('A'-'Z')('a'-'z')*
+    static void parse_name()
+    {
+        new_token_kind = tk_arbitrary ;
+        nextch() ;
+        c_mustbe( 'r' ) ;
+
+        c_mustbe( ' ' ) ;
+        c_mustbe( cg_starts_name ) ;
+        do nextch() ; while( c_have( cg_extends_name ) ) ;
+
+        c_mustbe( ' ' ) ;
+        c_mustbe( cg_starts_name ) ;
+        do nextch() ; while( c_have( cg_extends_name ) ) ;
 
     }
 
@@ -101,6 +118,11 @@ namespace Exam_Tokeniser
 
         case '0':
             parse_number() ;
+            break ;
+
+        case 'M':
+        case 'D':
+            parse_name() ;
             break ;
 
                         // End of Inptut
