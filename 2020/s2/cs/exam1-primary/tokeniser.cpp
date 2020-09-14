@@ -26,19 +26,30 @@ namespace Exam_Tokeniser
     static void parse_operator()
     {
         new_token_kind = tk_operator ;
-        nextch() ;
 
-        if( c_have('-') )
+        if( c_have( '-' ) )
         { 
+            nextch() ;
             c_have_next( '-' ) ; 
         }
-        else if( c_have('+') )
+        else if( c_have( '+' ) )
         {
+            nextch() ;
             c_have_next( '+' ) ;
         }
-        else if( c_have('<') || c_have('>') )
+        else if( c_have( '<' ) )
         {
+            nextch() ;
             c_mustbe( '=' ) ;
+        }
+        else if( c_have( '>' ) )
+        {
+            nextch() ;
+            c_mustbe( '=' ) ;
+        }
+        else
+        {
+            nextch() ;
         }
     }
 
