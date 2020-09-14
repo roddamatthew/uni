@@ -64,6 +64,10 @@ namespace Exam_Tokeniser
             parse_extra( tk_number ) ;
             break ;
 
+        case '@':
+            parse_extra( tk_weird ) ;
+            break ;
+
                         // End of Inptut
         case EOF:
             new_token_kind = tk_eoi ;
