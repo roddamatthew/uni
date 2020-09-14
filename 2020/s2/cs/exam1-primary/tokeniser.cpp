@@ -53,6 +53,24 @@ namespace Exam_Tokeniser
         }
     }
 
+    static void parse_identifier()
+    {
+        new_token_kind = tk_identifier ;
+        do nextch() ; while( c_have(cg_extends_identifier) ) ;
+    }
+
+    static void parse_number()
+    {
+        new_token_kind = tk_number ;
+        nextch()
+        c_mustbe( 'x' ) ;
+
+        while( c_have( cg_extends_number ) ) nextch() ;
+
+        nextch ;
+
+    }
+
     // return the next Token object by reading more of the input
     // you must read input using the nextch() function
     // the last character read is in the static variable ch
@@ -75,6 +93,14 @@ namespace Exam_Tokeniser
         case '>':
         case '<':
             parse_operator( ) ;
+            break ;
+
+        case '$':
+            parse_identifier() ;
+            break ;
+
+        case '0':
+            parse_number() ;
             break ;
 
                         // End of Inptut
