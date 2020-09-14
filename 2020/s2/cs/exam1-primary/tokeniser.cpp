@@ -62,12 +62,12 @@ namespace Exam_Tokeniser
     static void parse_number()
     {
         new_token_kind = tk_number ;
-        nextch()
+        nextch() ;
         c_mustbe( 'x' ) ;
 
         while( c_have( cg_extends_number ) ) nextch() ;
 
-        nextch ;
+        nextch () ;
 
     }
 
