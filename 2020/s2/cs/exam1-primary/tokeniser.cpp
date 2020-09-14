@@ -23,6 +23,25 @@ namespace Exam_Tokeniser
         nextch() ;
     }
 
+    static void parse_operator()
+    {
+        new_token_kind = tk_operator ;
+        nextch() ;
+
+        if( c_have('-') )
+        { 
+            c_have_next( '-' ) ; 
+        }
+        else if( c_have('+') )
+        {
+            c_have_next( '+' ) ;
+        }
+        else if( c_have('<') || c_have('>') )
+        {
+            c_mustbe( '=' ) ;
+        }
+    }
+
     // return the next Token object by reading more of the input
     // you must read input using the nextch() function
     // the last character read is in the static variable ch
@@ -36,7 +55,16 @@ namespace Exam_Tokeniser
                         // ******   ADD NEW CODE HERE  ******
                         // add case labels and calls for the each token kind here ...
 
-
+        case '[':
+        case ']':
+        case '&':
+        case '~':
+        case '-':
+        case '+':
+        case '>':
+        case '<':
+            parse_operator( ) ;
+            break ;
 
                         // End of Inptut
         case EOF:
