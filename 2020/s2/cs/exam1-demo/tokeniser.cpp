@@ -24,9 +24,9 @@ namespace Exam_Tokeniser
 
     static void parse_exclamation()
     {
-        new_token_kind = tk_operator ;
-        c_mustbe( '=' ) ;
         nextch() ;
+        c_mustbe( '=' ) ;
+        new_token_kind = tk_operator ;
     }
 
     // return the next Token object by reading more of the input
