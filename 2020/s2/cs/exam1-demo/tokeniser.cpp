@@ -29,6 +29,12 @@ namespace Exam_Tokeniser
         new_token_kind = tk_operator ;
     }
 
+    static void parse_identifier()
+    {
+        do nextch() ; while( c_have(cg_extends_identifier) ) ;
+        new_token_kind = tk_identifier ;
+    }
+
     // return the next Token object by reading more of the input
     // you must read input using the nextch() function
     // the last character read is in the static variable ch
@@ -47,6 +53,11 @@ namespace Exam_Tokeniser
 
         case '!':
             parse_exclamation() ;
+            break ;
+
+        case 'A'...'Z':
+        case '_':
+            parse_identifier() ;
             break ;
 
                         // End of Inptut
