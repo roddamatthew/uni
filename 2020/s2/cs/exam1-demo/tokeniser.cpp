@@ -15,11 +15,17 @@ namespace Exam_Tokeniser
     // ******   ADD NEW CODE HERE  ******
     // add your own parse_*() functions here ...
 
-
     // read an extra character and set the token kind
     static void parse_extra(TokenKind kind)
     {
         new_token_kind = kind ;
+        nextch() ;
+    }
+
+    static void parse_exclamation()
+    {
+        new_token_kind = tk_operator ;
+        c_mustbe( '=' ) ;
         nextch() ;
     }
 
@@ -39,6 +45,9 @@ namespace Exam_Tokeniser
             parse_extra(tk_operator) ;
             break ;
 
+        case '!':
+            parse_exclamation() ;
+            break ;
 
                         // End of Inptut
         case EOF:
