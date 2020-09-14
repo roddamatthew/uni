@@ -1,0 +1,44 @@
+200915-090019 Modified: YjI0NDViYzU0MWEwMzc1NjYwMWNiYjE0ODkxZTE4NGUyMjU0NjU1NCAgLi8uRFNfU3RvcmUKYzNkMjBmYjJkZjNiYWQ2OTgwMzQ0ODA1MTYxYzkwZWNhYzM0MjZhOSAgLi91cGRhdGVzL2V4YW0xcC0yMDIwMDgzMS0xNTU4MjUuemlwCg==
+200915-090019 make install
+200915-090019 SVN user: a1773620, repository path: 2020/s2/cs/exam1-primary
+200915-090019 updater:  Directory: ./bin
+200915-090019 updater:  Directory: ./originals
+200915-090019 updater:  Directory: ./tests
+200915-090019 updater:  Directory: ./includes
+200915-090019 updater:  Directory: ./lib
+200915-090019 updater:  Directory: ./lib/cats
+200915-090019 updater:  Directory: ./lib/cats/bin
+200915-090019 updater:  Directory: ./lib/macos
+200915-090019 updater:  Directory: ./lib/macos/bin
+200915-090019 updater:  Directory: ./lib/centos8
+200915-090019 updater:  Directory: ./lib/centos8/bin
+200915-090019 updater:  Creating: ./tokeniser
+200915-090019 updater:  Creating: ./bin/diffc
+200915-090019 updater:  Creating: ./bin/diff-colours
+200915-090019 updater:  Creating: ./bin/Compiler-check.bash
+200915-090019 updater:  Creating: ./bin/run-tests
+200915-090019 updater:  Creating: updates/Makefile
+200915-090019 updater:  Creating: ./originals/tokeniser.cpp
+200915-090019 updater:  Creating: ./tests/empty
+200915-090019 updater:  Creating: ./tests/empty.tokens
+200915-090019 updater:  Creating: ./includes/tokeniser-extras.h
+200915-090019 updater:  Creating: ./includes/tokeniser.h
+200915-090019 updater:  Creating: ./lib/cats/bin/diff-colours
+200915-090019 updater:  Creating: ./lib/cats/lib.a
+200915-090019 updater:  Creating: ./lib/macos/bin/diff-colours
+200915-090019 updater:  Creating: ./lib/macos/lib.a
+200915-090019 updater:  Creating: ./lib/centos8/bin/diff-colours
+200915-090019 updater:  Creating: ./lib/centos8/lib.a
+200915-090019 updater:  Creating: ./main.cpp
+200915-090019 updater:  Made tokeniser executable
+200915-090019 updater:  Made bin/Compiler-check.bash executable
+200915-090019 updater:  Made bin/diff-colours executable
+200915-090019 updater:  Made bin/diffc executable
+200915-090019 updater:  Made bin/run-tests executable
+200915-090019 updater:  Made lib/cats/bin/diff-colours executable
+200915-090019 updater:  Made lib/centos8/bin/diff-colours executable
+200915-090019 updater:  Made lib/macos/bin/diff-colours executable
+200915-090019 updater:  Removing MacOS quarantine flags from the executables
+200915-090019 updater:  Creating: tokeniser.cpp
+200915-090019 updater:  Updating: updates/README
+200915-090019 updater:  Update installed
