@@ -60,6 +60,10 @@ namespace Exam_Tokeniser
             parse_identifier() ;
             break ;
 
+        case '9':
+            parse_extra( tk_number ) ;
+            break ;
+
                         // End of Inptut
         case EOF:
             new_token_kind = tk_eoi ;
