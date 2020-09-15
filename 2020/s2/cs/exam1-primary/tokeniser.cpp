@@ -80,11 +80,17 @@ namespace Exam_Tokeniser
 
         c_mustbe( ' ' ) ;
         c_mustbe( cg_starts_name ) ;
-        do nextch() ; while( c_have( cg_extends_name ) ) ;
+        while( c_have( cg_extends_name ) )
+        {
+            nextch() ;
+        }
 
         c_mustbe( ' ' ) ;
         c_mustbe( cg_starts_name ) ;
-        do nextch() ; while( c_have( cg_extends_name ) ) ;
+        while( c_have( cg_extends_name ) )
+        {
+            nextch() ;
+        }
 
     }
 
