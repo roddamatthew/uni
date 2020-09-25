@@ -96,3 +96,24 @@
 200913-123918 updater:  Creating: translator.cpp
 200913-123918 updater:  Updating: updates/README
 200913-123918 updater:  Update installed
+200913-124022 make 
+200913-124022 SVN user: a1773620, repository path: 2020/s2/cs/assignment2
+200925-111538 Modified: NDk1ZDRjYjNjMmRlM2NlMWI1MmJjYjJmNzQ3ZmRiNGE1MmM1MzE5ZSAgLi8uRFNfU3RvcmUKMjVkMDQ0NWFmY2ZiZDE1NjMxNzVlOGFiM2Y5MTkyNTExMjJiNTRiYSAgLi91cGRhdGVzLy5EU19TdG9yZQpmNmYyZjM1MDMzMWJjZDE1YzBmMWE3NzUxMmI5YzE3NWE1ODVjOWU1ICAuL3VwZGF0ZXMvYXNzaWdubWVudDItMjAyMDA5MjMtMTM1NjQxLnppcAo=
+200925-111538 make install
+200925-111538 SVN user: a1773620, repository path: 2020/s2/cs/assignment2
+200925-111538 updater:  Updating: updates/Makefile
+200925-111538 updater:  Updating: ./lib/cats/bin/assembler
+200925-111538 updater:  Updating: ./lib/cats/bin/dummy-translator
+200925-111538 updater:  Updating: ./lib/cats/bin/simulator
+200925-111538 updater:  Updating: ./lib/cats/lib.a
+200925-111538 updater:  Updating: ./lib/macos/bin/assembler
+200925-111538 updater:  Updating: ./lib/macos/bin/dummy-translator
+200925-111538 updater:  Updating: ./lib/macos/bin/simulator
+200925-111538 updater:  Updating: ./lib/macos/lib.a
+200925-111538 updater:  Updating: ./lib/centos8/bin/assembler
+200925-111538 updater:  Updating: ./lib/centos8/bin/dummy-translator
+200925-111538 updater:  Updating: ./lib/centos8/bin/simulator
+200925-111538 updater:  Updating: ./lib/centos8/lib.a
+200925-111538 updater:  Removing MacOS quarantine flags from the executables
+200925-111538 updater:  Updating: updates/README
+200925-111538 updater:  Update installed

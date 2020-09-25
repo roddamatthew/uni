@@ -42,7 +42,7 @@ fi
 check_changed_files()
 {
     # checksum all files modified since last change to updates/log
-    find . -type f -newer updates/log -exec shasum \{} \; | grep -v -e './.changes' -e './.reminders' -e './updates/log' > .changes 2> /dev/null
+    find . -type f -newer updates/log -exec shasum \{} \; | grep -v -e './lib' -e './.changes' -e './.reminders' -e './updates/log' > .changes 2> /dev/null
     if [ -s .changes ]
     then
         # record summary in updates/log
@@ -54,8 +54,8 @@ check_changed_files()
     rm -f .changes
 }
 
-# record start of this run
-now=`date +%y%m%d-%H%M%S`
+# record start of this run - set timezone, students run this in other countries
+now=`(export TZ=Australia/Adelaide ; date +%y%m%d-%H%M%S)`
 check_changed_files
 echo "${now} make ${@}" >> updates/log
 chmod 600 updates/log
