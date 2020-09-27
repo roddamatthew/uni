@@ -33,6 +33,15 @@ static void translate_vm_operator(TokenKind the_op)
         output_assembler("A=M-1") ;
         output_assembler("M=D+M") ;
     } 
+    else if ( the_op == tk_sub )
+    {
+        output_assembler("@SP") ;
+        output_assembler("AM=M-1") ;
+        output_assembler("D=M") ;
+        output_assembler("@SP") ;
+        output_assembler("A=M-1") ;
+        output_assembler("M=M-D") ;
+    }
 
     // ... your code goes here ...
 
