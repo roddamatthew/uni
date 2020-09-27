@@ -19,6 +19,14 @@ using namespace Hack_Virtual_Machine ;
 
 #include <string>
 
+// Decrement the stack pointer 1 and store the last value in the D register
+static void decrement_SP_store_in_D()
+{
+        output_assembler("@SP") ;
+        output_assembler("AM=M-1") ;
+        output_assembler("D=M") ;
+}
+
 // translate vm operator command into assembly language
 static void translate_vm_operator(TokenKind the_op)
 {
@@ -26,24 +34,30 @@ static void translate_vm_operator(TokenKind the_op)
 
     if ( the_op == tk_add )
     {
-        output_assembler("@SP") ;
-        output_assembler("AM=M-1") ;
-        output_assembler("D=M") ;
+        decrement_SP_store_in_D() ;
+
         output_assembler("@SP") ;
         output_assembler("A=M-1") ;
         output_assembler("M=D+M") ;
     } 
     else if ( the_op == tk_sub )
     {
-        output_assembler("@SP") ;
-        output_assembler("AM=M-1") ;
-        output_assembler("D=M") ;
+        decrement_SP_store_in_D() ;
+        
         output_assembler("@SP") ;
         output_assembler("A=M-1") ;
         output_assembler("M=M-D") ;
     }
+    else if ( the_op == tk_and )
+    {
 
-    // ... your code goes here ...
+    }
+    else if ( the_op == tk_neg )
+    {       
+        output_assembler("@SP") ;
+        output_assembler("A=M-1") ;
+        output_assembler("M=-M") ;
+    }
 
     end_of_vm_command() ;
 }
