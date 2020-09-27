@@ -163,7 +163,44 @@ static void translate_vm_stack(TokenKind stack,TokenKind segment,int offset)
     }
     else if ( stack == tk_pop )
     {
-        
+        // pop top of stack into D
+        output_assembler( "@SP" ) ;
+        output_assembler( "AM=M-1" ) ;
+        output_assembler( "D=M" ) ;
+
+        // access correct memory segment
+        if ( segment == tk_argument )
+        {
+            output_assembler( "@ARG" ) ;
+        }
+        else if ( segment == tk_local )
+        {
+            output_assembler( "@LCL" ) ;
+        }
+        else if ( segment == tk_temp )
+        {
+            output_assembler( "@5" ) ;
+        }
+        else if ( segment == tk_that )
+        {
+            output_assembler( "@THAT" ) ;
+        }
+        else if ( segment == tk_this )
+        {
+            output_assembler( "@THIS" ) ;
+        }
+
+        output_assembler( "A=M" ) ;
+
+        // apply offset
+        while ( offset > 0 )
+        {
+           output_assembler( "A=A+1" ) ; 
+           offset-- ;
+        }
+
+        // pop into memory specified
+        output_assembler( "M=D" ) ;
     }
 
 
