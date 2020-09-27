@@ -109,16 +109,63 @@ static void translate_vm_stack(TokenKind stack,TokenKind segment,int offset)
 
     if ( stack == tk_push )
     {
-        if ( segment == tk_constant )
+        output_assembler( "@" + to_string( offset ) ) ;
+        output_assembler( "D=A" ) ;
+
+        if ( segment == tk_argument )
         {
-            output_assembler( "@" + to_string( offset ) ) ;
-            output_assembler( "D=A" ) ;
-            output_assembler( "@SP" ) ;
-            output_assembler( "AM=M+1" ) ;
-            output_assembler( "A=A-1" ) ;
-            output_assembler( "M=D" ) ;
+            output_assembler( "@ARG" ) ;
+            output_assembler( "A=D+M" ) ;
+            output_assembler( "D=M" ) ;
         }
+        else if ( segment == tk_local )
+        {
+            output_assembler( "@LCL" ) ;
+            output_assembler( "A=D+M" ) ;
+            output_assembler( "D=M" ) ;
+        }
+        else if ( segment == tk_this )
+        {
+            output_assembler( "@THIS" ) ;
+            output_assembler( "A=D+M" ) ;
+            output_assembler( "D=M" ) ;
+        }
+        else if ( segment == tk_that )
+        {
+            output_assembler( "@THAT" ) ;
+            output_assembler( "A=D+M" ) ;
+            output_assembler( "D=M" ) ;
+        }
+        else if ( segment == tk_static )
+        {
+            output_assembler( "@16" ) ;
+            output_assembler( "A=D+M" ) ;
+            output_assembler( "D=M" ) ;
+        }
+        else if ( segment == tk_temp )
+        {
+            output_assembler( "@5" ) ;
+            output_assembler( "A=D+M" ) ;
+            output_assembler( "D=M" ) ;
+        }
+        else if ( segment == tk_pointer )
+        {
+            output_assembler( "@3" ) ;
+            output_assembler( "A=D+M" ) ;
+            output_assembler( "D=M" ) ;
+        }
+
+        output_assembler( "@SP" ) ;
+        output_assembler( "AM=M+1" ) ;
+        output_assembler( "A=A-1" ) ;
+        output_assembler( "M=D" ) ;
+
     }
+    else if ( stack == tk_pop )
+    {
+        
+    }
+
 
     end_of_vm_command() ;
 }
