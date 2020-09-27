@@ -13,11 +13,26 @@ using namespace Hack_Virtual_Machine ;
 ////////////////////////////////////////////////////////////////
 /************     MODIFY CODE BETWEEN HERE     **************/
 
+// Authorship: Matthew Rodda, a1773620
+// Date Started: 25th September 2020
+// Date Completed: **th September 2020
+
+#include <string>
 
 // translate vm operator command into assembly language
 static void translate_vm_operator(TokenKind the_op)
 {
     start_of_vm_operator_command(the_op) ;
+
+    if ( the_op == tk_add )
+    {
+        output_assembler("@SP") ;
+        output_assembler("AM=M-1") ;
+        output_assembler("D=M") ;
+        output_assembler("@SP") ;
+        output_assembler("A=M-1") ;
+        output_assembler("M=D+M") ;
+    } 
 
     // ... your code goes here ...
 
@@ -50,6 +65,19 @@ static void translate_vm_stack(TokenKind stack,TokenKind segment,int offset)
     start_of_vm_stack_command(stack,segment,offset) ;
 
     // ... your code goes here ...
+
+    if ( stack == tk_push )
+    {
+        if ( segment == tk_constant )
+        {
+            output_assembler( "@" + to_string( offset ) ) ;
+            output_assembler( "D=A" ) ;
+            output_assembler( "@SP" ) ;
+            output_assembler( "AM=M+1" ) ;
+            output_assembler( "A=A-1" ) ;
+            output_assembler( "M=D" ) ;
+        }
+    }
 
     end_of_vm_command() ;
 }
@@ -152,4 +180,3 @@ int main(int argc,char **argv)
     print_output() ;
     print_errors() ;
 }
-
