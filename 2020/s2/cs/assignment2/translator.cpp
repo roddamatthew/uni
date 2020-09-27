@@ -50,7 +50,11 @@ static void translate_vm_operator(TokenKind the_op)
     }
     else if ( the_op == tk_and )
     {
-
+        decrement_SP_store_in_D() ;
+        
+        output_assembler("@SP") ;
+        output_assembler("A=M-1") ;
+        output_assembler("M=D&M") ;
     }
     else if ( the_op == tk_neg )
     {       
