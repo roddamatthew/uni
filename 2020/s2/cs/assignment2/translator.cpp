@@ -179,7 +179,7 @@ static void translate_vm_stack(TokenKind stack,TokenKind segment,int offset)
         }
         else if ( segment == tk_static )
         {
-            output_assembler( "@" + functionName + "." + to_string( offset ) ) ;
+            // output_assembler( "@" + functionName + "$." + to_string( offset ) ) ;
             output_assembler( "A=D+M" ) ;
             output_assembler( "D=M" ) ;
         }
