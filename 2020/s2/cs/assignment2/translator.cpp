@@ -19,6 +19,9 @@ using namespace Hack_Virtual_Machine ;
 
 #include <string>
 
+string functionName ;
+string className ;
+
 // Decrement the stack pointer 1 and store the last value in the D register
 static void decrement_SP_store_in_D()
 {
@@ -86,6 +89,18 @@ static void translate_vm_jump(TokenKind jump, string label)
     start_of_vm_jump_command(jump,label) ;
 
     // ... your code goes here ...
+    if ( jump == tk_goto )
+    {
+
+    }
+    else if ( jump == tk_if_goto )
+    {
+
+    }
+    else if ( jump == tk_label )
+    {
+        // output_assembler( "(" + label + ")" ) ;
+    }
 
     end_of_vm_command() ;
 }
@@ -96,6 +111,29 @@ static void translate_vm_function(TokenKind func, string label, int n)
     start_of_vm_func_command(func,label,n) ;
 
     // ... your code goes here ...
+    if( func == tk_function )
+    {
+        className = "" ;
+        functionName = label ;
+        int i = 0 ;
+
+        while ( label[ i ] != '.' )
+        {
+            className += label[ i ] ;
+            i++ ;
+        }
+
+        output_assembler( "(" + label + ")" ) ;
+        while( n > 0 )
+        {
+            output_assembler( "@SP" ) ;
+            output_assembler( "A=M" ) ;
+            output_assembler( "M=0" ) ;
+            output_assembler( "@SP" ) ;
+            output_assembler( "M=M+1" ) ;
+            n-- ;
+        }
+    }
 
     end_of_vm_command() ;
 }
@@ -109,8 +147,11 @@ static void translate_vm_stack(TokenKind stack,TokenKind segment,int offset)
 
     if ( stack == tk_push )
     {
-        output_assembler( "@" + to_string( offset ) ) ;
-        output_assembler( "D=A" ) ;
+        if( segment != tk_static )
+        {
+            output_assembler( "@" + to_string( offset ) ) ;
+            output_assembler( "D=A" ) ;   
+        }
 
         if ( segment == tk_argument )
         {
@@ -138,7 +179,7 @@ static void translate_vm_stack(TokenKind stack,TokenKind segment,int offset)
         }
         else if ( segment == tk_static )
         {
-            output_assembler( "@16" ) ;
+            output_assembler( "@" + functionName + "." + to_string( offset ) ) ;
             output_assembler( "A=D+M" ) ;
             output_assembler( "D=M" ) ;
         }
