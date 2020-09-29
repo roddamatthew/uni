@@ -192,8 +192,7 @@ static void translate_vm_stack(TokenKind stack,TokenKind segment,int offset)
         }
         else if ( segment == tk_static )
         {
-            // output_assembler( "@" + functionName + "$." + to_string( offset ) ) ;
-            output_assembler( "A=D+M" ) ;
+            output_assembler( "@" + className + "." + to_string( offset ) ) ;
             output_assembler( "D=M" ) ;
         }
         else if ( segment == tk_temp )
@@ -254,6 +253,10 @@ static void translate_vm_stack(TokenKind stack,TokenKind segment,int offset)
             output_assembler( "@THIS" ) ;
             output_assembler( "A=M" ) ;
         }
+        else if ( segment == tk_static )
+        {
+            output_assembler( "@" + className + "." + to_string( offset ) ) ;
+        }
         else if ( segment == tk_pointer )
         {
             if ( offset == 0 )
@@ -267,7 +270,7 @@ static void translate_vm_stack(TokenKind stack,TokenKind segment,int offset)
         }
 
         // apply offset
-        while ( offset > 0 && segment != tk_pointer )
+        while ( offset > 0 && segment != tk_pointer && segment != tk_static )
         {
            output_assembler( "A=A+1" ) ; 
            offset-- ;
