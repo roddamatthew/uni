@@ -111,7 +111,7 @@ static void translate_vm_function(TokenKind func, string label, int n)
     start_of_vm_func_command(func,label,n) ;
 
     // ... your code goes here ...
-    if( func == tk_function )
+    if ( func == tk_function )
     {
         className = "" ;
         functionName = label ;
@@ -133,6 +133,19 @@ static void translate_vm_function(TokenKind func, string label, int n)
             output_assembler( "M=M+1" ) ;
             n-- ;
         }
+    }
+    else if ( func == tk_call )
+    {
+        // generate unique label // from lecture 14 slide 8
+        // push retAddr01
+        // push LCL
+        // push ARG
+        // push THIS
+        // push THAT
+        // ARG = SP - nArgs - 5
+        // LCL = SP
+        // goto g
+        // (retAddr01) // the generated label
     }
 
     end_of_vm_command() ;
@@ -191,9 +204,16 @@ static void translate_vm_stack(TokenKind stack,TokenKind segment,int offset)
         }
         else if ( segment == tk_pointer )
         {
-            output_assembler( "@3" ) ;
-            output_assembler( "A=D+M" ) ;
-            output_assembler( "D=M" ) ;
+            if( offset == 0)
+            {
+                output_assembler( "@THIS" ) ;
+                output_assembler( "D=M" ) ;
+            }
+            else if ( offset == 1 )
+            {
+                output_assembler( "@THAT" ) ;
+                output_assembler( "D=M" ) ;
+            }
         }
 
         output_assembler( "@SP" ) ;
@@ -213,10 +233,12 @@ static void translate_vm_stack(TokenKind stack,TokenKind segment,int offset)
         if ( segment == tk_argument )
         {
             output_assembler( "@ARG" ) ;
+            output_assembler( "A=M" ) ;
         }
         else if ( segment == tk_local )
         {
             output_assembler( "@LCL" ) ;
+            output_assembler( "A=M" ) ;
         }
         else if ( segment == tk_temp )
         {
@@ -225,16 +247,27 @@ static void translate_vm_stack(TokenKind stack,TokenKind segment,int offset)
         else if ( segment == tk_that )
         {
             output_assembler( "@THAT" ) ;
+            output_assembler( "A=M" ) ;
         }
         else if ( segment == tk_this )
         {
             output_assembler( "@THIS" ) ;
+            output_assembler( "A=M" ) ;
+        }
+        else if ( segment == tk_pointer )
+        {
+            if ( offset == 0 )
+            {
+                output_assembler( "@THIS" ) ;
+            }
+            else if ( offset == 1 )
+            {
+                output_assembler( "@THAT" ) ;
+            }
         }
 
-        output_assembler( "A=M" ) ;
-
         // apply offset
-        while ( offset > 0 )
+        while ( offset > 0 && segment != tk_pointer )
         {
            output_assembler( "A=A+1" ) ; 
            offset-- ;
