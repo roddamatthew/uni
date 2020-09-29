@@ -99,7 +99,7 @@ static void translate_vm_jump(TokenKind jump, string label)
     }
     else if ( jump == tk_label )
     {
-        // output_assembler( "(" + label + ")" ) ;
+        output_assembler( "(" + functionName + "$" + label + ")" ) ;
     }
 
     end_of_vm_command() ;
