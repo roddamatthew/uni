@@ -199,7 +199,7 @@ static void translate_vm_stack(TokenKind stack,TokenKind segment,int offset)
         else if ( segment == tk_temp )
         {
             output_assembler( "@5" ) ;
-            output_assembler( "A=D+M" ) ;
+            output_assembler( "A=D+A" ) ;
             output_assembler( "D=M" ) ;
         }
         else if ( segment == tk_pointer )
