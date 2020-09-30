@@ -232,7 +232,7 @@ static void translate_vm_function(TokenKind func, string label, int n)
             i++ ;
         }
 
-        output_assembler( "(" + label + ")" ) ;
+        output_assembler( "(" + functionName + ")" ) ;
         while( n > 0 )
         {
             output_assembler( "@SP" ) ;
@@ -245,16 +245,75 @@ static void translate_vm_function(TokenKind func, string label, int n)
     }
     else if ( func == tk_call )
     {
-        // generate unique label // from lecture 14 slide 8
         // push retAddr01
+        output_assembler( "@" + functionName + "$retAddr" + to_string( indexer ) ) ;
+        output_assembler( "D=A" ) ;
+        output_assembler( "@SP" ) ;
+        output_assembler( "AM=M+1" ) ;
+        output_assembler( "A=A-1" ) ;
+        output_assembler( "M=D" ) ;
+
         // push LCL
+        output_assembler( "@LCL" ) ;
+        output_assembler( "D=M" ) ;
+        output_assembler( "@SP" ) ;
+        output_assembler( "AM=M+1" ) ;
+        output_assembler( "A=A-1" ) ;
+        output_assembler( "M=D" ) ;
+
         // push ARG
+        output_assembler( "@ARG" ) ;
+        output_assembler( "D=M" ) ;
+        output_assembler( "@SP" ) ;
+        output_assembler( "AM=M+1" ) ;
+        output_assembler( "A=A-1" ) ;
+        output_assembler( "M=D" ) ;
+
         // push THIS
+        output_assembler( "@THIS" ) ;
+        output_assembler( "D=M" ) ;
+        output_assembler( "@SP" ) ;
+        output_assembler( "AM=M+1" ) ;
+        output_assembler( "A=A-1" ) ;
+        output_assembler( "M=D" ) ;
+
         // push THAT
-        // ARG = SP - nArgs - 5
-        // LCL = SP
+        output_assembler( "@THAT" ) ;
+        output_assembler( "D=M" ) ;
+        output_assembler( "@SP" ) ;
+        output_assembler( "AM=M+1" ) ;
+        output_assembler( "A=A-1" ) ;
+        output_assembler( "M=D" ) ;
+
+        // set ARG = SP - nArgs - 5
+        output_assembler( "@SP" ) ;
+        output_assembler( "D=M" ) ;
+        output_assembler( "@5" ) ;
+        output_assembler( "D=D-A" ) ;
+
+        // - nArgs
+        for( int i = 0; i < n; i++)
+        {
+            output_assembler( "D=D-1" ) ;
+        }
+
+        output_assembler( "@ARG" ) ;
+        output_assembler( "M=D" ) ;
+
+        // set LCL = SP
+        output_assembler( "@SP" ) ;
+        output_assembler( "D=M" ) ;
+        output_assembler( "@LCL" ) ;
+        output_assembler( "M=D" ) ;
+
         // goto g
-        // (retAddr01) // the generated label
+        output_assembler( "@" + label ) ;
+        output_assembler( "0;JMP" ) ;
+
+        // define return address label
+        output_assembler( "(" + functionName + "$retAddr" + to_string( indexer ) + ")" ) ;
+
+        indexer++ ;
     }
 
     end_of_vm_command() ;
