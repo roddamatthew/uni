@@ -15,15 +15,17 @@ using namespace Hack_Virtual_Machine ;
 
 // Authorship: Matthew Rodda, a1773620
 // Date Started: 25th September 2020
-// Date Completed: **th September 2020
+// Date Completed: 30th September 2020
 
 #include <string>
 
+// Initializing global variables
 string functionName ;
 string className ;
 int indexer = 0 ;
 
 // Decrement the stack pointer 1 and store the last value in the D register
+// Put in its own function as it is reused ofter
 static void decrement_SP_store_in_D()
 {
         output_assembler("@SP") ;
@@ -34,52 +36,70 @@ static void decrement_SP_store_in_D()
 // Function for the logical operators eq, gt, lt
 static void logical_operators( TokenKind the_op )
 {
+    // Common logic for the lt and gt operators
     if ( the_op != tk_eq )
     {
+        // Check if the first number is positive or negative
         output_assembler( "@SP" ) ;
         output_assembler( "A=M" ) ;
         output_assembler( "A=A-1" ) ;
         output_assembler( "D=M" ) ;
+
+        // Jump to POS label if >= 0
         output_assembler( "@" + functionName + "$POS" + to_string( indexer ) ) ;
         output_assembler( "D;JGE" ) ;
+
+        // Jump to NEG label otherwise
         output_assembler( "@" + functionName + "$NEG" + to_string( indexer ) ) ;
         output_assembler( "0;JMP" ) ;
 
-        // 
+        // If the first number is positive:
         output_assembler( "(" + functionName + "$POS" + to_string( indexer ) + ")" ) ;
         output_assembler( "@SP" ) ;
         output_assembler( "A=M" ) ;
         output_assembler( "A=A-1" ) ;
         output_assembler( "A=A-1" ) ;
         output_assembler( "D=M" ) ;
+
+        // Both numbers have the same sign so check them arithmetically
         output_assembler( "@" + functionName + "$SAMESIGN" + to_string( indexer ) ) ;
         output_assembler( "D;JGE" ) ;
+
+        // Numbers have different signs so check them logically
         if ( the_op == tk_lt )
         {
+            // lt with a positive then negative number will always be true
             output_assembler( "@" + functionName + "$TRUE" + to_string( indexer ) ) ;
         }
             else if ( the_op == tk_gt )
         {
-        output_assembler( "@" + functionName + "$FALSE" + to_string( indexer ) ) ;
+            // gt with a positive then negative number will always be false
+            output_assembler( "@" + functionName + "$FALSE" + to_string( indexer ) ) ;
         }
         output_assembler( "0;JMP" ) ;
 
-        // 
+        // If the first number is negative
         output_assembler( "(" + functionName + "$NEG" + to_string( indexer ) + ")" ) ;
         output_assembler( "@SP" ) ;
         output_assembler( "A=M" ) ;
         output_assembler( "A=A-1" ) ;
         output_assembler( "A=A-1" ) ;
         output_assembler( "D=M" ) ;
+
+        // Numbers have different signs so check them logically
         if ( the_op == tk_gt )
         {
+            // gt with a negative then positive number will always be true
             output_assembler( "@" + functionName + "$TRUE" + to_string( indexer ) ) ;
         }
             else if ( the_op == tk_lt )
         {
-        output_assembler( "@" + functionName + "$FALSE" + to_string( indexer ) ) ;
+            // lt with a negative then positive number will always be false
+            output_assembler( "@" + functionName + "$FALSE" + to_string( indexer ) ) ;
         }
         output_assembler( "D;JGT" ) ;
+
+        // Both numbers have the same sign so check them arithmetically
         output_assembler( "@" + functionName + "$SAMESIGN" + to_string( indexer ) ) ;
         output_assembler( "0;JMP" ) ;
 
@@ -87,6 +107,7 @@ static void logical_operators( TokenKind the_op )
         output_assembler( "(" + functionName + "$SAMESIGN" + to_string( indexer ) + ")" ) ;
     }
 
+    // Calculate the difference between the top two elements on the stack
     output_assembler( "@SP" ) ;
     output_assembler( "A=M-1" ) ;
     output_assembler( "D=M" ) ;
@@ -95,7 +116,7 @@ static void logical_operators( TokenKind the_op )
     output_assembler( "A=A-1" ) ;
     output_assembler( "D=M-D" ) ;
     
-    // Logic based on the operator passed
+    // Logical jump based on the operator passed
     output_assembler( "@" + functionName + "$TRUE" + to_string( indexer ) ) ;
    
     if ( the_op == tk_eq )
@@ -111,20 +132,29 @@ static void logical_operators( TokenKind the_op )
         output_assembler( "D;JGT" ) ;
     }
 
+    // Pop the top two elements and push 0 for FALSE
     output_assembler( "(" + functionName + "$FALSE" + to_string( indexer ) + ")" ) ;
     output_assembler( "@SP" ) ;
     output_assembler( "M=M-1" ) ;
     output_assembler( "A=M-1" ) ;
     output_assembler( "M=0" ) ;
+
+    // Unconditional jump to END
     output_assembler( "@" + functionName + "$END" + to_string( indexer ) ) ;
     output_assembler( "0;JMP" ) ;
+
+    // Pop the top two elements and push -1 for TRUE
     output_assembler( "(" + functionName + "$TRUE" + to_string( indexer ) + ")" ) ;
     output_assembler( "@SP" ) ;
     output_assembler( "M=M-1" ) ;
     output_assembler( "A=M-1" ) ;
     output_assembler( "M=-1" ) ;
+
+    // Unconditional jump to END
     output_assembler( "@" + functionName + "$END" + to_string( indexer ) ) ;
     output_assembler( "0;JMP" ) ;
+
+    // END label
     output_assembler( "(" + functionName + "$END" + to_string( indexer ) + ")" ) ;
 }
 
@@ -133,6 +163,7 @@ static void translate_vm_operator(TokenKind the_op)
 {
     start_of_vm_operator_command(the_op) ;
 
+    // Add operator
     if ( the_op == tk_add )
     {
         decrement_SP_store_in_D() ;
@@ -140,7 +171,9 @@ static void translate_vm_operator(TokenKind the_op)
         output_assembler("@SP") ;
         output_assembler("A=M-1") ;
         output_assembler("M=D+M") ;
-    } 
+    }
+
+    // Subtract operator
     else if ( the_op == tk_sub )
     {
         decrement_SP_store_in_D() ;
@@ -149,6 +182,8 @@ static void translate_vm_operator(TokenKind the_op)
         output_assembler("A=M-1") ;
         output_assembler("M=M-D") ;
     }
+
+    // And operator
     else if ( the_op == tk_and )
     {
         decrement_SP_store_in_D() ;
@@ -157,6 +192,8 @@ static void translate_vm_operator(TokenKind the_op)
         output_assembler("A=M-1") ;
         output_assembler("M=D&M") ;
     }
+
+    // Or operator
     else if ( the_op == tk_or )
     {
         decrement_SP_store_in_D() ;
@@ -165,23 +202,31 @@ static void translate_vm_operator(TokenKind the_op)
         output_assembler("A=M-1") ;
         output_assembler("M=D|M") ;
     }
+
+    // Negative operator
     else if ( the_op == tk_neg )
     {       
         output_assembler("@SP") ;
         output_assembler("A=M-1") ;
         output_assembler("M=-M") ;
     }
+
+    // Not operator
     else if ( the_op == tk_not )
     {       
         output_assembler("@SP") ;
         output_assembler("A=M-1") ;
         output_assembler("M=!M") ;
     }
+
+    // Equals, Less than and Greater than operators
     else if ( the_op == tk_eq || the_op == tk_lt || the_op == tk_gt )
     {
         indexer++ ;
         logical_operators( the_op ) ;
     }
+
+    // Return operator
     else if ( the_op == tk_return )
     {
         // frame = LCL
@@ -256,20 +301,28 @@ static void translate_vm_jump(TokenKind jump, string label)
 {
     start_of_vm_jump_command(jump,label) ;
 
-    // ... your code goes here ...
+    // goto command
     if ( jump == tk_goto )
     {
+        // Unconditional jump to label
         output_assembler( "@" + functionName + "$" + label ) ;
         output_assembler( "0;JMP" ) ;
     }
+
+    // if-goto command
     else if ( jump == tk_if_goto )
     {
+        // Conditional jump based on top of stack
         output_assembler( "@SP" ) ;
         output_assembler( "AM=M-1" ) ;
         output_assembler( "D=M" ) ;
         output_assembler( "@" + functionName + "$" + label ) ;
+
+        // If top of stack != 0, then perform jump to label
         output_assembler( "D;JNE" ) ;
     }
+
+    // label command
     else if ( jump == tk_label )
     {
         output_assembler( "(" + functionName + "$" + label + ")" ) ;
@@ -283,13 +336,18 @@ static void translate_vm_function(TokenKind func, string label, int n)
 {
     start_of_vm_func_command(func,label,n) ;
 
-    // ... your code goes here ...
+    // function declaration, in this case n = number of local variables
     if ( func == tk_function )
     {
+        // Record the class and function name for later use
         className = "" ;
         functionName = label ;
-        int i = 0 ;
+
+        // Reset index for avoiding duplicate label names   
         indexer = 0 ;
+
+        // Read all characters until '.' in the label as that is the class name
+        int i = 0 ;
 
         while ( label[ i ] != '.' )
         {
@@ -297,17 +355,21 @@ static void translate_vm_function(TokenKind func, string label, int n)
             i++ ;
         }
 
+        // Output function label
         output_assembler( "(" + functionName + ")" ) ;
-        while( n > 0 )
+
+        // push n local variables onto the stack
+        for ( int i = 0 ; i < n ; i ++ )
         {
             output_assembler( "@SP" ) ;
             output_assembler( "A=M" ) ;
             output_assembler( "M=0" ) ;
             output_assembler( "@SP" ) ;
             output_assembler( "M=M+1" ) ;
-            n-- ;
         }
     }
+
+    // function call, in this case n = number of arguments
     else if ( func == tk_call )
     {
         // push retAddr01
@@ -362,6 +424,7 @@ static void translate_vm_function(TokenKind func, string label, int n)
             output_assembler( "D=D-1" ) ;
         }
 
+        // Write to ARG
         output_assembler( "@ARG" ) ;
         output_assembler( "M=D" ) ;
 
@@ -378,6 +441,7 @@ static void translate_vm_function(TokenKind func, string label, int n)
         // define return address label
         output_assembler( "(" + functionName + "$retAddr" + to_string( indexer ) + ")" ) ;
 
+        // Increment index to avoid duplicate labels
         indexer++ ;
     }
 
@@ -389,51 +453,64 @@ static void translate_vm_stack(TokenKind stack,TokenKind segment,int offset)
 {
     start_of_vm_stack_command(stack,segment,offset) ;
 
-    // ... your code goes here ...
-
+    // Push command
     if ( stack == tk_push )
     {
+        // Calculate offset using A register
         if( segment != tk_static )
         {
             output_assembler( "@" + to_string( offset ) ) ;
             output_assembler( "D=A" ) ;   
         }
 
+        // ARG memory segment
         if ( segment == tk_argument )
         {
             output_assembler( "@ARG" ) ;
             output_assembler( "A=D+M" ) ;
             output_assembler( "D=M" ) ;
         }
+
+        // LCL memory segment
         else if ( segment == tk_local )
         {
             output_assembler( "@LCL" ) ;
             output_assembler( "A=D+M" ) ;
             output_assembler( "D=M" ) ;
         }
+
+        // THIS memory segment
         else if ( segment == tk_this )
         {
             output_assembler( "@THIS" ) ;
             output_assembler( "A=D+M" ) ;
             output_assembler( "D=M" ) ;
         }
+
+        // THAT memory segment
         else if ( segment == tk_that )
         {
             output_assembler( "@THAT" ) ;
             output_assembler( "A=D+M" ) ;
             output_assembler( "D=M" ) ;
         }
+
+        // Static memory segment using most recent className from translate_vm_function
         else if ( segment == tk_static )
         {
             output_assembler( "@" + className + "." + to_string( offset ) ) ;
             output_assembler( "D=M" ) ;
         }
+
+        // Temporary memory segment
         else if ( segment == tk_temp )
         {
             output_assembler( "@5" ) ;
             output_assembler( "A=D+A" ) ;
             output_assembler( "D=M" ) ;
         }
+
+        // Pointer memory segment accessed using THIS and THAT
         else if ( segment == tk_pointer )
         {
             if( offset == 0)
@@ -448,12 +525,15 @@ static void translate_vm_stack(TokenKind stack,TokenKind segment,int offset)
             }
         }
 
+        // Add value to the stack and increment SP
         output_assembler( "@SP" ) ;
         output_assembler( "AM=M+1" ) ;
         output_assembler( "A=A-1" ) ;
         output_assembler( "M=D" ) ;
 
     }
+
+    // Pop command
     else if ( stack == tk_pop )
     {
         // pop top of stack into D
@@ -461,35 +541,46 @@ static void translate_vm_stack(TokenKind stack,TokenKind segment,int offset)
         output_assembler( "AM=M-1" ) ;
         output_assembler( "D=M" ) ;
 
-        // access correct memory segment
+        // access ARG memory segment
         if ( segment == tk_argument )
         {
             output_assembler( "@ARG" ) ;
             output_assembler( "A=M" ) ;
         }
+        // access LCL memory segment
         else if ( segment == tk_local )
         {
             output_assembler( "@LCL" ) ;
             output_assembler( "A=M" ) ;
         }
+
+        // access TEMP memory segment
         else if ( segment == tk_temp )
         {
             output_assembler( "@5" ) ;
         }
+
+        // access THAT memory segment
         else if ( segment == tk_that )
         {
             output_assembler( "@THAT" ) ;
             output_assembler( "A=M" ) ;
         }
+
+        // access THIS memory segment
         else if ( segment == tk_this )
         {
             output_assembler( "@THIS" ) ;
             output_assembler( "A=M" ) ;
         }
+
+        // access static memory segment
         else if ( segment == tk_static )
         {
             output_assembler( "@" + className + "." + to_string( offset ) ) ;
         }
+
+        // access pointer memory segment
         else if ( segment == tk_pointer )
         {
             if ( offset == 0 )
@@ -512,7 +603,6 @@ static void translate_vm_stack(TokenKind stack,TokenKind segment,int offset)
         // pop into memory specified
         output_assembler( "M=D" ) ;
     }
-
 
     end_of_vm_command() ;
 }
