@@ -21,6 +21,7 @@ using namespace Hack_Virtual_Machine ;
 
 string functionName ;
 string className ;
+int indexer = 0 ;
 
 // Decrement the stack pointer 1 and store the last value in the D register
 static void decrement_SP_store_in_D()
@@ -28,6 +29,103 @@ static void decrement_SP_store_in_D()
         output_assembler("@SP") ;
         output_assembler("AM=M-1") ;
         output_assembler("D=M") ;
+}
+
+// Function for the logical operators eq, gt, lt
+static void logical_operators( TokenKind the_op )
+{
+    if ( the_op != tk_eq )
+    {
+        output_assembler( "@SP" ) ;
+        output_assembler( "A=M" ) ;
+        output_assembler( "A=A-1" ) ;
+        output_assembler( "D=M" ) ;
+        output_assembler( "@" + functionName + "$POS" + to_string( indexer ) ) ;
+        output_assembler( "D;JGE" ) ;
+        output_assembler( "@" + functionName + "$NEG" + to_string( indexer ) ) ;
+        output_assembler( "0;JMP" ) ;
+
+        // 
+        output_assembler( "(" + functionName + "$POS" + to_string( indexer ) + ")" ) ;
+        output_assembler( "@SP" ) ;
+        output_assembler( "A=M" ) ;
+        output_assembler( "A=A-1" ) ;
+        output_assembler( "A=A-1" ) ;
+        output_assembler( "D=M" ) ;
+        output_assembler( "@" + functionName + "$SAMESIGN" + to_string( indexer ) ) ;
+        output_assembler( "D;JGE" ) ;
+        if ( the_op == tk_lt )
+        {
+            output_assembler( "@" + functionName + "$TRUE" + to_string( indexer ) ) ;
+        }
+            else if ( the_op == tk_gt )
+        {
+        output_assembler( "@" + functionName + "$FALSE" + to_string( indexer ) ) ;
+        }
+        output_assembler( "0;JMP" ) ;
+
+        // 
+        output_assembler( "(" + functionName + "$NEG" + to_string( indexer ) + ")" ) ;
+        output_assembler( "@SP" ) ;
+        output_assembler( "A=M" ) ;
+        output_assembler( "A=A-1" ) ;
+        output_assembler( "A=A-1" ) ;
+        output_assembler( "D=M" ) ;
+        if ( the_op == tk_gt )
+        {
+            output_assembler( "@" + functionName + "$TRUE" + to_string( indexer ) ) ;
+        }
+            else if ( the_op == tk_lt )
+        {
+        output_assembler( "@" + functionName + "$FALSE" + to_string( indexer ) ) ;
+        }
+        output_assembler( "D;JGT" ) ;
+        output_assembler( "@" + functionName + "$SAMESIGN" + to_string( indexer ) ) ;
+        output_assembler( "0;JMP" ) ;
+
+        // SAMESIGN label to jump to
+        output_assembler( "(" + functionName + "$SAMESIGN" + to_string( indexer ) + ")" ) ;
+    }
+
+    output_assembler( "@SP" ) ;
+    output_assembler( "A=M-1" ) ;
+    output_assembler( "D=M" ) ;
+    output_assembler( "@SP" ) ;
+    output_assembler( "A=M-1" ) ;
+    output_assembler( "A=A-1" ) ;
+    output_assembler( "D=M-D" ) ;
+    
+    // Logic based on the operator passed
+    output_assembler( "@" + functionName + "$TRUE" + to_string( indexer ) ) ;
+   
+    if ( the_op == tk_eq )
+    {
+        output_assembler( "D;JEQ" ) ;
+    }
+    else if ( the_op == tk_lt )
+    {
+        output_assembler( "D;JLT" ) ;
+    }
+    else if ( the_op == tk_gt )
+    {
+        output_assembler( "D;JGT" ) ;
+    }
+
+    output_assembler( "(" + functionName + "$FALSE" + to_string( indexer ) + ")" ) ;
+    output_assembler( "@SP" ) ;
+    output_assembler( "M=M-1" ) ;
+    output_assembler( "A=M-1" ) ;
+    output_assembler( "M=0" ) ;
+    output_assembler( "@" + functionName + "$END" + to_string( indexer ) ) ;
+    output_assembler( "0;JMP" ) ;
+    output_assembler( "(" + functionName + "$TRUE" + to_string( indexer ) + ")" ) ;
+    output_assembler( "@SP" ) ;
+    output_assembler( "M=M-1" ) ;
+    output_assembler( "A=M-1" ) ;
+    output_assembler( "M=-1" ) ;
+    output_assembler( "@" + functionName + "$END" + to_string( indexer ) ) ;
+    output_assembler( "0;JMP" ) ;
+    output_assembler( "(" + functionName + "$END" + to_string( indexer ) + ")" ) ;
 }
 
 // translate vm operator command into assembly language
@@ -79,6 +177,11 @@ static void translate_vm_operator(TokenKind the_op)
         output_assembler("A=M-1") ;
         output_assembler("M=!M") ;
     }
+    else if ( the_op == tk_eq || the_op == tk_lt || the_op == tk_gt )
+    {
+        indexer++ ;
+        logical_operators( the_op ) ;
+    }
 
     end_of_vm_command() ;
 }
@@ -116,6 +219,7 @@ static void translate_vm_function(TokenKind func, string label, int n)
         className = "" ;
         functionName = label ;
         int i = 0 ;
+        indexer = 0 ;
 
         while ( label[ i ] != '.' )
         {
