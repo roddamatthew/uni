@@ -182,6 +182,71 @@ static void translate_vm_operator(TokenKind the_op)
         indexer++ ;
         logical_operators( the_op ) ;
     }
+    else if ( the_op == tk_return )
+    {
+        // frame = LCL
+        output_assembler("@LCL") ;
+        output_assembler("D=M") ;
+        output_assembler("@14") ;
+        output_assembler("M=D") ;
+
+        // retAddr = *( frame - 5 )
+        output_assembler("@14") ;
+        output_assembler("D=M") ;
+        output_assembler("@5") ;
+        output_assembler("D=D-A") ;
+        output_assembler("A=D") ;
+        output_assembler("D=M") ;
+        output_assembler("@13") ;
+        output_assembler("M=D") ;
+
+        // *ARG = pop
+        output_assembler("@SP") ;
+        output_assembler("AM=M-1") ;
+        output_assembler("D=M") ;
+        output_assembler("@ARG") ;
+        output_assembler("A=M") ;
+        output_assembler("M=D") ;
+
+        // SP = ARG + 1
+        output_assembler("@ARG") ;
+        output_assembler("D=M") ;
+        output_assembler("@SP") ;
+        output_assembler("M=D+1") ;
+
+        // THAT = *(frame - 1)
+        output_assembler("@14") ;
+        output_assembler("AM=M-1") ;
+        output_assembler("D=M") ;
+        output_assembler("@THAT") ;
+        output_assembler("M=D") ;
+
+        // THIS = *(frame - 2)
+        output_assembler("@14") ;
+        output_assembler("AM=M-1") ;
+        output_assembler("D=M") ;
+        output_assembler("@THIS") ;
+        output_assembler("M=D") ;
+
+        // ARG = *(frame - 3)
+        output_assembler("@14") ;
+        output_assembler("AM=M-1") ;
+        output_assembler("D=M") ;
+        output_assembler("@ARG") ;
+        output_assembler("M=D") ;
+
+        // LCL = *(frame - 4)
+        output_assembler("@14") ;
+        output_assembler("AM=M-1") ;
+        output_assembler("D=M") ;
+        output_assembler("@LCL") ;
+        output_assembler("M=D") ;
+        
+        // goto retAddr
+        output_assembler("@13") ;
+        output_assembler("A=M") ;
+        output_assembler("0;JMP") ;
+    }
 
     end_of_vm_command() ;
 }
