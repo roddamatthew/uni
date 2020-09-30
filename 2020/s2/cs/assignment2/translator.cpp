@@ -194,11 +194,16 @@ static void translate_vm_jump(TokenKind jump, string label)
     // ... your code goes here ...
     if ( jump == tk_goto )
     {
-
+        output_assembler( "@" + functionName + "$" + label ) ;
+        output_assembler( "0;JMP" ) ;
     }
     else if ( jump == tk_if_goto )
     {
-
+        output_assembler( "@SP" ) ;
+        output_assembler( "AM=M-1" ) ;
+        output_assembler( "D=M" ) ;
+        output_assembler( "@" + functionName + "$" + label ) ;
+        output_assembler( "D;JNE" ) ;
     }
     else if ( jump == tk_label )
     {
