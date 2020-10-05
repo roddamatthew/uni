@@ -1,0 +1,49 @@
+201005-140548 Modified: OGU1YTUxMDg2MWY4Nzg2NmEzZmEwNmZkZDIyOGU4MzQ2ZTI3ZDNkOSAgLi8uRFNfU3RvcmUKNzg3ZTExZTIyMzA5OGQ3OTc4NmM0ZDIwNDVkNmVhNjI2Y2JmMTdjYyAgLi91cGRhdGVzL3dvcmtzaG9wMDktMjAyMDA4MTQtMTAxNzA1LnppcAplZTk5NTI4ZGEyNGI2Zjg4MzJkNTg3YjZkMGMwNmYwMzQ5ODRmOTNmICAuL3VwZGF0ZXMvLkRTX1N0b3JlCg==
+201005-140548 make install
+201005-140548 SVN user: a1773620, repository path: 2020/s2/cs/workshop09
+201005-140548 updater:  Directory: ./HelloWorld
+201005-140548 updater:  Directory: ./bin
+201005-140548 updater:  Directory: ./originals
+201005-140548 updater:  Directory: ./originals/HelloWorld
+201005-140548 updater:  Directory: ./originals/Sum
+201005-140548 updater:  Directory: ./originals/SDev
+201005-140548 updater:  Directory: ./originals/Average
+201005-140548 updater:  Directory: ./Sum
+201005-140548 updater:  Directory: ./SDev
+201005-140548 updater:  Directory: ./Average
+201005-140548 updater:  Creating: ./HelloWorld/test00.out
+201005-140548 updater:  Creating: ./HelloWorld/runAll.tst
+201005-140548 updater:  Creating: ./HelloWorld/runMain.tst
+201005-140548 updater:  Creating: ./HelloWorld/test00.in
+201005-140548 updater:  Creating: ./bin/run-tests
+201005-140548 updater:  Creating: updates/Makefile
+201005-140548 updater:  Creating: ./originals/HelloWorld/Main.jack
+201005-140548 updater:  Creating: ./originals/Sum/Main.jack
+201005-140548 updater:  Creating: ./originals/SDev/Main.jack
+201005-140548 updater:  Creating: ./originals/Average/Main.jack
+201005-140548 updater:  Creating: ./Sum/test00.out
+201005-140548 updater:  Creating: ./Sum/runAll.tst
+201005-140548 updater:  Creating: ./Sum/runMain.tst
+201005-140548 updater:  Creating: ./Sum/test00.in
+201005-140548 updater:  Creating: ./SDev/test02.in
+201005-140548 updater:  Creating: ./SDev/test01.out
+201005-140548 updater:  Creating: ./SDev/test00.out
+201005-140548 updater:  Creating: ./SDev/test02.out
+201005-140548 updater:  Creating: ./SDev/runAll.tst
+201005-140548 updater:  Creating: ./SDev/runMain.tst
+201005-140548 updater:  Creating: ./SDev/test01.in
+201005-140548 updater:  Creating: ./SDev/test00.in
+201005-140548 updater:  Creating: ./Average/test01.out
+201005-140548 updater:  Creating: ./Average/test00.out
+201005-140548 updater:  Creating: ./Average/runAll.tst
+201005-140548 updater:  Creating: ./Average/runMain.tst
+201005-140548 updater:  Creating: ./Average/test01.in
+201005-140548 updater:  Creating: ./Average/test00.in
+201005-140548 updater:  Made bin/run-tests executable
+201005-140548 updater:  Removing MacOS quarantine flags from the executables
+201005-140548 updater:  Creating: HelloWorld/Main.jack
+201005-140548 updater:  Creating: Sum/Main.jack
+201005-140548 updater:  Creating: SDev/Main.jack
+201005-140548 updater:  Creating: Average/Main.jack
+201005-140548 updater:  Updating: updates/README
+201005-140548 updater:  Update installed
