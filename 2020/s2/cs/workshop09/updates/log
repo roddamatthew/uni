@@ -47,3 +47,16 @@
 201005-140548 updater:  Creating: Average/Main.jack
 201005-140548 updater:  Updating: updates/README
 201005-140548 updater:  Update installed
+201007-134923 Modified: NGVmNzEyOGZjMzFiYmMyOTU3NDEzM2U0YTY5NTJmOTNiNzdmNDU2ZiAgLi9IZWxsb1dvcmxkL01haW4udm0KMDVhOWE1MWJlNWExZGFhYzlmMDdmNjVlYzMwMGQwZDYzODFmMTQ0MiAgLi9IZWxsb1dvcmxkL01haW4uamFjawpkZDExMjRjNWM5Y2EwYTkwOGQ4NTZlZGFhZmQ3YmM1NDBkZmFjODM4ICAuL3VwZGF0ZXMvd29ya3Nob3AwOS0yMDIwMTAwNi0wODU1MTMuemlwCjA1YTlhNTFiZTVhMWRhYWM5ZjA3ZjY1ZWMzMDBkMGQ2MzgxZjE0NDIgIC4vU3VtL01haW4uamFjawowNWE5YTUxYmU1YTFkYWFjOWYwN2Y2NWVjMzAwZDBkNjM4MWYxNDQyICAuL1NEZXYvTWFpbi5qYWNrCjA1YTlhNTFiZTVhMWRhYWM5ZjA3ZjY1ZWMzMDBkMGQ2MzgxZjE0NDIgIC4vQXZlcmFnZS9NYWluLmphY2sK
+201007-134923 make install
+201007-134923 SVN user: a1773620, repository path: 2020/s2/cs/workshop09
+201007-134923 updater:  Updating: ./bin/run-tests
+201007-134923 updater:  Updating: updates/Makefile
+201007-134923 updater:  Updating: ./SDev/test01.out
+201007-134923 updater:  Updating: ./SDev/test00.out
+201007-134923 updater:  Updating: ./SDev/test02.out
+201007-134923 updater:  Updating: ./Average/test01.out
+201007-134923 updater:  Updating: ./Average/test00.out
+201007-134923 updater:  Removing MacOS quarantine flags from the executables
+201007-134923 updater:  Updating: updates/README
+201007-134923 updater:  Update installed

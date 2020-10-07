@@ -38,24 +38,33 @@ else
     undocolor=
 fi
 
+# what kind of system?
+System=`test -x /usr/bin/uname && /usr/bin/uname -s`
+if [ "${#System}" -eq 0 ] ; then System=Linux ; fi
+
 # checksum changed files
 check_changed_files()
 {
     # checksum all files modified since last change to updates/log
-    find . -type f -newer updates/log -exec shasum \{} \; | grep -v -e './.changes' -e './.reminders' -e './updates/log' > .changes 2> /dev/null
+    find . -type f -newer updates/log -exec shasum \{} \; | grep -v -e './lib' -e './.changes' -e './.reminders' -e './updates/log' > .changes 2> /dev/null
     if [ -s .changes ]
     then
         # record summary in updates/log
         echo -n "${now} Modified: " >> updates/log
-        cat .changes | base64 >> updates/log
+        if [ "${System}" == "Darwin" ] ; then
+            cat .changes | base64 >> updates/log
+        else
+            cat .changes | base64 --wrap=0 >> updates/log
+            echo >> updates/log
+        fi
     fi
 
     # clean up ...
     rm -f .changes
 }
 
-# record start of this run
-now=`date +%y%m%d-%H%M%S`
+# record start of this run - set timezone, students run this in other countries
+now=`(export TZ=Australia/Adelaide ; date +%y%m%d-%H%M%S)`
 check_changed_files
 echo "${now} make ${@}" >> updates/log
 chmod 600 updates/log
@@ -465,10 +474,6 @@ check_svn_originals()
         done
     fi
 }
-
-# what kind of system?
-System=`test -x /usr/bin/uname && /usr/bin/uname -s`
-if [ "${#System}" -eq 0 ] ; then System=Linux ; fi
 
 check_tools zip unzip svn cksum diff grep make java find shasum base64
 check_compilers | tee -a updates/log
