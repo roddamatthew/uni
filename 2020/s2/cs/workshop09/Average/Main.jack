@@ -25,7 +25,7 @@ class Main
 			do current.dispose() ;
 
 			// read input int
-			let n = Unix.readInt( "Enter current: " ) ;
+			let n = Unix.readInt( "" ) ;
 
 			// write into current
 			let current = DP.new( n ) ;

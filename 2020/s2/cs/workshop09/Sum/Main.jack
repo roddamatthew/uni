@@ -7,8 +7,8 @@ class Main
 		var int second ;
 		var int total ;
 
-		let first = Unix.readInt("First Number: ") ;
-		let second = Unix.readInt("Second Number: ") ;
+		let first = Unix.readInt("") ;
+		let second = Unix.readInt("") ;
 	
 		let total = first + second ;
 		do Unix.printInt( total ) ;		

@@ -1,7 +1,6 @@
-// Hello world
 class Main
 {
-        function void main()
+    function void main()
         {
                 do Unix.printString("Hello World!") ;
                 do Unix.println() ;
