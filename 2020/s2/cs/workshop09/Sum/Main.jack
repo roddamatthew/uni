@@ -3,8 +3,17 @@ class Main
 {
         function void main()
         {
-                do Unix.printString("Hello World!") ;
+                var int first ;
+		var int second ;
+		var int total ;
+
+		let first = Unix.readInt("First Number: ") ;
+		let second = Unix.readInt("Second Number: ") ;
+	
+		let total = first + second ;
+		do Unix.printInt( total ) ;		
                 do Unix.println() ;
+
                 return ;
         }
 }

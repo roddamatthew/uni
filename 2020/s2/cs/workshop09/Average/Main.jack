@@ -1,10 +1,58 @@
-// Hello world
 class Main
 {
-        function void main()
-        {
-                do Unix.printString("Hello World!") ;
-                do Unix.println() ;
-                return ;
-        }
+    function void main()
+    {
+    	var int n ;
+    	var string average ;
+
+    	// Initialize DP variables
+    	var DP current ;
+    	var DP total ;
+    	var DP length ;
+    	var DP incrementer ;
+    	var DP zero ;
+
+    	// Initialize DP variables values
+    	let current = DP.new( 1 ) ;
+    	let total = DP.new( 0 ) ;
+    	let length = DP.new( 0 ) ;
+    	let incrementer = DP.new( 1 ) ;
+    	let zero = DP.new( 0 ) ;	
+
+    	// while current != 0
+		while ( ~ ( DP.eq( current, zero ) ) )
+		{
+			do current.dispose() ;
+
+			// read input int
+			let n = Unix.readInt( "Enter current: " ) ;
+
+			// write into current
+			let current = DP.new( n ) ;
+			
+			// total = total + current
+			do DP.add( total, total, current ) ;
+
+			// length = length + 1
+			do DP.add( length, length, incrementer ) ;
+		}
+
+		// length = length - 1 ;
+		do DP.subtract( length, length, incrementer ) ;
+
+		do DP.divide( total, total, length ) ;
+
+		let average = DP.toString( total ) ;
+
+		do Unix.printString( average ) ;
+		do Unix.println() ;
+
+		do current.dispose() ;
+		do total.dispose() ;
+		do length.dispose() ;
+		do incrementer.dispose() ;
+		do zero.dispose() ;
+
+		return ;
+    }
 }
