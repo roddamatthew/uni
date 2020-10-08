@@ -1,9 +1,65 @@
 class Main
 {
     function void main()
-        {
-                do Unix.printString("Hello World!") ;
-                do Unix.println() ;
-                return ;
-        }
+    {
+    	// Sample standard deviation calculator
+
+    	var int current ;
+    	var int total ;
+    	var int length ;
+    	var string average ;
+
+    	var DP temp1 ;
+    	var DP temp2 ;
+    	var DP len ;
+    	var DP mean ;
+    	var DP SD ;
+
+    	var List list ;
+    	var List next ;
+
+    	// Read input 
+    	let current = Unix.readInt( "" ) ;
+
+    	// Continue reading until getting a zero
+    	while( ~( current = 0 ) )
+    	{
+    		// Add to the front of the list
+    		let list = List.cons( current, list ) ;
+
+   			// Read input
+    		let current = Unix.readInt( "" ) ;
+    	}
+
+    	// Calculate the mean
+    	let next = list ;
+
+    	while( ~( next = null ) )
+    	{
+    		let temp1 = DP.new( next.getHead() ) ;
+    		do DP.add( temp2, temp1, temp2 ) ;
+
+    		let length = length + 1 ;
+    		let next = next.getTail() ;
+    	}
+
+    	let len = DP.new( length ) ;
+    	do DP.divide( mean, temp2, len ) ;
+
+    	let average = DP.toString( mean ) ;
+
+		do Unix.printString( average ) ;
+		do Unix.println() ;
+
+    	// sample standard deviation = sqrt( E( x - xbar )^2 / ( n - 1 ) )
+    	while( ~( next = null ) )
+    	{
+
+    		let next = next.getTail() ;
+    	}
+
+        do Unix.printString("Hello World!") ;
+        do Unix.println() ;
+        return ;
+    }
 }
