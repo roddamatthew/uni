@@ -42,6 +42,12 @@ int main()
 		current = "" ;
 	}
 
+	// // Print input for debugging
+	// for( int i = 0 ; i < inputs.size() ; i++ )
+	// {
+	// 	std::cout << inputs[i] << " " ;
+	// }
+
 
 	// Call Bubble sort then 
 	inputs = BS.sort( inputs ) ;

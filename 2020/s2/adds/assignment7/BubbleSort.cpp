@@ -1,6 +1,8 @@
 #include "Sort.h"
 #include "BubbleSort.h"
 
+#include <iostream>
+
 BubbleSort :: BubbleSort() {} ;
 
 std::vector<int> BubbleSort :: sort( std::vector<int> array )
@@ -16,6 +18,14 @@ std::vector<int> BubbleSort :: sort( std::vector<int> array )
 				array[ j ] = value ;
 			}
 		}
+
+	// for( int k = 0 ; k < array.size() ; k++ )
+	// {
+	// 	std::cout << array[k] << " " ;
+	// }
+	// std::cout << std::endl ;
+
 	}
+	
 	return array ;
 }

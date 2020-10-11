@@ -11,7 +11,7 @@ int RecursiveBinarySearch :: search( std::vector<int> array, int start, int end 
 	// Assume the input array is sorted from smallest to highest
 	int middle = ( start + end ) / 2 ;
 
-	if( start < 0 || end < 0 || start > array.size() || end > array.size() )
+	if( start < 0 || end < 0 || start > array.size() || end > array.size() || start > end )
 	{
 		return -1 ;
 	}
@@ -22,10 +22,12 @@ int RecursiveBinarySearch :: search( std::vector<int> array, int start, int end 
 	}
 	else if( array[ middle ] > 1 )
 	{
-		return search( array, start, middle - 1 ) ;
+		end = middle - 1 ;
 	}
 	else if( array[ middle ] < 1 )
 	{
-		return search( array, middle + 1, end ) ;
+		start = middle + 1 ;
 	}
+
+	return search( array, start, end ) ;
 }
