@@ -1,0 +1,56 @@
+201013-090022 Modified: MTJjMTRkMzI2OTMzZjk2NDUwZTA2MDI0M2QyMWQwMWQyYjI0NWQ0ZSAgLi8uRFNfU3RvcmUKYjkzYTE4Y2Q1ZGM1ZDVhNmNkMzkwOTI5NWUyNmI5MWYxNTc0NTRlMyAgLi91cGRhdGVzL2V4YW0ycC0yMDIwMDkyMy0xMjExMTIuemlwCg==
+201013-090022 make install
+201013-090022 SVN user: a1773620, repository path: 2020/s2/cs/exam2-primary
+201013-090022 updater:  Directory: ./bin
+201013-090022 updater:  Directory: ./originals
+201013-090022 updater:  Directory: ./lib
+201013-090022 updater:  Directory: ./lib/cats
+201013-090022 updater:  Directory: ./lib/cats/bin
+201013-090022 updater:  Directory: ./lib/macos
+201013-090022 updater:  Directory: ./lib/macos/bin
+201013-090022 updater:  Directory: ./lib/centos8
+201013-090022 updater:  Directory: ./lib/centos8/bin
+201013-090022 updater:  Creating: ./bin/assembler
+201013-090022 updater:  Creating: ./bin/simulator
+201013-090022 updater:  Creating: ./bin/run-tests
+201013-090022 updater:  Creating: updates/Makefile
+201013-090022 updater:  Creating: ./originals/question03.vm-asm
+201013-090022 updater:  Creating: ./originals/question01.vm-asm
+201013-090022 updater:  Creating: ./originals/question09.vm-asm
+201013-090022 updater:  Creating: ./originals/question05.vm-asm
+201013-090022 updater:  Creating: ./originals/question07.vm-asm
+201013-090022 updater:  Creating: ./originals/question10.vm-asm
+201013-090022 updater:  Creating: ./originals/question02.vm-asm
+201013-090022 updater:  Creating: ./originals/question00.vm-asm
+201013-090022 updater:  Creating: ./originals/question08.vm-asm
+201013-090022 updater:  Creating: ./originals/question04.vm-asm
+201013-090022 updater:  Creating: ./originals/question06.vm-asm
+201013-090022 updater:  Creating: ./lib/cats/bin/assembler
+201013-090022 updater:  Creating: ./lib/cats/bin/simulator
+201013-090022 updater:  Creating: ./lib/macos/bin/assembler
+201013-090022 updater:  Creating: ./lib/macos/bin/simulator
+201013-090022 updater:  Creating: ./lib/centos8/bin/assembler
+201013-090022 updater:  Creating: ./lib/centos8/bin/simulator
+201013-090022 updater:  Made bin/assembler executable
+201013-090022 updater:  Made bin/run-tests executable
+201013-090022 updater:  Made bin/simulator executable
+201013-090022 updater:  Made lib/cats/bin/assembler executable
+201013-090022 updater:  Made lib/cats/bin/simulator executable
+201013-090022 updater:  Made lib/centos8/bin/assembler executable
+201013-090022 updater:  Made lib/centos8/bin/simulator executable
+201013-090022 updater:  Made lib/macos/bin/assembler executable
+201013-090022 updater:  Made lib/macos/bin/simulator executable
+201013-090022 updater:  Removing MacOS quarantine flags from the executables
+201013-090022 updater:  Creating: question03.vm-asm
+201013-090022 updater:  Creating: question01.vm-asm
+201013-090022 updater:  Creating: question09.vm-asm
+201013-090022 updater:  Creating: question05.vm-asm
+201013-090022 updater:  Creating: question07.vm-asm
+201013-090022 updater:  Creating: question10.vm-asm
+201013-090022 updater:  Creating: question02.vm-asm
+201013-090022 updater:  Creating: question00.vm-asm
+201013-090022 updater:  Creating: question08.vm-asm
+201013-090022 updater:  Creating: question04.vm-asm
+201013-090022 updater:  Creating: question06.vm-asm
+201013-090022 updater:  Updating: updates/README
+201013-090022 updater:  Update installed
