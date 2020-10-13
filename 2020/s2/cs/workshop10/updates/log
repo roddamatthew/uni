@@ -1,0 +1,66 @@
+201013-200656 Modified: NTBjNjg0ZWVmODQwZTUxNTZjYTAwZjRiMGY0N2ZjODkzMTJmMDg3YiAgLi8uRFNfU3RvcmUKMTU1MjczYjgyMzhmNTFhZmNiMjM5MmNkZjczNzg5ZTBhZmU1YzlhOSAgLi91cGRhdGVzL3dvcmtzaG9wMTAtMjAyMDA4MjktMTc0MzM0LnppcAo=
+201013-200656 make install
+201013-200656 SVN user: a1773620, repository path: 2020/s2/cs/workshop10
+201013-200656 updater:  Directory: ./bin
+201013-200656 updater:  Directory: ./originals
+201013-200656 updater:  Directory: ./tests
+201013-200656 updater:  Directory: ./includes
+201013-200656 updater:  Directory: ./lib
+201013-200656 updater:  Directory: ./lib/cats
+201013-200656 updater:  Directory: ./lib/cats/bin
+201013-200656 updater:  Directory: ./lib/macos
+201013-200656 updater:  Directory: ./lib/macos/bin
+201013-200656 updater:  Directory: ./lib/centos8
+201013-200656 updater:  Directory: ./lib/centos8/bin
+201013-200656 updater:  Creating: ./bin/diffc
+201013-200656 updater:  Creating: ./bin/diff-colours
+201013-200656 updater:  Creating: ./bin/parser
+201013-200656 updater:  Creating: ./bin/Compiler-check.bash
+201013-200656 updater:  Creating: ./bin/run-tests
+201013-200656 updater:  Creating: ./bin/tokens
+201013-200656 updater:  Creating: updates/Makefile
+201013-200656 updater:  Creating: ./originals/parser.cpp
+201013-200656 updater:  Creating: ./tests/example2.test
+201013-200656 updater:  Creating: ./tests/example3.test
+201013-200656 updater:  Creating: ./tests/example1.test.Pxml
+201013-200656 updater:  Creating: ./tests/example3.test.Pxml
+201013-200656 updater:  Creating: ./tests/example2.test.Pxml
+201013-200656 updater:  Creating: ./tests/example1.test
+201013-200656 updater:  Creating: ./includes/tokeniser-groups.h
+201013-200656 updater:  Creating: ./includes/symbols.h
+201013-200656 updater:  Creating: ./includes/tokeniser.h
+201013-200656 updater:  Creating: ./includes/iobuffer.h
+201013-200656 updater:  Creating: ./includes/abstract-syntax-tree.h
+201013-200656 updater:  Creating: ./parser
+201013-200656 updater:  Creating: ./lib/cats/bin/diff-colours
+201013-200656 updater:  Creating: ./lib/cats/bin/parser
+201013-200656 updater:  Creating: ./lib/cats/bin/tokens
+201013-200656 updater:  Creating: ./lib/cats/lib.a
+201013-200656 updater:  Creating: ./lib/macos/bin/diff-colours
+201013-200656 updater:  Creating: ./lib/macos/bin/parser
+201013-200656 updater:  Creating: ./lib/macos/bin/tokens
+201013-200656 updater:  Creating: ./lib/macos/lib.a
+201013-200656 updater:  Creating: ./lib/centos8/bin/diff-colours
+201013-200656 updater:  Creating: ./lib/centos8/bin/parser
+201013-200656 updater:  Creating: ./lib/centos8/bin/tokens
+201013-200656 updater:  Creating: ./lib/centos8/lib.a
+201013-200656 updater:  Made parser executable
+201013-200656 updater:  Made bin/Compiler-check.bash executable
+201013-200656 updater:  Made bin/diff-colours executable
+201013-200656 updater:  Made bin/diffc executable
+201013-200656 updater:  Made bin/parser executable
+201013-200656 updater:  Made bin/run-tests executable
+201013-200656 updater:  Made bin/tokens executable
+201013-200656 updater:  Made lib/cats/bin/diff-colours executable
+201013-200656 updater:  Made lib/cats/bin/parser executable
+201013-200656 updater:  Made lib/cats/bin/tokens executable
+201013-200656 updater:  Made lib/centos8/bin/diff-colours executable
+201013-200656 updater:  Made lib/centos8/bin/parser executable
+201013-200656 updater:  Made lib/centos8/bin/tokens executable
+201013-200656 updater:  Made lib/macos/bin/diff-colours executable
+201013-200656 updater:  Made lib/macos/bin/parser executable
+201013-200656 updater:  Made lib/macos/bin/tokens executable
+201013-200656 updater:  Removing MacOS quarantine flags from the executables
+201013-200656 updater:  Creating: parser.cpp
+201013-200656 updater:  Updating: updates/README
+201013-200656 updater:  Update installed
