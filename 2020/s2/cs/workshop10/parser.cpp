@@ -73,6 +73,9 @@ static ast parseProgram()
     ast stat = nullptr ;
 
     // add parsing code here ...
+    parseDeclarations() ;
+    parseStatement() ;
+    mustbe( tk_eoi ) ;  
 
     // return a program node
     ast ret = create_program(decls,stat) ;
@@ -89,6 +92,7 @@ static ast parseDeclarations()
     vector<ast> decls ;
 
     // add parsing code here ...
+    while()
 
     // return a declarations node
     ast ret = create_declarations(decls) ;

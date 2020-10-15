@@ -64,3 +64,74 @@
 201013-200656 updater:  Creating: parser.cpp
 201013-200656 updater:  Updating: updates/README
 201013-200656 updater:  Update installed
+201015-111542 Modified: MGM2ODIzMDFhZDViZjIzMmFjYWZjNjQ0MDc1MDAxZjVmZTRmYTY2MCAgLi91cGRhdGVzL2luc3Rh
+bGxlci5iYXNoCjE1NTI3M2I4MjM4ZjUxYWZjYjIzOTJjZGY3Mzc4OWUwYWZlNWM5YTkgIC4vdXBk
+YXRlcy93b3Jrc2hvcDEwLTIwMjAwODI5LTE3NDMzNC56aXAK
+201015-111542 make install
+201015-111542 SVN user: a1773620, repository path: 2020/s2/cs/workshop10
+201015-111542 updater:  Directory: ./bin
+201015-111542 updater:  Directory: ./originals
+201015-111542 updater:  Directory: ./tests
+201015-111542 updater:  Directory: ./includes
+201015-111542 updater:  Directory: ./lib
+201015-111542 updater:  Directory: ./lib/cats
+201015-111542 updater:  Directory: ./lib/cats/bin
+201015-111542 updater:  Creating: ./bin/diffc
+201015-111542 updater:  Creating: ./bin/diff-colours
+201015-111542 updater:  Creating: ./bin/parser
+201015-111542 updater:  Creating: ./bin/Compiler-check.bash
+201015-111542 updater:  Creating: ./bin/run-tests
+201015-111542 updater:  Creating: ./bin/tokens
+201015-111542 updater:  Creating: updates/Makefile
+201015-111542 updater:  Creating: ./originals/parser.cpp
+201015-111542 updater:  Creating: ./tests/example2.test
+201015-111542 updater:  Creating: ./tests/example3.test
+201015-111542 updater:  Creating: ./tests/example1.test.Pxml
+201015-111542 updater:  Creating: ./tests/example3.test.Pxml
+201015-111542 updater:  Creating: ./tests/example2.test.Pxml
+201015-111542 updater:  Creating: ./tests/example1.test
+201015-111542 updater:  Creating: ./includes/tokeniser-groups.h
+201015-111542 updater:  Creating: ./includes/symbols.h
+201015-111542 updater:  Creating: ./includes/tokeniser.h
+201015-111542 updater:  Creating: ./includes/iobuffer.h
+201015-111542 updater:  Creating: ./includes/abstract-syntax-tree.h
+201015-111542 updater:  Creating: ./parser
+201015-111542 updater:  Creating: ./lib/cats/bin/diff-colours
+201015-111542 updater:  Made parser executable
+201015-111542 updater:  Made bin/Compiler-check.bash executable
+201015-111542 updater:  Made bin/diffc executable
+201015-111542 updater:  Made bin/diff-colours executable
+201015-111542 updater:  Made bin/parser executable
+201015-111542 updater:  Made bin/run-tests executable
+201015-111542 updater:  Made bin/tokens executable
+201015-111542 updater:  Made lib/cats/bin/diff-colours executable
+201015-111542 updater:  Updating: updates/README
+201015-111542 updater:  Update installed
+201015-112242 make 
+201015-112242 SVN user: a1773620, repository path: 2020/s2/cs/workshop10
+201015-112242 updater:  Directory: ./lib/macos
+201015-112242 updater:  Directory: ./lib/macos/bin
+201015-112242 updater:  Directory: ./lib/centos8
+201015-112242 updater:  Directory: ./lib/centos8/bin
+201015-112242 updater:  Creating: ./lib/cats/bin/parser
+201015-112242 updater:  Creating: ./lib/cats/bin/tokens
+201015-112242 updater:  Creating: ./lib/cats/lib.a
+201015-112242 updater:  Creating: ./lib/macos/bin/diff-colours
+201015-112242 updater:  Creating: ./lib/macos/bin/parser
+201015-112242 updater:  Creating: ./lib/macos/bin/tokens
+201015-112242 updater:  Creating: ./lib/macos/lib.a
+201015-112242 updater:  Creating: ./lib/centos8/bin/diff-colours
+201015-112242 updater:  Creating: ./lib/centos8/bin/parser
+201015-112242 updater:  Creating: ./lib/centos8/bin/tokens
+201015-112242 updater:  Creating: ./lib/centos8/lib.a
+201015-112242 updater:  Made lib/cats/bin/parser executable
+201015-112242 updater:  Made lib/cats/bin/tokens executable
+201015-112242 updater:  Made lib/centos8/bin/diff-colours executable
+201015-112242 updater:  Made lib/centos8/bin/parser executable
+201015-112242 updater:  Made lib/centos8/bin/tokens executable
+201015-112242 updater:  Made lib/macos/bin/diff-colours executable
+201015-112242 updater:  Made lib/macos/bin/parser executable
+201015-112242 updater:  Made lib/macos/bin/tokens executable
+201015-113107 Modified: MTEzNjcwZTFjYzE2ZmExZTZkMDlkZmZjYzEwMzUyZGMwMDg1M2I3ZiAgLi9wYXJzZXIuY3BwCg==
+201015-113107 make 
+201015-113107 SVN user: a1773620, repository path: 2020/s2/cs/workshop10
