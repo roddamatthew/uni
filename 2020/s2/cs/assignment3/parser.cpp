@@ -344,7 +344,6 @@ ast parse_subr_decs()
                 did_not_find( tg_starts_subroutine ) ;
                 break ;
         }
-        next_token() ;
     } 
 
     pop_error_context() ;
@@ -373,7 +372,6 @@ ast parse_constructor()
     mustbe( tk_lrb ) ;
 
     ast params = parse_param_list() ;
-    next_token() ;
 
     mustbe( tk_rrb ) ;
 
@@ -428,7 +426,8 @@ ast parse_method()
 
     mustbe( tk_method ) ;
 
-    string vtype = token_spelling( parse_vtype() ) ;
+    // string vtype = token_spelling( parse_vtype() ) ;
+    parse_vtype() ;
     next_token() ;
 
     string name = parse_identifier() ;
@@ -437,7 +436,6 @@ ast parse_method()
     mustbe( tk_lrb ) ;
 
     ast params = parse_param_list() ;
-    next_token() ;
 
     mustbe( tk_rrb ) ;
 
@@ -613,8 +611,6 @@ ast parse_statement()
             break ;
     }
 
-    next_token() ;
-
     pop_error_context() ;
     return create_empty() ;
 }
@@ -732,6 +728,26 @@ ast parse_do()
 {
     push_error_context("parse_do()") ;
 
+    mustbe( tk_do ) ;
+
+    parse_identifier() ;
+    next_token() ;
+
+    switch( token_kind() )
+    {
+        case tk_stop:
+            parse_id_call() ;
+            break ;
+        case tk_lrb:
+            parse_call() ;
+            break ;
+        default:
+            did_not_find( tk_stop ) ;
+            break ;
+    }
+
+    mustbe( tk_semi ) ;
+
     pop_error_context() ;
     return create_empty() ;
 }
@@ -833,20 +849,19 @@ ast parse_term()
             mustbe( tk_this ) ;
             break ;
         case tk_lrb:
+            mustbe( tk_lrb ) ;
             parse_expr() ;
-            next_token() ;
             mustbe( tk_rrb ) ;
             break ;
         case tg_unary_op:
             parse_unary_op() ;
-            next_token() ;
             parse_term() ;
             break ;
         case tk_identifier:
             parse_var_term() ;
             break ;
         default:
-            did_not_find( tg_starts_term ) ;
+            // did_not_find( tg_starts_term ) ;
             break ;
     }
 
@@ -884,7 +899,8 @@ ast parse_var_term()
 {
     push_error_context("parse_var_term()") ;
 
-    mustbe( tk_identifier ) ;
+    string name = parse_identifier() ;
+    next_token() ;
 
     switch( token_kind() )
     {
@@ -1044,17 +1060,15 @@ Token parse_unary_op()
     switch( token_kind() )
     {
         case tk_sub:
-            type = current_token() ;
+            type = mustbe( tk_sub ) ;
             break ;
         case tk_not:
-            type = current_token() ;
+            type = mustbe( tk_not ) ;
             break ;
         default:
             did_not_find( tg_unary_op ) ;
             break ;
     }
-
-    next_token() ;
 
     pop_error_context() ;
     return nullptr ;
