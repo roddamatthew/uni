@@ -143,8 +143,7 @@ ast parse_class()
     mustbe( tk_rcb ) ;
 
     pop_error_context() ;
-    //return create_class( myclassname, class_var_decs, class_subrs ) ;
-    return create_empty() ;
+    return create_class( myclassname, class_var_decs, class_subrs ) ;
 }
 
 // class_var_decs ::= (static_var_dec | field_var_dec)*
@@ -161,13 +160,11 @@ ast parse_class_var_decs()
     {
         if( have( tk_static ) )
         {
-            // decs.push_back( parse_static_var_dec() ) ;
-            parse_static_var_dec() ;
+            decs.push_back( parse_static_var_dec() ) ;
         }
         else if( have( tk_field ) )
         {
-            // decs.push_back( parse_field_var_dec() ) ;
-            parse_field_var_dec() ;
+            decs.push_back( parse_field_var_dec() ) ;
         }
         else
         {
@@ -176,8 +173,7 @@ ast parse_class_var_decs()
     }
 
     pop_error_context() ;
-    //return create_class_var_decs( decs ) ;
-    return create_empty() ;
+    return create_class_var_decs( decs ) ;
 }
 
 // static_var_dec ::= 'static' type identifier (',' identifier)* ';'
@@ -325,20 +321,20 @@ ast parse_subr_decs()
 {
     push_error_context("parse_subr_decs()") ;
 
-    ast subr ;
+    vector<ast> subrs ;
 
     while( have( tg_starts_subroutine ) )
     {
         switch( token_kind() )
         {
             case tk_constructor:
-                subr = parse_constructor() ;
+                subrs.push_back( parse_constructor() ) ;
                 break ;
             case tk_function:
-                subr = parse_function() ;
+                subrs.push_back( parse_function() ) ;
                 break ;
             case tk_method:
-                subr = parse_method() ;
+                subrs.push_back( parse_method() ) ;
                 break ;
             default:
                 did_not_find( tg_starts_subroutine ) ;
@@ -347,6 +343,7 @@ ast parse_subr_decs()
     } 
 
     pop_error_context() ;
+    // return create_subr_decs( subrs ) ;
     return create_empty() ;
 }
 
@@ -378,7 +375,7 @@ ast parse_constructor()
     ast body = parse_subr_body() ;
 
     pop_error_context() ;
-    return create_empty() ;
+    return create_constructor( vtype, name, params, body ) ;
 }
 
 // function ::= 'function' vtype identifier '(' param_list ')' subr_body
@@ -395,6 +392,7 @@ ast parse_function()
     mustbe( tk_function ) ;
 
     //string vtype = token_spelling( parse_vtype() ) ;
+    string vtype = "" ;
     parse_vtype() ;
     next_token() ;
 
@@ -410,7 +408,7 @@ ast parse_function()
     ast body = parse_subr_body() ;
 
     pop_error_context() ;
-    return create_empty() ;
+    return create_function( vtype, name, params, body ) ;
 }
 
 // method ::= 'method' vtype identifier '(' param_list ')' subr_body
@@ -427,6 +425,7 @@ ast parse_method()
     mustbe( tk_method ) ;
 
     // string vtype = token_spelling( parse_vtype() ) ;
+    string vtype = "" ;
     parse_vtype() ;
     next_token() ;
 
@@ -442,7 +441,7 @@ ast parse_method()
     ast body = parse_subr_body() ;
 
     pop_error_context() ;
-    return create_empty() ;
+    return create_method( vtype, name, params, body ) ;
 }
 
 // param_list ::= ((type identifier) (',' type identifier)*)?
@@ -853,7 +852,8 @@ ast parse_term()
             parse_expr() ;
             mustbe( tk_rrb ) ;
             break ;
-        case tg_unary_op:
+        case tk_sub:
+        case tk_not:
             parse_unary_op() ;
             parse_term() ;
             break ;
@@ -861,7 +861,7 @@ ast parse_term()
             parse_var_term() ;
             break ;
         default:
-            // did_not_find( tg_starts_term ) ;
+            did_not_find( tg_starts_term ) ;
             break ;
     }
 
@@ -1006,43 +1006,41 @@ ast parse_infix_op()
 {
     push_error_context("parse_infix_op()") ;
 
-    string op ;
+    Token op ;
 
     switch( token_kind() )
     {
         case tk_add:
-            op = token_spelling() ;
+            op = mustbe( tk_add ) ;
             break ;
         case tk_sub:
-            op = token_spelling() ;
+            op = mustbe( tk_sub ) ;
             break ;
         case tk_times:
-            op = token_spelling() ;
+            op = mustbe( tk_times ) ;
             break ;
         case tk_divide:
-            op = token_spelling() ;
+            op = mustbe( tk_divide ) ;
             break ;
         case tk_and:
-            op = token_spelling() ;
+            op = mustbe( tk_and ) ;
             break ;
         case tk_or:
-            op = token_spelling() ;
+            op = mustbe( tk_or ) ;
             break ;
         case tk_lt:
-            op = token_spelling() ;
+            op = mustbe( tk_lt ) ;
             break ;
         case tk_gt:
-            op = token_spelling() ;
+            op = mustbe( tk_gt ) ;
             break ;
         case tk_eq:
-            op = token_spelling() ;
+            op = mustbe( tk_eq ) ;
             break ;
         default:
             did_not_find( tg_infix_op ) ;
             break ;
     }
-
-    next_token() ;
 
     pop_error_context() ;
     return create_empty() ;
