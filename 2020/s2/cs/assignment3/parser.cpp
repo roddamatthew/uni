@@ -3,6 +3,7 @@
 #include "iobuffer.h"
 #include "symbols.h"
 #include "abstract-syntax-tree.h"
+#include <iostream>
 
 // to shorten our code:
 using namespace std ;
@@ -112,7 +113,7 @@ Token parse_unary_op() ;
 
 // ** SYMBOL TABLES **
 
-class scope:
+class scope
 {
 public:
     string segment ;
@@ -126,28 +127,19 @@ public:
         symbolTable = create_variables() ;
     }
 
-    // adds a variable to the 
-    ast declare_variable( Token identifier, Token type )
-    {
-        symbolTable.push_back( identifier ) ;
+} ;
 
-        string name = token_spelling( identifier ) ;
-        string type = token_spelling( type ) ;
-
-        return create_var_dec( name, segment, offset++, type ) ;
-    }
-
-    // returns ast of a variable if found, otherwise causes an error
-    ast lookup_variable( Token identifier )
-    {
-
-    }
-
-
-}
+// Global variable storing the current classes name
+string currentClass ;
 
 // Global scopeStack function
 static vector<scope> *scopeStack ;
+
+// initialise the symbol tables
+static void initialise_symbol_tables()
+{
+    scopeStack = new vector<scope>() ;
+}
 
 // push a new symbol table onto the scopeStack
 static void push_scope( string segment )
@@ -159,7 +151,7 @@ static void push_scope( string segment )
 static void pop_scope()
 {
     // Check if there is a table to pop
-    if( scopes -> size() < 1 )
+    if( scopeStack -> size() < 1 )
     {
         fatal_error( 0, "tried to pop scope off scopeStack but scopeStack was empty" ) ;
     }
@@ -167,7 +159,7 @@ static void pop_scope()
     // remove the top scope from the stack and delete it
     symbols popped = scopeStack -> back().symbolTable ;
     delete_variables( popped ) ;
-    scopes -> pop_back() ;
+    scopeStack -> pop_back() ;
 }
 
 static ast declare_variable( Token identifier, Token type )
@@ -176,9 +168,33 @@ static ast declare_variable( Token identifier, Token type )
 
     string name = token_spelling( identifier ) ;
     string typeString = token_spelling( type ) ;
-    st_variable new_variable( name, typeString, current.segment, current.offset++ ) ;
+    st_variable new_variable( name, typeString, current.segment, scopeStack -> back().offset++ ) ;
+
+    if ( !insert_variables( current.symbolTable, name, new_variable ) ) // it is an error to declare something twice
+    {
+        fatal_error(0,"\n" + token_context(identifier) + "Variable:  " + name +  " has already been declared") ;
+    }
 
     return create_var_dec( new_variable.name, new_variable.segment, new_variable.offset, new_variable.type ) ;
+}
+
+static ast lookup_variable( Token identifier )
+{
+    // search symbol tables from top to bottom of the symbol table stack
+    string varname = token_spelling(identifier) ;
+
+    for ( int i = scopeStack -> size() - 1 ; i >= 0 ; i-- )
+    {
+        st_variable var = lookup_variables( scopeStack -> at(i).symbolTable, varname ) ;
+        if ( var.name == varname )
+        {
+            return create_var( var.name, var.segment, var.offset, var.type ) ;
+        }
+    }
+
+    // variables not found - report a fatal error - the return is just so that the function compiles
+    fatal_error( 0, "\n" + token_context( identifier ) + "Found undeclared variable:  " + varname ) ;
+    return nullptr ;
 }
 
 // Added functions: 
@@ -197,6 +213,8 @@ string parse_identifier()
 // Different segments offset counters
 int localOffset = 0 ;
 int staticOffset = 0 ;
+int fieldOffset = 0 ;
+int argumentOffset = 0 ;
 
 // class ::= 'class' identifier '{' class_var_decs subr_decs '}'
 // create_class(myclassname,class_var_decs,class_subrs)
@@ -205,9 +223,14 @@ ast parse_class()
     push_error_context("parse_class()") ;
 
     mustbe( tk_class ) ;
+
+    push_scope( "field" ) ;
+    push_scope( "static" ) ;
     
     string myclassname = parse_identifier() ;
     next_token() ;
+
+    currentClass = myclassname ;
 
     mustbe( tk_lcb ) ;
 
@@ -216,6 +239,9 @@ ast parse_class()
     ast class_subrs = parse_subr_decs() ;
 
     mustbe( tk_rcb ) ;
+
+    pop_scope() ;
+    pop_scope() ;
 
     pop_error_context() ;
     return create_class( myclassname, class_var_decs, class_subrs ) ;
@@ -271,31 +297,31 @@ ast parse_static_var_dec()
     int offset ;
     vector<ast> decs ;
 
-    string type = token_spelling( parse_type() ) ;
+    // string type = token_spelling( parse_type() ) ;
+    Token type = parse_type() ;
     next_token() ;
 
-    string name = parse_identifier() ;
+    // string name = parse_identifier() ;
+    Token name = current_token() ;
     next_token() ;
 
-    decs.push_back( create_var_dec( name, "static", staticOffset, type ) ) ;
+    // decs.push_back( create_var_dec( name, "static", staticOffset, type ) ) ;
+    decs.push_back( declare_variable( name, type ) ) ;
     staticOffset++ ;
 
-    // ERROR HERE NOT SURE WHAT TO DO WITH THE EXTRA IDENTIFIER
     while( have( tk_comma ) )
     {
         mustbe( tk_comma ) ;
-        name = parse_identifier() ;
+        // name = parse_identifier() ;
+        name = current_token() ;
         next_token() ;
 
-        decs.push_back( create_var_dec( name, "static", staticOffset, type ) ) ;
+        // decs.push_back( create_var_dec( name, "static", staticOffset, type ) ) ;
+        decs.push_back( declare_variable( name, type ) ) ;
         staticOffset++ ;
     }
 
     mustbe( tk_semi ) ;
-
-
-    // create_var_dec( name, segment, offset, type ) ;
-
 
     pop_error_context() ;
     return create_var_decs( decs ) ;
@@ -719,12 +745,10 @@ ast parse_let()
     push_error_context("parse_let()") ;
 
     mustbe( tk_let ) ;
-    string name = parse_identifier() ;
-
-    ast var = create_empty() ;
-
-    // check if name is already been initialized earlier ast_check( string etc. )
+    Token name = current_token() ;
     next_token() ;
+
+    ast var = lookup_variable( name ) ;
 
     ast index ;
     ast expr ;
@@ -869,13 +893,13 @@ ast parse_return()
 {
     push_error_context("parse_return()") ;
 
-    ast expr ;
-
     mustbe( tk_return ) ;
 
     if( have( tg_starts_term ) )
     {
-        expr = parse_expr() ;
+        ast expr = parse_expr() ;
+        mustbe( tk_semi ) ;
+        return create_return_expr( expr ) ;
     }
 
     mustbe( tk_semi ) ;
@@ -1016,26 +1040,31 @@ ast parse_var_term()
 {
     push_error_context("parse_var_term()") ;
 
-    string name = parse_identifier() ;
+    Token name = current_token() ;
     next_token() ;
 
-    switch( token_kind() )
+    ast var ;
+
+    if( token_kind() == tk_lsb )
     {
-        case tk_lsb:
-            parse_index() ;
-            break ;
-        case tk_stop:
-            parse_id_call() ;
-            break ;
-        case tk_lrb:
-            parse_call() ;
-            break ;
-        default:
-            break ;
+        parse_index() ;
+    }
+    else if( token_kind() == tk_stop )
+    {
+        ast subr_call = parse_id_call() ;
+        var = create_call_as_function( currentClass, subr_call ) ;
+    }
+    else if( token_kind() == tk_lrb )
+    {
+        parse_call() ;
+    }
+    else
+    {
+        var = lookup_variable( name ) ;
     }
 
     pop_error_context() ;
-    return create_empty() ;
+    return var ;
 }
 
 // index ::= '[' expr ']'
@@ -1065,13 +1094,13 @@ ast parse_id_call()
     push_error_context("parse_id_call()") ;
 
     mustbe( tk_stop ) ;
-    parse_identifier() ;
+    string subr_name = parse_identifier() ;
     next_token() ;
 
-    parse_call() ;
+    ast expr_list = parse_call() ;
 
     pop_error_context() ;
-    return create_empty() ;
+    return create_subr_call( subr_name, expr_list) ;
 }
 
 // call ::= '(' expr_list ')'
@@ -1201,6 +1230,8 @@ ast jack_parser()
 // main program
 int main(int argc,char **argv)
 {
+    initialise_symbol_tables() ;        // initialise symbol tables
+
     // parse a Jack class and print the abstract syntax tree as XML
     ast_print_as_xml(jack_parser(),4) ;
 
