@@ -307,7 +307,7 @@ Token parse_vtype()
     did_not_find( tg_starts_vtype ) ;
 
     pop_error_context() ;
-    return nullptr ;
+    return type ;
 }
 
 // subr_decs ::= (constructor | function | method)*
@@ -331,7 +331,7 @@ ast parse_subr_decs()
                 subrs.push_back( parse_constructor() ) ;
                 break ;
             case tk_function:
-                subrs.push_back( parse_function() ) ;
+                subrs.push_back( create_subr( parse_function() ) ) ;
                 break ;
             case tk_method:
                 subrs.push_back( parse_method() ) ;
@@ -343,8 +343,8 @@ ast parse_subr_decs()
     } 
 
     pop_error_context() ;
-    // return create_subr_decs( subrs ) ;
-    return create_empty() ;
+    return create_subr_decs( subrs ) ;
+    // return create_empty() ;
 }
 
 // constructor ::= 'constructor' identifier identifier '(' param_list ')' subr_body
@@ -391,9 +391,7 @@ ast parse_function()
 
     mustbe( tk_function ) ;
 
-    //string vtype = token_spelling( parse_vtype() ) ;
-    string vtype = "" ;
-    parse_vtype() ;
+    string vtype = token_spelling ( parse_vtype() ) ;
     next_token() ;
 
     string name = parse_identifier() ;
@@ -424,9 +422,7 @@ ast parse_method()
 
     mustbe( tk_method ) ;
 
-    // string vtype = token_spelling( parse_vtype() ) ;
-    string vtype = "" ;
-    parse_vtype() ;
+    string vtype = token_spelling ( parse_vtype() ) ;
     next_token() ;
 
     string name = parse_identifier() ;
@@ -459,6 +455,8 @@ ast parse_param_list()
 {
     push_error_context("parse_param_list()") ;
 
+    vector<ast> params ;
+
     if( have( tg_starts_type ) )
     {
         string type = token_spelling( parse_type() ) ;
@@ -466,6 +464,8 @@ ast parse_param_list()
 
         string name = parse_identifier() ;
         next_token() ;
+
+        // params.push_back( create_var_dec( name, "", 0, type) ) ;
 
         while( have( tk_comma ) )
         {
@@ -476,11 +476,13 @@ ast parse_param_list()
 
             string name = parse_identifier() ;
             next_token() ;
+
+            params.push_back( create_var_dec( name, "", 0, type) ) ;
         }
     }
 
     pop_error_context() ;
-    return create_empty() ;
+    return create_param_list( params ) ;
 }
 
 // subr_body ::= '{' var_decs statements '}'
@@ -502,7 +504,7 @@ ast parse_subr_body()
     mustbe( tk_rcb ) ;
 
     pop_error_context() ;
-    return create_empty() ;
+    return create_subr_body( decs, body ) ;
 }
 
 // var_decs ::= var_dec*
@@ -577,7 +579,7 @@ ast parse_statements()
     }
 
     pop_error_context() ;
-    return create_empty() ;
+    return create_statements( statements ) ;
 }
 
 // statement ::= let | if | while | do | return
@@ -588,22 +590,24 @@ ast parse_statement()
 {
     push_error_context("parse_statement()") ;
 
+    ast statement ;
+
     switch( token_kind() )
     {
         case tk_let:
-            parse_let() ;
+            statement = parse_let() ;
             break ;
         case tk_if:
-            parse_if() ;
+            statement = parse_if() ;
             break ;
         case tk_while:
-            parse_while() ;
+            statement = parse_while() ;
             break ;
         case tk_do:
-            parse_do() ;
+            statement = parse_do() ;
             break ;
         case tk_return:
-            parse_return() ;
+            statement = parse_return() ;
             break ;
         default:
             did_not_find( tg_starts_statement ) ;
@@ -611,7 +615,7 @@ ast parse_statement()
     }
 
     pop_error_context() ;
-    return create_empty() ;
+    return create_statement( statement ) ;
 }
 
 // let ::= 'let' identifier index? '=' expr ';'
@@ -775,7 +779,7 @@ ast parse_return()
     mustbe( tk_semi ) ;
 
     pop_error_context() ;
-    return create_empty() ;
+    return create_return() ;
 }
 
 // expr ::= term (infix_op term)*
