@@ -1120,7 +1120,9 @@ ast parse_var_term()
 
         if( previously_declared( name ) == true )
         {
-            var = create_call_as_method( currentClass, lookup_variable( name ), subr_call ) ;
+            var = lookup_variable( name ) ;
+            string cls = get_var_type( var ) ;
+            var = create_call_as_method( cls, lookup_variable( name ), subr_call ) ;
         }
         else
         {
