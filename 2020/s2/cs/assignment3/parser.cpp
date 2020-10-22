@@ -135,6 +135,10 @@ string currentClass ;
 // Global variable to store subroutine from parse_var
 string previousSubr ;
 
+// Global variable for offsets of static and field variables
+int staticOffset ;
+int fieldOffset ;
+
 // Global scopeStack function
 static vector<scope> *scopeStack ;
 
@@ -916,8 +920,8 @@ ast parse_do()
     }
     else if( token_kind() == tk_lrb )
     {
-        ast object = create_this() ;
-        ast subr_call = parse_call() ;
+        ast object = create_this() ; 
+        ast subr_call = create_subr_call( token_spelling( name ) , parse_call() ) ;
         call = create_call_as_method( currentClass, object, subr_call ) ;
     }
     else
@@ -1104,13 +1108,19 @@ ast parse_var_term()
     {
         ast subr_call = parse_id_call() ;
 
-        if( previously_declared( name ) == true ) var = create_call_as_method( currentClass, lookup_variable( name ), subr_call ) ; else
-        var = create_call_as_function( token_spelling( name ), subr_call ) ;
+        if( previously_declared( name ) == true )
+        {
+            var = create_call_as_method( currentClass, lookup_variable( name ), subr_call ) ;
+        }
+        else
+        {
+            var = create_call_as_function( token_spelling( name ), subr_call ) ;
+        }
     }
     else if( token_kind() == tk_lrb )
     {
-        ast object = create_this() ;
-        ast subr_call = parse_call() ;
+        ast object = create_this() ; 
+        ast subr_call = create_subr_call( token_spelling( name ) , parse_call() ) ;
         var = create_call_as_method( currentClass, object, subr_call ) ;
     }
     else
