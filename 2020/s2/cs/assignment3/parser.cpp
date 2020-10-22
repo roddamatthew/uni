@@ -132,6 +132,9 @@ public:
 // Global variable storing the current classes name
 string currentClass ;
 
+// Global variable to store subroutine from parse_var
+string previousSubr ;
+
 // Global scopeStack function
 static vector<scope> *scopeStack ;
 
@@ -893,19 +896,29 @@ ast parse_do()
 
     mustbe( tk_do ) ;
 
-    string class_name = parse_identifier() ;
+    Token name = current_token() ;
     next_token() ;
 
     if( token_kind() == tk_stop )
     {
-            ast subr_call = parse_id_call() ;
-            call = create_call_as_function( class_name, subr_call ) ;
+        ast subr_call = parse_id_call() ;
+
+        if( previously_declared( name ) == true )
+        {
+            ast var = lookup_variable( name ) ;
+            string cls = get_var_type( var ) ;
+            call = create_call_as_method( cls, lookup_variable( name ), subr_call ) ;
+        }
+        else
+        {
+            call = create_call_as_function( token_spelling( name ), subr_call ) ;
+        }
     }
     else if( token_kind() == tk_lrb )
     {
-            ast subr_call = parse_call() ;
-            ast object = create_this() ;
-            call = create_call_as_method( class_name, object, subr_call ) ;
+        ast object = create_this() ;
+        ast subr_call = parse_call() ;
+        call = create_call_as_method( currentClass, object, subr_call ) ;
     }
     else
     {
