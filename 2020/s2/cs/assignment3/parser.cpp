@@ -544,6 +544,7 @@ ast parse_method()
     mustbe( tk_lrb ) ;
 
     push_scope( "argument" ) ;
+    scopeStack -> back().offset++ ;
 
     ast params = parse_param_list() ;
 
@@ -1064,7 +1065,10 @@ ast parse_var_term()
 
     if( token_kind() == tk_lsb )
     {
-        parse_index() ;
+        var = lookup_variable( name ) ;
+        ast index = parse_index() ;
+
+        return create_array_index( var, index ) ;
     }
     else if( token_kind() == tk_stop )
     {
