@@ -197,6 +197,23 @@ static ast lookup_variable( Token identifier )
     return nullptr ;
 }
 
+static bool previously_declared( Token identifier )
+{
+    // search symbol tables from top to bottom of the symbol table stack
+    string varname = token_spelling(identifier) ;
+
+    for ( int i = scopeStack -> size() - 1 ; i >= 0 ; i-- )
+    {
+        st_variable var = lookup_variables( scopeStack -> at(i).symbolTable, varname ) ;
+        if ( var.name == varname )
+        {
+            return true ;
+        }
+    }
+
+    return false ;
+}
+
 // Added functions: 
 
 // Function to parse identifiers
@@ -1073,6 +1090,8 @@ ast parse_var_term()
     else if( token_kind() == tk_stop )
     {
         ast subr_call = parse_id_call() ;
+
+        if( previously_declared( name ) == true ) var = create_call_as_method( currentClass, lookup_variable( name ), subr_call ) ; else
         var = create_call_as_function( token_spelling( name ), subr_call ) ;
     }
     else if( token_kind() == tk_lrb )
