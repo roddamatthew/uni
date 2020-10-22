@@ -428,13 +428,13 @@ ast parse_subr_decs()
         switch( token_kind() )
         {
             case tk_constructor:
-                subrs.push_back( parse_constructor() ) ;
+                subrs.push_back( create_subr( parse_constructor() ) ) ;
                 break ;
             case tk_function:
                 subrs.push_back( create_subr( parse_function() ) ) ;
                 break ;
             case tk_method:
-                subrs.push_back( parse_method() ) ;
+                subrs.push_back( create_subr( parse_method() ) ) ;
                 break ;
             default:
                 did_not_find( tg_starts_subroutine ) ;
@@ -886,7 +886,7 @@ ast parse_do()
     else if( token_kind() == tk_lrb )
     {
             ast subr_call = parse_call() ;
-            ast object = create_empty() ;
+            ast object = create_this() ;
             call = create_call_as_method( class_name, object, subr_call ) ;
     }
     else
@@ -1014,8 +1014,6 @@ ast parse_term()
         case tk_sub:
         case tk_not:
             term = create_unary_op( token_spelling( parse_unary_op() ), parse_term() ) ;
-            // parse_unary_op() ;
-            // parse_term() ;
             break ;
         case tk_identifier:
             term = parse_var_term() ;
@@ -1075,7 +1073,9 @@ ast parse_var_term()
     }
     else if( token_kind() == tk_lrb )
     {
-        parse_call() ;
+        ast object = create_this() ;
+        ast subr_call = parse_call() ;
+        var = create_call_as_method( currentClass, object, subr_call ) ;
     }
     else
     {
