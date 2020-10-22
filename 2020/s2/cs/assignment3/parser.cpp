@@ -151,7 +151,17 @@ static void initialise_symbol_tables()
 // push a new symbol table onto the scopeStack
 static void push_scope( string segment )
 {
-    if( scopeStack -> back().segment != segment ) scopeStack -> push_back( scope( segment ) ) ;
+    if( scopeStack -> size() >= 1 )
+    {
+        string lastSegment = scopeStack -> back().segment ;
+        if( segment.compare( lastSegment ) != 0 ){
+        scopeStack -> push_back( scope( segment ) ) ;
+        }
+    }
+    else
+    {
+        scopeStack -> push_back( scope( segment ) ) ;
+    }
 }
 
 // pop the top symbol table off of scopeStack
