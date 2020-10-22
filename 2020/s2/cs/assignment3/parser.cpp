@@ -112,6 +112,74 @@ Token parse_unary_op() ;
 
 // ** SYMBOL TABLES **
 
+class scope:
+{
+public:
+    string segment ;
+    int offset ;
+    symbols symbolTable ;
+
+    scope( string seg )
+    {
+        segment = seg ;
+        offset = 0 ;
+        symbolTable = create_variables() ;
+    }
+
+    // adds a variable to the 
+    ast declare_variable( Token identifier, Token type )
+    {
+        symbolTable.push_back( identifier ) ;
+
+        string name = token_spelling( identifier ) ;
+        string type = token_spelling( type ) ;
+
+        return create_var_dec( name, segment, offset++, type ) ;
+    }
+
+    // returns ast of a variable if found, otherwise causes an error
+    ast lookup_variable( Token identifier )
+    {
+
+    }
+
+
+}
+
+// Global scopeStack function
+static vector<scope> *scopeStack ;
+
+// push a new symbol table onto the scopeStack
+static void push_scope( string segment )
+{
+    scopeStack -> push_back( scope( segment ) ) ;
+}
+
+// pop the top symbol table off of scopeStack
+static void pop_scope()
+{
+    // Check if there is a table to pop
+    if( scopes -> size() < 1 )
+    {
+        fatal_error( 0, "tried to pop scope off scopeStack but scopeStack was empty" ) ;
+    }
+
+    // remove the top scope from the stack and delete it
+    symbols popped = scopeStack -> back().symbolTable ;
+    delete_variables( popped ) ;
+    scopes -> pop_back() ;
+}
+
+static ast declare_variable( Token identifier, Token type )
+{
+    scope current = scopeStack -> back() ;
+
+    string name = token_spelling( identifier ) ;
+    string typeString = token_spelling( type ) ;
+    st_variable new_variable( name, typeString, current.segment, current.offset++ ) ;
+
+    return create_var_dec( new_variable.name, new_variable.segment, new_variable.offset, new_variable.type ) ;
+}
 
 // Added functions: 
 
