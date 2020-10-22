@@ -712,3 +712,29 @@
 201022-110758 Modified: YTU2ZTQ5NmQzY2UyNGM3MzFhMjlmNjU3ZTI1MGJhZTE5ZjQzOGEyOCAgLi91cGRhdGVzL2luc3RhbGxlci5iYXNoCmI5YzVjNzZiNDliM2FmYTY0NjQxZDM0ZGYxNDRjNTdlZmJkYTU2MDMgIC4vcGFyc2VyLmNwcAo=
 201022-110758 make test-parser
 201022-110758 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201022-112123 Modified: ZDVhMTUxOTIzZDU0OTVmY2IwMTE1YTBmNDk2ZWNjYTk3MGNhNWZmYyAgLi8uRFNfU3RvcmUKODdlZjY2ZjE0NGM0YzhkMDcyMGZkOGQzYTc3M2I0Mzg5NjcwNDMyNiAgLi91cGRhdGVzLy5EU19TdG9yZQpiNDQxYWU4NGE3YmY4ZjZmMDVkN2M1NmE2NmVjN2MwZDgzZTZhNGFlICAuL3VwZGF0ZXMvYXNzaWdubWVudDMtMjAyMDEwMjEtMTYxNTU3LnppcAo=
+201022-112123 make update
+201022-112123 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201022-112123 updater:  Updating: ./lib/cats/bin/lint
+201022-112123 updater:  Updating: ./lib/cats/bin/optimiser-r
+201022-112123 updater:  Updating: ./lib/cats/bin/parser
+201022-112123 updater:  Updating: ./lib/cats/bin/codegen
+201022-112123 updater:  Updating: ./lib/cats/bin/pretty
+201022-112123 updater:  Updating: ./lib/cats/lib.a
+201022-112123 updater:  Updating: ./lib/macos/bin/lint
+201022-112123 updater:  Updating: ./lib/macos/bin/optimiser-r
+201022-112123 updater:  Updating: ./lib/macos/bin/parser
+201022-112123 updater:  Updating: ./lib/macos/bin/codegen
+201022-112123 updater:  Updating: ./lib/macos/bin/pretty
+201022-112123 updater:  Updating: ./lib/macos/lib.a
+201022-112123 updater:  Updating: ./lib/centos8/bin/lint
+201022-112123 updater:  Updating: ./lib/centos8/bin/optimiser-r
+201022-112123 updater:  Updating: ./lib/centos8/bin/parser
+201022-112123 updater:  Updating: ./lib/centos8/bin/codegen
+201022-112123 updater:  Updating: ./lib/centos8/bin/pretty
+201022-112123 updater:  Updating: ./lib/centos8/lib.a
+201022-112123 updater:  Removing MacOS quarantine flags from the executables
+201022-112123 updater:  Updating: updates/README
+201022-112123 updater:  Update installed
+201022-112155 make 
+201022-112155 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
