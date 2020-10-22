@@ -110,6 +110,9 @@ ast parse_expr_list() ;
 ast parse_infix_op() ;
 Token parse_unary_op() ;
 
+// ** SYMBOL TABLES **
+
+
 // Added functions: 
 
 // Function to parse identifiers
@@ -122,6 +125,10 @@ string parse_identifier()
 
     return identifier ;
 }
+
+// Different segments offset counters
+int localOffset = 0 ;
+int staticOffset = 0 ;
 
 // class ::= 'class' identifier '{' class_var_decs subr_decs '}'
 // create_class(myclassname,class_var_decs,class_subrs)
@@ -193,22 +200,27 @@ ast parse_static_var_dec()
 
     mustbe( tk_static ) ;
 
-    string segment ;
     int offset ;
+    vector<ast> decs ;
 
-    // string type = token_spelling( parse_type() ) ;
-    parse_type() ;
+    string type = token_spelling( parse_type() ) ;
     next_token() ;
 
     string name = parse_identifier() ;
     next_token() ;
 
+    decs.push_back( create_var_dec( name, "static", staticOffset, type ) ) ;
+    staticOffset++ ;
+
     // ERROR HERE NOT SURE WHAT TO DO WITH THE EXTRA IDENTIFIER
     while( have( tk_comma ) )
     {
         mustbe( tk_comma ) ;
-        parse_identifier() ;
+        name = parse_identifier() ;
         next_token() ;
+
+        decs.push_back( create_var_dec( name, "static", staticOffset, type ) ) ;
+        staticOffset++ ;
     }
 
     mustbe( tk_semi ) ;
@@ -218,8 +230,7 @@ ast parse_static_var_dec()
 
 
     pop_error_context() ;
-    //return create_var_decs( vector<ast> decs ) ;
-    return create_empty() ;
+    return create_var_decs( decs ) ;
 }
 
 // field_var_dec ::= 'field' type identifier (',' identifier)* ';'
@@ -344,7 +355,6 @@ ast parse_subr_decs()
 
     pop_error_context() ;
     return create_subr_decs( subrs ) ;
-    // return create_empty() ;
 }
 
 // constructor ::= 'constructor' identifier identifier '(' param_list ')' subr_body
@@ -519,11 +529,11 @@ ast parse_var_decs()
 
     while( have( tk_var ) )
     {
-        parse_var_dec() ;   // decs.push_back( parse_var_dec ) ;
+        decs.push_back( parse_var_dec() ) ;
     }
 
     pop_error_context() ;
-    return create_empty() ;
+    return create_var_decs( decs ) ;
 }
 
 // var_dec ::= 'var' type identifier (',' identifier)* ';'
@@ -550,17 +560,23 @@ ast parse_var_dec()
     string name = parse_identifier() ;
     next_token() ;
 
+    decs.push_back( create_var_dec( name, "local", localOffset, type) ) ;
+    localOffset++ ;
+
     while( have( tk_comma ) )
     {
         mustbe( tk_comma ) ;
         name = parse_identifier() ;
         next_token() ;
+
+        decs.push_back( create_var_dec( name, "local", localOffset, type) ) ;
+        localOffset++ ;
     }
 
     mustbe( tk_semi ) ;
 
     pop_error_context() ;
-    return create_empty() ;
+    return create_var_decs( decs ) ;
 }
 
 // statements ::= statement*
@@ -636,19 +652,34 @@ ast parse_let()
 
     mustbe( tk_let ) ;
     string name = parse_identifier() ;
+
+    ast var = create_empty() ;
+
     // check if name is already been initialized earlier ast_check( string etc. )
     next_token() ;
 
     ast index ;
+    ast expr ;
 
-    if( have( tk_lsb ) ) index = parse_index() ;
+    if( have( tk_lsb ) )
+    {
+        index = parse_index() ;
+        mustbe( tk_eq ) ;
+        expr = parse_expr() ;
+        mustbe( tk_semi ) ;
 
-    mustbe( tk_eq ) ;
-    ast expr = parse_expr() ;
-    mustbe( tk_semi ) ;
+        pop_error_context() ;
+        return create_let_array( var, index, expr) ;
+    }
+    else
+    {
+        mustbe( tk_eq ) ;
+        expr = parse_expr() ;
+        mustbe( tk_semi ) ;
+    }
 
     pop_error_context() ;
-    return create_empty() ;
+    return create_let( var, expr ) ;
 }
 
 // if ::= 'if' '(' expr ')' '{' statements '}' ('else' '{' statements '}')?
@@ -683,10 +714,13 @@ ast parse_if()
         mustbe( tk_lcb ) ;
         ast if_false = parse_statements() ;
         mustbe( tk_rcb ) ;
+
+        pop_error_context() ;
+        return create_if_else( condition, if_true, if_false ) ;
     }
 
     pop_error_context() ;
-    return create_empty() ;
+    return create_if( condition, if_true ) ;
 }
 
 // while ::= 'while' '(' expr ')' '{' statements '}'
@@ -709,7 +743,7 @@ ast parse_while()
     mustbe( tk_rcb ) ;
 
     pop_error_context() ;
-    return create_empty() ;
+    return create_while( condition, body ) ;
 }
 
 // do ::= 'do' identifier (call | id_call) ';'
@@ -792,16 +826,18 @@ ast parse_expr()
 {
     push_error_context("parse_expr()") ;
 
-    parse_term() ;
+    vector<ast> expr ;
+
+    expr.push_back( parse_term() ) ;
 
     while( have( tg_infix_op ) )
     {
-        parse_infix_op() ;
-        parse_term() ;
+        expr.push_back( parse_infix_op() ) ;
+        expr.push_back( parse_term() ) ;
     }
 
     pop_error_context() ;
-    return create_empty() ;
+    return create_expr( expr ) ;
 }
 
 // term ::= integer_constant | string_constant | 'true' | 'false' | 'null' | 'this' | '(' expr ')' | unary_op term | var_term
@@ -831,38 +867,47 @@ ast parse_term()
 {
     push_error_context("parse_term()") ;
 
+    ast term ;
+
     switch( token_kind() )
     {
         case tk_integerConstant:
+            term = create_int( stoi( token_spelling() ) ) ;
             mustbe( tk_integerConstant ) ;
             break ;
         case tk_stringConstant:
+            term = create_string( token_spelling() ) ;
             mustbe( tk_stringConstant ) ;
             break ;
         case tk_true:
             mustbe( tk_true ) ;
+            term = create_bool( true ) ;
             break ;
         case tk_false:
             mustbe( tk_false ) ;
+            term = create_bool( false ) ;
             break ;
         case tk_null:
             mustbe( tk_null ) ;
+            term = create_null() ;
             break ;
         case tk_this:
             mustbe( tk_this ) ;
+            term = create_this() ;
             break ;
         case tk_lrb:
             mustbe( tk_lrb ) ;
-            parse_expr() ;
+            term = parse_expr() ;
             mustbe( tk_rrb ) ;
             break ;
         case tk_sub:
         case tk_not:
-            parse_unary_op() ;
-            parse_term() ;
+            term = create_unary_op( token_spelling( parse_unary_op() ), parse_term() ) ;
+            // parse_unary_op() ;
+            // parse_term() ;
             break ;
         case tk_identifier:
-            parse_var_term() ;
+            term = parse_var_term() ;
             break ;
         default:
             did_not_find( tg_starts_term ) ;
@@ -870,7 +915,7 @@ ast parse_term()
     }
 
     pop_error_context() ;
-    return create_empty() ;
+    return create_term( term ) ;
 }
 
 // var_term ::= identifier (index | id_call | call)?
@@ -1047,7 +1092,7 @@ ast parse_infix_op()
     }
 
     pop_error_context() ;
-    return create_empty() ;
+    return create_infix_op( token_spelling( op ) ) ;
 }
 
 // unary_op ::= '-' | '~'
@@ -1073,7 +1118,7 @@ Token parse_unary_op()
     }
 
     pop_error_context() ;
-    return nullptr ;
+    return type ;
 }
 
 ast jack_parser()
