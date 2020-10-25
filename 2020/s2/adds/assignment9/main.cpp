@@ -44,7 +44,11 @@ int calculateResult()
 	int result ;
 
 	// Calculate result
-	if( ( numbers.size() - 1 ) != operators.size() ) std::cout << "Error" << std::endl ;
+	if( ( numbers.size() - 1 ) != operators.size() )
+	{
+		std::cout << "Error" << std::endl ;
+		return 0 ;
+	}
 	else
 	{
 		result = numbers[0] ;
@@ -75,23 +79,43 @@ int calculateResult()
 			}
 		}
 	}
+
+	return result ;
 }
 
 void printEquation()
 {
-	string equation ;
+	string equation = "" ;
+	string expression = "" ;
 
-	// Add all the numbers to the string
+	for( int i = 0 ; i < operators.length() - 1 ; i++ ) equation += "(" ;
 
-	equation += " = " ;
+	expression += to_string( numbers[0] ) + " " ;
+	equation += expression ;
+
+	// Make an expression eg "1 + 2"
+	for( int i = 0 ; i < numbers.size() - 1 ; i++ )
+	{
+		expression = operators[i] ;
+		expression += " " + to_string( numbers[i+1] ) ;
+		
+		if( i < operators.length() - 1 ) expression += ") " ; else
+		expression += " " ;
+
+		equation += expression ;
+	}
+
+	equation += "= " ;
 	equation += to_string( calculateResult() ) ;
+
+	std::cout << equation << std::endl ;
 
 }
 
 int main()
 {
 	getInput() ;
-	printEquation() ;
+	if( calculateResult() != 0 ) printEquation() ;
 
 	return 0 ;
 }
