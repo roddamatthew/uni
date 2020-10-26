@@ -75,6 +75,9 @@ static ast parseProgram()
     ast stat = nullptr ;
 
     // add parsing code here ...
+    decls = parseDeclarations() ;
+    stat = parseStatement() ;
+    // mustbe( tk_eoi ) ;
 
     // return a program node
     ast ret = create_program(decls,stat) ;
@@ -91,6 +94,7 @@ static ast parseDeclarations()
     vector<ast> decls ;
 
     // add parsing code here ...
+    while( have( tk_var ) ) decls.push_back( parseDeclaration() ) ;
 
     // return a declarations node
     ast ret = create_declarations(decls) ;
@@ -110,6 +114,14 @@ static ast parseDeclaration()
     // a variable node returned by declare_variable()
     ast var = nullptr ;
 
+    mustbe( tk_var ) ;
+    Token type = mustbe( tk_identifier ) ;
+    Token variable = mustbe( tk_identifier ) ;
+
+    var = declare_variable( variable, type ) ;
+
+    mustbe( tk_semi ) ;
+
     // add parsing code here ...
 
     // return a declaration node
@@ -127,6 +139,11 @@ static ast parseStatement()
     ast stat = nullptr ;
 
     // add parsing code here ...
+    if( have( tk_while ) )  stat = parseWhileStatement() ; else 
+    if( have( tk_if ) )     stat = parseIfStatement() ; else 
+    if( have( tk_let ) )    stat = parseLetStatement() ; else 
+    if( have( tk_lcb ) )    stat = parseStatementSequence() ; else
+    did_not_find( tg_starts_statement ) ;
 
     // return a statement node
     stat = create_statement(stat) ;
@@ -144,6 +161,11 @@ static ast parseWhileStatement()
     ast stat = nullptr ;
 
     // add parsing code here ...
+    mustbe( tk_while ) ;
+    mustbe( tk_lrb ) ;
+    cond = parseCondition() ;
+    mustbe( tk_rrb ) ;
+    stat = parseStatement() ;
 
     // return a while node
     ast ret = create_while(cond,stat) ;
@@ -162,9 +184,20 @@ static ast parseIfStatement()
     ast else_stat = nullptr ;
 
     // add parsing code here ...
+    mustbe( tk_if ) ;
+    mustbe( tk_lrb ) ;
+
+    cond = parseCondition() ;
+
+    mustbe( tk_rrb ) ;
+
+    then_stat = parseStatement() ;
 
     // if there is an else statement
+    if( have( tk_else ) )
     {
+        mustbe( tk_else ) ;
+        else_stat = parseStatement() ;
         // return an if else node
         ast ret = create_if_else(cond,then_stat,else_stat) ;
         pop_error_context() ;
@@ -190,6 +223,13 @@ static ast parseLetStatement()
     ast expr = nullptr ;
 
     // add parsing code here ...
+    mustbe( tk_let ) ;
+    Token identifier = mustbe( tk_identifier ) ;
+    mustbe( tk_assign ) ;
+    expr = parseExpression() ;
+    mustbe( tk_semi ) ;
+
+    id = lookup_variable( identifier ) ;
 
     // return a let node
     ast ret = create_let(id,expr) ;
@@ -206,6 +246,11 @@ static ast parseStatementSequence()
     vector<ast> seq ;
 
     // add parsing code here ...
+    mustbe( tk_lcb ) ;
+
+    while( have( tg_starts_statement ) ) seq.push_back( parseStatement() ) ;
+
+    mustbe( tk_rcb ) ;
 
     // return a statements node
     ast ret = create_statements(seq) ;
@@ -224,9 +269,14 @@ static ast parseExpression()
     Token infix_op = nullptr ;
 
     // add parsing code here ...
+    lhs = parseTerm() ;
 
     // if the expression has an infix operator
+    if( have( tg_infix_op ) )
     {
+        infix_op = mustbe( tg_infix_op ) ;
+        rhs = parseTerm() ;
+
         // return an infix expression node
         ast ret = create_expression(create_infix_op(lhs,token_spelling(infix_op),rhs)) ;
         pop_error_context() ;
@@ -250,6 +300,9 @@ static ast parseCondition()
     ast rhs = nullptr ;
 
     // add parsing code here ...
+    lhs = parseTerm() ;
+    relop = mustbe( tg_relop ) ;
+    rhs = parseTerm() ;
 
     // return the parsed condition as an expression node
     ast ret = create_expression(create_infix_op(lhs,token_spelling(relop),rhs)) ;
@@ -277,6 +330,18 @@ static ast parseTerm()
     ast term = nullptr ;
 
     // add parsing code here ...
+    if( have( tk_identifier ) )
+    {
+        Token current = current_token() ;
+        term = lookup_variable( current ) ;
+        next_token() ;
+    }
+    else if( have( tk_integer ) )
+    {
+        term = integer_to_ast( current_token() ) ;
+        next_token() ;
+    }
+    else did_not_find( tg_starts_term ) ;
 
     // return the parsed term in a term node
     ast ret = create_term(term) ;
