@@ -77,7 +77,7 @@ static ast parseProgram()
     // add parsing code here ...
     decls = parseDeclarations() ;
     stat = parseStatement() ;
-    // mustbe( tk_eoi ) ;
+    mustbe( tk_eoi ) ;
 
     // return a program node
     ast ret = create_program(decls,stat) ;
