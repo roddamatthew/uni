@@ -238,7 +238,7 @@ string parse_identifier()
 {
     string identifier ;
 
-    if( have( tk_identifier ) ) identifier = token_spelling() ; else
+    if( have( tk_identifier ) ) identifier = token_spelling( mustbe( tk_identifier ) ) ; else
     did_not_find( tk_identifier ) ; 
 
     return identifier ;
@@ -253,7 +253,6 @@ ast parse_class()
     mustbe( tk_class ) ;
     
     string myclassname = parse_identifier() ;
-    next_token() ;
 
     currentClass = myclassname ;
 
@@ -322,11 +321,9 @@ ast parse_static_var_dec()
 
     // string type = token_spelling( parse_type() ) ;
     Token type = parse_type() ;
-    next_token() ;
 
     // string name = parse_identifier() ;
-    Token name = current_token() ;
-    next_token() ;
+    Token name = mustbe( tk_identifier ) ;
 
     // decs.push_back( create_var_dec( name, "static", staticOffset, type ) ) ;
     decs.push_back( declare_variable( name, type ) ) ;
@@ -335,8 +332,7 @@ ast parse_static_var_dec()
     {
         mustbe( tk_comma ) ;
         // name = parse_identifier() ;
-        name = current_token() ;
-        next_token() ;
+        name = mustbe( tk_identifier ) ;
 
         // decs.push_back( create_var_dec( name, "static", staticOffset, type ) ) ;
         decs.push_back( declare_variable( name, type ) ) ;
@@ -369,11 +365,9 @@ ast parse_field_var_dec()
 
     // string type = token_spelling( parse_type() ) ;
     Token type = parse_type() ;
-    next_token() ;
 
     // string name = parse_identifier() ;
-    Token name = current_token() ;
-    next_token() ;
+    Token name = mustbe( tk_identifier ) ;
 
     // decs.push_back( create_var_dec( name, "static", staticOffset, type ) ) ;
     decs.push_back( declare_variable( name, type ) ) ;
@@ -383,8 +377,7 @@ ast parse_field_var_dec()
     {
         mustbe( tk_comma ) ;
         // name = parse_identifier() ;
-        name = current_token() ;
-        next_token() ;
+        name = mustbe( tk_identifier ) ;
 
         // decs.push_back( create_var_dec( name, "static", staticOffset, type ) ) ;
         decs.push_back( declare_variable( name, type ) ) ;
@@ -407,16 +400,16 @@ Token parse_type()
     switch( token_kind() )
     {
         case tk_int:
-            type = current_token() ;
+            type = mustbe( tk_int ) ;
             break ;
         case tk_char:
-            type = current_token() ;
+            type = mustbe( tk_char ) ;
             break ;
         case tk_boolean:
-            type = current_token() ;
+            type = mustbe( tk_boolean ) ;
             break ;
         case tk_identifier:
-            type = current_token() ;
+            type = mustbe( tk_identifier ) ;
             break ;
         default:
             type = nullptr ;
@@ -436,7 +429,7 @@ Token parse_vtype()
 
     Token type ;
 
-    if( have( tk_void ) ) type = current_token() ; else
+    if( have( tk_void ) ) type = mustbe( tk_void ) ; else
     if( have( tg_starts_type ) ) type = parse_type() ; else
     did_not_find( tg_starts_vtype ) ;
 
@@ -494,10 +487,8 @@ ast parse_constructor()
     mustbe( tk_constructor ) ;
 
     string vtype = parse_identifier() ;
-    next_token() ;
 
     string name = parse_identifier() ;
-    next_token() ;
 
     mustbe( tk_lrb ) ;
 
@@ -532,10 +523,8 @@ ast parse_function()
     mustbe( tk_function ) ;
 
     string vtype = token_spelling ( parse_vtype() ) ;
-    next_token() ;
 
     string name = parse_identifier() ;
-    next_token() ;
 
     mustbe( tk_lrb ) ;
 
@@ -570,10 +559,8 @@ ast parse_method()
     mustbe( tk_method ) ;
 
     string vtype = token_spelling ( parse_vtype() ) ;
-    next_token() ;
 
     string name = parse_identifier() ;
-    next_token() ;
 
     mustbe( tk_lrb ) ;
 
@@ -615,10 +602,8 @@ ast parse_param_list()
     if( have( tg_starts_type ) )
     {
         Token type = parse_type() ;
-        next_token() ;
 
-        Token name = current_token() ;
-        next_token() ;
+        Token name = mustbe( tk_identifier ) ;
 
         params.push_back( declare_variable( name, type ) ) ;
 
@@ -627,10 +612,8 @@ ast parse_param_list()
             mustbe( tk_comma ) ;
 
             Token type = parse_type() ;
-            next_token() ;
 
-            Token name = current_token() ;
-            next_token() ;
+            Token name = mustbe( tk_identifier ) ;
 
             params.push_back( declare_variable( name, type ) ) ;
         }
@@ -700,18 +683,15 @@ ast parse_var_dec()
     mustbe( tk_var ) ;
 
     Token type = parse_type() ;
-    next_token() ;
 
-    Token name = current_token() ;
-    next_token() ;
+    Token name = mustbe( tk_identifier ) ;
 
     decs.push_back( declare_variable( name, type ) ) ;
 
     while( have( tk_comma ) )
     {
         mustbe( tk_comma ) ;
-        Token name = current_token() ;
-        next_token() ;
+        Token name = mustbe( tk_identifier ) ;
 
         decs.push_back( declare_variable( name, type ) ) ;
     }
@@ -794,8 +774,7 @@ ast parse_let()
     push_error_context("parse_let()") ;
 
     mustbe( tk_let ) ;
-    Token name = current_token() ;
-    next_token() ;
+    Token name = mustbe( tk_identifier ) ;
 
     ast var = lookup_variable( name ) ;
 
@@ -910,8 +889,7 @@ ast parse_do()
 
     mustbe( tk_do ) ;
 
-    Token name = current_token() ;
-    next_token() ;
+    Token name = mustbe( tk_identifier ) ;
 
     if( token_kind() == tk_stop )
     {
@@ -1102,8 +1080,7 @@ ast parse_var_term()
 {
     push_error_context("parse_var_term()") ;
 
-    Token name = current_token() ;
-    next_token() ;
+    Token name = mustbe( tk_identifier ) ;
 
     ast var ;
 
@@ -1172,7 +1149,6 @@ ast parse_id_call()
 
     mustbe( tk_stop ) ;
     string subr_name = parse_identifier() ;
-    next_token() ;
 
     ast expr_list = parse_call() ;
 
