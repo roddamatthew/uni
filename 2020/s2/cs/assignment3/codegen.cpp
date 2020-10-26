@@ -61,6 +61,9 @@ void walk_subr_call(ast t) ;
 void walk_expr_list(ast t) ;
 void walk_infix_op(ast t) ;
 
+// Global variable for the current class name
+string className ;
+
 // walk an ast class node with fields:
 // class_name - a string
 // var_decs   - ast vector of variable declarations
@@ -71,6 +74,8 @@ void walk_class(ast t)
     string myclassname = get_class_class_name(t) ;
     ast var_decs = get_class_var_decs(t) ;
     ast subr_decs = get_class_subr_decs(t) ;
+
+    className = myclassname ;
 
     walk_class_var_decs(var_decs) ;
     walk_subr_decs(subr_decs) ;
@@ -165,9 +170,16 @@ void walk_constructor(ast t)
 void walk_function(ast t)
 {
     //string vtype = get_function_vtype(t) ;
-    //string name = get_function_name(t) ;
+    string name = get_function_name(t) ;
     ast param_list = get_function_param_list(t) ;
     ast subr_body = get_function_subr_body(t) ;
+
+    string func = "function " ;
+    func += className + "." ;
+    func += name ;
+    func += " " ;
+
+    write_to_output( func ) ;
 
     walk_param_list(param_list) ;
     walk_subr_body(subr_body) ;
@@ -225,6 +237,8 @@ void walk_var_decs(ast t)
     {
         walk_var_dec(get_var_decs(t,i)) ;
     }
+
+    write_to_output( to_string( ndecs ) + "\n" ) ;
 }
 
 // walk an ast statements node
@@ -377,6 +391,8 @@ void walk_do(ast t)
 //
 void walk_return(ast t)
 {
+    write_to_output( "push constant 0\n" ) ;
+    write_to_output( "return\n" ) ;
 }
 
 // walk an ast return expr node with a single field
@@ -467,7 +483,8 @@ void walk_term(ast t)
 //
 void walk_int(ast t)
 {
-    //int _constant = get_int_constant(t) ;
+    int _constant = get_int_constant(t) ;
+    write_to_output( "push constant " + to_string( _constant ) + "\n" ) ;
 }
 
 // walk an ast string node with a single field
@@ -483,7 +500,14 @@ void walk_string(ast t)
 //
 void walk_bool(ast t)
 {
-    //bool _constant = get_bool_t_or_f(t) ;
+    bool _constant = get_bool_t_or_f(t) ;
+
+    string value ;
+
+    if( _constant == true )     value = "0" ;
+    if( _constant == false )    value = "-1" ;
+
+    write_to_output( "push constant " + value + "\n" ) ;
 }
 
 // walk an ast null node, it has not fields
@@ -508,6 +532,8 @@ void walk_unary_op(ast t)
 {
     string uop = get_unary_op_op(t);
     ast term = get_unary_op_term(t) ;
+
+    
 
     walk_term(term) ;
 }
@@ -606,7 +632,43 @@ void walk_expr_list(ast t)
 //
 void walk_infix_op(ast t)
 {
-    //string op = get_infix_op_op(t) ;
+    string op = get_infix_op_op(t) ;
+    char opChar = op[ 0 ] ;
+
+    switch ( opChar )
+    {
+        case '+':
+            write_to_output( "add\n" ) ;
+            break ;
+        case '-':
+            write_to_output( "sub\n" ) ;
+            break ;
+        case '*':
+            write_to_output( "call Math.multiply 2\n" ) ;
+            break ;
+        case '/':
+            write_to_output( "call Math.divide 2\n" ) ;
+            break ;
+        case '&':
+            write_to_output( "and\n" ) ;
+            break ;
+        case '|':
+            write_to_output( "or\n" ) ;
+            break ;
+        case '<':
+            write_to_output( "lt\n" ) ;
+            break ;
+        case '>':
+            write_to_output( "gt\n" ) ;
+            break ;
+        case '=':
+            write_to_output( "eq\n" ) ;
+            break ;
+        default:
+            fatal_error(0, "Unexpected infix operator: " + op ) ;
+            break ;
+
+    }
 }
 
 // main program
