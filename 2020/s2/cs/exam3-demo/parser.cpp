@@ -332,14 +332,12 @@ static ast parseTerm()
     // add parsing code here ...
     if( have( tk_identifier ) )
     {
-        Token current = current_token() ;
+        Token current = mustbe( tk_identifier ) ;
         term = lookup_variable( current ) ;
-        next_token() ;
     }
     else if( have( tk_integer ) )
     {
-        term = integer_to_ast( current_token() ) ;
-        next_token() ;
+        term = integer_to_ast( mustbe( tk_integer ) ) ;
     }
     else did_not_find( tg_starts_term ) ;
 
