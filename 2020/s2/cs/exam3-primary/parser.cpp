@@ -131,7 +131,7 @@ static ast parseDeclaration()
     Token name = mustbe( tk_identifier ) ;
     mustbe( tk_semi ) ;
 
-    declare_variable( name, type ) ;
+    decl = declare_variable( name, type ) ;
 
     // return a declaration node
     ast ret = create_declaration(decl) ;
@@ -304,9 +304,9 @@ static ast parseSwitchStatement()
     mustbe( tk_lrb ) ;
     expr = parseExpression() ;
     mustbe( tk_rrb ) ;
-    mustbe( tk_rcb ) ;
-    while( have( tg_starts_labelled ) ) stats.push_back( parseLabelled() ) ;
     mustbe( tk_lcb ) ;
+    while( have( tg_starts_labelled ) ) stats.push_back( parseLabelled() ) ;
+    mustbe( tk_rcb ) ;
 
     // return a switch node
     ast ret = create_switch(expr,create_statements(stats)) ;
@@ -323,11 +323,16 @@ static ast parseLabelled()
     ast stat = nullptr ;
 
     // add parsing code here ...
-    if( have( tg_starts_label ) ) parseLabel() ; else
-    if( have( tk_colon ) ) mustbe( tk_colon ) ; else
-    did_not_find( tg_starts_labelled ) ;
-
-    stat = parseStatement() ;
+    if( have( tg_starts_label ) )
+    {
+        parseLabel() ;
+        mustbe( tk_colon ) ;
+    }
+    else if( have( tg_starts_statement ) )
+    {
+        stat = parseStatement() ;
+    }
+    else did_not_find( tg_starts_labelled ) ;
 
     // return the statement node - there is no labelled node
     pop_error_context() ;
