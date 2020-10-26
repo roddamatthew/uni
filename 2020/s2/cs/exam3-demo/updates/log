@@ -1,0 +1,78 @@
+201026-174938 Modified: NmVhYWM5ZWExOWNmMWJmY2U2MThmYzFiNmIzMDRhOGI2MDAyNjUyMCAgLi8uRFNfU3RvcmUKNDNhYzFmYjQwOTE2MWFhMjE1MmY5ZTJhMTljOWNjM2MzZjhkMTAwNCAgLi91cGRhdGVzL2V4YW0zZC0yMDIwMDkxOS0xNDQzNTkuemlwCg==
+201026-174938 make install
+201026-174938 SVN user: a1773620, repository path: 2020/s2/cs/exam3-demo
+201026-174938 updater:  Directory: ./bin
+201026-174938 updater:  Directory: ./originals
+201026-174938 updater:  Directory: ./tests
+201026-174938 updater:  Directory: ./includes
+201026-174938 updater:  Directory: ./lib
+201026-174938 updater:  Directory: ./lib/cats
+201026-174938 updater:  Directory: ./lib/cats/bin
+201026-174938 updater:  Directory: ./lib/macos
+201026-174938 updater:  Directory: ./lib/macos/bin
+201026-174938 updater:  Directory: ./lib/centos8
+201026-174938 updater:  Directory: ./lib/centos8/bin
+201026-174938 updater:  Creating: ./bin/diffc
+201026-174938 updater:  Creating: ./bin/diff-colours
+201026-174938 updater:  Creating: ./bin/parser
+201026-174938 updater:  Creating: ./bin/Compiler-check.bash
+201026-174938 updater:  Creating: ./bin/run-tests
+201026-174938 updater:  Creating: ./bin/tokens
+201026-174938 updater:  Creating: updates/Makefile
+201026-174938 updater:  Creating: ./originals/parser.cpp
+201026-174938 updater:  Creating: ./tests/let1.test
+201026-174938 updater:  Creating: ./tests/var2.test
+201026-174938 updater:  Creating: ./tests/let1.test.Pxml
+201026-174938 updater:  Creating: ./tests/sequence2.test
+201026-174938 updater:  Creating: ./tests/if1.test.Pxml
+201026-174938 updater:  Creating: ./tests/sequence1.test.Pxml
+201026-174938 updater:  Creating: ./tests/var2.test.Pxml
+201026-174938 updater:  Creating: ./tests/while1.test.Pxml
+201026-174938 updater:  Creating: ./tests/ifelse1.test.Pxml
+201026-174938 updater:  Creating: ./tests/ifelse1.test
+201026-174938 updater:  Creating: ./tests/var1.test.Pxml
+201026-174938 updater:  Creating: ./tests/sequence2.test.Pxml
+201026-174938 updater:  Creating: ./tests/if1.test
+201026-174938 updater:  Creating: ./tests/while1.test
+201026-174938 updater:  Creating: ./tests/sequence1.test
+201026-174938 updater:  Creating: ./tests/let2.test
+201026-174938 updater:  Creating: ./tests/var1.test
+201026-174938 updater:  Creating: ./tests/let2.test.Pxml
+201026-174938 updater:  Creating: ./includes/tokeniser-groups.h
+201026-174938 updater:  Creating: ./includes/symbols.h
+201026-174938 updater:  Creating: ./includes/tokeniser.h
+201026-174938 updater:  Creating: ./includes/iobuffer.h
+201026-174938 updater:  Creating: ./includes/abstract-syntax-tree.h
+201026-174938 updater:  Creating: ./parser
+201026-174938 updater:  Creating: ./lib/cats/bin/diff-colours
+201026-174938 updater:  Creating: ./lib/cats/bin/parser
+201026-174938 updater:  Creating: ./lib/cats/bin/tokens
+201026-174938 updater:  Creating: ./lib/cats/lib.a
+201026-174938 updater:  Creating: ./lib/macos/bin/diff-colours
+201026-174938 updater:  Creating: ./lib/macos/bin/parser
+201026-174938 updater:  Creating: ./lib/macos/bin/tokens
+201026-174938 updater:  Creating: ./lib/macos/lib.a
+201026-174938 updater:  Creating: ./lib/centos8/bin/diff-colours
+201026-174938 updater:  Creating: ./lib/centos8/bin/parser
+201026-174938 updater:  Creating: ./lib/centos8/bin/tokens
+201026-174938 updater:  Creating: ./lib/centos8/lib.a
+201026-174938 updater:  Made parser executable
+201026-174938 updater:  Made bin/Compiler-check.bash executable
+201026-174938 updater:  Made bin/diff-colours executable
+201026-174938 updater:  Made bin/diffc executable
+201026-174938 updater:  Made bin/parser executable
+201026-174938 updater:  Made bin/run-tests executable
+201026-174938 updater:  Made bin/tokens executable
+201026-174938 updater:  Made lib/cats/bin/diff-colours executable
+201026-174938 updater:  Made lib/cats/bin/parser executable
+201026-174938 updater:  Made lib/cats/bin/tokens executable
+201026-174938 updater:  Made lib/centos8/bin/diff-colours executable
+201026-174938 updater:  Made lib/centos8/bin/parser executable
+201026-174938 updater:  Made lib/centos8/bin/tokens executable
+201026-174938 updater:  Made lib/macos/bin/diff-colours executable
+201026-174938 updater:  Made lib/macos/bin/parser executable
+201026-174938 updater:  Made lib/macos/bin/tokens executable
+201026-174938 updater:  Removing MacOS quarantine flags from the executables
+201026-174938 updater:  Creating: parser.cpp
+201026-174938 updater:  Updating: updates/README
+201026-174938 updater:  Update installed
