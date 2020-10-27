@@ -135,6 +135,8 @@ void walk_subr_decs(ast t)
     for ( int i = 0 ; i < size ; i++ )
     {
         walk_subr(get_subr_decs(t,i)) ;
+        whileCount = 0 ;
+        ifCount = 0 ;
     }
 }
 
@@ -492,6 +494,8 @@ void walk_do(ast t)
         fatal_error(0,"Unexpected call kind") ;
         break ;
     }
+
+    write_to_output( "pop temp 0\n" ) ;
 }
 
 // walk an ast return node, it has not fields
@@ -627,7 +631,6 @@ void walk_bool(ast t)
 //
 void walk_null(ast t)
 {
-
 }
 
 // walk an ast this node, it has not fields
