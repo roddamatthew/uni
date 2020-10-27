@@ -59,13 +59,18 @@ void walk_call_as_function(ast t) ;
 void walk_call_as_method(ast t) ;
 void walk_subr_call(ast t) ;
 void walk_expr_list(ast t) ;
-void walk_infix_op(ast t) ;
+string walk_infix_op(ast t) ;
 
 // Global variable for the current class name
 string className ;
 // Global variables for loop counters
-int whileCount ;
-int ifCount ;
+int whileCount = 0 ;
+int ifCount = 0 ;
+// Store the most recent unary operator
+string unaryOp ;
+// Global variable to store the number of fields
+int nFields = 0 ;
+string nFieldsDeclaration ;
 
 // walk an ast class node with fields:
 // class_name - a string
@@ -81,6 +86,14 @@ void walk_class(ast t)
     className = myclassname ;
 
     walk_class_var_decs(var_decs) ;
+
+    if( nFields != 0 )
+    {
+        nFieldsDeclaration = "push constant " + to_string( nFields ) + "\n" ;
+        nFieldsDeclaration += "call Memory.alloc 1\n" ;
+        nFieldsDeclaration += "pop pointer 0\n" ;
+    }
+
     walk_subr_decs(subr_decs) ;
 }
 
@@ -105,10 +118,12 @@ void walk_class_var_decs(ast t)
 //
 void walk_var_dec(ast t)
 {
-    //string name = get_var_dec_name(t) ;
-    //string type = get_var_dec_type(t) ;
-    //string segment = get_var_dec_segment(t) ;
-    //int offset = get_var_dec_offset(t) ;
+    string name = get_var_dec_name(t) ;
+    string type = get_var_dec_type(t) ;
+    string segment = get_var_dec_segment(t) ;
+    int offset = get_var_dec_offset(t) ;
+
+    if( segment.compare( "this" ) == 0 && type.compare( "string" ) != 0 ) nFields ++ ;
 }
 
 // walk an ast class var decs node
@@ -155,10 +170,29 @@ void walk_subr(ast t)
 //
 void walk_constructor(ast t)
 {
-    //string vtype = get_constructor_vtype(t) ;
-    //string name = get_constructor_name(t) ;
+    string vtype = get_constructor_vtype(t) ;
+    string name = get_constructor_name(t) ;
     ast param_list = get_constructor_param_list(t) ;
     ast subr_body = get_constructor_subr_body(t) ;
+
+    string func = "function " ;
+    func += className + "." ;
+    func += name ;
+    func += " " ;
+    int temp = size_of_var_decs( get_subr_body_decs( subr_body ) ) ;
+
+    if( temp != 0 ) func += to_string( temp ) ; else
+    func += "0" ;
+    func += "\n" ;
+
+    write_to_output( func ) ;
+
+    // Declare field variables if necessary
+    if( nFieldsDeclaration.empty() == false )
+    {
+        write_to_output( nFieldsDeclaration ) ;
+        nFieldsDeclaration.clear() ;
+    }
 
     walk_param_list(param_list) ;
     walk_subr_body(subr_body) ;
@@ -181,8 +215,21 @@ void walk_function(ast t)
     func += className + "." ;
     func += name ;
     func += " " ;
+    int temp = size_of_var_decs( get_subr_body_decs( subr_body ) ) ;
+
+    if( temp != 0 ) func += to_string( temp ) ; else
+    func += "0" ;
+    
+    func += "\n" ;
 
     write_to_output( func ) ;
+
+    // Declare field variables if necessary
+    if( nFieldsDeclaration.empty() == false )
+    {
+        write_to_output( nFieldsDeclaration ) ;
+        nFieldsDeclaration.clear() ;
+    }
 
     walk_param_list(param_list) ;
     walk_subr_body(subr_body) ;
@@ -196,12 +243,36 @@ void walk_function(ast t)
 //
 void walk_method(ast t)
 {
-    //string vtype = get_method_vtype(t) ;
-    //string name = get_method_name(t) ;
+    string vtype = get_method_vtype(t) ;
+    string name = get_method_name(t) ;
     ast param_list = get_method_param_list(t) ;
     ast subr_body = get_method_subr_body(t) ;
 
+
+    string func = "function " ;
+    func += className + "." ;
+    func += name ;
+    func += " " ;
+    int temp = size_of_var_decs( get_subr_body_decs( subr_body ) ) ;
+
+    if( temp != 0 ) func += to_string( temp ) ; else
+    func += "0" ;
+    func += "\n" ;
+
+    write_to_output( func ) ;
+
+    // Declare field variables if necessary
+    if( nFieldsDeclaration.empty() == false )
+    {
+        write_to_output( nFieldsDeclaration ) ;
+        nFieldsDeclaration.clear() ;
+    }
+
     walk_param_list(param_list) ;
+
+    write_to_output( "push argument 0\n" ) ;
+    write_to_output( "pop pointer 0\n" ) ;
+
     walk_subr_body(subr_body) ;
 }
 
@@ -240,8 +311,6 @@ void walk_var_decs(ast t)
     {
         walk_var_dec(get_var_decs(t,i)) ;
     }
-
-    write_to_output( to_string( ndecs ) + "\n" ) ;
 }
 
 // walk an ast statements node
@@ -307,8 +376,15 @@ void walk_let(ast t)
     ast var = get_let_var(t) ;
     ast expr = get_let_expr(t) ;
 
-    walk_var(var) ;
+    // Removed this line !! may be problematic in the future !!
+    // walk_var(var) ;
     walk_expr(expr) ;
+
+    // Get var's segment and offset
+    string segment = get_var_segment( var ) ;
+    int offset = get_var_offset( var )  ;
+
+    write_to_output( "pop " + segment + " " + to_string( offset ) + "\n" ) ;
 }
 
 // walk an ast let array node with fields
@@ -434,6 +510,7 @@ void walk_return_expr(ast t)
     ast expr = get_return_expr(t) ;
 
     walk_expr(expr) ;
+    write_to_output( "return\n" ) ;
 }
 
 // walk an ast param list node
@@ -444,6 +521,7 @@ void walk_return_expr(ast t)
 //
 void walk_expr(ast t)
 {
+    string op = "" ;
     int term_ops = size_of_expr(t) ;
     for ( int i = 0 ; i < term_ops ; i++ )
     {
@@ -451,10 +529,11 @@ void walk_expr(ast t)
         if ( i % 2 == 0 )
         {
             walk_term(term_op) ;
+            write_to_output( op ) ;
         }
         else
         {
-            walk_infix_op(term_op) ;
+            op = walk_infix_op(term_op) ;
         }
     }
 }
@@ -555,7 +634,7 @@ void walk_null(ast t)
 //
 void walk_this(ast t)
 {
-
+    write_to_output( "push pointer 0\n" ) ;
 }
 
 // walk an ast unary op node with fields
@@ -569,9 +648,11 @@ void walk_unary_op(ast t)
     string uop = get_unary_op_op(t);
     ast term = get_unary_op_term(t) ;
 
-    
-
     walk_term(term) ;
+
+    if( uop[0] == '-' ) write_to_output( "neg\n" ) ; else
+    if( uop[0] == '~' ) write_to_output( "not\n" ) ; else
+    fatal_error( 0, "Unexpected unary operator: " + uop ) ;
 }
 
 // walk an ast variable node with fields
@@ -582,10 +663,12 @@ void walk_unary_op(ast t)
 //
 void walk_var(ast t)
 {
-    //string name = get_var_name(t) ;
-    //string type = get_var_type(t) ;
-    //string segment = get_var_segment(t) ;
-    //int offset = get_var_offset(t) ;
+    string name = get_var_name(t) ;
+    string type = get_var_type(t) ;
+    string segment = get_var_segment(t) ;
+    int offset = get_var_offset(t) ;
+
+    write_to_output( "push " + segment + " " + to_string( offset ) + "\n" ) ;
 }
 
 // walk an ast array index node with fields
@@ -609,8 +692,13 @@ void walk_call_as_function(ast t)
 {
     string class_name = get_call_as_function_class_name(t) ;
     ast subr_call = get_call_as_function_subr_call(t) ;
+    string subr_name = get_subr_call_subr_name( subr_call ) ;
+
+    int nParameters = size_of_expr_list( get_subr_call_expr_list( subr_call ) ) ;
 
     walk_subr_call(subr_call) ;
+    write_to_output( "call " + class_name + "." + subr_name + " " ) ;
+    write_to_output( to_string( nParameters ) + "\n" ) ;
 }
 
 // walk an ast subr call as method with fields
@@ -623,6 +711,7 @@ void walk_call_as_method(ast t)
     string class_name = get_call_as_method_class_name(t) ;
     ast var = get_call_as_method_var(t) ;
     ast subr_call = get_call_as_method_subr_call(t) ;
+    string subr_name = get_subr_call_subr_name( subr_call ) ;
 
     switch(ast_node_kind(var))
     {
@@ -636,7 +725,12 @@ void walk_call_as_method(ast t)
         fatal_error(0,"Expected var or this") ;
         break ;
     }
+    int nParameters = size_of_expr_list( get_subr_call_expr_list( subr_call ) ) + 1 ;
+
+
     walk_subr_call(subr_call) ;
+    write_to_output( "call " + class_name + "." + subr_name + " " ) ;
+    write_to_output( to_string( nParameters ) + "\n" ) ;
 }
 
 // walk an ast subr call node with fields
@@ -666,45 +760,48 @@ void walk_expr_list(ast t)
 // walk an ast infix op node with a single field
 // op - a string - one of "+", "-", "*", "/", "&", "|", "<", ">", "="
 //
-void walk_infix_op(ast t)
+string walk_infix_op(ast t)
 {
     string op = get_infix_op_op(t) ;
     char opChar = op[ 0 ] ;
 
+    string output ;
+
     switch ( opChar )
     {
         case '+':
-            write_to_output( "add\n" ) ;
+            output = ( "add\n" ) ;
             break ;
         case '-':
-            write_to_output( "sub\n" ) ;
+            output = ( "sub\n" ) ;
             break ;
         case '*':
-            write_to_output( "call Math.multiply 2\n" ) ;
+            output = ( "call Math.multiply 2\n" ) ;
             break ;
         case '/':
-            write_to_output( "call Math.divide 2\n" ) ;
+            output = ( "call Math.divide 2\n" ) ;
             break ;
         case '&':
-            write_to_output( "and\n" ) ;
+            output = ( "and\n" ) ;
             break ;
         case '|':
-            write_to_output( "or\n" ) ;
+            output = ( "or\n" ) ;
             break ;
         case '<':
-            write_to_output( "lt\n" ) ;
+            output = ( "lt\n" ) ;
             break ;
         case '>':
-            write_to_output( "gt\n" ) ;
+            output = ( "gt\n" ) ;
             break ;
         case '=':
-            write_to_output( "eq\n" ) ;
+            output = ( "eq\n" ) ;
             break ;
         default:
-            fatal_error(0, "Unexpected infix operator: " + op ) ;
+            fatal_error(0, "Unexpected infix operator: " + op + "\n" ) ;
             break ;
-
     }
+
+    return output ;
 }
 
 // main program
