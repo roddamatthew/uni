@@ -63,6 +63,9 @@ void walk_infix_op(ast t) ;
 
 // Global variable for the current class name
 string className ;
+// Global variables for loop counters
+int whileCount ;
+int ifCount ;
 
 // walk an ast class node with fields:
 // class_name - a string
@@ -333,8 +336,16 @@ void walk_if(ast t)
     ast condition = get_if_condition(t) ;
     ast if_true = get_if_if_true(t) ;
 
+    int currentIfCount = ifCount ;
+    ifCount++ ;
+
     walk_expr(condition) ;
+    write_to_output( "if-goto IF_TRUE" + to_string( currentIfCount ) + "\n" ) ;
+    write_to_output( "goto IF_FALSE" + to_string( currentIfCount ) + "\n" ) ;
+
+    write_to_output( "label IF_TRUE" + to_string( currentIfCount ) + "\n" ) ;
     walk_statements(if_true) ;
+    write_to_output( "label IF_FALSE" + to_string( currentIfCount ) + "\n" ) ;
 }
 
 // walk an ast if else node with fields
@@ -348,9 +359,20 @@ void walk_if_else(ast t)
     ast if_true = get_if_else_if_true(t) ;
     ast if_false = get_if_else_if_false(t) ;
 
+    int currentIfCount = ifCount ;
+    ifCount++ ;
+
     walk_expr(condition) ;
+    write_to_output( "if-goto IF_TRUE" + to_string( currentIfCount ) + "\n" ) ;
+    write_to_output( "goto IF_FALSE" + to_string( currentIfCount ) + "\n" ) ;
+
+    write_to_output( "label IF_TRUE" + to_string( currentIfCount ) + "\n" ) ;
     walk_statements(if_true) ;
+    write_to_output( "goto IF_END" + to_string( currentIfCount ) + "\n" ) ;
+
+    write_to_output( "label IF_FALSE" + to_string( currentIfCount ) + "\n" ) ;
     walk_statements(if_false) ;
+    write_to_output( "label IF_END" + to_string( currentIfCount ) + "\n" ) ;
 }
 
 // walk an ast while node with fields
@@ -362,8 +384,17 @@ void walk_while(ast t)
     ast condition = get_while_condition(t) ;
     ast body = get_while_body(t) ;
 
+    write_to_output( "label WHILE_EXP" + to_string( whileCount ) + "\n" ) ;
+    int currentWhileCount = whileCount ;
+    whileCount++ ;
+
     walk_expr(condition) ;
+    write_to_output( "not\n" ) ;
+    write_to_output( "if-goto WHILE_END" + to_string( currentWhileCount ) + "\n" ) ;
+    
     walk_statements(body) ;
+    write_to_output( "goto WHILE_EXP" + to_string( currentWhileCount ) + "\n" ) ;
+    write_to_output( "label WHILE_END" + to_string( currentWhileCount ) + "\n" ) ;
 }
 
 // walk an ast do node with a single field
@@ -502,24 +533,29 @@ void walk_bool(ast t)
 {
     bool _constant = get_bool_t_or_f(t) ;
 
-    string value ;
-
-    if( _constant == true )     value = "0" ;
-    if( _constant == false )    value = "-1" ;
-
-    write_to_output( "push constant " + value + "\n" ) ;
+    if( _constant == true )
+    {
+        write_to_output( "push constant 0\n" ) ;
+        write_to_output( "not\n" ) ;
+    }
+    else if( _constant == false )
+    {
+        write_to_output( "push constant 0\n" ) ;
+    }
 }
 
 // walk an ast null node, it has not fields
 //
 void walk_null(ast t)
 {
+
 }
 
 // walk an ast this node, it has not fields
 //
 void walk_this(ast t)
 {
+
 }
 
 // walk an ast unary op node with fields

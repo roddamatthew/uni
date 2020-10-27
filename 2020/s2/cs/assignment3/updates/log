@@ -1467,3 +1467,54 @@
 201026-225348 Modified: MGZhZjdlYzM3NTI5MGJhODEzNDY1ZjcxOTUxODllZDRhZjcwMzliMCAgLi9jb2RlZ2VuLmNwcAo=
 201026-225348 make test-codegen
 201026-225348 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201026-225818 Modified: ODYyMzdhMDY0N2M4YWYzMDEwNDEzMzFhMzk4NjA1Y2RlMzFlNDZlYyAgLi9jb2RlZ2VuLmNwcAo=
+201026-225818 make test-parser
+201026-225818 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201026-230724 make test-codegen
+201026-230724 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201026-230729 make test-parser
+201026-230729 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201027-103445 make test-codegen
+201027-103445 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201027-104115 Modified: NDAwNzQ4YmVkNzc3ZTc2MDRiOTgxNWQ2OWRkOTNhM2ZkZGUyYzA4MCAgLi9jb2RlZ2VuLmNwcAo=
+201027-104115 make test-codegen
+201027-104115 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201027-104353 Modified: NWE5NDNhYjQ5MTQwYzM0MjZlNWFhYTRiMDJlYTJmNzg2NTYyY2FmYSAgLi9jb2RlZ2VuLmNwcAo=
+201027-104353 make test-codegen
+201027-104353 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201027-104556 Modified: ODkyM2VmNWNmYmZkM2YyOWY0NzFjMjNkOWVmNDcwOGI4NjA1M2RjNSAgLi9jb2RlZ2VuLmNwcAo=
+201027-104556 make test-codegen
+201027-104556 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201027-104752 Modified: NzJkN2IxNTk3YmVmMGM4ZDg5NTY3YzI3ZTIxMTA3NDY3NjkwODkxNyAgLi9jb2RlZ2VuLmNwcAo=
+201027-104752 make test-codegen
+201027-104752 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201027-104915 Modified: YmNkMTkyNmJlNTkxZGNmYTIxZTVhZTA2OTY0YzEzNWEwMWNlYTgzOCAgLi9jb2RlZ2VuLmNwcAo=
+201027-104915 make test-codegen
+201027-104915 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201027-105141 Modified: NzFmNzUxOTQyZjk1Y2RlMjBiMWUxNGZiZjliNzE1YTg1NDAyOGYwNiAgLi9jb2RlZ2VuLmNwcAo=
+201027-105141 make test-codegen
+201027-105141 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201027-105417 Modified: YzU4NDQ4ZTMxYzM4OTk2ZWYwMmU0Yjk1MTAzYmJjZjNhMjZjN2M3YSAgLi9jb2RlZ2VuLmNwcAo=
+201027-105417 make test-codegen
+201027-105417 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201027-105558 Modified: NDYyODNiOTZmZDNjOWZiNmE1MzA5YjY3YWY0ZDI2OTRiMmZhMzMwZSAgLi9jb2RlZ2VuLmNwcAo=
+201027-105558 make test-codegen
+201027-105558 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201027-105629 Modified: YTU2ZTQ5NmQzY2UyNGM3MzFhMjlmNjU3ZTI1MGJhZTE5ZjQzOGEyOCAgLi91cGRhdGVzL2luc3RhbGxlci5iYXNoCjM5MjI2YmVlMzU4YzEzMTg1ZDBiZjAwMmZmYmI5ODVhZTdmMWIzM2QgIC4vY29kZWdlbi5jcHAK
+201027-105629 make test-codegen
+201027-105629 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201027-105654 Modified: NTIxODIzMzE1YzEzZGYzOWFkNDE5ZmFlNjEzOWQ3NzVkYzM2Mzg4MiAgLi9jb2RlZ2VuLmNwcAo=
+201027-105654 make test-codegen
+201027-105654 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201027-105808 Modified: Njk3ODYwNDdhYTc0MGY3Mzc2OWQyMmNiNTMyNjAzZTdhMDE5YzRiYiAgLi9jb2RlZ2VuLmNwcAo=
+201027-105808 make test-codegen
+201027-105808 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201027-110026 Modified: ODI1M2M3ZTgxOGQxM2FjNjk3NzlhNDgzMWZiZThkYjI1YjM2Yjk4YiAgLi9jb2RlZ2VuLmNwcAo=
+201027-110026 make test-codegen
+201027-110026 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201027-110147 Modified: ZTNhOGYzODAzYmQ1YTIwNGY3MGYwZTgwNWEyZjM0NDIyNWNmYmY0ZiAgLi9jb2RlZ2VuLmNwcAo=
+201027-110147 make test-codegen
+201027-110147 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201027-110225 Modified: YzAzNGQxOTVjY2JmNzBlODlmODE3YmY2NTkyMDMxNmVmYTc0ZGYxMyAgLi9jb2RlZ2VuLmNwcAo=
+201027-110225 make test-codegen
+201027-110225 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
