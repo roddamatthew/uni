@@ -134,9 +134,13 @@ void walk_subr_decs(ast t)
     int size = size_of_subr_decs(t) ;
     for ( int i = 0 ; i < size ; i++ )
     {
+        int beforeSubrWhile = whileCount ;
+        int beforeSubrIf = ifCount ;
+
         walk_subr(get_subr_decs(t,i)) ;
-        whileCount = 0 ;
-        ifCount = 0 ;
+
+        whileCount = beforeSubrWhile ;
+        ifCount = beforeSubrIf ;
     }
 }
 
@@ -606,7 +610,18 @@ void walk_int(ast t)
 //
 void walk_string(ast t)
 {
-    //string _constant = get_string_constant(t) ;
+    string _constant = get_string_constant(t) ;
+
+    int length = _constant.length() ;
+
+    write_to_output( "push constant " + to_string( length ) + "\n" ) ;
+    write_to_output( "call String.new 1\n" ) ;
+
+    for( int i = 0 ; i < length ; i++ )
+    {
+        write_to_output( "push constant " + to_string( (int) _constant[i] ) + "\n" ) ;
+        write_to_output( "call String.appendChar 2\n" ) ;
+    }
 }
 
 // walk an ast bool node with a single field
