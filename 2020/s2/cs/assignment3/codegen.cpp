@@ -404,9 +404,14 @@ void walk_let_array(ast t)
     ast index = get_let_array_index(t) ;
     ast expr = get_let_array_expr(t) ;
 
-    walk_var(var) ;
     walk_expr(index) ;
+    walk_var(var) ;
+    write_to_output( "add\n" ) ;
     walk_expr(expr) ;
+    write_to_output( "pop temp 0\n" ) ;
+    write_to_output( "pop pointer 1\n" ) ;
+    write_to_output( "push temp 0\n" ) ;
+    write_to_output( "pop that 0\n" ) ;
 }
 
 // walk an ast if node with fields
@@ -646,6 +651,7 @@ void walk_bool(ast t)
 //
 void walk_null(ast t)
 {
+    write_to_output( "push constant 0\n" ) ;
 }
 
 // walk an ast this node, it has not fields
@@ -698,8 +704,14 @@ void walk_array_index(ast t)
     ast var = get_array_index_var(t) ;
     ast index = get_array_index_index(t) ;
 
-    walk_var(var) ;
     walk_expr(index) ;
+    walk_var(var) ;
+
+    write_to_output( "add\n" ) ;
+    write_to_output( "pop pointer 1\n" ) ;
+    write_to_output( "push that 0\n" ) ;
+
+
 }
 
 // walk an ast subr call as method with fields
@@ -717,6 +729,9 @@ void walk_call_as_function(ast t)
     walk_subr_call(subr_call) ;
     write_to_output( "call " + class_name + "." + subr_name + " " ) ;
     write_to_output( to_string( nParameters ) + "\n" ) ;
+
+    // sinething to handle the array stuff HERE
+
 }
 
 // walk an ast subr call as method with fields
