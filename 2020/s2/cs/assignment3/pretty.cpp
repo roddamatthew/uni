@@ -606,7 +606,9 @@ void walk_term(ast t)
         walk_this(term) ;
         break ;
     case ast_expr:
+        write_to_output( "(" ) ;
         walk_expr(term) ;
+        write_to_output( ")" ) ;
         break ;
     case ast_unary_op:
         walk_unary_op(term) ;
@@ -686,14 +688,7 @@ void walk_unary_op(ast t)
     ast term = get_unary_op_term(t) ;
 
     write_to_output( uop ) ;
-
-    if( uop.compare( "~" ) == 0 )
-    {
-        write_to_output( "(" ) ;
-        walk_term(term) ;
-        write_to_output( ")" ) ;
-    }
-    else walk_term(term) ;
+    walk_term(term) ;
 }
 
 // walk an ast variable node with fields
@@ -724,7 +719,7 @@ void walk_array_index(ast t)
     walk_var(var) ;
     write_to_output( "[" ) ;
     walk_expr(index) ;
-     write_to_output( "]" ) ;
+    write_to_output( "]" ) ;
 }
 
 // walk an ast subr call as method with fields
