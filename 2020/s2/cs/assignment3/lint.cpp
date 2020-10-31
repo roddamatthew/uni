@@ -63,6 +63,14 @@ ast copy_subr_call(ast t) ;
 ast copy_expr_list(ast t) ;
 ast copy_infix_op(ast t) ;
 
+// ** LINT PROGRAM **
+
+// Global variable to store whether the previous statement was a return
+bool unreachable ;
+
+// Vector of variables that have been used
+vector<ast> usedVariables ;
+
 // copy an ast class node with fields:
 // class_name - a string
 // var_decs   - ast vector of variable declarations
@@ -74,8 +82,8 @@ ast copy_class(ast t)
     ast var_decs = get_class_var_decs(t) ;
     ast subr_decs = get_class_subr_decs(t) ;
 
-    ast var_decs_copy = copy_class_var_decs(var_decs) ;
     ast subr_decs_copy = copy_subr_decs(subr_decs) ;
+    ast var_decs_copy = copy_class_var_decs(var_decs) ;
 
     if ( var_decs_copy == var_decs && subr_decs_copy == subr_decs ) return t ;
 
@@ -91,8 +99,6 @@ ast copy_class_var_decs(ast t)
 
     bool copied = false ;
     int ndecs = size_of_class_var_decs(t) ;
-
-    // if( ndecs > 0 ) annotate ( "private:" )
 
     ann newComment = add_ann_comments( get_ann( t ), "private:" ) ;
 
@@ -119,10 +125,24 @@ ast copy_class_var_decs(ast t)
 //
 ast copy_var_dec(ast t)
 {
-    //string name = get_var_dec_name(t) ;
-    //string type = get_var_dec_type(t) ;
-    //string segment = get_var_dec_segment(t) ;
-    //int offset = get_var_dec_offset(t) ;
+    string name = get_var_dec_name(t) ;
+    string type = get_var_dec_type(t) ;
+    string segment = get_var_dec_segment(t) ;
+    int offset = get_var_dec_offset(t) ;
+
+    ann a = get_ann( t ) ;
+    bool unused = true ;
+
+    for( int i = 0 ; i < usedVariables.size() ; i++ )
+    {
+        if( name.compare( get_var_name( usedVariables[i] ) ) == 0 ) unused = false ;
+    }
+
+    if( unused )
+    {
+        a = add_ann_warnings( a, "Unused" ) ;
+        return create_var_dec( a, name, segment, offset, type ) ;
+    }
 
     return t ;
 }
@@ -196,8 +216,8 @@ ast copy_constructor(ast t)
     ast param_list = get_constructor_param_list(t) ;
     ast subr_body = get_constructor_subr_body(t) ;
 
-    ast param_list_copy = copy_param_list(param_list) ;
     ast subr_body_copy = copy_subr_body(subr_body) ;
+    ast param_list_copy = copy_param_list(param_list) ;
 
     if ( param_list_copy == param_list && subr_body_copy == subr_body ) return t ;
 
@@ -217,8 +237,8 @@ ast copy_function(ast t)
     ast param_list = get_function_param_list(t) ;
     ast subr_body = get_function_subr_body(t) ;
 
-    ast param_list_copy = copy_param_list(param_list) ;
     ast subr_body_copy = copy_subr_body(subr_body) ;
+    ast param_list_copy = copy_param_list(param_list) ;
 
     if ( param_list_copy == param_list && subr_body_copy == subr_body ) return t ;
 
@@ -238,8 +258,8 @@ ast copy_method(ast t)
     ast param_list = get_method_param_list(t) ;
     ast subr_body = get_method_subr_body(t) ;
 
-    ast param_list_copy = copy_param_list(param_list) ;
     ast subr_body_copy = copy_subr_body(subr_body) ;
+    ast param_list_copy = copy_param_list(param_list) ;
 
     if ( param_list_copy == param_list && subr_body_copy == subr_body ) return t ;
 
@@ -278,8 +298,8 @@ ast copy_subr_body(ast t)
     ast decs = get_subr_body_decs(t) ;
     ast body = get_subr_body_body(t) ;
 
-    ast decs_copy = copy_var_decs(decs) ;
     ast body_copy = copy_statements(body) ;
+    ast decs_copy = copy_var_decs(decs) ;
 
     if ( decs_copy == decs && body_copy == body ) return t ;
 
@@ -316,6 +336,8 @@ ast copy_statements(ast t)
 {
     vector<ast> decs ;
 
+    unreachable = false ;
+
     bool copied = false ;
     int size = size_of_statements(t) ;
     for ( int i = 0 ; i < size ; i++ )
@@ -329,7 +351,7 @@ ast copy_statements(ast t)
 
     if ( !copied ) return t ;
 
-    return create_statements(get_ann(t),decs) ;
+    return create_statements( get_ann(t), decs ) ;
 }
 
 // copy an ast statement node with a single field
@@ -339,6 +361,16 @@ ast copy_statement(ast t)
 {
     ast statement = get_statement_statement(t) ;
     ast copy ;
+
+    bool unreachableCopy = unreachable ;
+
+    ann newComment ;
+
+    if ( unreachableCopy == true )
+    {
+        unreachable = false ;
+        newComment = add_ann_warnings( get_ann( t ), "Unreachable" ) ;
+    }
 
     switch(ast_node_kind(statement))
     {
@@ -362,9 +394,11 @@ ast copy_statement(ast t)
         break ;
     case ast_return:
         copy = copy_return(statement) ;
+        unreachable = true ;
         break ;
     case ast_return_expr:
         copy = copy_return_expr(statement) ;
+        unreachable = true ;
         break ;
     case ast_statements:
         copy = copy_statements(statement) ;
@@ -375,9 +409,9 @@ ast copy_statement(ast t)
         break ;
     }
 
-    if ( copy == statement ) return t ;
+    if ( copy == statement && unreachableCopy == false ) return t ;
 
-    return create_statement(get_ann(t),copy) ;
+    return create_statement( newComment, copy ) ;
 }
 
 // copy an ast let node with fields
@@ -427,6 +461,7 @@ ast copy_if(ast t)
     ast if_true = get_if_if_true(t) ;
 
     ast condition_copy = copy_expr(condition) ;
+
     ast if_true_copy = copy_statements(if_true) ;
 
     if ( condition_copy == condition && if_true_copy == if_true ) return t ;
@@ -678,6 +713,8 @@ ast copy_var(ast t)
     //string type = get_var_type(t) ;
     //string segment = get_var_segment(t) ;
     //int offset = get_var_offset(t) ;
+
+    usedVariables.push_back( t ) ;
 
     return t ;
 }
