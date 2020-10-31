@@ -2151,3 +2151,55 @@
 201031-183013 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
 201031-183038 make 
 201031-183038 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-205358 make test-lint
+201031-205358 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-210505 Modified: NGZjNzU3MDk4ZTY2MjhkYmE3YTJjMGIzMjIzMTZiMDVmMGI5MzJjMCAgLi9saW50LmNwcAo=
+201031-210505 make test-lint
+201031-210505 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-210538 Modified: NmQ0ZmJlOGI4MzU4NzJhODJjNGViYzQ0YWM3NTAyYzIyZmU5Nzk0ZiAgLi9saW50LmNwcAphNTZlNDk2ZDNjZTI0YzczMWEyOWY2NTdlMjUwYmFlMTlmNDM4YTI4ICAuL3VwZGF0ZXMvaW5zdGFsbGVyLmJhc2gK
+201031-210538 make test-lint
+201031-210538 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-210849 Modified: ZjdjMGY5YTc4OTI2NGVmMjEyMjEyNDY1OGFkOTgxM2EwMGNlZDU0NyAgLi9saW50LmNwcAo=
+201031-210849 make test-lint
+201031-210849 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-213150 Modified: MzAwMDdlNzAzZTAyYjE5YjEyYjU0YWI5OWE5YmNjYzkwZTI4OTRhOCAgLi9saW50LmNwcAo=
+201031-213150 make test-parser
+201031-213150 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-213159 make test-lint
+201031-213159 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-213211 Modified: MTZlMWZlMDlmNTcxNDBiYjE1NGYyNGE0NGNkZDU0MWU4MWM1ZDI1YyAgLi9saW50LmNwcAphNTZlNDk2ZDNjZTI0YzczMWEyOWY2NTdlMjUwYmFlMTlmNDM4YTI4ICAuL3VwZGF0ZXMvaW5zdGFsbGVyLmJhc2gK
+201031-213211 make test-lint
+201031-213211 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-221755 Modified: MTZjOGQxMjRiNzhmZDQxOTcxOTg1ZTkwNTRmNmQ3NmQ1OGEwYWUzZCAgLi9saW50LmNwcApkYjhiZDc3ZWVlZjMyMmE4NDRlODBmYzUzNWUxZDUyYjQwM2I1NjhjICAuL2luY2x1ZGVzL2Fic3RyYWN0LXN5bnRheC10cmVlLmgK
+201031-221755 make test-lint
+201031-221755 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-221847 Modified: NDcwZjlkNDQ5MTU2YTdkNjNjYWFlMWYyNmI0MTIwZjhjZmJkNTI4ZCAgLi9saW50LmNwcAo=
+201031-221847 make test-lint
+201031-221847 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-222041 Modified: NTBmZWQyODIwOTFhZDA1MTU4OWU5MzBlNjkwN2I3NGFkMmE5ZTAyOCAgLi9saW50LmNwcAo=
+201031-222041 make test-lint
+201031-222041 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-222104 Modified: MGEwMTIwMzRmOWVmYzM3YWUyZDgzMjkyMGY1MTliNjYwODUzM2UzNiAgLi9saW50LmNwcAo=
+201031-222104 make test-lint
+201031-222104 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-222126 Modified: MTZjOGQxMjRiNzhmZDQxOTcxOTg1ZTkwNTRmNmQ3NmQ1OGEwYWUzZCAgLi9saW50LmNwcAo=
+201031-222126 make test-lint
+201031-222126 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-222220 Modified: NjMyMDYzNmRlOTJhNjQxOGIzN2UyMjU1ZWVjYmI5NzYzMWI0YWI3OCAgLi9saW50LmNwcAo=
+201031-222220 make test-lint
+201031-222220 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-222305 Modified: NjQ0NzdmOTQyYmY1MWY4YWM5YzY3MTY3MmVkYmQ0MWUwMTRkNmM4YyAgLi9saW50LmNwcAo=
+201031-222305 make test-lint
+201031-222305 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-222439 Modified: YWFlZGRjNTE3NTA2ZTMxNzY3MTk0Zjg1NTg2MDU4ODgxZGE3ZWRmOSAgLi9saW50LmNwcAo=
+201031-222439 make test-lint
+201031-222439 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-222455 Modified: NDJhMjI4MWEzNGEyOTgyNzVlZTQzMWRlMWM5ZDZkZmUyY2RmYjYxZCAgLi9saW50LmNwcAo=
+201031-222455 make test-lint
+201031-222455 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-222643 Modified: NWI3YzMzZTdhMzRjNWQ5NWU5MjZlZmY1MTRmMDQ5ZTc4NWQxNTgwMSAgLi9saW50LmNwcAo=
+201031-222643 make test-lint
+201031-222643 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-222739 Modified: ZTUzMWQzNzVjOTRhNTk5OWY5N2NkYjhlYjZlZmJiMTdmZmUwNDhjMiAgLi9saW50LmNwcAo=
+201031-222739 make test-lint
+201031-222739 SVN user: a1773620, repository path: 2020/s2/cs/assignment3

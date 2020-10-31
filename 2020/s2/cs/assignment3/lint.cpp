@@ -91,6 +91,11 @@ ast copy_class_var_decs(ast t)
 
     bool copied = false ;
     int ndecs = size_of_class_var_decs(t) ;
+
+    // if( ndecs > 0 ) annotate ( "private:" )
+
+    ann newComment = add_ann_comments( get_ann( t ), "private:" ) ;
+
     for ( int i = 0 ; i < ndecs ; i++ )
     {
         ast deci = get_class_var_decs(t,i) ;
@@ -100,9 +105,9 @@ ast copy_class_var_decs(ast t)
         decs.push_back(copy) ;
     }
 
-    if ( !copied ) return t ;
+    if ( !copied && ndecs == 0 ) return t ;
 
-    return create_class_var_decs(get_ann(t),decs) ;
+    return create_class_var_decs( newComment ,decs ) ;
 }
 
 // copy an ast variable declaration with fields
@@ -131,6 +136,9 @@ ast copy_subr_decs(ast t)
 
     bool copied = false ;
     int size = size_of_subr_decs(t) ;
+
+    ann newComment = add_ann_comments( get_ann( t ), "public:" ) ;
+
     for ( int i = 0 ; i < size ; i++ )
     {
         ast deci = get_subr_decs(t,i) ;
@@ -140,9 +148,9 @@ ast copy_subr_decs(ast t)
         decs.push_back(copy) ;
     }
 
-    if ( !copied ) return t ;
+    if ( !copied && size == 0 ) return t ;
 
-    return create_subr_decs(get_ann(t),decs) ;
+    return create_subr_decs( newComment, decs ) ;
 }
 
 // copy an ast subroutine node with a single field
