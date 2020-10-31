@@ -1785,3 +1785,202 @@
 201028-112531 Modified: N2U2MjIwNzI2YzUxMzFjN2E4MjlmZmY2MjRhNWExMTAxOWU4NGFmYSAgLi9jb2RlZ2VuLmNwcAo=
 201028-112531 make test-codegen
 201028-112531 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-161537 make test-pretty
+201028-161537 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-190908 Modified: MTJjYjUwNjhkMTJiZDhhNDE0OWI1YmRhMzc1NDkxZmE4ZDE4MWU0MyAgLi9wcmV0dHkuY3BwCg==
+201028-190908 make test-pretty
+201028-190908 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-190952 Modified: NDYxYWNiOGZhOGNjMGYzOWM1NDFmZDlmYzg2MjEyOTE5YjgzNTc0YSAgLi9wcmV0dHkuY3BwCg==
+201028-190952 make test-pretty
+201028-190952 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-191114 Modified: ZjViYzNjZDMyNTBkM2E0ODFiYzAxM2JiZDI3ODY5MmU5OWQ5ZWZlYSAgLi9wcmV0dHkuY3BwCg==
+201028-191114 make test-pretty
+201028-191114 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-191132 Modified: NTE3YTQzM2Y2ODk2ZTRhYTY0MTRjOTQyNjcyNGZjMjQ3OGQyNjhhZCAgLi9wcmV0dHkuY3BwCg==
+201028-191132 make test-pretty
+201028-191132 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-192525 Modified: YzI5NWM0Yzk2NWE1MDQ4NTVjOGZmMzZhMGY5OTMxNTFiYTIwMzRjMCAgLi9wcmV0dHkuY3BwCg==
+201028-192525 make test-pretty
+201028-192525 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-192627 Modified: ZWYxZjE3ZjIzMDk4YTAwOGU5NjEyYjI4NDc5OTQyMGMzZjBhZmMxZSAgLi9wcmV0dHkuY3BwCg==
+201028-192627 make test-pretty
+201028-192627 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-192637 Modified: YTU2ZTQ5NmQzY2UyNGM3MzFhMjlmNjU3ZTI1MGJhZTE5ZjQzOGEyOCAgLi91cGRhdGVzL2luc3RhbGxlci5iYXNoCjAxODk3ZThiMDAyZDEwODQyZWQ3YTRmNjA0OGI2ZWRhODEwNGI0ZTMgIC4vcHJldHR5LmNwcAo=
+201028-192637 make test-pretty
+201028-192637 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-192707 Modified: MjUyYzg0YjNmMjVlMzQyMGE1NzYwM2EyNWRlMDQ3OWVlMGE0OTUzNyAgLi9wcmV0dHkuY3BwCg==
+201028-192707 make test-pretty
+201028-192707 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-192721 Modified: NDdmZGYzNTE1MmUzNDQ2MzlmYzEyMjg1NTE4MWMzNjdlYjRhOTU2MSAgLi9wcmV0dHkuY3BwCg==
+201028-192721 make test-pretty
+201028-192721 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-192907 Modified: YjNjMDI0MjdlZDg1ZDFmOTU0ZmMxMDE0ZDA4MmE3ZjAxY2QxNjM3ZCAgLi9wcmV0dHkuY3BwCg==
+201028-192907 make test-pretty
+201028-192907 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-192936 Modified: YTU2ZTQ5NmQzY2UyNGM3MzFhMjlmNjU3ZTI1MGJhZTE5ZjQzOGEyOCAgLi91cGRhdGVzL2luc3RhbGxlci5iYXNoCjYzNDViYjhkN2ExZGY2NmFkMWRlMjExMGIwODcxOGUyZjlkMWNiMzEgIC4vcHJldHR5LmNwcAo=
+201028-192936 make test-pretty
+201028-192936 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-193045 Modified: N2NmZmI0MjliNzg5OWIzY2UzMzBlMzBhNDJhZWRkMmQ0MjI1MDAxOSAgLi9wcmV0dHkuY3BwCg==
+201028-193045 make test-pretty
+201028-193045 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-193309 Modified: MzJjNGY2YjIzNTgzNGZmZjlhZWE5NzEzYzVjMjUyMmJiNjhjMzE2NCAgLi9wcmV0dHkuY3BwCg==
+201028-193309 make test-pretty
+201028-193309 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-193341 Modified: YTRjYWVlZTIwOWRhZTM0Y2RiNzY0OGIzODg0NmI2YmM4NzYzN2RlYyAgLi9wcmV0dHkuY3BwCg==
+201028-193341 make test-pretty
+201028-193341 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-193549 Modified: NjM0NWJiOGQ3YTFkZjY2YWQxZGUyMTEwYjA4NzE4ZTJmOWQxY2IzMSAgLi9wcmV0dHkuY3BwCg==
+201028-193549 make test-pretty
+201028-193549 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-193840 Modified: NjY5MmE0MjUwMTFlNjJmNDQwYmVjZjkzZDkzMjc2ODA0OWMwMTZjMyAgLi9wcmV0dHkuY3BwCg==
+201028-193840 make test-pretty
+201028-193840 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-194035 Modified: MmZiMWYzMTg1YjZkOTYyYjIxNzY3NTQ1ZjFlYzZhYTM4MGNkZDg0OSAgLi9wcmV0dHkuY3BwCg==
+201028-194035 make test-pretty
+201028-194035 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-194059 Modified: Mzc1NGNmYjEwNGU1NTgzODQ2OWNjYWYzNGRlMWZhZGQ5MDJjZTNkMyAgLi9wcmV0dHkuY3BwCg==
+201028-194059 make test-pretty
+201028-194059 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-194147 Modified: YzdlYTFmNDg2MjhiZjIxOWU0ZjZiNmU5YTVkNmQyZWYxOTM1Y2Y2MyAgLi9wcmV0dHkuY3BwCg==
+201028-194147 make test-pretty
+201028-194147 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-194228 Modified: YWZjZjA4N2NmNDk1ODFiYTAyYzI4M2EyNmI3NzIyYTMyNmZmMzIzMSAgLi9wcmV0dHkuY3BwCg==
+201028-194228 make test-pretty
+201028-194228 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-194250 Modified: Mzc1NGNmYjEwNGU1NTgzODQ2OWNjYWYzNGRlMWZhZGQ5MDJjZTNkMyAgLi9wcmV0dHkuY3BwCg==
+201028-194250 make test-pretty
+201028-194250 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-194538 Modified: NDFmMTJiMDA0MWMwZjViM2ZkMGI1M2Y2NmYwMWZkM2ZkM2Y1NDFlZiAgLi9wcmV0dHkuY3BwCg==
+201028-194538 make test-pretty
+201028-194538 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-194627 Modified: M2ZlNjc0YWJmNTQ4ODYwM2IzMzc3YzM3OTcyNjhkZDg3ZGEzMjBlNyAgLi9wcmV0dHkuY3BwCg==
+201028-194627 make test-pretty
+201028-194627 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-194811 Modified: YWJkOTcyNzY3YmU4OTI1Y2Q4NjMxZmIxZWNiYzViOGM3MmYzOTFkYSAgLi9wcmV0dHkuY3BwCg==
+201028-194811 make test-pretty
+201028-194811 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-195810 Modified: NWIwN2YzNjU2NTk0M2QwNmUwZWU0OWExMjg5YTVlM2I4N2Q1MDk1YSAgLi9wcmV0dHkuY3BwCg==
+201028-195810 make test-pretty
+201028-195810 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-195839 Modified: Mjc3ODBlYWM4N2U3MWJmZjBjOGYyZGY2NWFlMDdhMWE3NzcyZTliZSAgLi9wcmV0dHkuY3BwCg==
+201028-195839 make test-pretty
+201028-195839 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-204231 Modified: NDA0ODUyNWIwMjU4Zjg2MGVjY2RmY2QxMzBjMThmOGI1ZTc0YmNiYSAgLi9wcmV0dHkuY3BwCg==
+201028-204231 make test-pretty
+201028-204231 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-204252 make test-prettycat tests/05/Main.jack
+201028-204252 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-204812 Modified: YTU2ZTQ5NmQzY2UyNGM3MzFhMjlmNjU3ZTI1MGJhZTE5ZjQzOGEyOCAgLi91cGRhdGVzL2luc3RhbGxlci5iYXNoCmM3MGEzZDYzOTY4ZjM5NzgzMzJkZDVkNmRiM2VjMjczMTM2ODdjZGMgIC4vcHJldHR5LmNwcAo=
+201028-204812 make test-pretty
+201028-204812 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-204855 Modified: NjcyN2U1Y2E4ZDQyYzEyZjFmMDM2N2I0ZGUyZDAwZWYyNDUwMDRkNyAgLi9wcmV0dHkuY3BwCg==
+201028-204855 make test-pretty
+201028-204855 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-205017 Modified: NzQ3YjU0NzYwOTg1YTc5ZTgxNWZlODE2MWFlZWM0NjA1YzI2YmI5YyAgLi9wcmV0dHkuY3BwCg==
+201028-205017 make test-pretty
+201028-205017 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-205101 Modified: NDgwZDIxN2NkNGU1NzkwNjIzOTc0ZjNhZmQ4ZDNiNGMyODc1ZDk3MSAgLi9wcmV0dHkuY3BwCg==
+201028-205101 make test-pretty
+201028-205101 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-205220 Modified: MjI0YWRjNzczZWU1MWVjZTcyNjI4MGUwNjdjZGEwNzBlNTJlMzU1YSAgLi9wcmV0dHkuY3BwCg==
+201028-205220 make test-pretty
+201028-205220 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-205256 Modified: ODllNjE1YmVmNzA1YTcyOWIxMzEwZGZmZmI0MmViNmJmMTAxZTg5YyAgLi9wcmV0dHkuY3BwCg==
+201028-205256 make test-pretty
+201028-205256 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-205503 Modified: M2FlOTU3ZjEwZWFiMjFmYmYxZjRmZTY2MDY2YmEyMzA1YmMxNTY4YiAgLi9wcmV0dHkuY3BwCg==
+201028-205503 make test-pretty
+201028-205503 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-205533 Modified: YTU2ZTQ5NmQzY2UyNGM3MzFhMjlmNjU3ZTI1MGJhZTE5ZjQzOGEyOCAgLi91cGRhdGVzL2luc3RhbGxlci5iYXNoCjRjOWNlNmMzNDg4MmZmMzg5MGVlOTk3Mjc3YzNiM2E2Mjg0NWE5YTYgIC4vcHJldHR5LmNwcAo=
+201028-205533 make test-pretty
+201028-205533 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-205610 Modified: MmIyYzhjMTcyODBkYzFiZGNkMmJiNjY4MTgyOGU0NzMwNGUyMjNmMyAgLi9wcmV0dHkuY3BwCg==
+201028-205610 make test-pretty
+201028-205610 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-205822 Modified: ODYxNGMxOTZhY2M3N2FiMWI1M2YwZTIwYzFjMmRjZDAwMzZkN2Q3MCAgLi9wcmV0dHkuY3BwCg==
+201028-205822 make test-pretty
+201028-205822 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-205855 Modified: NmI5MTZjZWMwOTZlYWZlNzc0MDZkYjMzMWVkNzQwMDgzYzY3YWFlMSAgLi9wcmV0dHkuY3BwCg==
+201028-205855 make test-pretty
+201028-205855 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-210001 Modified: ODlmNTRjYjhjYjc4MTZiZjAwZjFjNzNmNWRlMWE0ZjNmYTkwYmQ0YSAgLi9wcmV0dHkuY3BwCg==
+201028-210001 make test-pretty
+201028-210001 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-210044 Modified: ZDY4ZTJmNTU0MTkxM2EwNWRjNDI4ZjhhMmVjZTkzNDY4ODQ5MjRmNCAgLi9wcmV0dHkuY3BwCg==
+201028-210044 make test-pretty
+201028-210044 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-210055 Modified: YzcyMjYzM2YxZDc4MTgyN2I4NjM1OTI0NzZmYjE0ODNhYWExYjhkYyAgLi9wcmV0dHkuY3BwCg==
+201028-210055 make test-pretty
+201028-210055 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-210150 Modified: MDQ1MmQ3OWI0NjIxN2MzNWVmODU4ZDUwM2NmZDY2MWY2NGJjYWUxYiAgLi9wcmV0dHkuY3BwCg==
+201028-210150 make test-pretty
+201028-210150 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-210208 Modified: MWMzZTQwYzRiNjQ1NmJlMmY5OTA4N2JhYThlZDhkZGI3ZGExNzNjYyAgLi9wcmV0dHkuY3BwCg==
+201028-210208 make test-pretty
+201028-210208 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-210228 Modified: ZTVmNmQxYmQ4NzUyZjBjNTZmNGY4ZGM1Y2NiMzlkNGFhMjI0ZWIzZiAgLi9wcmV0dHkuY3BwCg==
+201028-210228 make test-pretty
+201028-210228 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-213031 Modified: MDdmNTUxZmI0ZmNiYmM4Mjk0MGFhZTQ1NDMzNDNiZjFmMzlkMTA1YSAgLi9wcmV0dHkuY3BwCg==
+201028-213031 make test-pretty
+201028-213031 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-213042 Modified: YTU2ZTQ5NmQzY2UyNGM3MzFhMjlmNjU3ZTI1MGJhZTE5ZjQzOGEyOCAgLi91cGRhdGVzL2luc3RhbGxlci5iYXNoCjY0MjAyYWM3OGQxOWViY2E2NWZhOWIzNzA0NmQzM2NlNWM4NTFkNzQgIC4vcHJldHR5LmNwcAo=
+201028-213042 make test-pretty
+201028-213042 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-213057 Modified: ZTFmMzZlMTQzOTU4OTE4ZjE5YzkwZWYwZmM3YzMxYzAxNDAwNWQxNCAgLi9wcmV0dHkuY3BwCg==
+201028-213057 make test-pretty
+201028-213057 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-213131 Modified: ZjZjZTUzNmQyZWRjZWY3ZjNjZjc4NWE1OTRlMDU1OWYwOWE2ZDc4NSAgLi9wcmV0dHkuY3BwCg==
+201028-213131 make test-pretty
+201028-213131 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-213311 Modified: YjcyZWQ3ZTM1OTFiZjMzNGNiM2RhMDkwY2Y2YzRiMTI1M2Q2NmIyYSAgLi9wcmV0dHkuY3BwCg==
+201028-213311 make test-pretty
+201028-213311 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-213509 Modified: MjY5MjljZjMwNmQ4Zjc0MGYwYjIxNDdmNWM2YzA3YjNkM2Q4ZjhjZiAgLi9wcmV0dHkuY3BwCg==
+201028-213509 make test-pretty
+201028-213509 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-213530 Modified: ZTkxMzA2YmU1OWRkZWExZjczMmQ2OGQ0YjJhZWY0ZTk0YmE3OWJhYiAgLi9wcmV0dHkuY3BwCg==
+201028-213530 make test-pretty
+201028-213530 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-213600 Modified: MjY5MjljZjMwNmQ4Zjc0MGYwYjIxNDdmNWM2YzA3YjNkM2Q4ZjhjZiAgLi9wcmV0dHkuY3BwCg==
+201028-213600 make test-pretty
+201028-213600 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-213637 Modified: ZTkxMzA2YmU1OWRkZWExZjczMmQ2OGQ0YjJhZWY0ZTk0YmE3OWJhYiAgLi9wcmV0dHkuY3BwCg==
+201028-213637 make test-pretty
+201028-213637 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-213649 Modified: MWIyOWY3ZWQ2MzA1MDRjMWM5Yzg2YjM0MjY5Y2U3ZDUxZjc0OGIzYiAgLi9wcmV0dHkuY3BwCg==
+201028-213649 make test-pretty
+201028-213649 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-214405 Modified: YTJiNmZkZjE2MjM2ZTUwYzU5MzNmOTE3ZDNkY2MzYzYzZTEyNWZhZiAgLi9wcmV0dHkuY3BwCg==
+201028-214405 make test-pretty
+201028-214405 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-214638 Modified: NjZkNDIyMjkwMjNjMDU3MDY4ZTcyMjhlNTg1ZmFmMDU0NzhlZTkxNiAgLi9wcmV0dHkuY3BwCg==
+201028-214638 make test-pretty
+201028-214638 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201028-214651 Modified: YzRiMTk1NzkwNzI3MWVlODgwOTc4ZmYxZGQ5YjIyMjBiYmE4N2VkNyAgLi9wcmV0dHkuY3BwCg==
+201028-214651 make test-pretty
+201028-214651 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-134913 Modified: Y2QyYmE0ZjgwMzIyMGY0ZWU5MDBjMjk3ZWY0ZGQxNmU4YmM0YjNjMCAgLi9wcmV0dHkuY3BwCg==
+201031-134913 make test-pretty
+201031-134913 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-135841 Modified: MzE2M2Q5NzY4YmRiZDBkYjFlYzMyNmFkYmY5YzMzYTNjOTA1ZWM5ZSAgLi9wcmV0dHkuY3BwCg==
+201031-135841 make test-pretty
+201031-135841 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-135903 Modified: YTU2ZTQ5NmQzY2UyNGM3MzFhMjlmNjU3ZTI1MGJhZTE5ZjQzOGEyOCAgLi91cGRhdGVzL2luc3RhbGxlci5iYXNoCmFjM2UzOTg4ZDU1ZDRkNDA3NzBjZmExYmM3ZDYyMzUwYzhhMGZjYTEgIC4vcHJldHR5LmNwcAo=
+201031-135903 make test-pretty
+201031-135903 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-135924 Modified: YTU2ZTQ5NmQzY2UyNGM3MzFhMjlmNjU3ZTI1MGJhZTE5ZjQzOGEyOCAgLi91cGRhdGVzL2luc3RhbGxlci5iYXNoCmRmNzNkNTE5ZjkxMmE5ZTY3YjhmNWMzNjBmYjgzMjE1NGNhMDVlMmUgIC4vcHJldHR5LmNwcAo=
+201031-135924 make test-pretty
+201031-135924 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-140104 Modified: OTMxNmYwNzQxMDE1NjY5ZDczMTI1NTc0YmE2MjRmYmQ0ZGZlZDhjYiAgLi9wcmV0dHkuY3BwCg==
+201031-140104 make test-pretty
+201031-140104 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-140210 Modified: NWE3YzNjMWM2MTBkYTM5ZWYzOGMwMWU3MzE4MmIzNGQ5NzVmZGNhNSAgLi9wcmV0dHkuY3BwCg==
+201031-140210 make test-pretty
+201031-140210 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-140449 Modified: ZmZjODAzODliNjhhMWQ3OGM4MTBkZTc3MzI1NTAwNmI0YzlhNzg5YSAgLi9wcmV0dHkuY3BwCg==
+201031-140449 make test-pretty
+201031-140449 SVN user: a1773620, repository path: 2020/s2/cs/assignment3
+201031-140537 Modified: ZmU2Njk1OGQ1YTExZmM2ODU0YzJlMGM2MWQyYWI0YWEwODdjMDBjYSAgLi9wcmV0dHkuY3BwCg==
+201031-140537 make test-pretty
+201031-140537 SVN user: a1773620, repository path: 2020/s2/cs/assignment3

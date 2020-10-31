@@ -1,6 +1,7 @@
 #include "iobuffer.h"
 #include "symbols.h"
 #include "abstract-syntax-tree.h"
+#include <vector>
 
 // to shorten our code:
 using namespace std ;
@@ -61,6 +62,70 @@ void walk_subr_call(ast t) ;
 void walk_expr_list(ast t) ;
 void walk_infix_op(ast t) ;
 
+// Global variable to store the indentation level
+int indentation ;
+
+// Global variable storing the current class name
+string className ;
+
+// Global variable to store all class variables
+vector<ast> classVariables ;
+
+// Function writes to output with the correct indentation preceding it.
+void write_with_indentation( string output )
+{
+    string indent = "";
+
+    for( int i = 0 ; i < indentation ; i++ )
+    {
+        indent += "    " ;
+    }
+
+    write_to_output( indent + output ) ;
+}
+
+void print_class_variables()
+{
+    string segment ;
+    bool hadStatic = false ;
+    bool hadField = false ;
+
+    // Print static variables
+    for( int i = 0 ; i < classVariables.size() ; i++ )
+    {
+        segment = get_var_dec_segment( classVariables[i] ) ;
+        
+        if( segment.compare( "static" ) == 0 )
+        {
+            hadStatic = true ;
+
+            string name = get_var_dec_name( classVariables[i] ) ;
+            string type = get_var_dec_type( classVariables[i] ) ;
+            write_with_indentation( segment + " " + type + " " + name + " ;\n" ) ;
+        }
+
+        if( i == classVariables.size() - 1 && hadStatic == true ) write_to_output( "\n" ) ;
+    }
+
+    // Print field variables
+    for( int i = 0 ; i < classVariables.size() ; i++ )
+    {
+        segment = get_var_dec_segment( classVariables[i] ) ;
+        
+        if( segment.compare( "this" ) == 0 )
+        {
+            hadField = true ;
+
+            segment = "field" ;
+            string name = get_var_dec_name( classVariables[i] ) ;
+            string type = get_var_dec_type( classVariables[i] ) ;
+            write_with_indentation( segment + " " + type + " " + name + " ;\n" ) ;
+        }
+
+        if( i == classVariables.size() - 1 && hadField == true ) write_to_output( "\n" ) ;
+    }
+}
+
 // walk an ast class node with fields:
 // class_name - a string
 // var_decs   - ast vector of variable declarations
@@ -72,8 +137,17 @@ void walk_class(ast t)
     ast var_decs = get_class_var_decs(t) ;
     ast subr_decs = get_class_subr_decs(t) ;
 
+    className = myclassname ;
+
+    write_with_indentation( "class " + myclassname + "\n" ) ;
+    write_with_indentation( "{\n" ) ;
+    indentation++ ;
+
     walk_class_var_decs(var_decs) ;
     walk_subr_decs(subr_decs) ;
+
+    indentation-- ;
+    write_with_indentation( "}\n" ) ;
 }
 
 // walk an ast class var decs node
@@ -84,8 +158,12 @@ void walk_class_var_decs(ast t)
     int ndecs = size_of_class_var_decs(t) ;
     for ( int i = 0 ; i < ndecs ; i++ )
     {
-        walk_var_dec(get_class_var_decs(t,i)) ;
+        classVariables.push_back( get_class_var_decs( t, i ) ) ;
     }
+
+    print_class_variables() ;
+
+    // if( ndecs > 0 ) write_to_output( "\n" ) ;
 }
 
 // walk an ast variable declaration with fields
@@ -97,10 +175,15 @@ void walk_class_var_decs(ast t)
 //
 void walk_var_dec(ast t)
 {
-    //string name = get_var_dec_name(t) ;
-    //string type = get_var_dec_type(t) ;
-    //string segment = get_var_dec_segment(t) ;
-    //int offset = get_var_dec_offset(t) ;
+    string name = get_var_dec_name(t) ;
+    string type = get_var_dec_type(t) ;
+    string segment = get_var_dec_segment(t) ;
+    // int offset = get_var_dec_offset(t) ;
+
+    if ( segment.compare( "local" ) == 0 ) segment = "var" ;
+    if ( segment.compare( "this" ) == 0 ) segment = "field" ;
+
+    write_with_indentation( segment + " " + type + " " + name + " ;\n" ) ;
 }
 
 // walk an ast class var decs node
@@ -112,6 +195,7 @@ void walk_subr_decs(ast t)
     for ( int i = 0 ; i < size ; i++ )
     {
         walk_subr(get_subr_decs(t,i)) ;
+        if( i != size - 1 ) write_to_output( "\n" ) ;
     }
 }
 
@@ -147,13 +231,20 @@ void walk_subr(ast t)
 //
 void walk_constructor(ast t)
 {
-    //string vtype = get_constructor_vtype(t) ;
-    //string name = get_constructor_name(t) ;
+    string vtype = get_constructor_vtype(t) ;
+    string name = get_constructor_name(t) ;
     ast param_list = get_constructor_param_list(t) ;
     ast subr_body = get_constructor_subr_body(t) ;
 
+    write_with_indentation( "constructor " + vtype + " " + name + "(" ) ;
     walk_param_list(param_list) ;
+    write_to_output( ")\n" ) ;
+
+    write_with_indentation( "{\n" ) ;
+    indentation++ ;
     walk_subr_body(subr_body) ;
+    indentation-- ;
+    write_with_indentation( "}\n" ) ;
 }
 
 // walk an ast function node with fields
@@ -164,13 +255,20 @@ void walk_constructor(ast t)
 //
 void walk_function(ast t)
 {
-    //string vtype = get_function_vtype(t) ;
-    //string name = get_function_name(t) ;
+    string vtype = get_function_vtype(t) ;
+    string name = get_function_name(t) ;
     ast param_list = get_function_param_list(t) ;
     ast subr_body = get_function_subr_body(t) ;
 
+    write_with_indentation( "function " + vtype + " " + name + "(" ) ;
     walk_param_list(param_list) ;
+    write_to_output( ")\n" ) ;
+
+    write_with_indentation( "{\n" ) ;
+    indentation++ ;
     walk_subr_body(subr_body) ;
+    indentation-- ;
+    write_with_indentation( "}\n" ) ;
 }
 
 // walk an ast method node with fields
@@ -181,13 +279,20 @@ void walk_function(ast t)
 //
 void walk_method(ast t)
 {
-    //string vtype = get_method_vtype(t) ;
-    //string name = get_method_name(t) ;
+    string vtype = get_method_vtype(t) ;
+    string name = get_method_name(t) ;
     ast param_list = get_method_param_list(t) ;
     ast subr_body = get_method_subr_body(t) ;
 
+    write_with_indentation( "method " + vtype + " " + name + "(" ) ;
     walk_param_list(param_list) ;
+    write_to_output( ")\n" ) ;
+
+    write_with_indentation( "{\n" ) ;
+    indentation++ ;
     walk_subr_body(subr_body) ;
+    indentation-- ;
+    write_with_indentation( "}\n" ) ;
 }
 
 // walk an ast param list node
@@ -212,6 +317,8 @@ void walk_subr_body(ast t)
     ast body = get_subr_body_body(t) ;
 
     walk_var_decs(decs) ;
+    if( size_of_var_decs( decs ) > 0 ) write_to_output( "\n" ) ;
+
     walk_statements(body) ;
 }
 
@@ -236,6 +343,7 @@ void walk_statements(ast t)
     for ( int i = 0 ; i < nstatements ; i++ )
     {
         walk_statement(get_statements(t,i)) ;
+        if( i != nstatements - 1 ) write_to_output( "\n" ) ;
     }
 }
 
@@ -290,8 +398,11 @@ void walk_let(ast t)
     ast var = get_let_var(t) ;
     ast expr = get_let_expr(t) ;
 
+    write_with_indentation( "let " ) ;
     walk_var(var) ;
+    write_to_output( " = " ) ;
     walk_expr(expr) ;
+    write_to_output( " ;" ) ;
 }
 
 // walk an ast let array node with fields
@@ -319,8 +430,15 @@ void walk_if(ast t)
     ast condition = get_if_condition(t) ;
     ast if_true = get_if_if_true(t) ;
 
+    write_with_indentation( "if (" ) ;
     walk_expr(condition) ;
+    write_to_output( ")\n" ) ;
+
+    write_with_indentation( "{\n" ) ;
+    indentation++ ;
     walk_statements(if_true) ;
+    indentation-- ;
+    write_with_indentation( "}\n" ) ;
 }
 
 // walk an ast if else node with fields
@@ -334,9 +452,22 @@ void walk_if_else(ast t)
     ast if_true = get_if_else_if_true(t) ;
     ast if_false = get_if_else_if_false(t) ;
 
+    write_with_indentation( "if (" ) ;
     walk_expr(condition) ;
+    write_to_output( ")\n" ) ;
+
+    write_with_indentation( "{\n" ) ;
+    indentation++ ;
     walk_statements(if_true) ;
+    indentation-- ;
+    write_with_indentation( "}\n" ) ;
+
+    write_with_indentation( "else\n" ) ;
+    write_with_indentation( "{\n" ) ;
+    indentation++ ;
     walk_statements(if_false) ;
+    indentation-- ;
+    write_with_indentation( "}\n" ) ;
 }
 
 // walk an ast while node with fields
@@ -348,8 +479,15 @@ void walk_while(ast t)
     ast condition = get_while_condition(t) ;
     ast body = get_while_body(t) ;
 
+    write_with_indentation( "while (" ) ;
     walk_expr(condition) ;
+    write_to_output( ")\n" ) ;
+
+    write_with_indentation( "{\n" ) ;
+    indentation++ ;
     walk_statements(body) ;
+    indentation-- ;
+    write_with_indentation( "}\n" ) ;
 }
 
 // walk an ast do node with a single field
@@ -377,6 +515,7 @@ void walk_do(ast t)
 //
 void walk_return(ast t)
 {
+    write_with_indentation( "return ;\n" ) ;
 }
 
 // walk an ast return expr node with a single field
@@ -386,7 +525,9 @@ void walk_return_expr(ast t)
 {
     ast expr = get_return_expr(t) ;
 
+    write_with_indentation( "return " ) ;
     walk_expr(expr) ;
+    write_to_output( " ;\n" ) ;
 }
 
 // walk an ast param list node
@@ -467,7 +608,9 @@ void walk_term(ast t)
 //
 void walk_int(ast t)
 {
-    //int _constant = get_int_constant(t) ;
+    int _constant = get_int_constant(t) ;
+
+    write_to_output( to_string( _constant ) ) ;
 }
 
 // walk an ast string node with a single field
@@ -483,7 +626,10 @@ void walk_string(ast t)
 //
 void walk_bool(ast t)
 {
-    //bool _constant = get_bool_t_or_f(t) ;
+    bool _constant = get_bool_t_or_f(t) ;
+
+    if( _constant == true )     write_to_output( "true" ) ;
+    if( _constant == false )    write_to_output( "false" ) ;
 }
 
 // walk an ast null node, it has not fields
@@ -496,6 +642,7 @@ void walk_null(ast t)
 //
 void walk_this(ast t)
 {
+    write_to_output( "this" ) ;
 }
 
 // walk an ast unary op node with fields
@@ -520,10 +667,12 @@ void walk_unary_op(ast t)
 //
 void walk_var(ast t)
 {
-    //string name = get_var_name(t) ;
+    string name = get_var_name(t) ;
     //string type = get_var_type(t) ;
     //string segment = get_var_segment(t) ;
     //int offset = get_var_offset(t) ;
+
+    write_to_output( name ) ;
 }
 
 // walk an ast array index node with fields
@@ -547,6 +696,8 @@ void walk_call_as_function(ast t)
 {
     string class_name = get_call_as_function_class_name(t) ;
     ast subr_call = get_call_as_function_subr_call(t) ;
+
+    write_to_output( className ) ;
 
     walk_subr_call(subr_call) ;
 }
@@ -574,6 +725,9 @@ void walk_call_as_method(ast t)
         fatal_error(0,"Expected var or this") ;
         break ;
     }
+
+    // write_to_output( class_name ) ;
+
     walk_subr_call(subr_call) ;
 }
 
@@ -586,7 +740,9 @@ void walk_subr_call(ast t)
     string subr_name = get_subr_call_subr_name(t) ;
     ast expr_list = get_subr_call_expr_list(t) ;
 
+    write_to_output( "." + subr_name + "(" ) ;
     walk_expr_list(expr_list) ;
+    write_to_output( ")" ) ;
 }
 
 // walk an ast expr list node
@@ -606,7 +762,8 @@ void walk_expr_list(ast t)
 //
 void walk_infix_op(ast t)
 {
-    //string op = get_infix_op_op(t) ;
+    string op = get_infix_op_op(t) ;
+    write_to_output( " " + op + " " ) ;
 }
 
 // main program
