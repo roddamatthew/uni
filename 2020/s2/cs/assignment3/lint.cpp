@@ -66,7 +66,9 @@ ast copy_infix_op(ast t) ;
 // ** LINT PROGRAM **
 
 // Global variable to store whether the previous statement was a return
-bool unreachable ;
+int unreachable = 0 ;
+bool terminatesInReturn ;
+bool conditionIsTrue ;
 
 // Vector of variables that have been used
 vector<ast> usedVariables ;
@@ -336,7 +338,7 @@ ast copy_statements(ast t)
 {
     vector<ast> decs ;
 
-    unreachable = false ;
+    int unreachableCopy = unreachable ;
 
     bool copied = false ;
     int size = size_of_statements(t) ;
@@ -348,6 +350,8 @@ ast copy_statements(ast t)
 
         decs.push_back(copy) ;
     }
+
+    unreachable = unreachableCopy ;
 
     if ( !copied ) return t ;
 
@@ -362,13 +366,12 @@ ast copy_statement(ast t)
     ast statement = get_statement_statement(t) ;
     ast copy ;
 
-    bool unreachableCopy = unreachable ;
+    int unreachableCopy = unreachable ;
 
     ann newComment ;
 
-    if ( unreachableCopy == true )
+    if ( unreachableCopy > 0 )
     {
-        unreachable = false ;
         newComment = add_ann_warnings( get_ann( t ), "Unreachable" ) ;
     }
 
@@ -409,7 +412,7 @@ ast copy_statement(ast t)
         break ;
     }
 
-    if ( copy == statement && unreachableCopy == false ) return t ;
+    if ( copy == statement && unreachableCopy == 0 ) return t ;
 
     return create_statement( newComment, copy ) ;
 }
@@ -461,7 +464,6 @@ ast copy_if(ast t)
     ast if_true = get_if_if_true(t) ;
 
     ast condition_copy = copy_expr(condition) ;
-
     ast if_true_copy = copy_statements(if_true) ;
 
     if ( condition_copy == condition && if_true_copy == if_true ) return t ;
@@ -499,7 +501,12 @@ ast copy_while(ast t)
     ast body = get_while_body(t) ;
 
     ast condition_copy = copy_expr(condition) ;
+
+    // IF THE KIND OF THE CONDITION IS AST_BOOL WITH TYPE FALSE THEN unreachable++
+
     ast body_copy = copy_statements(body) ;
+
+    // unreachable-- ;
 
     if ( condition_copy == condition && body_copy == body ) return t ;
 
@@ -714,7 +721,7 @@ ast copy_var(ast t)
     //string segment = get_var_segment(t) ;
     //int offset = get_var_offset(t) ;
 
-    usedVariables.push_back( t ) ;
+    if( unreachable == 0 ) usedVariables.push_back( t ) ;
 
     return t ;
 }
