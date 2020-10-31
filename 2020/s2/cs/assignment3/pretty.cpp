@@ -183,7 +183,7 @@ void walk_var_dec(ast t)
     if ( segment.compare( "local" ) == 0 ) segment = "var" ;
     if ( segment.compare( "this" ) == 0 ) segment = "field" ;
 
-    write_with_indentation( segment + " " + type + " " + name + " ;\n" ) ;
+    write_to_output( type + " " + name ) ;
 }
 
 // walk an ast class var decs node
@@ -304,6 +304,7 @@ void walk_param_list(ast t)
     for ( int i = 0 ; i < ndecs ; i++ )
     {
         walk_var_dec(get_param_list(t,i)) ;
+        if( i < ndecs - 1 ) write_to_output( "," ) ;
     }
 }
 
@@ -330,7 +331,16 @@ void walk_var_decs(ast t)
     int ndecs = size_of_var_decs(t) ;
     for ( int i = 0 ; i < ndecs ; i++ )
     {
+        string segment = get_var_dec_segment( get_var_decs(t,i) ) ;
+
+        if ( segment.compare( "local" ) == 0 ) segment = "var" ;
+        if ( segment.compare( "this" ) == 0 ) segment = "field" ;
+
+        write_with_indentation( segment + " " ) ;
+
         walk_var_dec(get_var_decs(t,i)) ;
+
+        write_to_output( " ;\n" ) ;
     }
 }
 
@@ -342,8 +352,15 @@ void walk_statements(ast t)
     int nstatements = size_of_statements(t) ;
     for ( int i = 0 ; i < nstatements ; i++ )
     {
-        walk_statement(get_statements(t,i)) ;
-        if( i != nstatements - 1 ) write_to_output( "\n" ) ;
+        ast statement = get_statement_statement( get_statements( t, i ) ) ;
+        walk_statement( get_statements( t, i ) ) ;
+
+        if( i < nstatements - 1 )
+        {
+            if( ast_node_kind( statement )  == ast_if ) write_to_output( "\n" ) ;
+            if( ast_node_kind( statement )  == ast_if_else ) write_to_output( "\n" ) ;
+            if( ast_node_kind( statement )  == ast_while ) write_to_output( "\n" ) ;
+        }
     }
 }
 
@@ -399,10 +416,10 @@ void walk_let(ast t)
     ast expr = get_let_expr(t) ;
 
     write_with_indentation( "let " ) ;
-    walk_var(var) ;
+    walk_var( var ) ;
     write_to_output( " = " ) ;
-    walk_expr(expr) ;
-    write_to_output( " ;" ) ;
+    walk_expr( expr ) ;
+    write_to_output( " ;\n" ) ;
 }
 
 // walk an ast let array node with fields
@@ -497,6 +514,8 @@ void walk_do(ast t)
 {
     ast call = get_do_call(t) ;
 
+    write_with_indentation( "do " ) ;
+
     switch(ast_node_kind(call))
     {
     case ast_call_as_function:
@@ -509,6 +528,8 @@ void walk_do(ast t)
         fatal_error(0,"Unexpected call kind") ;
         break ;
     }
+
+    write_to_output( " ;\n" ) ;
 }
 
 // walk an ast return node, it has not fields
@@ -526,7 +547,7 @@ void walk_return_expr(ast t)
     ast expr = get_return_expr(t) ;
 
     write_with_indentation( "return " ) ;
-    walk_expr(expr) ;
+    walk_expr( expr ) ;
     write_to_output( " ;\n" ) ;
 }
 
@@ -560,9 +581,9 @@ void walk_expr(ast t)
 //
 void walk_term(ast t)
 {
-    ast term = get_term_term(t) ;
+    ast term = get_term_term( t ) ;
 
-    switch(ast_node_kind(term))
+    switch( ast_node_kind( term ) )
     {
     case ast_int:
         walk_int(term) ;
@@ -598,7 +619,7 @@ void walk_term(ast t)
         walk_call_as_method(term) ;
         break ;
     default:
-        fatal_error(0,"Unexpected term kind") ;
+        fatal_error(0, "Unexpected term kind" ) ;
         break ;
     }
 }
@@ -653,10 +674,18 @@ void walk_this(ast t)
 //
 void walk_unary_op(ast t)
 {
-    //string uop = get_unary_op_op(t);
+    string uop = get_unary_op_op(t);
     ast term = get_unary_op_term(t) ;
 
-    walk_term(term) ;
+    write_to_output( uop ) ;
+
+    if( uop.compare( "~" ) == 0 )
+    {
+        write_to_output( "(" ) ;
+        walk_term(term) ;
+        write_to_output( ")" ) ;
+    }
+    else walk_term(term) ;
 }
 
 // walk an ast variable node with fields
@@ -697,7 +726,7 @@ void walk_call_as_function(ast t)
     string class_name = get_call_as_function_class_name(t) ;
     ast subr_call = get_call_as_function_subr_call(t) ;
 
-    write_to_output( className ) ;
+    write_to_output( class_name + "." ) ;
 
     walk_subr_call(subr_call) ;
 }
@@ -713,20 +742,21 @@ void walk_call_as_method(ast t)
     ast var = get_call_as_method_var(t) ;
     ast subr_call = get_call_as_method_subr_call(t) ;
 
+    string segment = "" ;
+
     switch(ast_node_kind(var))
     {
     case ast_this:
-        walk_this(var) ;
+        // walk_this(var) ;
         break ;
     case ast_var:
         walk_var(var) ;
+        write_to_output( "." ) ;
         break ;
     default:
         fatal_error(0,"Expected var or this") ;
         break ;
     }
-
-    // write_to_output( class_name ) ;
 
     walk_subr_call(subr_call) ;
 }
@@ -740,8 +770,8 @@ void walk_subr_call(ast t)
     string subr_name = get_subr_call_subr_name(t) ;
     ast expr_list = get_subr_call_expr_list(t) ;
 
-    write_to_output( "." + subr_name + "(" ) ;
-    walk_expr_list(expr_list) ;
+    write_to_output( subr_name + "(" ) ;
+    walk_expr_list( expr_list ) ;
     write_to_output( ")" ) ;
 }
 
@@ -753,7 +783,8 @@ void walk_expr_list(ast t)
     int nexpressions = size_of_expr_list(t) ;
     for ( int i = 0 ; i < nexpressions ; i++ )
     {
-        walk_expr(get_expr_list(t,i)) ;
+        walk_expr( get_expr_list( t, i ) ) ;
+        if( i < nexpressions - 1 ) write_to_output( "," ) ;
     }
 }
 
