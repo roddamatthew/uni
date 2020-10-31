@@ -433,9 +433,14 @@ void walk_let_array(ast t)
     ast index = get_let_array_index(t) ;
     ast expr = get_let_array_expr(t) ;
 
+    write_with_indentation( "let " ) ;
     walk_var(var) ;
+    write_to_output( "[" ) ;
     walk_expr(index) ;
+    write_to_output( "] = " ) ;
+
     walk_expr(expr) ;
+    write_to_output( " ;\n" ) ;
 }
 
 // walk an ast if node with fields
@@ -639,7 +644,9 @@ void walk_int(ast t)
 //
 void walk_string(ast t)
 {
-    //string _constant = get_string_constant(t) ;
+    string _constant = get_string_constant(t) ;
+    char quotation = 34 ;
+    write_to_output( quotation + _constant + quotation ) ;
 }
 
 // walk an ast bool node with a single field
@@ -657,6 +664,7 @@ void walk_bool(ast t)
 //
 void walk_null(ast t)
 {
+    write_to_output( "null" ) ;
 }
 
 // walk an ast this node, it has not fields
@@ -714,7 +722,9 @@ void walk_array_index(ast t)
     ast index = get_array_index_index(t) ;
 
     walk_var(var) ;
+    write_to_output( "[" ) ;
     walk_expr(index) ;
+     write_to_output( "]" ) ;
 }
 
 // walk an ast subr call as method with fields
