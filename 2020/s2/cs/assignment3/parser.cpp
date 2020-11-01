@@ -272,6 +272,11 @@ ast parse_class()
 
     mustbe( tk_rcb ) ;
 
+    for( int i = 0 ; i < scopeStack -> size() ; i++ )
+    {
+        pop_scope() ;
+    }
+
     pop_error_context() ;
     return create_class( myclassname, class_var_decs, class_subrs ) ;
 }
