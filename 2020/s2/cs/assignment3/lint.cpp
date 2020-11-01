@@ -856,7 +856,12 @@ ast copy_subr_call(ast t)
         }
     }
 
-    if ( copy == expr_list && undefined == false ) return t ;
+    if( undefined == false )
+    {
+        a = add_ann_errors( a, "Undeclared constructor, function or method" ) ;
+    }
+
+    if ( copy == expr_list && undefined == true ) return t ;
 
     return create_subr_call( a, subr_name,copy ) ;
 }
