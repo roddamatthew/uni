@@ -536,9 +536,9 @@ ast copy_while(ast t)
     
     if( conditionIsFalse )
     {
-        unreachable++ ;
+        // unreachable++ ;
         body_copy = copy_statements(body) ;
-        unreachable-- ;
+        // unreachable-- ;
     }
     else
     {
