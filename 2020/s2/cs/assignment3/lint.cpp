@@ -74,6 +74,9 @@ bool conditionIsFalse ;
 // Vector of variables that have been used
 vector<ast> usedVariables ;
 
+// Vector of constructor, method and function names
+vector<string> definedSubroutines ;
+
 // copy an ast class node with fields:
 // class_name - a string
 // var_decs   - ast vector of variable declarations
@@ -222,6 +225,8 @@ ast copy_constructor(ast t)
     ast subr_body_copy = copy_subr_body(subr_body) ;
     ast param_list_copy = copy_param_list(param_list) ;
 
+    definedSubroutines.push_back( name ) ;
+
     if ( param_list_copy == param_list && subr_body_copy == subr_body ) return t ;
 
     return create_constructor(get_ann(t),vtype,name,param_list_copy,subr_body_copy) ;
@@ -243,6 +248,8 @@ ast copy_function(ast t)
     ast subr_body_copy = copy_subr_body(subr_body) ;
     ast param_list_copy = copy_param_list(param_list) ;
 
+    definedSubroutines.push_back( name ) ;
+
     if ( param_list_copy == param_list && subr_body_copy == subr_body ) return t ;
 
     return create_function(get_ann(t),vtype,name,param_list_copy,subr_body_copy) ;
@@ -263,6 +270,8 @@ ast copy_method(ast t)
 
     ast subr_body_copy = copy_subr_body(subr_body) ;
     ast param_list_copy = copy_param_list(param_list) ;
+
+    definedSubroutines.push_back( name ) ;
 
     if ( param_list_copy == param_list && subr_body_copy == subr_body ) return t ;
 
@@ -835,9 +844,26 @@ ast copy_subr_call(ast t)
 
     ast copy = copy_expr_list(expr_list) ;
 
-    if ( copy == expr_list ) return t ;
+    bool undefined = true ;
 
-    return create_subr_call(get_ann(t),subr_name,copy) ;
+    ann a = get_ann( t ) ;
+
+    for( int i = 0 ; i < definedSubroutines.size() ; i++ )
+    {
+        if( subr_name.compare( ( definedSubroutines[i] ) ) == 0 )
+        {
+            undefined = false ;
+        }
+    }
+
+    if( undefined == false )
+    {
+        a = add_ann_errors( a, "Undeclared constructor, function or method" ) ;
+    }
+
+    if ( copy == expr_list && undefined == false ) return t ;
+
+    return create_subr_call( a, subr_name,copy ) ;
 }
 
 // copy an ast expr list node
