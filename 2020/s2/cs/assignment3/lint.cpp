@@ -69,6 +69,7 @@ ast copy_infix_op(ast t) ;
 int unreachable = 0 ;
 bool terminatesInReturn ;
 bool conditionIsTrue ;
+bool conditionIsFalse ;
 
 // Vector of variables that have been used
 vector<ast> usedVariables ;
@@ -397,11 +398,11 @@ ast copy_statement(ast t)
         break ;
     case ast_return:
         copy = copy_return(statement) ;
-        unreachable = true ;
+        unreachable++ ;
         break ;
     case ast_return_expr:
         copy = copy_return_expr(statement) ;
-        unreachable = true ;
+        unreachable++ ;
         break ;
     case ast_statements:
         copy = copy_statements(statement) ;
@@ -463,8 +464,13 @@ ast copy_if(ast t)
     ast condition = get_if_condition(t) ;
     ast if_true = get_if_if_true(t) ;
 
+    terminatesInReturn = false ;
+    conditionIsTrue = false ;
+
     ast condition_copy = copy_expr(condition) ;
     ast if_true_copy = copy_statements(if_true) ;
+
+    // if( terminatesInReturn && conditionIsTrue ) unreachable++ ;
 
     if ( condition_copy == condition && if_true_copy == if_true ) return t ;
 
@@ -482,9 +488,29 @@ ast copy_if_else(ast t)
     ast if_true = get_if_else_if_true(t) ;
     ast if_false = get_if_else_if_false(t) ;
 
+    ast if_false_copy ;
+    ast if_true_copy ;
+
+    terminatesInReturn = false ;
+    conditionIsTrue = false ;
+    conditionIsFalse = false ;
+
     ast condition_copy = copy_expr(condition) ;
-    ast if_true_copy = copy_statements(if_true) ;
-    ast if_false_copy = copy_statements(if_false) ;
+    if( conditionIsFalse )
+    {
+        unreachable++ ;
+        if_true_copy = copy_statements(if_true) ;
+        unreachable-- ;
+    }
+    else if_true_copy = copy_statements(if_true) ;
+    
+    if( terminatesInReturn && conditionIsTrue )
+    {
+        unreachable++ ;
+        if_false_copy = copy_statements(if_false) ;
+        unreachable-- ;
+    }
+    else if_false_copy = copy_statements(if_false) ;
 
     if ( condition_copy == condition && if_true_copy == if_true && if_false_copy == if_false ) return t ;
 
@@ -500,13 +526,26 @@ ast copy_while(ast t)
     ast condition = get_while_condition(t) ;
     ast body = get_while_body(t) ;
 
+    terminatesInReturn = false ;
+    conditionIsTrue = false ;
+    conditionIsFalse = false ;
+
+    ast body_copy ;
+
     ast condition_copy = copy_expr(condition) ;
+    
+    if( conditionIsFalse )
+    {
+        unreachable++ ;
+        body_copy = copy_statements(body) ;
+        unreachable-- ;
+    }
+    else
+    {
+        body_copy = copy_statements(body) ;
+    }
 
-    // IF THE KIND OF THE CONDITION IS AST_BOOL WITH TYPE FALSE THEN unreachable++
-
-    ast body_copy = copy_statements(body) ;
-
-    // unreachable-- ;
+    // if( terminatesInReturn && conditionIsTrue ) unreachable++ ;
 
     if ( condition_copy == condition && body_copy == body ) return t ;
 
@@ -545,6 +584,7 @@ ast copy_do(ast t)
 //
 ast copy_return(ast t)
 {
+    terminatesInReturn = true ;
     return t ;
 }
 
@@ -556,6 +596,8 @@ ast copy_return_expr(ast t)
     ast expr = get_return_expr(t) ;
 
     ast copy = copy_expr(expr) ;
+
+    terminatesInReturn = true ;
 
     if ( copy == expr ) return t ;
 
@@ -669,7 +711,10 @@ ast copy_string(ast t)
 //
 ast copy_bool(ast t)
 {
-    //bool _constant = get_bool_t_or_f(t) ;
+    bool _constant = get_bool_t_or_f(t) ;
+
+    if ( _constant == true ) conditionIsTrue = true ; else
+    if ( _constant == false ) conditionIsFalse = true ;
 
     return t ;
 }
