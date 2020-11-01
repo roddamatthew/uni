@@ -844,24 +844,24 @@ ast copy_subr_call(ast t)
 
     ast copy = copy_expr_list(expr_list) ;
 
-    bool undefined = true ;
+    // bool undefined = true ;
 
     ann a = get_ann( t ) ;
 
-    for( int i = 0 ; i < definedSubroutines.size() ; i++ )
-    {
-        if( subr_name.compare( ( definedSubroutines[i] ) ) == 0 )
-        {
-            undefined = false ;
-        }
-    }
+    // for( int i = 0 ; i < definedSubroutines.size() ; i++ )
+    // {
+    //     if( subr_name.compare( ( definedSubroutines[i] ) ) == 0 )
+    //     {
+    //         undefined = false ;
+    //     }
+    // }
 
-    if( undefined == false )
-    {
-        a = add_ann_errors( a, "Undeclared constructor, function or method" ) ;
-    }
+    // if( undefined == false )
+    // {
+    //     a = add_ann_errors( a, "Undeclared constructor, function or method" ) ;
+    // }
 
-    if ( copy == expr_list && undefined == true ) return t ;
+    if ( copy == expr_list ) return t ;
 
     return create_subr_call( a, subr_name,copy ) ;
 }
