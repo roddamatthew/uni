@@ -2,6 +2,9 @@
 #include "symbols.h"
 #include "abstract-syntax-tree.h"
 
+// Authorship: Matthew Rodda a1773620
+// Date last altered: November 1st 2020
+
 // to shorten our code:
 using namespace std ;
 using namespace CS_IO_Buffers ;
@@ -786,7 +789,6 @@ ast copy_var(ast t)
 //
 ast copy_array_index(ast t)
 {
-
     ast var = get_array_index_var(t) ;
     ast index = get_array_index_index(t) ;
 

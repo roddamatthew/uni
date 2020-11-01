@@ -5,6 +5,9 @@
 #include "abstract-syntax-tree.h"
 #include <iostream>
 
+// Authorship: Matthew Rodda a1773620
+// Date last altered: November 1st 2020
+
 // to shorten our code:
 using namespace std ;
 using namespace CS_IO_Buffers ;
