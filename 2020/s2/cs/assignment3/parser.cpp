@@ -154,10 +154,10 @@ static void initialise_symbol_tables()
 // push a new symbol table onto the scopeStack
 static void push_scope( string segment )
 {
-    if( scopeStack -> size() >= 1 )
+    if ( scopeStack -> size() >= 1 )
     {
         string lastSegment = scopeStack -> back().segment ;
-        if( segment.compare( lastSegment ) != 0 ){
+        if ( segment.compare( lastSegment ) != 0 ){
         scopeStack -> push_back( scope( segment ) ) ;
         }
     }
@@ -171,7 +171,7 @@ static void push_scope( string segment )
 static void pop_scope()
 {
     // Check if there is a table to pop
-    if( scopeStack -> size() < 1 )
+    if ( scopeStack -> size() < 1 )
     {
         fatal_error( 0, "tried to pop scope off scopeStack but scopeStack was empty" ) ;
     }
@@ -241,8 +241,13 @@ string parse_identifier()
 {
     string identifier ;
 
-    if( have( tk_identifier ) ) identifier = token_spelling( mustbe( tk_identifier ) ) ; else
-    did_not_find( tk_identifier ) ; 
+    // If the current token is an identifier, return it as a string
+    if ( have( tk_identifier ) )
+    {
+        identifier = token_spelling( mustbe( tk_identifier ) ) ;
+    }
+    // Otherwise call the correct error
+    else did_not_find( tk_identifier ) ; 
 
     return identifier ;
 }
@@ -281,14 +286,14 @@ ast parse_class_var_decs()
 
     vector<ast> decs ;
 
-    while( have( tg_starts_class_var ) )
+    while ( have( tg_starts_class_var ) )
     {
-        if( have( tk_static ) )
+        if ( have( tk_static ) )
         {
             push_scope( "static" ) ;
             decs.push_back( parse_static_var_dec() ) ;
         }
-        else if( have( tk_field ) )
+        else if ( have( tk_field ) )
         {
             push_scope( "this" ) ;
             decs.push_back( parse_field_var_dec() ) ;
@@ -331,7 +336,7 @@ ast parse_static_var_dec()
     // decs.push_back( create_var_dec( name, "static", staticOffset, type ) ) ;
     decs.push_back( declare_variable( name, type ) ) ;
 
-    while( have( tk_comma ) )
+    while ( have( tk_comma ) )
     {
         mustbe( tk_comma ) ;
         // name = parse_identifier() ;
@@ -375,14 +380,11 @@ ast parse_field_var_dec()
     // decs.push_back( create_var_dec( name, "static", staticOffset, type ) ) ;
     decs.push_back( declare_variable( name, type ) ) ;
 
-    // ERROR HERE NOT SURE WHAT TO DO WITH THE EXTRA IDENTIFIER
-    while( have( tk_comma ) )
+    while ( have( tk_comma ) )
     {
         mustbe( tk_comma ) ;
-        // name = parse_identifier() ;
         name = mustbe( tk_identifier ) ;
 
-        // decs.push_back( create_var_dec( name, "static", staticOffset, type ) ) ;
         decs.push_back( declare_variable( name, type ) ) ;
     }
 
@@ -400,7 +402,7 @@ Token parse_type()
 
     Token type ;
 
-    switch( token_kind() )
+    switch ( token_kind() )
     {
         case tk_int:
             type = mustbe( tk_int ) ;
@@ -432,8 +434,8 @@ Token parse_vtype()
 
     Token type ;
 
-    if( have( tk_void ) ) type = mustbe( tk_void ) ; else
-    if( have( tg_starts_type ) ) type = parse_type() ; else
+    if ( have( tk_void ) ) type = mustbe( tk_void ) ; else
+    if ( have( tg_starts_type ) ) type = parse_type() ; else
     did_not_find( tg_starts_vtype ) ;
 
     pop_error_context() ;
@@ -453,9 +455,9 @@ ast parse_subr_decs()
 
     vector<ast> subrs ;
 
-    while( have( tg_starts_subroutine ) )
+    while ( have( tg_starts_subroutine ) )
     {
-        switch( token_kind() )
+        switch ( token_kind() )
         {
             case tk_constructor:
                 subrs.push_back( create_subr( parse_constructor() ) ) ;
@@ -602,20 +604,18 @@ ast parse_param_list()
 
     vector<ast> params ;
 
-    if( have( tg_starts_type ) )
+    if ( have( tg_starts_type ) )
     {
         Token type = parse_type() ;
-
         Token name = mustbe( tk_identifier ) ;
 
         params.push_back( declare_variable( name, type ) ) ;
 
-        while( have( tk_comma ) )
+        while ( have( tk_comma ) )
         {
             mustbe( tk_comma ) ;
 
             Token type = parse_type() ;
-
             Token name = mustbe( tk_identifier ) ;
 
             params.push_back( declare_variable( name, type ) ) ;
@@ -639,7 +639,6 @@ ast parse_subr_body()
     mustbe( tk_lcb ) ;
 
     ast decs = parse_var_decs() ;
-
     ast body = parse_statements() ;
 
     mustbe( tk_rcb ) ;
@@ -658,7 +657,7 @@ ast parse_var_decs()
 
     vector<ast> decs ;
 
-    while( have( tk_var ) )
+    while ( have( tk_var ) )
     {
         decs.push_back( parse_var_dec() ) ;
     }
@@ -691,7 +690,7 @@ ast parse_var_dec()
 
     decs.push_back( declare_variable( name, type ) ) ;
 
-    while( have( tk_comma ) )
+    while ( have( tk_comma ) )
     {
         mustbe( tk_comma ) ;
         Token name = mustbe( tk_identifier ) ;
@@ -715,7 +714,7 @@ ast parse_statements()
 
     vector<ast> statements ;
 
-    while( have( tg_starts_statement ) ) 
+    while ( have( tg_starts_statement ) ) 
     {
         statements.push_back( parse_statement() ) ;
     }
@@ -734,7 +733,7 @@ ast parse_statement()
 
     ast statement ;
 
-    switch( token_kind() )
+    switch ( token_kind() )
     {
         case tk_let:
             statement = parse_let() ;
@@ -784,7 +783,7 @@ ast parse_let()
     ast index ;
     ast expr ;
 
-    if( have( tk_lsb ) )
+    if ( have( tk_lsb ) )
     {
         index = parse_index() ;
         mustbe( tk_eq ) ;
@@ -831,7 +830,7 @@ ast parse_if()
     ast if_true = parse_statements() ;
     mustbe( tk_rcb ) ;
 
-    if( have( tk_else ) )
+    if ( have( tk_else ) )
     {
         mustbe( tk_else ) ;
         mustbe( tk_lcb ) ;
@@ -894,11 +893,11 @@ ast parse_do()
 
     Token name = mustbe( tk_identifier ) ;
 
-    if( token_kind() == tk_stop )
+    if ( token_kind() == tk_stop )
     {
         ast subr_call = parse_id_call() ;
 
-        if( previously_declared( name ) == true )
+        if ( previously_declared( name ) == true )
         {
             ast var = lookup_variable( name ) ;
             string cls = get_var_type( var ) ;
@@ -909,7 +908,7 @@ ast parse_do()
             call = create_call_as_function( token_spelling( name ), subr_call ) ;
         }
     }
-    else if( token_kind() == tk_lrb )
+    else if ( token_kind() == tk_lrb )
     {
         ast object = create_this() ; 
         ast subr_call = create_subr_call( token_spelling( name ) , parse_call() ) ;
@@ -940,7 +939,7 @@ ast parse_return()
 
     mustbe( tk_return ) ;
 
-    if( have( tg_starts_term ) )
+    if ( have( tg_starts_term ) )
     {
         ast expr = parse_expr() ;
         mustbe( tk_semi ) ;
@@ -967,7 +966,7 @@ ast parse_expr()
 
     expr.push_back( parse_term() ) ;
 
-    while( have( tg_infix_op ) )
+    while ( have( tg_infix_op ) )
     {
         expr.push_back( parse_infix_op() ) ;
         expr.push_back( parse_term() ) ;
@@ -1006,7 +1005,7 @@ ast parse_term()
 
     ast term ;
 
-    switch( token_kind() )
+    switch ( token_kind() )
     {
         case tk_integerConstant:
             term = create_int( stoi( token_spelling() ) ) ;
@@ -1087,18 +1086,18 @@ ast parse_var_term()
 
     ast var ;
 
-    if( token_kind() == tk_lsb )
+    if ( token_kind() == tk_lsb )
     {
         var = lookup_variable( name ) ;
         ast index = parse_index() ;
 
         return create_array_index( var, index ) ;
     }
-    else if( token_kind() == tk_stop )
+    else if ( token_kind() == tk_stop )
     {
         ast subr_call = parse_id_call() ;
 
-        if( previously_declared( name ) == true )
+        if ( previously_declared( name ) == true )
         {
             var = lookup_variable( name ) ;
             string cls = get_var_type( var ) ;
@@ -1109,7 +1108,7 @@ ast parse_var_term()
             var = create_call_as_function( token_spelling( name ), subr_call ) ;
         }
     }
-    else if( token_kind() == tk_lrb )
+    else if ( token_kind() == tk_lrb )
     {
         ast object = create_this() ; 
         ast subr_call = create_subr_call( token_spelling( name ) , parse_call() ) ;
@@ -1186,11 +1185,11 @@ ast parse_expr_list()
 
     vector<ast> exprs ;
 
-    if( have( tg_starts_term ) )
+    if ( have( tg_starts_term ) )
     {
         exprs.push_back( parse_expr() ) ;
 
-        while( have( tk_comma ) )
+        while ( have( tk_comma ) )
         {
             mustbe( tk_comma ) ;
             exprs.push_back( parse_expr() ) ;
@@ -1212,7 +1211,7 @@ ast parse_infix_op()
 
     Token op ;
 
-    switch( token_kind() )
+    switch ( token_kind() )
     {
         case tk_add:
             op = mustbe( tk_add ) ;
@@ -1259,7 +1258,7 @@ Token parse_unary_op()
 
     Token type ;
 
-    switch( token_kind() )
+    switch ( token_kind() )
     {
         case tk_sub:
             type = mustbe( tk_sub ) ;

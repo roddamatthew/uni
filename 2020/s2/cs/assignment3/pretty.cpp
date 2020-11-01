@@ -79,7 +79,7 @@ void write_with_indentation( string output )
 {
     string indent = "";
 
-    for( int i = 0 ; i < indentation ; i++ )
+    for ( int i = 0 ; i < indentation ; i++ )
     {
         indent += "    " ;
     }
@@ -94,11 +94,11 @@ void print_class_variables()
     bool hadField = false ;
 
     // Print static variables
-    for( int i = 0 ; i < classVariables.size() ; i++ )
+    for ( int i = 0 ; i < classVariables.size() ; i++ )
     {
         segment = get_var_dec_segment( classVariables[i] ) ;
         
-        if( segment.compare( "static" ) == 0 )
+        if ( segment.compare( "static" ) == 0 )
         {
             hadStatic = true ;
 
@@ -107,15 +107,15 @@ void print_class_variables()
             write_with_indentation( segment + " " + type + " " + name + " ;\n" ) ;
         }
 
-        if( i == classVariables.size() - 1 && hadStatic == true ) write_to_output( "\n" ) ;
+        if ( i == classVariables.size() - 1 && hadStatic == true ) write_to_output( "\n" ) ;
     }
 
     // Print field variables
-    for( int i = 0 ; i < classVariables.size() ; i++ )
+    for ( int i = 0 ; i < classVariables.size() ; i++ )
     {
         segment = get_var_dec_segment( classVariables[i] ) ;
         
-        if( segment.compare( "this" ) == 0 )
+        if ( segment.compare( "this" ) == 0 )
         {
             hadField = true ;
 
@@ -125,7 +125,7 @@ void print_class_variables()
             write_with_indentation( segment + " " + type + " " + name + " ;\n" ) ;
         }
 
-        if( i == classVariables.size() - 1 && hadField == true ) write_to_output( "\n" ) ;
+        if ( i == classVariables.size() - 1 && hadField == true ) write_to_output( "\n" ) ;
     }
 }
 
@@ -165,8 +165,6 @@ void walk_class_var_decs(ast t)
     }
 
     print_class_variables() ;
-
-    // if( ndecs > 0 ) write_to_output( "\n" ) ;
 }
 
 // walk an ast variable declaration with fields
@@ -198,7 +196,7 @@ void walk_subr_decs(ast t)
     for ( int i = 0 ; i < size ; i++ )
     {
         walk_subr(get_subr_decs(t,i)) ;
-        if( i != size - 1 ) write_to_output( "\n" ) ;
+        if ( i != size - 1 ) write_to_output( "\n" ) ;
     }
 }
 
@@ -209,7 +207,7 @@ void walk_subr(ast t)
 {
     ast subr = get_subr_subr(t) ;
 
-    switch(ast_node_kind(subr))
+    switch ( ast_node_kind( subr ) )
     {
     case ast_constructor:
         walk_constructor(subr) ;
@@ -307,7 +305,7 @@ void walk_param_list(ast t)
     for ( int i = 0 ; i < ndecs ; i++ )
     {
         walk_var_dec(get_param_list(t,i)) ;
-        if( i < ndecs - 1 ) write_to_output( "," ) ;
+        if ( i < ndecs - 1 ) write_to_output( "," ) ;
     }
 }
 
@@ -321,7 +319,7 @@ void walk_subr_body(ast t)
     ast body = get_subr_body_body(t) ;
 
     walk_var_decs(decs) ;
-    if( size_of_var_decs( decs ) > 0 ) write_to_output( "\n" ) ;
+    if ( size_of_var_decs( decs ) > 0 ) write_to_output( "\n" ) ;
 
     walk_statements(body) ;
 }
@@ -358,11 +356,11 @@ void walk_statements(ast t)
         ast statement = get_statement_statement( get_statements( t, i ) ) ;
         walk_statement( get_statements( t, i ) ) ;
 
-        if( i < nstatements - 1 )
+        if ( i < nstatements - 1 )
         {
-            if( ast_node_kind( statement )  == ast_if ) write_to_output( "\n" ) ;
-            if( ast_node_kind( statement )  == ast_if_else ) write_to_output( "\n" ) ;
-            if( ast_node_kind( statement )  == ast_while ) write_to_output( "\n" ) ;
+            if ( ast_node_kind( statement )  == ast_if ) write_to_output( "\n" ) ;
+            if ( ast_node_kind( statement )  == ast_if_else ) write_to_output( "\n" ) ;
+            if ( ast_node_kind( statement )  == ast_while ) write_to_output( "\n" ) ;
         }
     }
 }
@@ -374,7 +372,7 @@ void walk_statement(ast t)
 {
     ast statement = get_statement_statement(t) ;
 
-    switch(ast_node_kind(statement))
+    switch( ast_node_kind( statement ) )
     {
     case ast_let:
         walk_let(statement) ;
@@ -524,7 +522,7 @@ void walk_do(ast t)
 
     write_with_indentation( "do " ) ;
 
-    switch(ast_node_kind(call))
+    switch (ast_node_kind(call))
     {
     case ast_call_as_function:
         walk_call_as_function(call) ;
@@ -661,8 +659,8 @@ void walk_bool(ast t)
 {
     bool _constant = get_bool_t_or_f(t) ;
 
-    if( _constant == true )     write_to_output( "true" ) ;
-    if( _constant == false )    write_to_output( "false" ) ;
+    if ( _constant == true )     write_to_output( "true" ) ;
+    if ( _constant == false )    write_to_output( "false" ) ;
 }
 
 // walk an ast null node, it has not fields
@@ -752,7 +750,7 @@ void walk_call_as_method(ast t)
 
     string segment = "" ;
 
-    switch(ast_node_kind(var))
+    switch (ast_node_kind(var))
     {
     case ast_this:
         // walk_this(var) ;
@@ -792,7 +790,7 @@ void walk_expr_list(ast t)
     for ( int i = 0 ; i < nexpressions ; i++ )
     {
         walk_expr( get_expr_list( t, i ) ) ;
-        if( i < nexpressions - 1 ) write_to_output( "," ) ;
+        if ( i < nexpressions - 1 ) write_to_output( "," ) ;
     }
 }
 

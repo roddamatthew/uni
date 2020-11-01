@@ -126,7 +126,7 @@ void walk_var_dec(ast t)
     string segment = get_var_dec_segment(t) ;
     int offset = get_var_dec_offset(t) ;
 
-    if( segment.compare( "this" ) == 0 && type.compare( "string" ) != 0 ) nFields ++ ;
+    if ( segment.compare( "this" ) == 0 && type.compare( "string" ) != 0 ) nFields ++ ;
 }
 
 // walk an ast class var decs node
@@ -154,7 +154,7 @@ void walk_subr(ast t)
 {
     ast subr = get_subr_subr(t) ;
 
-    switch(ast_node_kind(subr))
+    switch (ast_node_kind(subr))
     {
     case ast_constructor:
         walk_constructor(subr) ;
@@ -190,14 +190,14 @@ void walk_constructor(ast t)
     func += " " ;
     int temp = size_of_var_decs( get_subr_body_decs( subr_body ) ) ;
 
-    if( temp != 0 ) func += to_string( temp ) ; else
+    if ( temp != 0 ) func += to_string( temp ) ; else
     func += "0" ;
     func += "\n" ;
 
     write_to_output( func ) ;
 
     // Declare field variables if necessary
-    if( nFieldsDeclaration.empty() == false )
+    if ( nFieldsDeclaration.empty() == false )
     {
         write_to_output( nFieldsDeclaration ) ;
         nFieldsDeclaration.clear() ;
@@ -226,7 +226,7 @@ void walk_function(ast t)
     func += " " ;
     int temp = size_of_var_decs( get_subr_body_decs( subr_body ) ) ;
 
-    if( temp != 0 ) func += to_string( temp ) ; else
+    if ( temp != 0 ) func += to_string( temp ) ; else
     func += "0" ;
     
     func += "\n" ;
@@ -234,7 +234,7 @@ void walk_function(ast t)
     write_to_output( func ) ;
 
     // Declare field variables if necessary
-    if( nFieldsDeclaration.empty() == false )
+    if ( nFieldsDeclaration.empty() == false )
     {
         write_to_output( nFieldsDeclaration ) ;
         nFieldsDeclaration.clear() ;
@@ -264,14 +264,14 @@ void walk_method(ast t)
     func += " " ;
     int temp = size_of_var_decs( get_subr_body_decs( subr_body ) ) ;
 
-    if( temp != 0 ) func += to_string( temp ) ; else
+    if ( temp != 0 ) func += to_string( temp ) ; else
     func += "0" ;
     func += "\n" ;
 
     write_to_output( func ) ;
 
     // Declare field variables if necessary
-    if( nFieldsDeclaration.empty() == false )
+    if ( nFieldsDeclaration.empty() == false )
     {
         write_to_output( nFieldsDeclaration ) ;
         nFieldsDeclaration.clear() ;
@@ -341,7 +341,7 @@ void walk_statement(ast t)
 {
     ast statement = get_statement_statement(t) ;
 
-    switch(ast_node_kind(statement))
+    switch (ast_node_kind(statement) )
     {
     case ast_let:
         walk_let(statement) ;
@@ -494,7 +494,7 @@ void walk_do(ast t)
 {
     ast call = get_do_call(t) ;
 
-    switch(ast_node_kind(call))
+    switch ( ast_node_kind( call ) )
     {
     case ast_call_as_function:
         walk_call_as_function(call) ;
@@ -563,7 +563,7 @@ void walk_term(ast t)
 {
     ast term = get_term_term(t) ;
 
-    switch(ast_node_kind(term))
+    switch ( ast_node_kind( term ) )
     {
     case ast_int:
         walk_int(term) ;
@@ -625,7 +625,7 @@ void walk_string(ast t)
     write_to_output( "push constant " + to_string( length ) + "\n" ) ;
     write_to_output( "call String.new 1\n" ) ;
 
-    for( int i = 0 ; i < length ; i++ )
+    for ( int i = 0 ; i < length ; i++ )
     {
         write_to_output( "push constant " + to_string( (int) _constant[i] ) + "\n" ) ;
         write_to_output( "call String.appendChar 2\n" ) ;
@@ -639,12 +639,12 @@ void walk_bool(ast t)
 {
     bool _constant = get_bool_t_or_f(t) ;
 
-    if( _constant == true )
+    if ( _constant == true )
     {
         write_to_output( "push constant 0\n" ) ;
         write_to_output( "not\n" ) ;
     }
-    else if( _constant == false )
+    else if ( _constant == false )
     {
         write_to_output( "push constant 0\n" ) ;
     }
@@ -677,8 +677,8 @@ void walk_unary_op(ast t)
 
     walk_term(term) ;
 
-    if( uop[0] == '-' ) write_to_output( "neg\n" ) ; else
-    if( uop[0] == '~' ) write_to_output( "not\n" ) ; else
+    if ( uop[0] == '-' ) write_to_output( "neg\n" ) ; else
+    if ( uop[0] == '~' ) write_to_output( "not\n" ) ; else
     fatal_error( 0, "Unexpected unary operator: " + uop ) ;
 }
 
@@ -749,7 +749,7 @@ void walk_call_as_method(ast t)
     ast subr_call = get_call_as_method_subr_call(t) ;
     string subr_name = get_subr_call_subr_name( subr_call ) ;
 
-    switch(ast_node_kind(var))
+    switch ( ast_node_kind( var ) )
     {
     case ast_this:
         walk_this(var) ;
