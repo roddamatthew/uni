@@ -58,6 +58,10 @@ int main()
 		list -> addEnd( i ) ;
 	}
 
+	std::cout << "List initially contains: " << std::endl ;
+	list -> printItems() ;
+
+	std::cout << "Calling reverseBinarySearch and printing each sublist: " << std::endl ;
 	reverseBinarySearch( list, 3 ) ;
 
 	return 0 ;
