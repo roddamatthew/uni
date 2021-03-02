@@ -1,0 +1,75 @@
+1. echo  $SHELL
+Output:
+/bin/bash
+
+This writes to output what the current shell is.
+
+2. echo "hello world"
+Output:
+hello world
+
+This writes the phrase within the quotation marks to output
+
+echo "hello world"; echo "hello again"
+Output:
+hello world
+hello again
+
+This writes two different lines to output. I assume this works similar to C where the semicolon indicates the end of an intruction and the echo function is called again with the second phrase.
+
+echo -n "hello world"; echo "same line"
+Output:
+hello worldsame line
+
+This writes the two phrases one after another, this time without a new line character. I assume that the -n removes the default newline character that is added at the end of a "echo" call.
+
+echo -e 'hello\011hello'
+Output:
+hello	hello
+
+Again this writes to output but the -e switch seems to allow special characters to be added perhaps with their ASCII value if they are preceded with a backslash.
+
+echo -e '\007'
+Output:
+	(newline)
+
+This writes a newline character to output, again using the -e switch and backslash operator followed by a 3 digit number. This time a newline was added.
+
+echo -ne
+man bash
+/echo
+
+Output:
+General Commands Manual for BASH
+
+This moved the terminal to a file containing the intructions to operate BASH. Typing /echo moved the instructions to the echo section which explained what the -e switch did. -e allows adding \0nnn to be added to the output where nnn is the 8 bit value of a character. This explains the tab character being 011 = 9 in decimal which is the correct ASCII value. /007 had an unexpected result however but the output seemed to be the BELL character which I haven't used before.
+
+3. Core Unix Commands
+ls : this commands lists all files (and directories) within the specified directory, if none are specified then the current one is used.
+
+cp : this command copies a file or directory. You can specify which file is copied, what its new name will be and where it is copied to.
+
+rm : this deletes a file or directory
+
+mv : this moves a file or directory
+
+cat : this concatenates the contents of one or more files
+
+grep : this searches a file for a specific phrase
+
+pwd : shows the path to the current directory
+
+cut : removes a specified section from each line of a file
+
+paste : merge a file into a single line of text
+
+sed : used for performing basic text transformations within the terminal
+
+awk : this is a scripting language that does not require compiling and can be used to write short programs for formatting text in files.
+
+find : search a whole directory for a file name
+
+
+
+
+
