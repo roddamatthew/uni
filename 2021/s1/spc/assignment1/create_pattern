@@ -2,7 +2,6 @@
 # Given an input parameter, cyclicly perform caesar encoding on a given phrase.
 
 # -------------------------------------------------------------------------------------------------------------
-
 # Check for the input switches:
 
 # Loop for as many input arguments are given
@@ -26,31 +25,26 @@ done
 read -p "Enter the phrase to be encoded: " phrase
 
 # -------------------------------------------------------------------------------------------------------------
-
 # The cyclic pattern repeats after 26 so calculate the remainder of the input divided by 26
 n=$(expr $parameter % 26)
 
 # -------------------------------------------------------------------------------------------------------------
-
 # Encode the given phrase:
 # Upper Case:
 if [[ $upper = "true" ]]
 then
-	# Loop n times
-	for ((i=0; i<n; i++))
-		do
-			# Cycle each character once
-			phrase=$( echo "$phrase" | tr '[A-Z]' '[B-ZA]' )
-	done
+	translation="'[A-Z]' '[B-ZA]'"
 else
 	# Lower Case:
-	# Loop n times
-	for ((i=0; i<n; i++))
-		do
-			# Cycle each character once
-			phrase=$( echo "$phrase" | tr '[a-z]' '[b-za]' )
-	done
+	translation="'[a-z]' '[b-za]'"
 fi
+
+# Loop n times
+for ((i=0; i<n; i++))
+	do
+		# Cycle each character once
+		phrase=$( echo "$phrase" | tr $translation )
+done
 
 # -------------------------------------------------------------------------------------------------------------
 # Write the encoded phrase to output

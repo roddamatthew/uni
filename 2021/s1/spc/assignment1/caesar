@@ -1,0 +1,6 @@
+#!/bin/bash
+# takes two switch inputs (any order)
+# reads input from stdin until end of file (eof)
+# caesar encode each line and write to output
+# do this by calling the create_pattern.sh file
+
