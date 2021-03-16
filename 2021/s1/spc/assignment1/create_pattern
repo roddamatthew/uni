@@ -1,7 +1,5 @@
 #!/bin/bash
 # Given an input parameter, cyclicly perform caesar encoding on a given phrase.
-
-# -------------------------------------------------------------------------------------------------------------
 # Check for the input switches:
 
 # Loop for as many input arguments are given
@@ -24,11 +22,9 @@ done
 # Get the phrase to be encoded from the user
 read -p "Enter the phrase to be encoded: " phrase
 
-# -------------------------------------------------------------------------------------------------------------
 # The cyclic pattern repeats after 26 so calculate the remainder of the input divided by 26
 n=$(expr $parameter % 26)
 
-# -------------------------------------------------------------------------------------------------------------
 # Encode the given phrase:
 # Upper Case:
 if [[ $upper = "true" ]]
@@ -46,6 +42,5 @@ for ((i=0; i<n; i++))
 		phrase=$( echo "$phrase" | tr $translation )
 done
 
-# -------------------------------------------------------------------------------------------------------------
 # Write the encoded phrase to output
 echo "$phrase"
