@@ -9,6 +9,7 @@ starting_span=${translation_pattern[@]:4:1}-${translation_pattern[@]:3:1}
 starting_span="[$starting_span]"
 
 phrase=$(cat)
+echo ""
 
 phrase=$( echo "$phrase" | tr $starting_span $translation_pattern )
 
