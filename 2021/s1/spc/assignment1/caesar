@@ -4,8 +4,12 @@
 # caesar encode each line and write to output
 # do this by calling the create_pattern.sh file
 
-./create_pattern $*
+translation_pattern=$(./create_pattern $*)
+starting_span=${translation_pattern[@]:4:1}-${translation_pattern[@]:3:1}
+starting_span="[$starting_span]"
 
 read phrase
-echo $phrase
 
+phrase=$( echo "$phrase" | tr $starting_span $translation_pattern )
+
+echo $phrase
