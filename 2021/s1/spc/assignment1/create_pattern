@@ -18,7 +18,6 @@ while [[ $1 -gt 0 ]] ;
 		fi
 done
 
-
 # The cyclic pattern repeats after 26 so calculate the remainder of the input divided by 26
 let parameter=$(expr $parameter % 26)
 
