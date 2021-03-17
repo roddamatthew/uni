@@ -1,11 +1,10 @@
 #!/bin/bash
-# Given an input parameter, cyclicly perform caesar encoding on a given phrase.
-# Check for the input switches:
-
 # Loop for as many input arguments are given
 while [[ $1 -gt 0 ]] ;
+	# store the newest parameter
 	current=$1
 	shift;
+
 	do
 		# Read the input argument
 		if [[ $current = "-n" ]]
@@ -19,28 +18,31 @@ while [[ $1 -gt 0 ]] ;
 		fi
 done
 
-# Get the phrase to be encoded from the user
-read -p "Enter the phrase to be encoded: " phrase
 
 # The cyclic pattern repeats after 26 so calculate the remainder of the input divided by 26
-n=$(expr $parameter % 26)
+let parameter=$(expr $parameter % 26)
 
-# Encode the given phrase:
-# Upper Case:
-if [[ $upper = "true" ]]
+# Create either an upper or lower case alphabet based on the input parameter
+if [[ $upper = "true" ]] # Upper Case:
 then
-	translation="'[A-Z]' '[B-ZA]'"
-else
-	# Lower Case:
-	translation="'[a-z]' '[b-za]'"
+	# create an array going from A to Z
+	alphabet=({A..Z})
+else # Lower Case:
+	# create an array going from a to z
+	alphabet=({a..z})
 fi
 
-# Loop n times
-for ((i=0; i<n; i++))
-	do
-		# Cycle each character once
-		phrase=$( echo "$phrase" | tr $translation )
-done
+# returns the letter of the alphabet corresponding to the input number
+span_one_start=${alphabet[@]:$parameter:1}	
+# returns the last letter of the alphabet, either 'Z' or 'z'
+span_one_end=${alphabet[@]:25:1}
+# returns the first letter of the alphabet, either 'A' or 'a'
+span_two_start=${alphabet[@]:0:1}
+# returns the letter in the alphabet preceding the input number
+span_two_end=${alphabet[@]:$(( $parameter - 1 )):1}
 
-# Write the encoded phrase to output
-echo "$phrase"
+# build the translation pattern
+translation_pattern="[$span_one_start-$span_one_end$span_two_start-$span_two_end]"
+
+# output translation_pattern
+echo $translation_pattern

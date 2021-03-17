@@ -39,13 +39,3 @@ else
 	start="[a-xy-z]"
 	translation="'[a-z]' '[b-za]'"
 fi
-
-# Loop n times
-for ((i=0; i<n; i++))
-	do
-		# Cycle each character once
-		phrase=$( echo "$start" | tr $translation )
-done
-
-# Write the encoded phrase to output
-echo "$phrase"
