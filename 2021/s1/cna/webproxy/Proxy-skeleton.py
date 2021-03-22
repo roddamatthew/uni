@@ -85,6 +85,10 @@ while True:
   # and store it in message
   # ~~~~ INSERT CODE ~~~~
 
+  # Receive the GET request from the client
+  # Specified a maximum length of data to be recieved arbitrarily to 4096.
+  message = clientSocket.recv( 4096 )
+
   # ~~~~ END CODE INSERT ~~~~
 
   print 'Received request:'
