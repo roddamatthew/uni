@@ -140,6 +140,9 @@ while True:
     # Send back contents of cached file
     # ~~~~ INSERT CODE ~~~~
 
+    # Send the cached file back to the client
+    clientSocket.send( outputdata )
+
     # ~~~~ END CODE INSERT ~~~~
 
     cacheFile.close()
@@ -152,6 +155,11 @@ while True:
       # What would be the appropriate status code and message to send to client?
       # store the value in clientResponse
       # ~~~~ INSERT CODE ~~~~
+
+      # Server Errors specified as '5xx' in RFC 2616
+      # Could not find an appropriate status code for a corrupted local file so defaulted to the error code:
+      # 500 Internal Server Error for some unexpected internal error
+      clientResponse = '500'
 
       # ~~~~ END CODE INSERT ~~~~
 
@@ -166,6 +174,9 @@ while True:
       # and store in originServerSocket
       # ~~~~ INSERT CODE ~~~~
 
+      # Initialise a new socket and call it originServerSocket
+      originServerSocket = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
+
       # ~~~~ END CODE INSERT ~~~~
 
       print 'Connecting to:\t\t' + hostname + '\n'
@@ -175,6 +186,11 @@ while True:
 
         # Connect to the origin server
         # ~~~~ INSERT CODE ~~~~
+
+        # Connect to the web server's address
+        # Note that I used address to store the proxy server's address earlier but it now refers to the IP address for hostname
+        originServerSocket.connect( address )
+
         # ~~~~ END CODE INSERT ~~~~
 
         print 'Connected to origin Server'
@@ -210,7 +226,6 @@ while True:
 
         # Get the response from the origin server
         # ~~~~ INSERT CODE ~~~~
-
         # ~~~~ END CODE INSERT ~~~~
 
         # Send the response to the client
