@@ -188,7 +188,7 @@ while True:
         # ~~~~ INSERT CODE ~~~~
 
         # Connect to the web server's address
-        # Note that I used address to store the proxy server's address earlier but it now refers to the IP address for hostname
+        # Note that I used address to store the proxy server's address earlier but it now refers to the IP address of hostname
         originServerSocket.connect( address )
 
         # ~~~~ END CODE INSERT ~~~~
@@ -226,10 +226,18 @@ while True:
 
         # Get the response from the origin server
         # ~~~~ INSERT CODE ~~~~
+
+        # Store the received response into the 'response' string
+        response = originServerSocket.recv( 4096 )
+
         # ~~~~ END CODE INSERT ~~~~
 
         # Send the response to the client
         # ~~~~ INSERT CODE ~~~~
+
+        # Send the response onto the client
+        clientSocket.send( response )
+
         # ~~~~ END CODE INSERT ~~~~
 
         # finished sending to origin server - shutdown socket writes
