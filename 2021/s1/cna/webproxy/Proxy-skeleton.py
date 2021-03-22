@@ -189,7 +189,8 @@ while True:
 
         # Connect to the web server's address
         # Note that I used address to store the proxy server's address earlier but it now refers to the IP address of hostname
-        originServerSocket.connect( address )
+        # Also note that the port is always 80 for browser connections
+        originServerSocket.connect( ( address, 80 ) )
 
         # ~~~~ END CODE INSERT ~~~~
 
@@ -206,6 +207,12 @@ while True:
         # originServerRequest is the first line in the request and
         # originServerRequestHeader is the second line in the request
         # ~~~~ INSERT CODE ~~~~
+
+        # The client request is stored in the 'message' string
+
+        print method
+        print version
+
         # ~~~~ END CODE INSERT ~~~~
 
         # Construct the request to send to the origin server
