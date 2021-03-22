@@ -141,7 +141,7 @@ while True:
     # ~~~~ INSERT CODE ~~~~
 
     # Send the cached file back to the client
-    clientSocket.send( '\n'.join( map( str, outputdata ) ) )
+    clientSocket.send( ''.join( outputdata ) )
 
     # ~~~~ END CODE INSERT ~~~~
 
@@ -263,6 +263,9 @@ while True:
 
         # Save orogin server response in the cache file
         # ~~~~ INSERT CODE ~~~~
+
+        cacheFile.write( response )
+
         # ~~~~ END CODE INSERT ~~~~
 
         print 'done sending'
