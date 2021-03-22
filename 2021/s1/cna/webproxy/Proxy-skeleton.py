@@ -141,7 +141,7 @@ while True:
     # ~~~~ INSERT CODE ~~~~
 
     # Send the cached file back to the client
-    clientSocket.send( outputdata )
+    clientSocket.send( '\n'.join( map( str, outputdata ) ) )
 
     # ~~~~ END CODE INSERT ~~~~
 
@@ -210,8 +210,8 @@ while True:
 
         # The client request is stored in the 'message' string
 
-        print method
-        print version
+        originServerRequest = method + ' / ' + version
+        originServerRequestHeader = 'Host: ' + hostname
 
         # ~~~~ END CODE INSERT ~~~~
 
