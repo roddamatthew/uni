@@ -208,9 +208,8 @@ while True:
         # originServerRequestHeader is the second line in the request
         # ~~~~ INSERT CODE ~~~~
 
-        # The client request is stored in the 'message' string
-
-        originServerRequest = method + ' / ' + version
+        # COMMENTS HERE
+        originServerRequest = method + ' ' + resource + ' ' + version
         originServerRequestHeader = 'Host: ' + hostname
 
         # ~~~~ END CODE INSERT ~~~~
