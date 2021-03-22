@@ -20,6 +20,18 @@ then
 	then
 		echo "$1 + $2 is less than 5"
 	fi
+
+	# We also have the logical and and or operators from C++
+	if [ 1 -eq 1 ] && [ 1 -lt 2 ]
+	then
+		echo "1 = 1 and 1 < 2"
+	fi
+
+	# Also using the round bracket syntax
+	if (($1 + $2 < 5)) || (($1 + $2 > 8))
+	then
+		echo "$1 + $2 < 5 or $1 + $2 > 8"
+	fi
 else
 	echo "No parameters were given"
 fi

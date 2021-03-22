@@ -1,0 +1,18 @@
+Question 1:
+
+Propogation speed = 2.5 x 10^8 m/s
+First hop is over 1000 Km = 1 000 000 m
+Second hop is over 5000 Km = 5 000 000 m
+
+Total distance travelled is 5 x 10^6 m + 1 x 10^6 = 6 * 10^6
+Packet data size is less than the speed of both hops so this will not limit speed.
+
+Therefore the end-to-end delay will be ( 6 * 10^6 ) / ( 2.5 * 10^8 ) = 0.024 seconds
+
+More traffic at the router would increase the end-to-end delay to greater than 0.024 seconds.
+
+---------------------------------------------------------------------------------------------------
+
+Question 2:
+
+
