@@ -3,15 +3,18 @@
 while [[ $1 -gt 0 ]] ;
 	# store the newest parameter
 	current=$1
+	# shift the parameters down once
 	shift;
 
+	# Read what the newest parameter was
 	do
-		# Read the input argument
+		# If it was -n, store the next parameter (the shift index)
 		if [[ $current = "-n" ]]
 		then
 			parameter=$1
 		fi
 
+		# If it was -u, remember this for later
 		if [[ $current = "-u" ]] ;
 		then
 			upper=true ;
@@ -19,6 +22,7 @@ while [[ $1 -gt 0 ]] ;
 done
 
 # The cyclic pattern repeats after 26 so calculate the remainder of the input divided by 26
+# Note this is more efficient but unnecessary
 let parameter=$(expr $parameter % 26)
 
 # Create either an upper or lower case alphabet based on the input parameter
@@ -33,15 +37,19 @@ fi
 
 # returns the letter of the alphabet corresponding to the input number
 span_one_start=${alphabet[@]:$parameter:1}	
-# returns the last letter of the alphabet, either 'Z' or 'z'
+# returns the last letter of the alphabet (always either 'Z' or 'z')
 span_one_end=${alphabet[@]:25:1}
-# returns the first letter of the alphabet, either 'A' or 'a'
+# returns the first letter of the alphabet (always either 'A' or 'a')
 span_two_start=${alphabet[@]:0:1}
 # returns the letter in the alphabet preceding the input number
 span_two_end=${alphabet[@]:$(( $parameter - 1 )):1}
 
+# Build the two character spans
+span_one="$span_one_start-$span_one_end"
+span_two="$span_two_start-$span_two_end"
+
 # build the translation pattern
-translation_pattern="[$span_one_start-$span_one_end$span_two_start-$span_two_end]"
+translation_pattern="[$span_one$span_two]"
 
 # output translation_pattern
 echo $translation_pattern
