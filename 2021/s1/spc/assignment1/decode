@@ -3,10 +3,15 @@
 # Store the content of the parameter file into a variable
 phrase=$(<$1)
 
+# Loop from 1 - 25 for each possible caesar encoding
 for ((i=1; i<26; i++))
 	do
+		# Print "Shift" and the related index
 		echo "Shift $i"
-		# Cycle each character once
+
+		# Translate each character once and store it back into the phrase variable
 		phrase=$( echo "$phrase" | tr '[A-Z]' '[B-ZA]' )
+
+		# Write to stdout
 		echo $phrase
 done
