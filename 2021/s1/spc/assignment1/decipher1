@@ -1,0 +1,68 @@
+#!/bin/bash
+# HOW TO USE THIS SCRIPT:
+# Call this function with a string parameter, the string must be lower case eg.
+# ./decipher1 "trial input"
+
+# This script also assumes the dictionary.txt file is present in the current directory
+# This file is a list of 84000 lower case english words seperated by newline characters
+# This file is supplied in the SVN directory for this assignment
+
+# Read the phrase to decipher from the input parameters
+phrase=$1
+# Translate the phrase to lower case for use with the dictionary
+phrase=$( echo "$phrase" | tr '[A-Z]' '[a-z]' )
+
+echo "Decoding your input, this usually takes about 1 second per input word"
+# Loop from 0 - 25 for each possible caesar encoding
+for (( i=0; i<26; i++ ))
+do
+	# Translate each character once and store it back into the phrase variable
+	phrase=$( echo "$phrase" | tr '[a-z]' '[b-za]' )
+
+	# Seperate the phrase string into an array of strings, one element for each word
+	phraseArray=(${phrase})
+
+	# Set a temporary score variable to zero
+	score=0
+
+	# Loop over each word in the array
+	for j in "${phraseArray[@]}"
+	do
+		# Search for the current word in the dictionary
+		word=$(grep -w $j dictionary.txt)
+
+		# Check if grep returned nothing
+		if [ ! -z "$word" ]
+		then
+			# if grep returned something increment the score
+			score=$((score+1))
+		fi
+	done
+
+	# Add the current score to the end of the scores array
+	scores=("${scores[@]}" "$score")
+done
+
+# Now have an array of 26 ints, each storing the number of matched words for that translation
+max=0
+
+# Loop over the array and store the highest number as well as the index it is stored in
+for(( i=0; i<${#scores[@]}; i++ ))
+do
+	# Check if the current element is greater than the previous max
+	if [[ ${scores[$i]} -gt $max ]]
+	then
+		# Store the new max index
+		maxIndex=$i
+		# Store the new max number
+		max=${scores[$i]}
+	fi
+done
+
+# Now decode the input with the highest number of matching words
+translation_pattern=$(./create_pattern -n $((maxIndex+1)))
+phrase=$( echo "$phrase" | tr [a-z] $translation_pattern )
+
+# Write to stdout with some extra information
+echo "The maximum number of matched words while decoding was $max on iteration number $((maxIndex+1))"
+echo "Your decoded phrase is: $phrase"
