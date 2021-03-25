@@ -208,8 +208,9 @@ while True:
         # originServerRequestHeader is the second line in the request
         # ~~~~ INSERT CODE ~~~~
 
-        # COMMENTS HERE
+        # Build the server request from the client request
         originServerRequest = method + ' ' + resource + ' ' + version
+        # Add the host header to the request
         originServerRequestHeader = 'Host: ' + hostname
 
         # ~~~~ END CODE INSERT ~~~~
@@ -263,6 +264,7 @@ while True:
         # Save orogin server response in the cache file
         # ~~~~ INSERT CODE ~~~~
 
+        # Save the response from the origin server
         cacheFile.write( response )
 
         # ~~~~ END CODE INSERT ~~~~
