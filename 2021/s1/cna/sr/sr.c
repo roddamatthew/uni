@@ -86,10 +86,10 @@ ONLY ACTS IN RESPONSE TO RECEIVING A PACKET:
 	Selective Repeat Protocol:...
 **********************************************************************/
 
-#define RTT  15.0       /* round trip time.  MUST BE SET TO 15.0 when submitting assignment */
-#define WINDOWSIZE 6    /* Maximum number of buffered unacked packet */
-#define SEQSPACE 7      /* min sequence space for GBN must be at least windowsize + 1 */
-#define NOTINUSE (-1)   /* used to fill header fields that are not being used */
+#define RTT  15.0               /* round trip time.  MUST BE SET TO 15.0 when submitting assignment */
+#define WINDOWSIZE 6            /* Maximum number of buffered unacked packet */
+#define SEQSPACE 12             /* min sequence space for SR is 2 * WINDOWSIZE */
+#define NOTINUSE (-1)           /* used to fill header fields that are not being used */
 
 /* generic procedure to compute the checksum of a packet.  Used by both sender and receiver  
    the simulator will overwrite part of your packet with 'z's.  It will not overwrite your 
@@ -292,9 +292,18 @@ void A_init(void)
 
 /********* Receiver (B)  variables and procedures ************/
 
+/* Create a struct for the receiver buffer */
+/* The receiver buffer needs to keep track of:
+  - sequence number of the received packet
+  - whether that packet has been acknowledged
+*/
+/* The implementation of this struct will be an array of buffer units to create the whole buffer */
+struct receiverBufferUnit {
+  int seqnum ;
+  bool received ;
+} ;
 
-
-static int expectedseqnum; /* the sequence number expected next by the receiver */
+static struct receiverBufferUnit receiverBuffer[ WINDOWSIZE ] ; /* Receiver buffer with windowsize equal to the sender */
 static int B_nextseqnum;   /* the sequence number for the next packets sent by B */
 
 
@@ -304,34 +313,56 @@ void B_input(struct pkt packet)
   struct pkt sendpkt;
   int i;
 
-  /* if not corrupted and received packet is in order */
-  if  ( (!IsCorrupted(packet))  && (packet.seqnum == expectedseqnum) ) {
-    if (TRACE > 0)
-      printf("----B: packet %d is correctly received, send ACK!\n",packet.seqnum);
-    packets_received++;
-
-    /* deliver to receiving application */
-    tolayer5(B, packet.payload);
-
-    /* send an ACK for the received packet */
-    sendpkt.acknum = expectedseqnum;
-
-    /* update state variables */
-    expectedseqnum = (expectedseqnum + 1) % SEQSPACE;        
+  printf( "PACKET ARRIVED AT RECEIVER WITH SEQNUM: %d\n", packet.seqnum ) ;
+  printf( "EXPECTING PACKETS WITH SEQNUM: " ) ;
+  for( i = 0 ; i < WINDOWSIZE ; i++ ) {
+    if( receiverBuffer[i].received == false ) {
+      printf( "%d, ", receiverBuffer[i].seqnum ) ;
+    }
   }
-  else {
-    /* packet is corrupted or out of order resend last ACK */
+  printf( "\n" ) ;
+
+  /* If the packet is not corrupted */
+  if ( !IsCorrupted( packet ) ) {
+    /* Check if the sequence number was expected */
+    for( i = 0 ; i < WINDOWSIZE ; i++ ) {
+      if( receiverBuffer[i].seqnum == packet.seqnum ) {
+        /* Update our receiverBuffer to have received this packet */
+        receiverBuffer[i].received = true ;
+
+        if (TRACE > 0)
+          printf("----B: packet %d is correctly received, send ACK!\n",packet.seqnum);
+        packets_received++ ;
+
+        /* Deliver packet to application layer */
+        tolayer5( B, packet.payload ) ;
+
+        /* Fill in the ACK for the packet received */
+        sendpkt.acknum = packet.seqnum ;
+      }
+    }
+  } else {
     if (TRACE > 0) 
-      printf("----B: packet corrupted or not expected sequence number, resend ACK!\n");
-    if (expectedseqnum == 0)
-      sendpkt.acknum = SEQSPACE - 1;
-    else
-      sendpkt.acknum = expectedseqnum - 1;
+      printf( "----B: packet corrupted, resend ACK!\n" ) ;
+    /* Using -1 to denote corrupted packet for now */
+    sendpkt.acknum = -1 ;
+  }
+
+  /* While the first packet in the buffer is received, move the window across */
+  while( receiverBuffer[0].received == true ) {
+    /* Cycle the elements of the buffer */
+    for( i = 0 ; i < WINDOWSIZE - 1 ; i++ ) {
+      receiverBuffer[ i ].seqnum = receiverBuffer[ i + 1 ].seqnum ;
+      receiverBuffer[ i ].received = receiverBuffer[ i + 1 ].received ;
+    }
+
+    receiverBuffer[ WINDOWSIZE - 1 ].seqnum = ( receiverBuffer[ WINDOWSIZE - 1 ].seqnum + 1 ) % SEQSPACE ;
+    receiverBuffer[ WINDOWSIZE - 1 ].received = false ;
   }
 
   /* create packet */
   sendpkt.seqnum = B_nextseqnum;
-  B_nextseqnum = (B_nextseqnum + 1) % 2;
+  B_nextseqnum = ( B_nextseqnum + 1 ) % SEQSPACE ;
     
   /* we don't have any data to send.  fill payload with 0's */
   for ( i=0; i<20 ; i++ ) 
@@ -341,15 +372,20 @@ void B_input(struct pkt packet)
   sendpkt.checksum = ComputeChecksum(sendpkt); 
 
   /* send out packet */
-  tolayer3 (B, sendpkt);
+  tolayer3 ( B, sendpkt ) ;
 }
 
 /* the following routine will be called once (only) before any other */
 /* entity B routines are called. You can use it to do any initialization */
 void B_init(void)
 {
-  expectedseqnum = 0;
-  B_nextseqnum = 1;
+  int i ;
+
+  /* Initialize our recieverBuffer */
+  for( i = 0 ; i < WINDOWSIZE ; i++ ) {
+    receiverBuffer[i].seqnum = i ;
+    receiverBuffer[i].received = false ;
+  }
 }
 
 /******************************************************************************
