@@ -38,6 +38,44 @@ gcc -Wall -ansi -pedantic -o sr emulator.c sr.c
 - Sender window cannot move until all packets are correctly ACKed
 */
 
+/* Plan:
+- Need to make a timer function to call for each packet
+- Need to make a struct for receiver that keeps of received packets, can use the BUFFER struct already defined
+*/
+
+/* Sender:
+SEND PACKET:
+  - Send a packet, this needs to have a seqnum
+  - Start a timer
+  - Wait
+
+TIMEOUT:
+  - Resend the packet that timed out
+  - Restart timer
+  - Wait
+
+RECEIVE ACK:
+  - Set the corresponding buffer position to true
+  - If it was in the first position:
+    - while( buffer[0].received == true ) moveWindow( buffer ) ;
+*/
+
+/* Receiver:
+ONLY ACTS IN RESPONSE TO RECEIVING A PACKET:
+  - Receive packet:
+    - Check that seqnum >= buffer[0].seqnum:
+      - If not send: send an ack for that packet
+      - If yes: Continue
+  - Receive packet in the first position of the window:
+    - buffer[0].received = true ;
+    - Send ACK back to sender
+    - while( buffer[0].received == true ) moveWindow( buffer ) ;
+
+  - Receive packet in position other than the first:
+    - Buffer[i].received = true ;
+    - Send ACK back to sender
+*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -81,7 +119,7 @@ bool IsCorrupted(struct pkt packet)
 
 /********* Sender (A) variables and functions ************/
 
-static struct pkt buffer[WINDOWSIZE];  /* array for storing packets waiting for ACK */
+static struct pkt senderBuffer[WINDOWSIZE];  /* array for storing packets waiting for ACK */
 static int windowfirst, windowlast;    /* array indexes of the first/last packet awaiting ACK */
 static int windowcount;                /* the number of packets currently awaiting an ACK */
 static int A_nextseqnum;               /* the next sequence number to be used by the sender */
@@ -107,7 +145,7 @@ void A_output(struct msg message)
     /* put packet in window buffer */
     /* windowlast will always be 0 for alternating bit; but not for GoBackN */
     windowlast = (windowlast + 1) % WINDOWSIZE; 
-    buffer[windowlast] = sendpkt;
+    senderBuffer[windowlast] = sendpkt;
     windowcount++;
 
     /* send out packet */
@@ -115,9 +153,11 @@ void A_output(struct msg message)
       printf("Sending packet %d to layer 3\n", sendpkt.seqnum);
     tolayer3 (A, sendpkt);
 
-    /* start timer if first packet in window */
+    /* Need to alter this to create a timer for this packet
+     // start timer if first packet in window
     if (windowcount == 1)
       starttimer(A,RTT);
+  	*/
 
     /* get next sequence number, wrap back to 0 */
     A_nextseqnum = (A_nextseqnum + 1) % SEQSPACE;  
@@ -147,8 +187,8 @@ void A_input(struct pkt packet)
 
     /* check if new ACK or duplicate */
     if (windowcount != 0) {
-          int seqfirst = buffer[windowfirst].seqnum;
-          int seqlast = buffer[windowlast].seqnum;
+          int seqfirst = senderBuffer[windowfirst].seqnum;
+          int seqlast = senderBuffer[windowlast].seqnum;
           /* check case when seqnum has and hasn't wrapped */
           if (((seqfirst <= seqlast) && (packet.acknum >= seqfirst && packet.acknum <= seqlast)) ||
               ((seqfirst > seqlast) && (packet.acknum >= seqfirst || packet.acknum <= seqlast))) {
@@ -198,9 +238,9 @@ void A_timerinterrupt(void)
   for(i=0; i<windowcount; i++) {
 
     if (TRACE > 0)
-      printf ("---A: resending packet %d\n", (buffer[(windowfirst+i) % WINDOWSIZE]).seqnum);
+      printf ("---A: resending packet %d\n", (senderBuffer[(windowfirst+i) % WINDOWSIZE]).seqnum);
 
-    tolayer3(A,buffer[(windowfirst+i) % WINDOWSIZE]);
+    tolayer3(A,senderBuffer[(windowfirst+i) % WINDOWSIZE]);
     packets_resent++;
     if (i==0) starttimer(A,RTT);
   }
@@ -282,18 +322,4 @@ void B_init(void)
 {
   expectedseqnum = 0;
   B_nextseqnum = 1;
-}
-
-/******************************************************************************
- * The following functions need be completed only for bi-directional messages *
- *****************************************************************************/
-
-/* Note that with simplex transfer from a-to-B, there is no B_output() */
-void B_output(struct msg message)  
-{
-}
-
-/* called when B's timer goes off */
-void B_timerinterrupt(void)
-{
 }
