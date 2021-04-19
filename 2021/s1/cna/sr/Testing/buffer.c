@@ -9,6 +9,21 @@
 
 static int currentTime = 0 ;
 
+/* Multiple timers:
+call starttimer(A, RTT) initially
+	Which packet should I time:
+	Time the last packet in the window
+
+	When to stop?
+	Stop the timer when the entire window has been received
+
+	When to restart?
+	Restart the timer when a timeout occurs:
+	Check each packet in the buffer
+	If they are not all received then restart timer.
+
+*/
+
 struct receiverBufferUnit {
 	int bufferIndex ;
 	int seqnum ;
@@ -20,7 +35,6 @@ struct senderBufferUnit {
 	int seqnum ;
 	bool sent ;
 	bool acked ;
-	int timeout ;
 } ;
 
 void initializeReceiverBuffer( struct receiverBufferUnit array[] ) {
@@ -61,7 +75,6 @@ void initializeSenderBuffer( struct senderBufferUnit array[] ) {
 		array[i].seqnum = i ;
 		array[i].acked = false ;
 		array[i].sent = false ;
-		array[i].timeout = 0 ;
 	}
 }
 
@@ -73,7 +86,6 @@ void printSenderBuffer( struct senderBufferUnit array[] ) {
 		printf( " with seqnum: %d", array[i].seqnum ) ;
 		printf( " sent? %d", array[i].sent ) ;
 		printf( " acked? %d", array[i].acked ) ;
-		printf( " timeout at %d\n", array[i].timeout ) ;
 	}
 
 	printf( "\n" ) ;
@@ -81,7 +93,6 @@ void printSenderBuffer( struct senderBufferUnit array[] ) {
 
 void sendPacket( struct senderBufferUnit array[], int index ) {
 	array[index].sent = true ;
-	array[index].timeout = currentTime + RTT ;
 }
 
 void moveSenderWindow( struct senderBufferUnit array[] ) {
