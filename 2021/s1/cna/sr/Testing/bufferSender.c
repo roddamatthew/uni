@@ -90,7 +90,40 @@ struct senderBufferUnit {
   bool acked ;
 } ;
 
+static struct senderBufferUnit senderBuffer[ WINDOWSIZE ] ;
 static int timerAssociatedSeqNum ;
+static bool timerStarted ;
+
+/* Create a packet, filling in the correct seqnum, and return it */
+struct pkt createPacket( struct msg message ) {
+  struct pkt packet ;
+  return packet ;
+}
+
+/* add a packet to the end of the buffer */
+void addPacketToBuffer( struct pkt packet ) {
+  /* if sender window is full, return an error */
+}
+
+/* Fake starttimer function so code compiles */
+void starttimer( int A, int RTT ) {
+
+}
+
+/* Fake stoptimer function so code compiles */
+void stoptimer( int A ){
+
+}
+
+/* Update buffer to have received ack for given acknum */
+void bufferReceiveACK( int acknum ) {
+
+}
+
+/* move senderBuffer window across as long as the zeroth packet is acked */
+void moveSenderWindow() {
+
+}
 
 /* called from layer 5 (application layer), passed the message to be sent to other side */
 void A_output(struct msg message)
@@ -98,7 +131,7 @@ void A_output(struct msg message)
   struct pkt packet ;
   packet = createPacket( message ) ;
   addPacketToBuffer( packet ) ;
-  if( !timerAlreadyStarted() ) starttimer( A, RTT ) ;
+  if( !timerStarted() ) starttimer( A, RTT ) ;
 }
 
 
@@ -130,7 +163,10 @@ void A_timerinterrupt(void)
 /* entity A routines are called. You can use it to do any initialization */
 void A_init(void)
 {
-
+  /* Initialize senderBuffer */
+  for() ... ;
+  timerAssociatedSeqNum = NOTINUSE ;
+  timerStarted = false ;
 }
 
 int main() {
