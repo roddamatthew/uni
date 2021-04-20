@@ -117,6 +117,22 @@ bool IsCorrupted(struct pkt packet)
     return (true);
 }
 
+/* Return bool based on whether a value is between a min and max */
+/* Works for ranges that wrap back from a max to zero */
+/* eg. is 7 between 5-10 returns true */
+/* eg. is 7 bewteen 10-5 returns false */
+/* eg. is 7 bewteen 10-8 returns false */
+bool withinRange( int lower, int upper, int val ) {
+  if ( lower < upper ) {
+    if ( val <= upper && val >= lower ) return true ;
+    else return false ;
+  } else {
+    if ( val >= lower ) return true ;
+    else if ( val <= upper ) return true ;
+    else return false ;
+  }
+}
+
 /********* Sender (A) variables and functions ************/
 
 /* Create a struct for the sender buffer */
@@ -132,54 +148,10 @@ struct senderBufferUnit {
   bool acked ;
 } ;
 
-static struct senderBufferUnit senderBuffer[ WINDOWSIZE ] ; /* This is the sender buffer */
-static int windowfirst, windowlast;    /* array indexes of the first/last packet awaiting ACK */
-static int windowcount;                /* the number of packets currently awaiting an ACK */
-static int A_nextseqnum;               /* the next sequence number to be used by the sender */
-
 /* called from layer 5 (application layer), passed the message to be sent to other side */
 void A_output(struct msg message)
 {
-  struct pkt sendpkt;
-  int i;
 
-  /* if not blocked waiting on ACK */
-  if ( windowcount < WINDOWSIZE) {
-    if ( TRACE > 1 )
-      printf( "----A: New message arrives, send window is not full, send new messge to layer3!\n" ) ;
-
-    /* create packet */
-    sendpkt.seqnum = A_nextseqnum;
-    sendpkt.acknum = NOTINUSE;
-    for ( i = 0; i < 20 ; i++ ) 
-      sendpkt.payload[ i ] = message.data[ i ] ;
-    sendpkt.checksum = ComputeChecksum( sendpkt ) ; 
-
-    /* increment our windowlast index and wrap it back to zero */
-    windowlast = ( windowlast + 1 ) % WINDOWSIZE ;
-    /* put packet into our senderBuffer */
-    senderBuffer[ windowlast ].packet = sendpkt ;
-    windowcount++ ;
-
-    /* send out packet */
-    if ( TRACE > 0 )
-      printf("Sending packet %d to layer 3\n", sendpkt.seqnum);
-    tolayer3 ( A, sendpkt ) ;
-
-    /* Start timer if this is the last packet in the window */
-    if ( windowcount == WINDOWSIZE )
-      starttimer( A, RTT ) ;
-
-    /* get next sequence number, wrap back to 0 */
-    A_nextseqnum = (A_nextseqnum + 1) % SEQSPACE;
-    printf( "NEXT SEQUENCE NUMBER TO BE USED IS: %d\n", A_nextseqnum ) ;
-  }
-  /* if blocked,  window is full */
-  else {
-    if (TRACE > 0)
-      printf("----A: New message arrives, send window is full\n");
-    window_full++;
-  }
 }
 
 
@@ -188,80 +160,13 @@ void A_output(struct msg message)
 */
 void A_input( struct pkt packet )
 {
-  int ackcount = 0 ;
-  int i ;
 
-  printf( "\nA_input called with packet.acknum = %d", packet.acknum ) ;
-  printf( " packet.seqnum = %d\n", packet.seqnum ) ;
-
-  /* if received ACK is not corrupted */ 
-  if ( !IsCorrupted( packet ) ) {
-    if ( TRACE > 0 )
-      printf( "----A: uncorrupted ACK %d is received\n", packet.acknum ) ;
-    total_ACKs_received++ ;
-
-    /* check if new ACK or duplicate */
-    if ( windowcount != 0 ) {
-          int seqfirst = senderBuffer[ windowfirst ].packet.seqnum ;
-          int seqlast = senderBuffer[ windowlast ].packet.seqnum ;
-
-          /* check case when seqnum has and hasn't wrapped */
-          if (((seqfirst <= seqlast) && (packet.acknum >= seqfirst && packet.acknum <= seqlast)) ||
-              ((seqfirst > seqlast) && (packet.acknum >= seqfirst || packet.acknum <= seqlast))) {
-
-            /* packet is a new ACK */
-            if ( TRACE > 0 )
-              printf("----A: ACK %d is not a duplicate\n",packet.acknum);
-            new_ACKs++ ;
-
-            /* Update our buffer to acknowledge the received packet */
-            for( i = 0 ; i < WINDOWSIZE ; i++ ) {
-              if( packet.acknum == senderBuffer[i].packet.seqnum ) {
-                senderBuffer[i].acked = true ;
-                printf( "RECEIVED ACK FOR A PACKET IN SENDERBUFFER[%d]\n", packet.acknum ) ;
-              }
-            }
-
-            /* cumulative acknowledgement - determine how many packets are ACKed */
-            if (packet.acknum >= seqfirst)
-              ackcount = packet.acknum + 1 - seqfirst;
-            else
-              ackcount = SEQSPACE - seqfirst + packet.acknum;
-
-	    /* slide window by the number of packets ACKed */
-            windowfirst = (windowfirst + ackcount) % WINDOWSIZE;
-
-            /* delete the acked packets from window buffer */
-            for (i=0; i<ackcount; i++)
-              windowcount--;
-          }
-        }
-        else
-          if (TRACE > 0)
-        printf ("----A: duplicate ACK received, do nothing!\n");
-  }
-  else 
-    if (TRACE > 0)
-      printf ("----A: corrupted ACK is received, do nothing!\n");
 }
 
 /* called when A's timer goes off */
 void A_timerinterrupt(void)
 {
-  int i;
 
-  if (TRACE > 0)
-    printf("----A: time out,resend packets!\n");
-
-  for( i = 0 ; i < windowcount ; i++ ) {
-
-    if (TRACE > 0)
-      printf ("---A: resending packet %d\n", ( senderBuffer[(windowfirst+i) % WINDOWSIZE]).packet.seqnum);
-
-    tolayer3( A, senderBuffer[ ( windowfirst + i ) % WINDOWSIZE ].packet ) ;
-    packets_resent++ ;
-    if ( i == 0 ) starttimer( A, RTT ) ;
-  }
 }       
 
 
@@ -270,22 +175,7 @@ void A_timerinterrupt(void)
 /* entity A routines are called. You can use it to do any initialization */
 void A_init(void)
 {
-  int i ;
-  /* initialise A's window, buffer and sequence number */
-  A_nextseqnum = 0;  /* A starts with seq num 0, do not change this */
-  windowfirst = 0;
-  windowlast = -1;   /* windowlast is where the last packet sent is stored.  
-		     new packets are placed in winlast + 1 
-		     so initially this is set to -1
-		   */
-  windowcount = 0;
 
-  /* Initialize the sender buffer */
-  for( i = 0 ; i < WINDOWSIZE ; i++ ) {
-    senderBuffer[i].sent = false ;
-    senderBuffer[i].acked = false ;
-    senderBuffer[i].packet.seqnum = i ;
-  }
 }
 
 
@@ -299,80 +189,83 @@ void A_init(void)
 */
 /* The implementation of this struct will be an array of buffer units to create the whole buffer */
 struct receiverBufferUnit {
-  int seqnum ;
+  struct pkt packet ;
   bool received ;
 } ;
 
-static struct receiverBufferUnit receiverBuffer[ WINDOWSIZE ] ; /* Receiver buffer with windowsize equal to the sender */
-static int B_nextseqnum;   /* the sequence number for the next packets sent by B */
+static int receiverBufferUnit receiverBuffer[ WINDOWSIZE ] ;
+static int receiverSequenceNumber ;
+static int rcv_base ;
 
+/* Create an ACK packet with acknum = input and send it to layer3 */
+void sendACK( int packetSeqNum ) {
+  int i ;
+  struct pkt ack ;
 
-/* called from layer 3, when a packet arrives for layer 4 at B*/
-void B_input(struct pkt packet)
-{
-  struct pkt sendpkt;
-  int i;
+  ack.seqnum = receiverSequenceNumber ;
+  receiverSequenceNumber = ( receiverSequenceNumber + 1 ) % SEQSPACE ;
 
-  printf( "PACKET ARRIVED AT RECEIVER WITH SEQNUM: %d\n", packet.seqnum ) ;
-  printf( "EXPECTING PACKETS WITH SEQNUM: " ) ;
-  for( i = 0 ; i < WINDOWSIZE ; i++ ) {
-    if( receiverBuffer[i].received == false ) {
-      printf( "%d, ", receiverBuffer[i].seqnum ) ;
-    }
+  ack.acknum = packetSeqNum ;
+  /* we don't have any data to send.  fill payload with 0's */
+  for ( i = 0 ; i < 20 ; i++ ){
+    ack.payload[i] = '0' ;  
   }
-  printf( "\n" ) ;
+  ack.checksum = ComputeChecksum( ack ) ;
 
-  /* If the packet is not corrupted */
-  if ( !IsCorrupted( packet ) ) {
-    /* Check if the sequence number was expected */
-    for( i = 0 ; i < WINDOWSIZE ; i++ ) {
-      if( receiverBuffer[i].seqnum == packet.seqnum ) {
-        /* Update our receiverBuffer to have received this packet */
-        receiverBuffer[i].received = true ;
+  /* send out packet */
+  tolayer3 ( B, ack ) ;
+}
 
-        if (TRACE > 0)
-          printf("----B: packet %d is correctly received, send ACK!\n",packet.seqnum);
-        packets_received++ ;
+/* Add a packet to the receiverBuffer */
+void addToBuffer( struct pkt packet ) {
+  int index = packet.seqnum - rcv_base ;
+  receiverBuffer[ index ].packet = packet ;
+  receiverBuffer[ index ].received = true ;
+  /* printf( "receiverBuffer packet added: %d\n", receiverBuffer[index].packet.seqnum ) ; */
+}
 
-        /* Deliver packet to application layer */
-        tolayer5( B, packet.payload ) ;
-
-        /* Fill in the ACK for the packet received */
-        sendpkt.acknum = packet.seqnum ;
-      }
-    }
-  } else {
-    if (TRACE > 0) 
-      printf( "----B: packet corrupted, resend ACK!\n" ) ;
-    /* Using -1 to denote corrupted packet for now */
-    sendpkt.acknum = -1 ;
-  }
-
-  /* While the first packet in the buffer is received, move the window across */
+void moveBufferWindow() {
   while( receiverBuffer[0].received == true ) {
-    /* Cycle the elements of the buffer */
+    int i ;
+    /* Cycle the elements of the buffer down one position */
     for( i = 0 ; i < WINDOWSIZE - 1 ; i++ ) {
-      receiverBuffer[ i ].seqnum = receiverBuffer[ i + 1 ].seqnum ;
+      receiverBuffer[ i ].packet = receiverBuffer[ i + 1 ].packet ;
       receiverBuffer[ i ].received = receiverBuffer[ i + 1 ].received ;
     }
 
-    receiverBuffer[ WINDOWSIZE - 1 ].seqnum = ( receiverBuffer[ WINDOWSIZE - 1 ].seqnum + 1 ) % SEQSPACE ;
+    rcv_base++ ;
     receiverBuffer[ WINDOWSIZE - 1 ].received = false ;
   }
+}
 
-  /* create packet */
-  sendpkt.seqnum = B_nextseqnum;
-  B_nextseqnum = ( B_nextseqnum + 1 ) % SEQSPACE ;
-    
-  /* we don't have any data to send.  fill payload with 0's */
-  for ( i=0; i<20 ; i++ ) 
-    sendpkt.payload[i] = '0';  
+/* Return true if seqnum is within current window */
+bool withinCurrentWindow( int seqnum ) {
+  printf( "%d, %d, %d", rcv_base, rcv_base + WINDOWSIZE - 1, seqnum ) ;
+  if( withinRange( rcv_base, rcv_base + WINDOWSIZE - 1, seqnum ) ) {
+    return true ;
+  } 
+  else return false ;
+}
 
-  /* computer checksum */
-  sendpkt.checksum = ComputeChecksum(sendpkt); 
+/* called from layer 3, when a packet arrives for layer 4 at B */
+void B_input( struct pkt packet )
+{
+  struct pkt ack ;
 
-  /* send out packet */
-  tolayer3 ( B, sendpkt ) ;
+  /* If not corrupted */
+  if( !IsCorrupted( packet ) ) {
+    if( withinCurrentWindow( packet.seqnum ) ) {
+      printf( "Packet is within current window\n" ) ;
+      sendACK( packet.seqnum ) ;
+      addToBuffer( packet ) ;
+      moveBufferWindow() ;
+    } else {
+      printf( "Packet is repeated\n" ) ;
+      sendACK( packet.seqnum ) ;
+    }
+  } else {
+    printf( "Corrupted Packet: Do Nothing!\n" ) ;
+  }
 }
 
 /* the following routine will be called once (only) before any other */
@@ -380,10 +273,10 @@ void B_input(struct pkt packet)
 void B_init(void)
 {
   int i ;
+  receiverSequenceNumber = 0 ;
+  rcv_base = 0 ;
 
-  /* Initialize our recieverBuffer */
   for( i = 0 ; i < WINDOWSIZE ; i++ ) {
-    receiverBuffer[i].seqnum = i ;
     receiverBuffer[i].received = false ;
   }
 }
