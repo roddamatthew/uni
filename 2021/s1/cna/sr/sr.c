@@ -140,7 +140,14 @@ bool withinRange( int lower, int upper, int val ) {
     - Sequence number
     - Whether they are sent yet
     - Whether they are acknowledged yet
-*/ 
+*/
+
+/* Timer Logic:
+  - Whenever a packet is sent and there is no timer, start the timer
+  - When the packet associated with the timer is acked, stop the timer
+  - When there is a TIMEOUT, resend all packets not yet acked and start the timer
+*/
+
 /* This struct is a single buffer slot, the final buffer will be an array of these structs */
 struct senderBufferUnit {
   struct pkt packet ;
@@ -148,10 +155,118 @@ struct senderBufferUnit {
   bool acked ;
 } ;
 
+static struct senderBufferUnit senderBuffer[ WINDOWSIZE ] ;
+static int timerAssociatedSeqNum ;
+static bool timerStarted ;
+static int sendBase ;
+static int nextSeqNum ;
+
+/* Create a packet, filling in the correct seqnum, and return it */
+struct pkt createPacket( struct msg message ) {
+  struct pkt packet ;
+  int i ;
+
+  packet.seqnum = nextSeqNum ;
+  packet.acknum = NOTINUSE ;
+
+  nextSeqNum = ( nextSeqNum + 1 ) % SEQSPACE ;
+
+  for ( i = 0; i < 20 ; i++ )
+    packet.payload[ i ] = message.data[ i ] ;
+  packet.checksum = ComputeChecksum( packet ) ;
+
+  return packet ;
+}
+
+/* return true if the sender window is full */
+bool windowFull() {
+  int i ;
+  int windowCount = 0 ;
+
+  for( i = 0 ; i < WINDOWSIZE ; i++ ) {
+    if( senderBuffer[i].sent == true ) windowCount++ ;
+  }
+
+  if( windowCount == WINDOWSIZE ) return true ;
+  else return false ;
+}
+
+/* add a packet to the end of the buffer */
+void addPacketToBuffer( struct pkt newPacket ) {
+  int index = newPacket.seqnum - sendBase ;
+  senderBuffer[ index ].sent = true ;
+  senderBuffer[ index ].packet = newPacket ;
+}
+
+/* Update buffer to have received ack for given acknum */
+void bufferReceiveACK( int acknum ) {
+  int index = acknum - sendBase ;
+  senderBuffer[ index ].acked = true ;
+}
+
+/* move senderBuffer window across as long as the zeroth packet is acked */
+void moveSenderWindow() {
+  while( senderBuffer[0].acked == true ) {
+    int i ;
+    /* Cycle the elements of the buffer down one position */
+    for( i = 0 ; i < WINDOWSIZE - 1 ; i++ ) {
+      senderBuffer[ i ].packet = senderBuffer[ i + 1 ].packet ;
+      senderBuffer[ i ].acked = senderBuffer[ i + 1 ].acked ;
+      senderBuffer[ i ].sent = senderBuffer[ i + 1 ].sent ;
+    }
+
+    /* Increase the base of the sender */
+    sendBase = ( sendBase + 1 ) % SEQSPACE ;
+
+    /* empty the last element in the buffer */
+    senderBuffer[ WINDOWSIZE - 1 ].acked = false ;
+    senderBuffer[ WINDOWSIZE - 1 ].sent = false ;
+  }
+}
+
+/* Start the sender timer and update the associated state variables */
+/* Input parameter is the seqeunce number of the packet starting the timer */
+void startTimerMine( int seqnum ) {
+  /* If called with an invalid sequence number spit an error */
+  if( seqnum >= 0 ) {
+    starttimer( A, RTT ) ;
+    timerAssociatedSeqNum = seqnum ;
+    timerStarted = true ;
+  } else {
+    printf( "startTimerMine called with an invalid seqnuence number: %d (note: -1 denotes a seqnum not in use)\n", seqnum ) ;
+  }
+}
+
+/* Stop the timer and update the associated state variables */
+void stopTimerMine() {
+  stoptimer( A ) ;
+  timerAssociatedSeqNum = NOTINUSE ;
+  timerStarted = false ;
+}
+
 /* called from layer 5 (application layer), passed the message to be sent to other side */
 void A_output(struct msg message)
 {
+  if( !windowFull() ) {
+    /* Create a packet and sent it to the network layer */
+    struct pkt packet ;
+    packet = createPacket( message ) ;
+    tolayer3( A, packet ) ;
 
+    /* Add the packet to our senderBuffer */
+    addPacketToBuffer( packet ) ;
+
+    /* If a timer is not started, start one */
+    if( !timerStarted ) {
+      startTimerMine( packet.seqnum ) ;
+    }
+  } else {
+    /* New message arrived at transport layer, but our send window was already full */
+    /* Give a useful error message */
+    if (TRACE > 0)
+      printf("----A: New message arrives, send window is full\n");
+    window_full++;
+  }
 }
 
 
@@ -160,13 +275,36 @@ void A_output(struct msg message)
 */
 void A_input( struct pkt packet )
 {
-
+  if( !IsCorrupted( packet ) ){
+    /* Update buffer to have received ACK */
+    bufferReceiveACK( packet.acknum ) ;
+    /* Stop timer if ack was associated with timer */
+    if( timerAssociatedSeqNum == packet.acknum ) stopTimerMine() ;
+    /* Move window if necessary */
+    moveSenderWindow() ;
+  }
 }
 
 /* called when A's timer goes off */
 void A_timerinterrupt(void)
 {
+  int i ;
+  int firstResentSeqNum = -1 ;
 
+  /* Resend all packets not yet acked */
+  for( i = 0 ; i < WINDOWSIZE ; i++ ) {
+    /* Check that the packet is also initialized */
+    if( senderBuffer[i].acked == false && senderBuffer[i].packet.seqnum != NOTINUSE ) {
+      if( firstResentSeqNum == -1 ) firstResentSeqNum = senderBuffer[i].packet.seqnum ;
+      /* Resend the packet not acked */
+      tolayer3( A, senderBuffer[i].packet ) ;
+      /* Make sure the buffer knows this packet has been sent */
+      senderBuffer[i].sent = true ;
+    }
+  }
+
+  /* Restart timer */
+  startTimerMine( firstResentSeqNum ) ;
 }       
 
 
@@ -175,9 +313,20 @@ void A_timerinterrupt(void)
 /* entity A routines are called. You can use it to do any initialization */
 void A_init(void)
 {
+  int i ;
+  /* Initialize senderBuffer */
+  for( i = 0 ; i < WINDOWSIZE ; i++ ) {
+    senderBuffer[i].packet.seqnum = NOTINUSE ;
+    senderBuffer[i].packet.acknum = NOTINUSE ;
+    senderBuffer[i].acked = false ;
+    senderBuffer[i].sent = false ;
+  }
 
+  timerAssociatedSeqNum = NOTINUSE ;
+  timerStarted = false ;
+  nextSeqNum = 0 ;
+  sendBase = 0 ;
 }
-
 
 
 /********* Receiver (B)  variables and procedures ************/
@@ -193,7 +342,7 @@ struct receiverBufferUnit {
   bool received ;
 } ;
 
-static int receiverBufferUnit receiverBuffer[ WINDOWSIZE ] ;
+static struct receiverBufferUnit receiverBuffer[ WINDOWSIZE ] ;
 static int receiverSequenceNumber ;
 static int rcv_base ;
 
@@ -240,7 +389,7 @@ void moveBufferWindow() {
 
 /* Return true if seqnum is within current window */
 bool withinCurrentWindow( int seqnum ) {
-  printf( "%d, %d, %d", rcv_base, rcv_base + WINDOWSIZE - 1, seqnum ) ;
+  printf( "%d, %d, %d ", rcv_base, rcv_base + WINDOWSIZE - 1, seqnum ) ;
   if( withinRange( rcv_base, rcv_base + WINDOWSIZE - 1, seqnum ) ) {
     return true ;
   } 

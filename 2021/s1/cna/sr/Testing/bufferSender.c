@@ -72,8 +72,8 @@ bool withinRange( int lower, int upper, int val ) {
 
 /* Fake starttimer function so code compiles */
 void starttimer( int i, int j ) {
-  printf( "Started a timer number: %d\n", timercount ) ;
   timercount++ ;
+  printf( "Started a timer number: %d\n", timercount ) ;
 }
 
 /* Fake stoptimer function so code compiles */
@@ -243,6 +243,7 @@ void A_timerinterrupt(void)
 {
   int i ;
   int firstResentSeqNum = -1 ;
+
   /* Resend all packets not yet acked */
   for( i = 0 ; i < WINDOWSIZE ; i++ ) {
     /* Check that the packet is also initialized */
@@ -318,6 +319,7 @@ int main() {
   A_output( message ) ;
   A_output( message ) ;
   A_input( packet ) ;
+  A_timerinterrupt() ;
   printSenderBuffer() ;
 
   return 0 ;
