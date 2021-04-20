@@ -10,70 +10,8 @@ Try with just corruption: Need to use checksum
 /* When is the behaviour of GoBackN the same as Selective Repeat
 When does the behaviour differ */
 
-/* Copy gbn.c to sr.c and gbn.h to sr.h 
-Change what is necessary */
-
 /* Compile once its done with:
 gcc -Wall -ansi -pedantic -o sr emulator.c sr.c
-*/
-
-/* ------------------------------------------ RESEARCH ------------------------------------------ */
-
-/* Similarities between GBN and SR:
-- Both are called sliding window protocols:
-	- Have a window of packets that are focused on being sent
-	- Size of frame is the size of the largest sequence number
-	- Window moves whenever the first sequence number is received
-*/
-
-/* Differences between GBN and SR:
-- Only lost packets are retransmitted
-	- Correctly received packets are buffered
-	- GBN retransmits all packets in the current window if there is a loss
-
-- Receiver needs to keep track of current sequence number **
-- Sender needs to havea timer for each packet sent **
-	- Timer stops when an ACK is received for that seqnum
-	- If timer runs out, resend that packet
-- Sender window cannot move until all packets are correctly ACKed
-*/
-
-/* Plan:
-- Need to make a timer function to call for each packet
-- Need to make a struct for receiver that keeps of received packets, can use the BUFFER struct already defined
-*/
-
-/* Sender:
-SEND PACKET:
-  - Send a packet, this needs to have a seqnum
-  - Start a timer
-  - Wait
-
-TIMEOUT:
-  - Resend the packet that timed out
-  - Restart timer
-  - Wait
-
-RECEIVE ACK:
-  - Set the corresponding buffer position to true
-  - If it was in the first position:
-    - while( buffer[0].received == true ) moveWindow( buffer ) ;
-*/
-
-/* Receiver:
-ONLY ACTS IN RESPONSE TO RECEIVING A PACKET:
-  - Receive packet:
-    - Check that seqnum >= buffer[0].seqnum:
-      - If not send: send an ack for that packet
-      - If yes: Continue
-  - Receive packet in the first position of the window:
-    - buffer[0].received = true ;
-    - Send ACK back to sender
-    - while( buffer[0].received == true ) moveWindow( buffer ) ;
-
-  - Receive packet in position other than the first:
-    - Buffer[i].received = true ;
-    - Send ACK back to sender
 */
 
 #include <stdlib.h>
@@ -161,6 +99,22 @@ static bool timerStarted ;
 static int sendBase ;
 static int nextSeqNum ;
 
+void printSenderBuffer() {
+  int i, j ;
+  printf( "senderBuffer: \n" ) ;
+  for( i = 0 ; i < WINDOWSIZE ; i++ ) {
+    printf( "sent: %s\n", senderBuffer[i].sent ? "true" : "false" ) ;
+    printf( "acked: %s\n", senderBuffer[i].acked ? "true" : "false" ) ;
+    printf( "packet: seqnum: %d, acknum: %d\n", senderBuffer[i].packet.seqnum, senderBuffer[i].packet.acknum ) ;
+    printf( "payload: " ) ;
+    for( j = 0 ; j < 20 ; j++ ) {
+      printf( "%c", senderBuffer[i].packet.payload[ j ] ) ;
+    }
+    printf( "\n" ) ;
+  }
+  printf( "\n" ) ;
+}
+
 /* Create a packet, filling in the correct seqnum, and return it */
 struct pkt createPacket( struct msg message ) {
   struct pkt packet ;
@@ -198,6 +152,20 @@ void addPacketToBuffer( struct pkt newPacket ) {
   senderBuffer[ index ].packet = newPacket ;
 }
 
+/* Return true if a packet has already been acked */
+bool isACKed( int acknum ) {
+  int index = acknum - sendBase ;
+  if( acknum < sendBase ) return true ;
+  if( senderBuffer[ index ].acked == true ) {
+    /* printf( "isACKed returned true! new_ACKs = %d acknum = %d\n", new_ACKs, acknum ) ; */
+    return true ;
+  }
+  else {
+    /* printf( "isACKed returned false! new_ACKs = %d acknum = %d\n", new_ACKs, acknum ) ; */
+    return false ;
+  }
+}
+
 /* Update buffer to have received ack for given acknum */
 void bufferReceiveACK( int acknum ) {
   int index = acknum - sendBase ;
@@ -226,19 +194,19 @@ void moveSenderWindow() {
 
 /* Start the sender timer and update the associated state variables */
 /* Input parameter is the seqeunce number of the packet starting the timer */
-void startTimerMine( int seqnum ) {
+void startTimerHandler( int seqnum ) {
   /* If called with an invalid sequence number spit an error */
   if( seqnum >= 0 ) {
     starttimer( A, RTT ) ;
     timerAssociatedSeqNum = seqnum ;
     timerStarted = true ;
   } else {
-    printf( "startTimerMine called with an invalid seqnuence number: %d (note: -1 denotes a seqnum not in use)\n", seqnum ) ;
+    printf( "startTimerHandler called with an invalid seqnuence number: %d (note: -1 denotes a seqnum not in use)\n", seqnum ) ;
   }
 }
 
 /* Stop the timer and update the associated state variables */
-void stopTimerMine() {
+void stopTimerHandler() {
   stoptimer( A ) ;
   timerAssociatedSeqNum = NOTINUSE ;
   timerStarted = false ;
@@ -258,7 +226,7 @@ void A_output(struct msg message)
 
     /* If a timer is not started, start one */
     if( !timerStarted ) {
-      startTimerMine( packet.seqnum ) ;
+      startTimerHandler( packet.seqnum ) ;
     }
   } else {
     /* New message arrived at transport layer, but our send window was already full */
@@ -269,19 +237,27 @@ void A_output(struct msg message)
   }
 }
 
-
 /* called from layer 3, when a packet arrives for layer 4 
    In this practical this will always be an ACK as B never sends data.
 */
 void A_input( struct pkt packet )
 {
   if( !IsCorrupted( packet ) ){
-    /* Update buffer to have received ACK */
-    bufferReceiveACK( packet.acknum ) ;
-    /* Stop timer if ack was associated with timer */
-    if( timerAssociatedSeqNum == packet.acknum ) stopTimerMine() ;
-    /* Move window if necessary */
-    moveSenderWindow() ;
+    /* increase counter of total ack's received */
+    total_ACKs_received++ ;
+
+    /* Check for duplicate ACK */
+    if( !isACKed( packet.acknum ) ) {
+      /* Update buffer to have received ACK */
+      bufferReceiveACK( packet.acknum ) ;
+      new_ACKs++ ;
+
+      /* Stop timer if ack was associated with timer */
+      if( timerAssociatedSeqNum == packet.acknum ) stopTimerHandler() ;
+
+      /* Move window if necessary */
+      moveSenderWindow() ;
+    }
   }
 }
 
@@ -300,11 +276,13 @@ void A_timerinterrupt(void)
       tolayer3( A, senderBuffer[i].packet ) ;
       /* Make sure the buffer knows this packet has been sent */
       senderBuffer[i].sent = true ;
+      /* Increase counter of resent packets */
+      packets_resent++ ;
     }
   }
 
   /* Restart timer */
-  startTimerMine( firstResentSeqNum ) ;
+  if( firstResentSeqNum != -1 ) startTimerHandler( firstResentSeqNum ) ;
 }       
 
 
@@ -382,14 +360,14 @@ void moveBufferWindow() {
       receiverBuffer[ i ].received = receiverBuffer[ i + 1 ].received ;
     }
 
-    rcv_base++ ;
+    rcv_base = ( rcv_base + 1 ) % SEQSPACE ;
     receiverBuffer[ WINDOWSIZE - 1 ].received = false ;
   }
 }
 
 /* Return true if seqnum is within current window */
 bool withinCurrentWindow( int seqnum ) {
-  printf( "%d, %d, %d ", rcv_base, rcv_base + WINDOWSIZE - 1, seqnum ) ;
+  /* printf( "%d, %d, %d ", rcv_base, rcv_base + WINDOWSIZE - 1, seqnum ) ; */
   if( withinRange( rcv_base, rcv_base + WINDOWSIZE - 1, seqnum ) ) {
     return true ;
   } 
@@ -404,16 +382,20 @@ void B_input( struct pkt packet )
   /* If not corrupted */
   if( !IsCorrupted( packet ) ) {
     if( withinCurrentWindow( packet.seqnum ) ) {
-      printf( "Packet is within current window\n" ) ;
+      /* Increase counter for correctly received packets at B */
+      packets_received++ ;
+      /* printf( "Packet is within current window\n" ) ; */
       sendACK( packet.seqnum ) ;
       addToBuffer( packet ) ;
       moveBufferWindow() ;
+      tolayer5( B, packet.payload ) ;
     } else {
-      printf( "Packet is repeated\n" ) ;
+      /* printf( "Packet is repeated\n" ) ; */
       sendACK( packet.seqnum ) ;
     }
   } else {
-    printf( "Corrupted Packet: Do Nothing!\n" ) ;
+    if( TRACE > 0 )
+      printf( "Corrupted Packet: Do Nothing!\n" ) ;
   }
 }
 
