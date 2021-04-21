@@ -276,7 +276,7 @@ void A_input( struct pkt packet )
 
       /* Stop timer if ack was associated with timer */
       if( timerAssociatedSeqNum == packet.acknum ) stopTimerHandler() ;
-      if( nextPacketToBeACKed() != -1 ) startTimerHandler( nextPacketToBeACKed() ) ;
+      if( nextPacketToBeACKed() != -1 && !timerStarted ) startTimerHandler( nextPacketToBeACKed() ) ;
 
       /* Move window if necessary */
       moveSenderWindow() ;
@@ -416,19 +416,17 @@ void B_input( struct pkt packet )
 
   /* If not corrupted */
   if( !IsCorrupted( packet ) ) {
-    if( withinCurrentWindow( packet.seqnum ) ) {
-      if (TRACE > 0)
+    if (TRACE > 0)
         printf( "----B: packet %d is correctly received, send ACK!\n", packet.seqnum ) ;
-      /* Increase counter for correctly received packets at B */
-      packets_received++ ;
+        /* Increase counter for correctly received packets at B */
+        packets_received++ ;
+    if( withinCurrentWindow( packet.seqnum ) ) {
       /* printf( "Packet is within current window\n" ) ; */
       sendACK( packet.seqnum ) ;
       addToBuffer( packet ) ;
       moveBufferWindow() ;
       tolayer5( B, packet.payload ) ;
     } else {
-      if (TRACE > 0) 
-        printf("----B: packet not expected sequence number, resend ACK!\n");
       /* printf( "Packet is repeated\n" ) ; */
       sendACK( packet.seqnum ) ;
     }
