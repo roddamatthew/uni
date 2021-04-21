@@ -305,15 +305,16 @@ void A_timerinterrupt(void)
     /* Check that the packet is also initialized */
     if( senderBuffer[i].acked == false && senderBuffer[i].packet.seqnum != NOTINUSE ) {
       if( firstResentSeqNum == -1 ) firstResentSeqNum = senderBuffer[i].packet.seqnum ;
+      if (TRACE > 0)
+        printf ( "---A: resending packet %d\n", senderBuffer[i].packet.seqnum ) ;
+      /* Increase counter of resent packets */
+      packets_resent++ ;
+
       /* Resend the packet not acked */
       tolayer3( A, senderBuffer[i].packet ) ;
       /* Make sure the buffer knows this packet has been sent */
       senderBuffer[i].sent = true ;
 
-      if (TRACE > 0)
-        printf ( "---A: resending packet %d\n", senderBuffer[i].packet.seqnum ) ;
-      /* Increase counter of resent packets */
-      packets_resent++ ;
       sentpacket = true ;
     }
     i++ ;
@@ -433,9 +434,6 @@ void B_input( struct pkt packet )
       /* printf( "Packet is repeated\n" ) ; */
       sendACK( packet.seqnum ) ;
     }
-  } else {
-    if( TRACE > 0 )
-      printf( "packet corrupted, do nothing\n" ) ;
   }
 }
 
