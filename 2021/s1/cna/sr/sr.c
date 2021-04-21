@@ -192,6 +192,18 @@ void moveSenderWindow() {
   }
 }
 
+/* Return the seqnum of the next packet in the buffer to be acked */
+/* If there is no packets waiting for an ack, return -1 */
+int nextPacketToBeACKed() {
+  int i ;
+  for( i = 0 ; i < WINDOWSIZE ; i++ ) {
+    if( senderBuffer[i].sent == true && senderBuffer[i].acked == false ) return senderBuffer[i].packet.seqnum ;
+  }
+  return -1 ;
+}
+
+
+
 /* Start the sender timer and update the associated state variables */
 /* Input parameter is the seqeunce number of the packet starting the timer */
 void startTimerHandler( int seqnum ) {
@@ -216,9 +228,15 @@ void stopTimerHandler() {
 void A_output(struct msg message)
 {
   if( !windowFull() ) {
-    /* Create a packet and sent it to the network layer */
     struct pkt packet ;
+
+    if (TRACE > 1)
+      printf( "----A: New message arrives, send window is not full, send new messge to layer3!\n" ) ;
+
+    /* Create a packet and sent it to the network layer */
     packet = createPacket( message ) ;
+    if (TRACE > 0)
+      printf( "Sending packet %d to layer 3\n", packet.seqnum ) ;
     tolayer3( A, packet ) ;
 
     /* Add the packet to our senderBuffer */
@@ -243,21 +261,32 @@ void A_output(struct msg message)
 void A_input( struct pkt packet )
 {
   if( !IsCorrupted( packet ) ){
+    if (TRACE > 0)
+      printf( "----A: uncorrupted ACK %d is received\n", packet.acknum ) ;
     /* increase counter of total ack's received */
     total_ACKs_received++ ;
 
     /* Check for duplicate ACK */
     if( !isACKed( packet.acknum ) ) {
+      if (TRACE > 0)
+              printf( "----A: ACK %d is not a duplicate\n", packet.acknum ) ;
       /* Update buffer to have received ACK */
       bufferReceiveACK( packet.acknum ) ;
       new_ACKs++ ;
 
       /* Stop timer if ack was associated with timer */
       if( timerAssociatedSeqNum == packet.acknum ) stopTimerHandler() ;
+      if( nextPacketToBeACKed() != -1 ) startTimerHandler( nextPacketToBeACKed() ) ;
 
       /* Move window if necessary */
       moveSenderWindow() ;
+    } else {
+      if (TRACE > 0)
+        printf ( "----A: duplicate ACK received, do nothing!\n" ) ;
     }
+  } else {
+    if (TRACE > 0)
+      printf ( "----A: corrupted ACK is received, do nothing!\n" ) ;
   }
 }
 
@@ -266,6 +295,9 @@ void A_timerinterrupt(void)
 {
   int i ;
   int firstResentSeqNum = -1 ;
+
+  if (TRACE > 0)
+    printf( "----A: time out,resend packets!\n" ) ;
 
   /* Resend all packets not yet acked */
   for( i = 0 ; i < WINDOWSIZE ; i++ ) {
@@ -276,6 +308,9 @@ void A_timerinterrupt(void)
       tolayer3( A, senderBuffer[i].packet ) ;
       /* Make sure the buffer knows this packet has been sent */
       senderBuffer[i].sent = true ;
+
+      if (TRACE > 0)
+        printf ( "---A: resending packet %d\n", senderBuffer[i].packet.seqnum ) ;
       /* Increase counter of resent packets */
       packets_resent++ ;
     }
@@ -382,6 +417,8 @@ void B_input( struct pkt packet )
   /* If not corrupted */
   if( !IsCorrupted( packet ) ) {
     if( withinCurrentWindow( packet.seqnum ) ) {
+      if (TRACE > 0)
+        printf( "----B: packet %d is correctly received, send ACK!\n", packet.seqnum ) ;
       /* Increase counter for correctly received packets at B */
       packets_received++ ;
       /* printf( "Packet is within current window\n" ) ; */
@@ -390,12 +427,14 @@ void B_input( struct pkt packet )
       moveBufferWindow() ;
       tolayer5( B, packet.payload ) ;
     } else {
+      if (TRACE > 0) 
+        printf("----B: packet not expected sequence number, resend ACK!\n");
       /* printf( "Packet is repeated\n" ) ; */
       sendACK( packet.seqnum ) ;
     }
   } else {
     if( TRACE > 0 )
-      printf( "Corrupted Packet: Do Nothing!\n" ) ;
+      printf( "packet corrupted, do nothing\n" ) ;
   }
 }
 
