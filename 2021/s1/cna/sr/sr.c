@@ -293,14 +293,15 @@ void A_input( struct pkt packet )
 /* called when A's timer goes off */
 void A_timerinterrupt(void)
 {
-  int i ;
+  int i = 0 ;
+  bool sentpacket = false ;
   int firstResentSeqNum = -1 ;
 
   if (TRACE > 0)
     printf( "----A: time out,resend packets!\n" ) ;
 
-  /* Resend all packets not yet acked */
-  for( i = 0 ; i < WINDOWSIZE ; i++ ) {
+  /* resend first packet not yet acked?*/
+  while( sentpacket == false && i < WINDOWSIZE ) {
     /* Check that the packet is also initialized */
     if( senderBuffer[i].acked == false && senderBuffer[i].packet.seqnum != NOTINUSE ) {
       if( firstResentSeqNum == -1 ) firstResentSeqNum = senderBuffer[i].packet.seqnum ;
@@ -313,7 +314,9 @@ void A_timerinterrupt(void)
         printf ( "---A: resending packet %d\n", senderBuffer[i].packet.seqnum ) ;
       /* Increase counter of resent packets */
       packets_resent++ ;
+      sentpacket = true ;
     }
+    i++ ;
   }
 
   /* Restart timer */

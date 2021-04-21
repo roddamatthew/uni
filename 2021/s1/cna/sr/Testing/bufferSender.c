@@ -324,3 +324,33 @@ int main() {
 
   return 0 ;
 }
+
+// /* called when A's timer goes off */
+// void A_timerinterrupt(void)
+// {
+//   int i ;
+//   int firstResentSeqNum = -1 ;
+
+//   if (TRACE > 0)
+//     printf( "----A: time out,resend packets!\n" ) ;
+
+//   /* Resend all packets not yet acked */
+//   for( i = 0 ; i < WINDOWSIZE ; i++ ) {
+//     /* Check that the packet is also initialized */
+//     if( senderBuffer[i].acked == false && senderBuffer[i].packet.seqnum != NOTINUSE ) {
+//       if( firstResentSeqNum == -1 ) firstResentSeqNum = senderBuffer[i].packet.seqnum ;
+//       /* Resend the packet not acked */
+//       tolayer3( A, senderBuffer[i].packet ) ;
+//       /* Make sure the buffer knows this packet has been sent */
+//       senderBuffer[i].sent = true ;
+
+//       if (TRACE > 0)
+//         printf ( "---A: resending packet %d\n", senderBuffer[i].packet.seqnum ) ;
+//       /* Increase counter of resent packets */
+//       packets_resent++ ;
+//     }
+//   }
+
+//   /* Restart timer */
+//   if( firstResentSeqNum != -1 ) startTimerHandler( firstResentSeqNum ) ;
+// }       
