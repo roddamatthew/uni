@@ -30,7 +30,6 @@ static int TRACE = 0 ;
 
 static char* arguments[ MAXCMDS ][ MAXARGS ] ;
 static char* command[ MAXCMDS ] ;
-static int j = 0 ;
 static bool eof = false ;
 
 /* return a copy of the input string */
@@ -108,8 +107,20 @@ bool containsEOF( char* string ) {
 
 void readCommand() {
 	int i = 0 ;
+	int j = 0 ;
 	char input[ MAXCHARS ] ;
 	char* inputPointer ;
+
+	/* initialize both arrays to be filled with NULL */
+	for( i = 0 ; i < MAXCMDS ; i++ ) {
+		command[i] = NULL ;
+		for( j = 0 ; j < MAXARGS ; j++ ) {
+			arguments[i][j] = NULL ;
+		}
+	}
+
+	i = 0 ;
+	j = 0 ;
 
 	/* read command */
 	while( j < MAXCMDS && eof == false ) {
