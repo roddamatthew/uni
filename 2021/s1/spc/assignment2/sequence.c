@@ -141,7 +141,7 @@ void readCommand() {
 			printf( "\n" ) ;
 
 		/* last element of arguments string must be NULL for execvp */
-		arguments[j][ i ] = NULL ;
+		arguments[ j ][ i ] = NULL ;
 		j++ ;
 	}
 }
