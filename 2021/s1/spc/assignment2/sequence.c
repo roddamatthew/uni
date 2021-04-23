@@ -40,6 +40,22 @@ char* copyStringUntilSpace( char* string ) {
 	return copy ;
 }
 
+/* returns the number of 'words' in the string */
+/* read through the whole string and return the number of spaces + 1 */
+int nWords( char* string ) {
+	int i = 0 ;
+	int n = 0 ;
+
+	while( string[i] != 10 && string != 0 ) {
+		if( string[i] == ' ' ) n++ ;
+		i++ ;
+	}
+	/* final word will not have a space after it */
+	n++ ;
+
+	return n ;
+}
+
 /* Parse Input into the input array */
 /* input is a 2D array of chars */
 /* This can also be thought of a 1D array of strings */
@@ -57,13 +73,15 @@ int main() {
 	command = copyStringUntilSpace( input ) ;
 	printf( "command stores: %s\n", command ) ;
 
-	arguments[0] = copyStringUntilSpace( input ) ;
+	printf( "%d", nWords( input ) ) ;
+
+	/* arguments[0] = copyStringUntilSpace( input ) ;
 	printf( "args[0] stores: %s\n", arguments[0] ) ;
 
 	arguments[1] = NULL ;
 	printf( "args[1] stores: %s\n", arguments[1] ) ;
 
-	execvp( command, arguments ) ;
+	execvp( command, arguments ) ; */
 
 	
 	/* 
