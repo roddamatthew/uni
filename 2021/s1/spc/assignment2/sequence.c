@@ -18,6 +18,8 @@ C90 standard I think? */
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 /* Define some max values as given in the  */
 #define MAXARGS 10 /* */
@@ -74,7 +76,7 @@ int nWords( char* string ) {
 	int i = 0 ;
 	int n = 0 ;
 
-	while( string[i] != 10 && string != 0 ) {
+	while( string[i] != 10 && string[i] != 0 ) {
 		if( string[i] == ' ' ) n++ ;
 		i++ ;
 	}
@@ -84,6 +86,18 @@ int nWords( char* string ) {
 	return n ;
 }
 
+bool containsEOF( char* string ) {
+	int i = 0 ;
+	bool eoi = false ;
+	
+	while( i <= strlen( string ) && eoi == false ) {
+		if( string[i] == 0 ) return true ; else
+		if( string[i] == 10 ) eoi = true ;
+		i++ ;
+	}
+	return false ;
+}
+
 /* Parse Input into the input array */
 /* input is a 2D array of chars */
 /* This can also be thought of a 1D array of strings */
@@ -91,44 +105,53 @@ int nWords( char* string ) {
 
 int main() {
 	int i = 0 ;
+	int j = 0 ;
+	bool eof = false ;
 	char input[ MAXCHARS ] ;
 	char* command ;
 	char* testing ;
 	char* arguments[ MAXARGS ] ;
+	int pid = 0 ;
+	int TRACE = 0 ;
 
-	fgets( input, MAXCHARS, stdin ) ;
-	printf( "%s", input ) ;
+	/* read command */
+	while( j <= MAXCMDS && eof == false ) {
+		fgets( input, MAXCHARS, stdin ) ;
+		if( TRACE > 0 ) 
+			printf( "input: %s\n", input ) ;
+		if( containsEOF( input ) ) eof = true ;
 
-	command = copyStringUntilSpace( input ) ;
+		command = copyStringUntilSpace( input ) ;
+		if( TRACE > 0 ) 
+			printf( "command: %s\n", command ) ;
 
-	testing = input ;
+		testing = input ;
+		for( i = 0 ; i < nWords( input ) ; i++ ) {
+			arguments[i] = copyStringUntilSpace( testing ) ;
+			testing = copyStringAfterSpace( testing ) ;
+			if( TRACE > 0 ) 
+				printf( "argument %d: %s     ", i, arguments[i] ) ;
+		}
+		if( TRACE > 0 ) 
+			printf( "\n" ) ;
+		arguments[ i ] = NULL ;
+		j++ ;
 
-	for( i = 0 ; i < nWords( input ) ; i++ ) {
-		arguments[i] = copyStringUntilSpace( testing ) ;
-		testing = copyStringAfterSpace( testing ) ;
+		/* fork process */
+		pid = fork() ;
+
+		if( pid < 0 ) { /* fork has failed */
+			printf( "Error has occurred: pid < 0" ) ;
+		}
+		else if( pid > 0 ) /* parent: wait for child process to finish */
+		{
+			wait( NULL ) ;
+		}
+		else if( pid == 0 ) /* child: execute new process */
+		{
+			execvp( command, arguments ) ;
+		}
 	}
-	arguments[ i ] = NULL ;
-
-
-	/* arguments[0] = copyStringUntilSpace( input ) ;
-	printf( "args[0] stores: %s\n", arguments[0] ) ;
-
-	arguments[1] = NULL ;
-	printf( "args[1] stores: %s\n", arguments[1] ) ;
-	*/
-
-	execvp( command, arguments ) ;
-
-	
-	/* 
-	char* cmd = "ls" ;
-	char* argv[3] ;
-	argv[0] = "ls" ;
-	argv[1] = "-la" ;
-	argv[2] = NULL ;
-
-	execvp( cmd, argv ) ;
-	*/
 
 	return 0 ;
 }
