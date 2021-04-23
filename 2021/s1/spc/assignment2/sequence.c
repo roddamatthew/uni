@@ -102,11 +102,6 @@ int main() {
 	command = copyStringUntilSpace( input ) ;
 	printf( "command stores: %s\n", command ) ;
 
-	printf( "%d\n", nWords( input ) ) ;
-
-	testing = copyStringAfterSpace( input ) ;
-	printf( "%s", testing ) ;
-
 	testing = input ;
 
 	for( i = 0 ; i < nWords( input ) ; i++ ) {
