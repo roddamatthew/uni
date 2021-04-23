@@ -117,24 +117,33 @@ int main() {
 
 	/* read command */
 	while( j <= MAXCMDS && eof == false ) {
+		/* get line from stdin */
 		fgets( input, MAXCHARS, stdin ) ;
 		if( TRACE > 0 ) 
 			printf( "input: %s\n", input ) ;
+		/* check if this is the last line of the input */
 		if( containsEOF( input ) ) eof = true ;
 
+		/* copy the first word of the input into the command string */
 		command = copyStringUntilSpace( input ) ;
 		if( TRACE > 0 ) 
 			printf( "command: %s\n", command ) ;
 
-		testing = input ;
+		/* loop over each word in the input line */
 		for( i = 0 ; i < nWords( input ) ; i++ ) {
-			arguments[i] = copyStringUntilSpace( testing ) ;
-			testing = copyStringAfterSpace( testing ) ;
+			/* add the first word of the input to args array */
+			arguments[i] = copyStringUntilSpace( input ) ;
+
+			/* move the input string across to the next word */
+			input = copyStringAfterSpace( input ) ;
 			if( TRACE > 0 ) 
 				printf( "argument %d: %s     ", i, arguments[i] ) ;
 		}
+
 		if( TRACE > 0 ) 
 			printf( "\n" ) ;
+
+		/* last element of arguments string must be NULL for execvp */
 		arguments[ i ] = NULL ;
 		j++ ;
 
@@ -151,6 +160,11 @@ int main() {
 		else if( pid == 0 ) /* child: execute new process */
 		{
 			execvp( command, arguments ) ;
+		}
+		else if( pid > 100 )
+		{
+			printf( "Error has occurred: too many processes (pid > 100)" ) ;
+			eof = true ;
 		}
 	}
 
