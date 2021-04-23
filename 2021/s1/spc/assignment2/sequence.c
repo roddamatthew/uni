@@ -112,7 +112,7 @@ void readCommand() {
 	char* inputPointer ;
 
 	/* read command */
-	while( j <= MAXCMDS && eof == false ) {
+	while( j < MAXCMDS && eof == false ) {
 		/* get line from stdin */
 		fgets( input, MAXCHARS, stdin ) ;
 		if( TRACE > 0 ) 
