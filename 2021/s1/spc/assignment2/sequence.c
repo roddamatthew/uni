@@ -24,11 +24,6 @@ C90 standard I think? */
 #define MAXCMDS 100 /* */
 #define MAXCHARS 256 /* */
 
-static char* input[ MAXCMDS ] ; /* array to store all the commands of the input file */
-static char* cmdsIsolated[ MAXCMDS ] ; /* array to store only the commands */
-static char*  args[ MAXCMDS ][ MAXARGS ]  ; /* array to store only the args */
-static int ncmds = 0 ; /* counter for the number of commands */
-
 /* return a copy of the input string */
 /* end the input string when the first space is read, or we reach the end of the string */
 char* copyStringUntilSpace( char* string ) {
@@ -52,6 +47,24 @@ char* copyStringUntilSpace( char* string ) {
 
 int main() {
 	int i = 0 ;
+	char input[ MAXCHARS ] ;
+	char* command ;
+	char* arguments[ MAXARGS ] ;
+
+	fgets( input, MAXCHARS, stdin ) ;
+	printf( "%s", input ) ;
+
+	command = copyStringUntilSpace( input ) ;
+	printf( "command stores: %s\n", command ) ;
+
+	arguments[0] = copyStringUntilSpace( input ) ;
+	printf( "args[0] stores: %s\n", arguments[0] ) ;
+
+	arguments[1] = NULL ;
+	printf( "args[1] stores: %s\n", arguments[1] ) ;
+
+	execvp( command, arguments ) ;
+
 	
 	/* 
 	char* cmd = "ls" ;
