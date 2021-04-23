@@ -110,7 +110,7 @@ int main() {
 	bool eof = false ;
 	char input[ MAXCHARS ] ;
 	char* command ;
-	char* testing ;
+	char* inputPointer ;
 	char* arguments[ MAXARGS ] ;
 	int pid = 0 ;
 	int TRACE = 0 ;
@@ -129,13 +129,14 @@ int main() {
 		if( TRACE > 0 ) 
 			printf( "command: %s\n", command ) ;
 
+		inputPointer = input ;
 		/* loop over each word in the input line */
 		for( i = 0 ; i < nWords( input ) ; i++ ) {
 			/* add the first word of the input to args array */
-			arguments[i] = copyStringUntilSpace( input ) ;
+			arguments[i] = copyStringUntilSpace( inputPointer ) ;
 
 			/* move the input string across to the next word */
-			input = copyStringAfterSpace( input ) ;
+			inputPointer = copyStringAfterSpace( inputPointer ) ;
 			if( TRACE > 0 ) 
 				printf( "argument %d: %s     ", i, arguments[i] ) ;
 		}
