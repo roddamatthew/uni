@@ -168,7 +168,7 @@ int main() {
 
 	readCommand() ;
 
-	while( i <= 100 ) {
+	while( i < 100 ) {
 		/* fork process */
 		pid = fork() ;
 
