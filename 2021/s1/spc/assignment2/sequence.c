@@ -107,6 +107,14 @@ int main() {
 	testing = copyStringAfterSpace( input ) ;
 	printf( "%s", testing ) ;
 
+	testing = input ;
+
+	for( i = 0 ; i < nWords( input ) ; i++ ) {
+		arguments[i] = copyStringUntilSpace( testing ) ;
+		testing = copyStringAfterSpace( testing ) ;
+		printf( "%s", testing ) ;
+	}
+
 
 	/* arguments[0] = copyStringUntilSpace( input ) ;
 	printf( "args[0] stores: %s\n", arguments[0] ) ;
