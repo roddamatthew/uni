@@ -40,6 +40,34 @@ char* copyStringUntilSpace( char* string ) {
 	return copy ;
 }
 
+char* copyStringAfterSpace( char* string ) {
+	int i ;
+	int charsBeforeSpace = 0 ;
+	int charsAfterSpace = 0 ;
+	bool readSpace = false ;
+	
+	/* loop over the string */
+	for( i = 0 ; i < strlen( string ) ; i++ ) {
+		/* find how many characters are before and after the first space */
+		if( string[i] == ' ' && readSpace == false ) {
+			readSpace = true ;
+			charsBeforeSpace++ ;
+		}
+		else if( readSpace == true ) charsAfterSpace++ ; else
+		charsBeforeSpace++ ;
+	}
+
+	/* printf( "characters before first space %d\n", charsBeforeSpace ) ;
+	printf( "characters after first space %d\n", charsAfterSpace ) ;
+	printf( "%.*s", charsAfterSpace, string + charsBeforeSpace ) ; */
+
+	char* copy = malloc( charsAfterSpace + 1 ) ;
+	memcpy( copy, &string[ charsBeforeSpace ], charsAfterSpace ) ;
+	copy[ charsAfterSpace ] = '\0' ;
+
+	return copy ;
+}
+
 /* returns the number of 'words' in the string */
 /* read through the whole string and return the number of spaces + 1 */
 int nWords( char* string ) {
@@ -65,6 +93,7 @@ int main() {
 	int i = 0 ;
 	char input[ MAXCHARS ] ;
 	char* command ;
+	char* testing ;
 	char* arguments[ MAXARGS ] ;
 
 	fgets( input, MAXCHARS, stdin ) ;
@@ -73,7 +102,11 @@ int main() {
 	command = copyStringUntilSpace( input ) ;
 	printf( "command stores: %s\n", command ) ;
 
-	printf( "%d", nWords( input ) ) ;
+	printf( "%d\n", nWords( input ) ) ;
+
+	testing = copyStringAfterSpace( input ) ;
+	printf( "%s", testing ) ;
+
 
 	/* arguments[0] = copyStringUntilSpace( input ) ;
 	printf( "args[0] stores: %s\n", arguments[0] ) ;
