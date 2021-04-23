@@ -26,6 +26,13 @@ C90 standard I think? */
 #define MAXCMDS 100 /* */
 #define MAXCHARS 256 /* */
 
+static int TRACE = 0 ;
+
+static char* arguments[ MAXCMDS ][ MAXARGS ] ;
+static char* command[ MAXCMDS ] ;
+static int j = 0 ;
+static bool eof = false ;
+
 /* return a copy of the input string */
 /* end the input string when the first space is read, or we reach the end of the string */
 char* copyStringUntilSpace( char* string ) {
@@ -99,21 +106,10 @@ bool containsEOF( char* string ) {
 	return false ;
 }
 
-/* Parse Input into the input array */
-/* input is a 2D array of chars */
-/* This can also be thought of a 1D array of strings */
-/* Access each line of input with the row, and each character with the column */
-
-int main() {
+void readCommand() {
 	int i = 0 ;
-	int j = 0 ;
-	bool eof = false ;
 	char input[ MAXCHARS ] ;
-	char* command ;
 	char* inputPointer ;
-	char* arguments[ MAXARGS ] ;
-	int pid = 0 ;
-	int TRACE = 0 ;
 
 	/* read command */
 	while( j <= MAXCMDS && eof == false ) {
@@ -125,29 +121,43 @@ int main() {
 		if( containsEOF( input ) ) eof = true ;
 
 		/* copy the first word of the input into the command string */
-		command = copyStringUntilSpace( input ) ;
+		command[j] = copyStringUntilSpace( input ) ;
 		if( TRACE > 0 ) 
-			printf( "command: %s\n", command ) ;
+			printf( "command: %s\n", command[j] ) ;
 
 		inputPointer = input ;
 		/* loop over each word in the input line */
 		for( i = 0 ; i < nWords( input ) ; i++ ) {
 			/* add the first word of the input to args array */
-			arguments[i] = copyStringUntilSpace( inputPointer ) ;
+			arguments[j][i] = copyStringUntilSpace( inputPointer ) ;
 
 			/* move the input string across to the next word */
 			inputPointer = copyStringAfterSpace( inputPointer ) ;
 			if( TRACE > 0 ) 
-				printf( "argument %d: %s     ", i, arguments[i] ) ;
+				printf( "argument %d: %s     ", i, arguments[j][i] ) ;
 		}
 
 		if( TRACE > 0 ) 
 			printf( "\n" ) ;
 
 		/* last element of arguments string must be NULL for execvp */
-		arguments[ i ] = NULL ;
+		arguments[j][ i ] = NULL ;
 		j++ ;
+	}
+}
 
+/* Parse Input into the input array */
+/* input is a 2D array of chars */
+/* This can also be thought of a 1D array of strings */
+/* Access each line of input with the row, and each character with the column */
+
+int main() {
+	int pid = 0 ;
+	int i = 0 ;
+
+	readCommand() ;
+
+	while( i <= 100 ) {
 		/* fork process */
 		pid = fork() ;
 
@@ -160,13 +170,9 @@ int main() {
 		}
 		else if( pid == 0 ) /* child: execute new process */
 		{
-			execvp( command, arguments ) ;
+			execvp( command[i], arguments[i] ) ;
 		}
-		else if( pid > 100 )
-		{
-			printf( "Error has occurred: too many processes (pid > 100)" ) ;
-			eof = true ;
-		}
+		i++ ;
 	}
 
 	return 0 ;
