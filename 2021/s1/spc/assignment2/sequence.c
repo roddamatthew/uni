@@ -47,6 +47,7 @@ char* copyStringAfterSpace( char* string ) {
 	int charsBeforeSpace = 0 ;
 	int charsAfterSpace = 0 ;
 	bool readSpace = false ;
+	char* copy ;
 	
 	/* loop over the string */
 	for( i = 0 ; i < strlen( string ) ; i++ ) {
@@ -63,7 +64,7 @@ char* copyStringAfterSpace( char* string ) {
 	printf( "characters after first space %d\n", charsAfterSpace ) ;
 	printf( "%.*s", charsAfterSpace, string + charsBeforeSpace ) ; */
 
-	char* copy = malloc( charsAfterSpace + 1 ) ;
+	copy = malloc( charsAfterSpace + 1 ) ;
 	memcpy( copy, &string[ charsBeforeSpace ], charsAfterSpace ) ;
 	copy[ charsAfterSpace ] = '\0' ;
 
