@@ -100,15 +100,14 @@ int main() {
 	printf( "%s", input ) ;
 
 	command = copyStringUntilSpace( input ) ;
-	printf( "command stores: %s\n", command ) ;
 
 	testing = input ;
 
 	for( i = 0 ; i < nWords( input ) ; i++ ) {
 		arguments[i] = copyStringUntilSpace( testing ) ;
 		testing = copyStringAfterSpace( testing ) ;
-		printf( "%s", testing ) ;
 	}
+	arguments[ i ] = NULL ;
 
 
 	/* arguments[0] = copyStringUntilSpace( input ) ;
@@ -116,8 +115,9 @@ int main() {
 
 	arguments[1] = NULL ;
 	printf( "args[1] stores: %s\n", arguments[1] ) ;
+	*/
 
-	execvp( command, arguments ) ; */
+	execvp( command, arguments ) ;
 
 	
 	/* 
