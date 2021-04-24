@@ -157,17 +157,10 @@ void readCommand() {
 	}
 }
 
-/* Parse Input into the input array */
-/* input is a 2D array of chars */
-/* This can also be thought of a 1D array of strings */
-/* Access each line of input with the row, and each character with the column */
-
-int main() {
+void executeCommands() {
 	int pid = 0 ;
 	int i = 0 ;
 	bool noMoreCommands = false ;
-
-	readCommand() ;
 
 	while( i < 100 && noMoreCommands == false ) {
 		/* fork process */
@@ -189,6 +182,17 @@ int main() {
 		/* Check if we've run out of commands */
 		if( command[i] == NULL ) noMoreCommands = true ;
 	}
+
+}
+
+/* Parse Input into the input array */
+/* input is a 2D array of chars */
+/* This can also be thought of a 1D array of strings */
+/* Access each line of input with the row, and each character with the column */
+
+int main() {
+	readCommand() ;
+	/* executeCommands() ; */
 
 	return 0 ;
 }
