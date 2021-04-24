@@ -81,7 +81,7 @@ int nWords( char* string ) {
 }
 
 /* Read input into our arguments array */
-void readCommand() {
+void readCommands() {
 	int i, j ;
 	char input[ MAXCHARS ] ;
 	char* inputPtr ;
@@ -179,7 +179,7 @@ void executeCommands() {
 }
 
 int main() {
-	readCommand() ;
+	readCommands() ;
 	executeCommands() ;
 
 	return 0 ;
