@@ -171,7 +171,7 @@ void executeCommands() {
 		}
 		else if( pid > 0 ) /* parent: wait for child process to finish */
 		{
-			wait( NULL ) ;
+			/* wait( NULL ) ; */
 		}
 		else if( pid == 0 ) /* child: execute new process */
 		{
@@ -192,7 +192,7 @@ void executeCommands() {
 
 int main() {
 	readCommand() ;
-	/* executeCommands() ; */
+	executeCommands() ;
 
 	return 0 ;
 }
