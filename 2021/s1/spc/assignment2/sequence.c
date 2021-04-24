@@ -20,13 +20,14 @@ C90 standard I think? */
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 /* Define some max values as given in the  */
 #define MAXARGS 10 /* */
 #define MAXCMDS 100 /* */
 #define MAXCHARS 256 /* */
 
-static int TRACE = 0 ;
+static int TRACE = 1 ;
 
 static char* arguments[ MAXCMDS ][ MAXARGS ] ;
 static char* command[ MAXCMDS ] ;
@@ -97,7 +98,7 @@ bool containsEOF( char* string ) {
 	int i = 0 ;
 	bool eoi = false ;
 	
-	while( i <= strlen( string ) && eoi == false ) {
+	while( i <= strlen( string ) + 1 && eoi == false ) {
 		if( string[i] == 0 ) return true ; else
 		if( string[i] == 10 ) eoi = true ;
 		i++ ;
@@ -125,10 +126,13 @@ void readCommand() {
 	j = 0 ;
 
 	/* read command */
-	while( j < MAXCMDS && eof == false && error == false ) {
-		/* get line from stdin */
-		fgets( input, MAXCHARS, stdin ) ;
-		if( strlen(input) == 0 ) printf( "EMPTY INPUT!!!\n" ) ;
+	while( j < MAXCMDS && eof == false && error == false && fgets( input, MAXCHARS, stdin ) != NULL ) {
+
+		if( input[0] == '\n' ) {
+			eof = true ;
+			printf( "EMPTY INPUT!!!\n" ) ;
+		}
+
 		if( TRACE > 0 ) {
 			printf( "input: %s\n", input ) ;
 			printf( "input as decimal: \n" ) ;
@@ -141,12 +145,15 @@ void readCommand() {
 		/* Check if input has any negative numbers */
 		/* This could find if we've read in junk memory */
 		for( i = 0 ; i < strlen( input ) ; i++ ) {
-			if( input[i] < 0 ) error = true ;
+			if( input[i] < 0 ) {
+				error = true ;
+				eof = true ;
+			}
 			if( TRACE > 0 )
 				printf( "input character %d: %d, error = %d\n", i, input[i], error ) ;
 		}
 
-		if( error == false ) {
+		if( error == false && input[0] != '\n' ) {
 			/* check if this is the last line of the input */
 			if( containsEOF( input ) ) eof = true ;
 
@@ -172,8 +179,8 @@ void readCommand() {
 
 			/* last element of arguments string must be NULL for execvp */
 			arguments[ j ][ i ] = NULL ;
-			j++ ;
 		}
+		j++ ;
 	}
 }
 
@@ -188,9 +195,9 @@ void executeCommands() {
 	int pid = 0 ;
 	int i = 0 ;
 
-	for( i = 0 ; i < 100 ; i++ ) {
+	while( i < 100 ) {
 		/* Check if we've run out of commands */
-		if( command[i] == NULL ) break ;
+		if( arguments[i][0] == NULL ) break ;
 
 		/* fork process */
 		pid = fork() ;
@@ -209,8 +216,9 @@ void executeCommands() {
 				printCommand( i ) ;
 				printf( "Output of command:\n" ) ;
 			}
-			/* execvp( command[i], arguments[i] ) ; */
+			execvp( command[i], arguments[i] ) ;
 		}
+		i++ ;
 	}
 
 }
