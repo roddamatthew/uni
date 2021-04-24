@@ -205,10 +205,11 @@ void executeCommands() {
 		}
 		else if( pid == 0 ) /* child: execute new process */
 		{
-			if( TRACE > 0 )
-			printf( "Executing command %d:\n", i ) ;
-			printCommand( i ) ;
-			printf( "Output of command:\n" ) ;
+			if( TRACE > 0 ) {
+				printf( "Executing command %d:\n", i ) ;
+				printCommand( i ) ;
+				printf( "Output of command:\n" ) ;
+			}
 			execvp( command[i], arguments[i] ) ;
 		}
 	}
