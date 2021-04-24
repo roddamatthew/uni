@@ -27,7 +27,7 @@ C90 standard I think? */
 #define MAXCMDS 100 /* */
 #define MAXCHARS 256 /* */
 
-static int TRACE = 1 ;
+static int TRACE = 0 ;
 
 static char* arguments[ MAXCMDS ][ MAXARGS ] ;
 static char* command[ MAXCMDS ] ;
