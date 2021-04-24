@@ -83,7 +83,7 @@ int nWords( char* string ) {
 	int i = 0 ;
 	int n = 0 ;
 
-	while( string[i] != 10 && string[i] != 0 ) {
+	while( string[i] != 10 && string[i] != 0 && i <=strlen( string ) ) {
 		if( string[i] == ' ' ) n++ ;
 		i++ ;
 	}
@@ -165,10 +165,11 @@ void readCommand() {
 int main() {
 	int pid = 0 ;
 	int i = 0 ;
+	bool noMoreCommands = false ;
 
 	readCommand() ;
 
-	while( i < 100 ) {
+	while( i < 100 && noMoreCommands == false ) {
 		/* fork process */
 		pid = fork() ;
 
@@ -183,7 +184,10 @@ int main() {
 		{
 			execvp( command[i], arguments[i] ) ;
 		}
+		printf( "i = %d\n", i ) ;
 		i++ ;
+		/* Check if we've run out of commands */
+		if( command[i] == NULL ) noMoreCommands = true ;
 	}
 
 	return 0 ;
