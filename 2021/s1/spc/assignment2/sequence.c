@@ -130,7 +130,8 @@ void readCommand() {
 
 		if( input[0] == '\n' ) {
 			eof = true ;
-			printf( "EMPTY INPUT!!!\n" ) ;
+			if( TRACE > 0 )
+				printf( "EMPTY INPUT!!!\n" ) ;
 		}
 
 		if( TRACE > 0 ) {
