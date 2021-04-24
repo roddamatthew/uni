@@ -26,7 +26,7 @@ C90 standard I think? */
 #define MAXCMDS 100 /* */
 #define MAXCHARS 256 /* */
 
-static int TRACE = 1 ;
+static int TRACE = 0 ;
 
 static char* arguments[ MAXCMDS ][ MAXARGS ] ;
 static char* command[ MAXCMDS ] ;
@@ -108,8 +108,10 @@ bool containsEOF( char* string ) {
 void readCommand() {
 	int i = 0 ;
 	int j = 0 ;
+	int k = 0 ;
 	char input[ MAXCHARS ] ;
 	char* inputPointer ;
+	bool error = false ;
 
 	/* initialize both arrays to be filled with NULL */
 	for( i = 0 ; i < MAXCMDS ; i++ ) {
@@ -123,37 +125,62 @@ void readCommand() {
 	j = 0 ;
 
 	/* read command */
-	while( j < MAXCMDS && eof == false ) {
+	while( j < MAXCMDS && eof == false && error == false ) {
 		/* get line from stdin */
 		fgets( input, MAXCHARS, stdin ) ;
-		if( TRACE > 0 ) 
+		if( strlen(input) == 0 ) printf( "EMPTY INPUT!!!\n" ) ;
+		if( TRACE > 0 ) {
 			printf( "input: %s\n", input ) ;
-		/* check if this is the last line of the input */
-		if( containsEOF( input ) ) eof = true ;
-
-		/* copy the first word of the input into the command string */
-		command[j] = copyStringUntilSpace( input ) ;
-		if( TRACE > 0 ) 
-			printf( "command: %s\n", command[j] ) ;
-
-		inputPointer = input ;
-		/* loop over each word in the input line */
-		for( i = 0 ; i < nWords( input ) ; i++ ) {
-			/* add the first word of the input to args array */
-			arguments[j][i] = copyStringUntilSpace( inputPointer ) ;
-
-			/* move the input string across to the next word */
-			inputPointer = copyStringAfterSpace( inputPointer ) ;
-			if( TRACE > 0 ) 
-				printf( "argument %d: %s     ", i, arguments[j][i] ) ;
+			printf( "input as decimal: \n" ) ;
+			for( k = 0 ; k < MAXCHARS ; k++ ) {
+				printf( "%d ", input[k] ) ;
+			}
+			printf( "\n" ) ;
 		}
 
-		if( TRACE > 0 ) 
-			printf( "\n" ) ;
+		/* Check if input has any negative numbers */
+		/* This could find if we've read in junk memory */
+		for( i = 0 ; i < strlen( input ) ; i++ ) {
+			if( input[i] < 0 ) error = true ;
+			if( TRACE > 0 )
+				printf( "input character %d: %d, error = %d\n", i, input[i], error ) ;
+		}
 
-		/* last element of arguments string must be NULL for execvp */
-		arguments[ j ][ i ] = NULL ;
-		j++ ;
+		if( error == false ) {
+			/* check if this is the last line of the input */
+			if( containsEOF( input ) ) eof = true ;
+
+			/* copy the first word of the input into the command string */
+			command[j] = copyStringUntilSpace( input ) ;
+			if( TRACE > 0 ) 
+				printf( "command: %s\n", command[j] ) ;
+
+			inputPointer = input ;
+			/* loop over each word in the input line */
+			for( i = 0 ; i < nWords( input ) ; i++ ) {
+				/* add the first word of the input to args array */
+				arguments[j][i] = copyStringUntilSpace( inputPointer ) ;
+
+				/* move the input string across to the next word */
+				inputPointer = copyStringAfterSpace( inputPointer ) ;
+				if( TRACE > 0 ) 
+					printf( "argument %d: %s\n", i, arguments[j][i] ) ;
+			}
+
+			if( TRACE > 0 ) 
+				printf( "\n" ) ;
+
+			/* last element of arguments string must be NULL for execvp */
+			arguments[ j ][ i ] = NULL ;
+			j++ ;
+		}
+	}
+}
+
+void printCommand( int i ) {
+	int j ;
+	for( j = 0 ; j < MAXARGS ; j++ ) {
+		printf( "arg%d: %s\n", j, arguments[i][j] ) ;
 	}
 }
 
@@ -162,12 +189,10 @@ void executeCommands() {
 	int i = 0 ;
 	bool noMoreCommands = false ;
 
-	char* testing[3] ;
-	testing[0] = "echo" ;
-	testing[1] = "1" ;
-	testing[2] = NULL ;
+	for( i = 0 ; i < 100 ; i++ ) {
+		/* Check if we've run out of commands */
+		if( command[i] == NULL ) break ;
 
-	while( i < 100 && noMoreCommands == false ) {
 		/* fork process */
 		pid = fork() ;
 
@@ -180,13 +205,12 @@ void executeCommands() {
 		}
 		else if( pid == 0 ) /* child: execute new process */
 		{
-			execvp( testing[0], testing ) ;
-			/* execvp( command[i], arguments[i] ) ; */
+			if( TRACE > 0 )
+			printf( "Executing command %d:\n", i ) ;
+			printCommand( i ) ;
+			printf( "Output of command:\n" ) ;
+			execvp( command[i], arguments[i] ) ;
 		}
-		printf( "i = %d\n", i ) ;
-		i++ ;
-		/* Check if we've run out of commands */
-		if( command[i] == NULL ) noMoreCommands = true ;
 	}
 
 }
