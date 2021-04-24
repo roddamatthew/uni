@@ -162,6 +162,11 @@ void executeCommands() {
 	int i = 0 ;
 	bool noMoreCommands = false ;
 
+	char* testing[3] ;
+	testing[0] = "echo" ;
+	testing[1] = "1" ;
+	testing[2] = NULL ;
+
 	while( i < 100 && noMoreCommands == false ) {
 		/* fork process */
 		pid = fork() ;
@@ -171,11 +176,12 @@ void executeCommands() {
 		}
 		else if( pid > 0 ) /* parent: wait for child process to finish */
 		{
-			/* wait( NULL ) ; */
+			wait( NULL ) ;
 		}
 		else if( pid == 0 ) /* child: execute new process */
 		{
-			execvp( command[i], arguments[i] ) ;
+			execvp( testing[0], testing ) ;
+			/* execvp( command[i], arguments[i] ) ; */
 		}
 		printf( "i = %d\n", i ) ;
 		i++ ;
