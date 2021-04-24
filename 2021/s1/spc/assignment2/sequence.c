@@ -187,7 +187,6 @@ void printCommand( int i ) {
 void executeCommands() {
 	int pid = 0 ;
 	int i = 0 ;
-	bool noMoreCommands = false ;
 
 	for( i = 0 ; i < 100 ; i++ ) {
 		/* Check if we've run out of commands */
@@ -210,7 +209,7 @@ void executeCommands() {
 				printCommand( i ) ;
 				printf( "Output of command:\n" ) ;
 			}
-			execvp( command[i], arguments[i] ) ;
+			/* execvp( command[i], arguments[i] ) ; */
 		}
 	}
 
