@@ -6,10 +6,7 @@ try to store as little information as necessary
 #include <stdio.h>
 #include <string.h>
 
-static char* input[ MAXCMDS ] ; /* array to store all the commands of the input file */
-static char* cmdsIsolated[ MAXCMDS ] ; /* array to store only the commands */
-static char*  args[ MAXCMDS ][ MAXARGS ]  ; /* array to store only the args */
-static int ncmds = 0 ; /* counter for the number of commands */
+
 
 char* copyStringUntilSpace( char* string ) {
 	int i ;
