@@ -1,3 +1,5 @@
+all: sequence pipeline
+
 sequence:
     gcc sequence.c -std=c99 -Wall -o sequence
 
