@@ -157,42 +157,61 @@ void printCommand( int i ) {
 /* ----------------------------------End of copy from sequence.c-----------------------------------------*/
 
 void pipelineCommands() {
-	pid_t pid = 0 ;
-	int i = 0 ;
+	pid_t pid ;
+	int i ;
 	int nCommands = numberOfCommands() ;
 
 	int p[2] ;
-	int input ;
+	int input = 0 ;
 
+	/* Loop over each command */
 	for( i = 0 ; i < nCommands ; i++ ) {
+		/* If this isn't the last command, create a pipe */
 		if( i != nCommands - 1 )
-			pipe( p ) ;
+			if( pipe( p ) == -1 ) {
+				printf( "Pipe failed\n" ) ;
+				return ;
+			}
 
-		pid = fork() ;
+		/* Fork and handle errors */
+		if( ( pid = fork() ) < 0 ) {
+			printf( "Fork failed\n" ) ;
+			return ;
+		} ;
 
-		if( pid == 0 ) {
+		if( pid == 0 ) { /* Child: */
+			/* If this isn't the first command, redirect input from stdin to our input */
 			if( i != 0 ) {
 				dup2( input, 0 ) ;
 				close( input ) ;
 			}
 
+			/* If this isn't the last command, redirect output from stdout to our pipe */
 			if( i != nCommands - 1 ) {
 				dup2( p[1], 1 ) ;
 				close( p[1] ) ;
 			}
 
+			/* Execute the command */
+			/* Input will be coming from 'input' */
+			/* Output will be written to p[1] */
 			execvp( arguments[i][0], arguments[i] ) ;
-		} else if( pid > 0 ) {
+
+
+		} else if( pid > 0 ) { /* Parent */
+			/* Close the input file descriptor */
 			if( i != 0 ) {
 				close( input ) ;
 			}
 
+			/* Next commands input will be the output of the last command */
 			if( i != nCommands - 1 ) {
 				input = p[0] ;
 			}
+			/* Wait for child to finish executing */
 			wait( NULL ) ;
 		}
-
+		/* Clean up open pipe */
 		close( p[1] ) ;
 	}
 }
