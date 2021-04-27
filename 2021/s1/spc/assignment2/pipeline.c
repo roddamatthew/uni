@@ -4,6 +4,7 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 /* ----------------------------------------Copy from sequence.c------------------------------------------*/
 
@@ -182,13 +183,13 @@ void pipelineCommands() {
 		if( pid == 0 ) { /* Child: */
 			/* If this isn't the first command, redirect input from stdin to our input */
 			if( i != 0 ) {
-				dup2( input, 0 ) ;
+				dup2( input, STDIN_FILENO ) ;
 				close( input ) ;
 			}
 
 			/* If this isn't the last command, redirect output from stdout to our pipe */
 			if( i != nCommands - 1 ) {
-				dup2( p[1], 1 ) ;
+				dup2( p[1], STDOUT_FILENO ) ;
 				close( p[1] ) ;
 			}
 
