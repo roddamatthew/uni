@@ -156,69 +156,6 @@ void printCommand( int i ) {
 
 /* ----------------------------------End of copy from sequence.c-----------------------------------------*/
 
-void pipeline() {
-	// For each command except the final one:
-	// new_pipe = the output of the current command
-	// For each command except the first one:
-	// prev_pipe = the output of the previous command, input of current command
-
-	/* for cmd in cmds:
-	    if this is not the final command:
-	        pipe (new_pipe)    // Create a new pipe
-
-	    fork and handle errors
-
-	    if (child)
-	        if this is not the first command:
-	            Redirect input to prev_pipe
-	        if this is not the final command:
-	            Redirect output to new_pipe
-	        execute command
-	    else // parent
-	        if this is not the first command:
-	            close prev_pipe
-	        if this is not the final command:
-	            prev_pipe = new_pipe
-
-	
-	close any remaining pipes, clean up */
-	int i ;
-	int prev_pipe[2] ;
-	pipe( prev_pipe ) ;
-	pid_t my_pid ;
-
-	for( i = 0 ; i < numberOfCommands() ; i++ ) {
-		// if( i != 1 ) pipe( new_pipe ) ;
-
-		my_pid = fork() ;
-
-			// Fork Fail
-		if (my_pid < 0){
-			printf("Failed Fork\n");
-		} // Fork Parent
-		else if ( my_pid > 0 ) {
-			// close the write end of pipe
-			close( prev_pipe[1] ) ;
-			// set read end to stdin
-			dup2( prev_pipe[0], 0 ) ;
-			// close read end of pipe
-			close( prev_pipe[0] ) ;
-			// wait for child
-			wait( NULL ) ;
-		} // Fork Child
-		else {
-			// close the read end of pipe
-			close( prev_pipe[0] ) ;
-			// set write end to stdout
-			dup2( prev_pipe[1], 1 ) ;
-			// close the write end of our pipe
-			close( prev_pipe[1] ) ;
-			// execute command: output will go to new_pipe[0]?
-			execvp( arguments[i][0], arguments[i] ) ;
-		}
-	}
-}
-
 void pipelineCommands() {
 	int pid = 0 ;
 	int i = 0 ;
@@ -226,56 +163,8 @@ void pipelineCommands() {
 
 	int pipe[2] ;
 	pipe[0] = 0 ;
-	pipe[1] = 1 ;
 
-	while( i < MAXCMDS * 2 ) {
-		/* Check if we've run out of commands */
-		if( arguments[i][0] == NULL ) break ;
-
-		/* If this isn't the last command, make a new pipe */
-		if( i != nCommands - 1 )
-			// pipe( pipe ) ;
-			printf( "Create new pipe\n" ) ;
-
-		/* fork process */
-		pid = fork() ;
-
-		if( pid < 0 ) { /* fork has failed */
-			printf( "Error has occurred: pid < 0" ) ;
-		}
-		else if( pid > 0 ) /* parent: wait for child process to finish */
-		{
-			if( i != 0 ) {
-				printf( "Close previous pipe\n" ) ;
-				close( pipe[1] ) ;
-			}
-			if( i != nCommands - 1 ) {
-				printf( "Set previous pipe = new pipe\n" ) ;
-				dup2( pipe[0], 0 ) ;
-			}
-			wait( NULL ) ;
-		}
-		else if( pid == 0 ) /* child: execute new process */
-		{
-			/* Print out the command we're about to execute */
-			if( TRACE > 0 ) {
-				printf( "Executing command %d:\n", i ) ;
-				printCommand( i ) ;
-				printf( "Output of command:\n" ) ;
-			}
-
-			if( i != 0 ) {
-				printf( "Redirect input into previous pipe\n" ) ;
-				dup2( pipe[1], 1 ) ;
-			}
-			if( i != nCommands - 1 ) {
-				 printf( "Redirect output to new pipe\n" ) ;
-			}
-			/* Execute the next command in the arguments array */
-			execvp( arguments[i][0], arguments[i] ) ;
-		}
-		i++ ;
-	}
+	
 
 }
 
