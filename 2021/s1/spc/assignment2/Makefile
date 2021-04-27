@@ -1,8 +1,8 @@
-sequence: sequence.c
-	gcc -g -Wall -o sequence sequence.c
+sequence:
+    gcc sequence.c -std=c99 -Wall -o sequence
 
-pipeline: pipeline.c
-	gcc -g -Wall -o pipeline pipeline.c
+pipeline:
+    gcc pipeline.c -std=c99 -Wall -o pipeline
 
 clean:
 	$(RM) sequence
