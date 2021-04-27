@@ -157,20 +157,49 @@ void printCommand( int i ) {
 /* ----------------------------------End of copy from sequence.c-----------------------------------------*/
 
 void pipelineCommands() {
-	int pid = 0 ;
+	pid_t pid = 0 ;
 	int i = 0 ;
 	int nCommands = numberOfCommands() ;
 
-	int pipe[2] ;
-	pipe[0] = 0 ;
+	int p[2] ;
+	int input ;
 
-	
+	for( i = 0 ; i < nCommands ; i++ ) {
+		if( i != nCommands - 1 )
+			pipe( p ) ;
 
+		pid = fork() ;
+
+		if( pid == 0 ) {
+			if( i != 0 ) {
+				dup2( input, 0 ) ;
+				close( input ) ;
+			}
+
+			if( i != nCommands - 1 ) {
+				dup2( p[1], 1 ) ;
+				close( p[1] ) ;
+			}
+
+			execvp( arguments[i][0], arguments[i] ) ;
+		} else if( pid > 0 ) {
+			if( i != 0 ) {
+				close( input ) ;
+			}
+
+			if( i != nCommands - 1 ) {
+				input = p[0] ;
+			}
+			wait( NULL ) ;
+		}
+
+		close( p[1] ) ;
+	}
 }
 
 int main() {
 	readCommands() ;
-	pipeline() ;
+	pipelineCommands() ;
 
 	return 0 ;
 }
