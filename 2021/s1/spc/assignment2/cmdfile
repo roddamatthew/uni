@@ -1,3 +1,2 @@
-echo Command1
-echo Command2
-echo Command3
+ls -l
+wc

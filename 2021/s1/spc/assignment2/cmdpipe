@@ -1,3 +1,3 @@
-ls
-grep pipe
-wc
+cat textfile
+nl -s z
+split -l 50 - abc
