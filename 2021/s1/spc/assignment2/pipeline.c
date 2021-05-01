@@ -20,7 +20,7 @@ static char* arguments[ MAXCMDS ][ MAXARGS ] ;
 
 /* Read input into our arguments array */
 void readCommands() {
-	char* space = " \n\r" ;
+	char* delimiters = " \n\r" ;
 	int i, j = 0 ;
 	char* string ;
 
@@ -28,14 +28,20 @@ void readCommands() {
 		// Allocate memory for current line to be stored in
 		string = ( char* )malloc( ( MAXCHARS + 1 ) * sizeof( char ) ) ;
 		if( string == NULL ) printf( "malloc failed!\n" ) ;
+
+		/* if we're reached the eof, stop reading input*/
 		if( fgets( string, MAXCHARS, stdin ) == NULL ) break ;
 
-		char* tokens = strtok( string, space ) ;
+		/* read the first token of the input string */
+		char* tokens = strtok( string, delimiters ) ;
 		i = 0 ;
 
+		/* loop until we read a null token or have more than 10 arguments */
 		while( tokens != NULL && i < MAXARGS ) {
+			/* store the current token in the arguments array */
 			arguments[j][i] = tokens ;
-			tokens = strtok( NULL, space ) ;
+			/* read the next token in the input string */
+			tokens = strtok( NULL, delimiters ) ;
 			i++ ;
 		}
 
@@ -47,7 +53,8 @@ void readCommands() {
 int numberOfCommands() {
 	int i ;
 	int n = 0 ;
-	/* Count the number of non NULL inputs in arguments */
+	/* Count the number of non NULL elements in arguments */
+	/* only need to read the first element as these are the commands */
 	for( i = 0 ; i < MAXCMDS ; i++ ) {
 		if( arguments[i][0] != NULL ) n++ ;
 	}

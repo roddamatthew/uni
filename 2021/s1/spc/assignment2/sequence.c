@@ -10,128 +10,53 @@
 #define MAXCMDS 100 /* maximum number of commands from a file */
 #define MAXCHARS 256 /* maximum number of characters per line */
 
-/* global variable for debugging */
-/* set greater than 1 to check the behaviour at each step */
-static int TRACE = 0 ;
-
 /* global variables for storing our commands */
 /* each element is a string */
 /* each row is a command */
 /* each column is an argument */
 static char* arguments[ MAXCMDS ][ MAXARGS ] ;
 
-/* return a copy of the input string */
-/* end the input string when the first space is read, or we reach the end of the string */
-char* copyStringUntilSpace( char* string ) {
-	int i ;
-	char* copy = malloc( strlen( string ) + 1 ) ;
-	strcpy( copy, string ) ;
-
-	for( i = 0 ; i < strlen( copy ) ; i++ ) {
-		if( copy[i] == ' ' ) copy[i] = '\0' ; else
-		if( copy[i] == 10  ) copy[i] = '\0' ; else
-		if( copy[i] == 0   ) copy[i] = '\0' ;
-	}
-
-	return copy ;
-}
-
-/* Copy all characters in a string after the first space is read */
-/* This is used to remove arguments from a line one at a time */
-char* copyStringAfterSpace( char* string ) {
-	int i ;
-	int charsBeforeSpace = 0 ;
-	int charsAfterSpace = 0 ;
-	bool readSpace = false ;
-	char* copy ;
-	
-	/* loop over the string */
-	for( i = 0 ; i < strlen( string ) ; i++ ) {
-		/* find how many characters are before and after the first space */
-		if( string[i] == ' ' && readSpace == false ) {
-			readSpace = true ;
-			charsBeforeSpace++ ;
-		}
-		else if( readSpace == true ) charsAfterSpace++ ; else
-		charsBeforeSpace++ ;
-	}
-
-	/* Allocate memory for a new string */
-	copy = malloc( charsAfterSpace + 1 ) ;
-	memcpy( copy, &string[ charsBeforeSpace ], charsAfterSpace ) ;
-	copy[ charsAfterSpace ] = '\0' ;
-
-	return copy ;
-}
-
-/* returns the number of 'words' in the string */
-/* read through the whole string and return the number of spaces + 1 */
-int nWords( char* string ) {
-	int i = 0 ;
-	int n = 0 ;
-
-	while( string[i] != 10 && string[i] != 0 && i <=strlen( string ) ) {
-		if( string[i] == ' ' ) n++ ;
-		i++ ;
-	}
-	/* final word will not have a space after it */
-	n++ ;
-
-	return n ;
-}
-
 /* Read input into our arguments array */
 void readCommands() {
-	int i, j ;
-	char input[ MAXCHARS ] ;
-	char* inputPtr ;
+	char* delimiters = " \n\r" ;
+	int i, j = 0 ;
+	char* string ;
 
-	/* initialize both arrays to be filled with NULL */
-	for( i = 0 ; i < MAXCMDS ; i++ ) {
-		for( j = 0 ; j < MAXARGS ; j++ ) {
-			arguments[i][j] = NULL ;
-		}
-	}
+	while( j < MAXCMDS ) {
+		// Allocate memory for current line to be stored in
+		string = ( char* )malloc( ( MAXCHARS + 1 ) * sizeof( char ) ) ;
+		if( string == NULL ) printf( "malloc failed!\n" ) ;
 
-	/* Reset j = 0 */
-	j = 0 ;
+		/* if we're reached the eof, stop reading input*/
+		if( fgets( string, MAXCHARS, stdin ) == NULL ) break ;
 
-	/* Loop over the whole input or until we've read our max number of commands */
-	while( fgets( input, MAXCHARS, stdin ) != NULL && j < MAXCMDS ) {
+		/* read the first token of the input string */
+		char* tokens = strtok( string, delimiters ) ;
+		i = 0 ;
 
-		/* Display the input for debugging */
-		if( TRACE > 0 ) {
-			printf( "input: %s\n", input ) ;
-			printf( "input as decimal: \n" ) ;
-			
-			/* Display characters as ASCII decimals */
-			for( i = 0 ; i < MAXCHARS ; i++ ) {
-				printf( "%d ", input[i] ) ;
-			}
-			printf( "\n" ) ;
+		/* loop until we read a null token or have more than 10 arguments */
+		while( tokens != NULL && i < MAXARGS ) {
+			/* store the current token in the arguments array */
+			arguments[j][i] = tokens ;
+			/* read the next token in the input string */
+			tokens = strtok( NULL, delimiters ) ;
+			i++ ;
 		}
 
-		/* Set our temporary pointer equal to our input's address*/
-		inputPtr = input ;
-		/* loop over each word in the input line */
-		for( i = 0 ; i < nWords( input ) ; i++ ) {
-			/* add the first word of the input to args array */
-			arguments[j][i] = copyStringUntilSpace( inputPtr ) ;
-
-			/* move the input string across to the next word */
-			inputPtr = copyStringAfterSpace( inputPtr ) ;
-			if( TRACE > 0 ) 
-				printf( "argument %d: %s\n", i, arguments[j][i] ) ;
-		}
-
-		if( TRACE > 0 ) 
-			printf( "\n" ) ;
-
-		/* last element of arguments string must be NULL for execvp */
-		arguments[ j ][ i ] = NULL ;
 		/* increase our commands counter */
 		j++ ;
 	}
+}
+
+int numberOfCommands() {
+	int i ;
+	int n = 0 ;
+	/* Count the number of non NULL elements in arguments */
+	/* only need to read the first element as these are the commands */
+	for( i = 0 ; i < MAXCMDS ; i++ ) {
+		if( arguments[i][0] != NULL ) n++ ;
+	}
+	return n ;
 }
 
 /* Print out a command and its arguments for debugging */
@@ -163,13 +88,6 @@ void executeCommands() {
 		}
 		else if( pid == 0 ) /* child: execute new process */
 		{
-			/* Print out the command we're about to execute */
-			if( TRACE > 0 ) {
-				printf( "Executing command %d:\n", i ) ;
-				printCommand( i ) ;
-				printf( "Output of command:\n" ) ;
-			}
-
 			/* Execute the next command in the arguments array */
 			execvp( arguments[i][0], arguments[i] ) ;
 		}
