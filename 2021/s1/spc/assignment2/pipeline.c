@@ -20,22 +20,25 @@ static char* arguments[ MAXCMDS ][ MAXARGS ] ;
 
 /* Read input into our arguments array */
 void readCommands() {
-	char input[80] ;
-	const char* space = " " ;
-	int i = 0, j = 0 ;
-	char* token ;
+	char* space = " \n\r" ;
+	int i, j = 0 ;
+	char* string ;
 
-	while( fgets( input, MAXCHARS, stdin ) != NULL && j < MAXCMDS ) {
-		token = strtok( input, space ) ;
+	while( j < MAXCMDS ) {
+		// Allocate memory for current line to be stored in
+		string = ( char* )malloc( ( MAXCHARS + 1 ) * sizeof( char ) ) ;
+		if( string == NULL ) printf( "malloc failed!\n" ) ;
+		if( fgets( string, MAXCHARS, stdin ) == NULL ) break ;
 
-		while( token != NULL && i < MAXARGS ) {
-			printf( "%s\n", token ) ;
-			arguments[j][i] = token ;
-			token = strtok( NULL, space ) ;
+		char* tokens = strtok( string, space ) ;
+		i = 0 ;
+
+		while( tokens != NULL && i < MAXARGS ) {
+			arguments[j][i] = tokens ;
+			tokens = strtok( NULL, space ) ;
 			i++ ;
 		}
-		/* last element of arguments string must be NULL for execvp */
-		arguments[ j ][ i ] = NULL ;
+
 		/* increase our commands counter */
 		j++ ;
 	}
