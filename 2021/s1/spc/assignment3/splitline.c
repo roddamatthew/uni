@@ -104,6 +104,49 @@ char ** splitline(char *line)
 	return args;
 }
 
+void printCommands( char*** commands ) {
+	int i = 0 ;
+	int j ;
+
+	while( commands[i] != NULL ) {
+		j = 0 ;
+		printf( "Command %d:\n", i ) ;
+		while( commands[i][j] != NULL ){
+			printf( "Arg %d: %s\n", j, commands[i][j] ) ;
+			j++ ;
+		}
+		printf( "\n" ) ;
+		i++ ;
+	}
+}
+
+char ***splitPipes( char** args )
+/*
+ */
+{
+	char	*newstr() ;
+	char	**newstrArray() ;
+	char ***commands, **buffer ;
+	int i = 0, j = 0, l = 0 ;
+
+	while( args[i] != NULL ) {
+		if( !strcmp( args[i], "|" ) ) {
+			commands[j] = newstrArray( buffer, l ) ;
+			j++ ;
+			l = 0 ;
+		} else {
+			buffer[l] = newstr( args[i], strlen( args[i] ) ) ;
+			l++ ;
+		}
+		i++ ;
+	}
+
+	commands[j] = newstrArray( buffer, l ) ;
+	commands[j+1] = NULL ;
+
+	return commands ;
+}
+
 /*
  * purpose: constructor for strings
  * returns: a string, never NULL
@@ -115,6 +158,19 @@ char *newstr(char *s, int l)
 	rv[l] = '\0';
 	strncpy(rv, s, l);
 	return rv;
+}
+
+/*
+ */
+char **newstrArray( char**sArray, int l ) {
+	int i ;
+	char **array = malloc( ( l + 1 ) * sizeof( char* ) ) ;
+
+	for( i = 0 ; i < l ; i++ )
+		array[i] = newstr( sArray[i], strlen( sArray[i] ) ) ;
+	array[l] = NULL ;
+
+	return array ;
 }
 
 void 
