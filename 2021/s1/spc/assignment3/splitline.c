@@ -104,7 +104,9 @@ char ** splitline(char *line)
 	return args;
 }
 
-void printCommands( char*** commands ) {
+void printCommands( char*** commands )
+/* print commands array for debugging */
+{
 	int i = 0 ;
 	int j ;
 
@@ -121,28 +123,34 @@ void printCommands( char*** commands ) {
 }
 
 char ***splitPipes( char** args )
-/*
+/* purpose: split a command into many commands if there are pipes
+ *	action: loop over the command adding each argument to a buffer,
+ * 			when a "|" is found, add the buffer to the new commands array
+ * returns: 2D string array where each row is NULL terminating and the final row is only NULL
  */
 {
-	char	*newstr() ;
-	char	**newstrArray() ;
-	char ***commands, **buffer ;
-	int i = 0, j = 0, l = 0 ;
+	char	*newstr() ;			/* silence in-line declaration warning */
+	char	**newstrArray() ;	/* silence in-line declaration warning */
+	char ***commands, **buffer ; /* array to store commands and current command */
+	int i = 0, j = 0, l = 0 ;	/* counters */
+	/* i: position in the input array */
+	/* j: row number of the commands array */
+	/* l: length of current command being read */
 
 	while( args[i] != NULL ) {
 		if( !strcmp( args[i], "|" ) ) {
-			commands[j] = newstrArray( buffer, l ) ;
+			commands[j] = newstrArray( buffer, l ) ; /* add current line to commands */
 			j++ ;
 			l = 0 ;
 		} else {
-			buffer[l] = newstr( args[i], strlen( args[i] ) ) ;
+			buffer[l] = newstr( args[i], strlen( args[i] ) ) ; /* add argument to current line */
 			l++ ;
 		}
 		i++ ;
 	}
 
-	commands[j] = newstrArray( buffer, l ) ;
-	commands[j+1] = NULL ;
+	commands[j] = newstrArray( buffer, l ) ; /* remember to add the last command */
+	commands[j+1] = NULL ; /* NULL terminate */
 
 	return commands ;
 }
@@ -161,11 +169,15 @@ char *newstr(char *s, int l)
 }
 
 /*
+ * purpose: constructor for string array
+ * returns: NULL terminated string array, will always return at least NULL
  */
 char **newstrArray( char**sArray, int l ) {
 	int i ;
-	char **array = malloc( ( l + 1 ) * sizeof( char* ) ) ;
+	/* Allocate memory for new array and a NULL character on the end */
+	char **array = emalloc( ( l + 1 ) * sizeof( char* ) ) ;
 
+	/* Add each string to the array */
 	for( i = 0 ; i < l ; i++ )
 		array[i] = newstr( sArray[i], strlen( sArray[i] ) ) ;
 	array[l] = NULL ;
