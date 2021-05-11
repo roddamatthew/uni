@@ -117,6 +117,7 @@ void printCommands( char*** commands )
 			printf( "Arg %d: %s\n", j, commands[i][j] ) ;
 			j++ ;
 		}
+		printf( "Arg %d: %s\n", j, commands[i][j] ) ;
 		printf( "\n" ) ;
 		i++ ;
 	}

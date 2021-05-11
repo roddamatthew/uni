@@ -15,17 +15,21 @@
 int main()
 {
 	char	*cmdline, *prompt, **arglist, ***commands;
-	int	result;
+	int	result, n ;
 	void	setup();
 
 	prompt = DFL_PROMPT ;
 	setup();
 
 	while ( (cmdline = next_cmd(prompt, stdin)) != NULL ){
-		if ( (arglist = splitline(cmdline)) != NULL  ){
-			/* result = execute(arglist); */
+		if ( (arglist = splitline(cmdline)) != NULL ){
 			commands = splitPipes( arglist ) ;
-			printCommands( commands ) ;
+			n = nCommands( commands ) ;
+			if( n == 1 )
+				result = execute( arglist ) ;
+			if( n > 1 ) {
+				result = pipeline( commands ) ;
+			}
 			freelist(arglist);
 		}
 		free(cmdline);
