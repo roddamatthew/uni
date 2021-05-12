@@ -11,6 +11,8 @@ void	*erealloc(void *, size_t);
 int		execute(char **);
 int 	pipeline(char ***);
 int 	nCommands(char ***);
+char	**removeRedirect(char **);
+char 	**redirect(char **);
 void	fatal(char *, char *, int );
 
 int	process();

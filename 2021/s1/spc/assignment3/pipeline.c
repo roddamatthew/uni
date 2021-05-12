@@ -32,7 +32,8 @@ int pipeline( char ***commands )
 
 	int p[2] ;
 	int input = 0 ;
-
+	char **redirect();
+	void printCommands() ;
 
 	for( i = 0 ; i < n ; i++ ) {
 		/* If this isn't the last command, create a pipe */
@@ -60,6 +61,8 @@ int pipeline( char ***commands )
 				dup2( p[1], STDOUT_FILENO ) ;
 				close( p[1] ) ;
 			}
+
+			commands[i] = redirect( commands[i] ) ;
 
 			/* Execute the command */
 			/* Input will be coming from 'input' */

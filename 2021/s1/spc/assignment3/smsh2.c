@@ -24,12 +24,7 @@ int main()
 	while ( (cmdline = next_cmd(prompt, stdin)) != NULL ){
 		if ( (arglist = splitline(cmdline)) != NULL ){
 			commands = splitPipes( arglist ) ;
-			n = nCommands( commands ) ;
-			if( n == 1 )
-				result = execute( arglist ) ;
-			if( n > 1 ) {
-				result = pipeline( commands ) ;
-			}
+			result = pipeline( commands ) ;
 			freelist(arglist);
 		}
 		free(cmdline);

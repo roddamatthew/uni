@@ -123,6 +123,16 @@ void printCommands( char*** commands )
 	}
 }
 
+void printArgs( char** args )
+/* print args array for debugging */
+{
+	int i = 0 ;
+	while( args[i] != NULL ) {
+		printf( "Arg %d: %s\n", i, args[i] ) ;
+		i++ ;
+	}
+}
+
 char ***splitPipes( char** args )
 /* purpose: split a command into many commands if there are pipes
  *	action: loop over the command adding each argument to a buffer,
