@@ -31,7 +31,7 @@ char **removeRedirect( char **args )
 
 char **redirect( char** args ) {
 	char *file ;
-	int fd ;
+	FILE *fileptr ;
 	char *newstr() ;
 
 	int i = 0 ;
@@ -40,7 +40,7 @@ char **redirect( char** args ) {
 			if( args[i+1] != NULL ) {
 				file = newstr( args[i+1], strlen( args[i+1] ) ) ;
 				close( 0 ) ;
-				fd = open( file, O_RDONLY ) ;
+				fileptr = fopen( file, "r" ) ;
 			}
 		}
 
@@ -48,7 +48,7 @@ char **redirect( char** args ) {
 			if( args[i+1] != NULL ) {
 				file = newstr( args[i+1], strlen( args[i+1] ) ) ;
 				close( 1 ) ;
-				fd = open( file, O_WRONLY ) ;
+				fileptr = fopen( file, "w" ) ;
 			}
 		}
 
