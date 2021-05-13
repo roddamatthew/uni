@@ -4,11 +4,11 @@
 int
 main(void)
 {
-  char* a[3] = {"Hello","World","yay"};
-  char* b[3] = {"foo","bar",NULL};
+  char *a[3] = { "Hello","World","yay" } ;
+  char *b[3] = { "foo","bar", NULL } ;
   char **c ;
   int i;
- 
+
 
   c = malloc( 6 * sizeof( char* ) ) ;
 

@@ -148,6 +148,8 @@ char ***splitPipes( char** args )
 	/* j: row number of the commands array */
 	/* l: length of current command being read */
 
+	commands = malloc( 5 * sizeof( char** ) ) ;
+
 	while( args[i] != NULL ) {
 		if( !strcmp( args[i], "|" ) ) {
 			commands[j] = newstrArray( buffer, l ) ; /* add current line to commands */
