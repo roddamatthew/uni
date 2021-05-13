@@ -38,7 +38,7 @@ char **redirect( char** args ) {
 	while( args[i] != NULL ) {
 		if( !strcmp( args[i], "<" ) ) {
 			if( args[i+1] != NULL ) {
-				file = newstr( args[i+1], strlen( args[i] ) ) ;
+				file = newstr( args[i+1], strlen( args[i+1] ) ) ;
 				close( 0 ) ;
 				fd = open( file, O_RDONLY ) ;
 			}
@@ -46,7 +46,7 @@ char **redirect( char** args ) {
 
 		if( !strcmp( args[i], ">" ) ) {
 			if( args[i+1] != NULL ) {
-				file = newstr( args[i+1], strlen( args[i] ) ) ;
+				file = newstr( args[i+1], strlen( args[i+1] ) ) ;
 				close( 1 ) ;
 				fd = open( file, O_WRONLY ) ;
 			}
