@@ -6,19 +6,6 @@
 #include	<sys/wait.h>
 #include 	<string.h>
 
-/*
- * purpose: constructor for strings
- * returns: a string, never NULL
- */
-char *newstr(char *s, int l)
-{
-	char *rv = malloc(l+1);
-
-	rv[l] = '\0';
-	strncpy(rv, s, l);
-	return rv;
-}
-
 int checkGlob( char** arglist ) {
 	int i = 0 ;
 
@@ -32,45 +19,28 @@ int checkGlob( char** arglist ) {
 	return -1 ;
 }
 
-int main()
-/*
- * purpose: run a program passing it arguments
- * returns: status returned via wait, or -1 on error
- *  errors: -1 on fork() or wait() errors
- */
-{
-	int	i = 0 ;
-	int n ;
-	int	child_info = -1;
-	glob_t globbuf ;
+char** globCommand( char** command ) {
+	int i = 0 ;
+	int nCommands = 6 ;
+	int globPosition = checkGlob( command ) ;
 
-	char* command[4] ;
-	command[0] = "wc" ;
-	command[1] = "smsh2" ;
-	command[2] = "*.c" ;
-	command[3] = NULL ;
+	if( globPosition == -1 ) return command ;
 
-	n = checkGlob( command ) ;
-	int nCommands = 3 ;
+	glob_t globbuf;
 
-	if( n != -1 ) {
-		printf( "Found Glob at: %d\n", checkGlob( command ) ) ;
-		glob( command[n], GLOB_DOOFFS, NULL, &globbuf ) ;
-		char **newCommand = malloc( ( globbuf.gl_pathc + nCommands ) * sizeof( char* ) ) ;
-		memcpy( newCommand			  , command, nCommands * sizeof( char* ) ) ;
-		memcpy( newCommand + nCommands, globbuf.gl_pathv, globbuf.gl_pathc * sizeof( char* ) ) ;
+   	globbuf.gl_offs = 0 ;
+   	glob( command[globPosition], GLOB_DOOFFS, NULL, &globbuf);
 
-		while( newCommand[i] != NULL ) {
-			printf( "%s\n", newCommand[i] ) ;
-			i++ ;
-		}
+   	int matches = globbuf.gl_pathc ;
 
-		globfree( &globbuf ) ;
-	}
+   	/* Copy the commands */
+   	char **newCommands = malloc( ( nCommands + matches ) * sizeof( char* ) ) ;
+   	/* Copy all commands until the wildcard */
+   	memcpy( newCommands, command, globPosition * sizeof( char* ) ) ;
+   	/* Copy all matches */
+   	memcpy( newCommands + globPosition, globbuf.gl_pathv, matches * sizeof( char* ) ) ;
+   	/* Copy the leftover commands */
+   	memcpy( newCommands + globPosition + matches, command + globPosition + 1, ( nCommands - globPosition - 1 ) * sizeof( char* ) ) ;
 
-	/* Need to check an argument to see if it requires globbing */
-
-	/* */
-
-	return 0;
+   	return newCommands ;
 }

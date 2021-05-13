@@ -13,6 +13,8 @@ int 	pipeline(char ***);
 int 	nCommands(char ***);
 char	**removeRedirect(char **);
 char 	**redirect(char **);
+char	**globCommand(char**) ;
+int 	checkGlob( char** ) ;
 void	fatal(char *, char *, int );
 
 int	process();
