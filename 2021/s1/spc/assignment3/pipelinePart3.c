@@ -41,11 +41,10 @@ int pipeline( char ***commands )
 	char **redirect() ;
 	char **globCommand() ;
 	void printCommands() ;
-	char **globbedCommand ;
 
 	for( i = 0 ; i < n ; i++ ) {
 		/* glob the current command */
-		globbedCommand = globCommand( commands[i] ) ;
+		char **globbedCommand = globCommand( commands[i] ) ;
 
 		/* If this isn't the last command, create a pipe */
 		if( i != n - 1 )

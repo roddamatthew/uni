@@ -40,14 +40,14 @@ char **redirect( char** args ) {
 		if( !strcmp( args[i], "<" ) ) { /* Check if the current argument is a redirect */
 			if( args[i+1] != NULL ) { /* Avoid segfaulting if there is a unexpected input */
 				filename = newstr( args[i+1], strlen( args[i+1] ) ) ; /* store the filename, this is always the next parameter */
-				close( STDIN_FILENO ) ;
+				fclose( stdin ) ;
 				fileptr = fopen( filename, "r" ) ; /* redirect to the filename, read only */
 			}
 		}
 		else if( !strcmp( args[i], ">" ) ) { /* Check if the current argument is a redirect */
 			if( args[i+1] != NULL ) { /* Avoid segfaulting if there is a unexpected input */
 				filename = newstr( args[i+1], strlen( args[i+1] ) ) ; /* store the filename, this is always the next parameter */
-				close( STDOUT_FILENO ) ; 
+				fclose( stdout ) ; 
 				fileptr = fopen( filename, "w" ) ; /* redirect to the filename, write only */
 			}
 		}

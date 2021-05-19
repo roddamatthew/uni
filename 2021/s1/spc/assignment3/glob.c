@@ -49,7 +49,7 @@ char** globCommand( char** command )
 	if( globPosition == -1 ) return command ;
 
 	int i = 0 ;
-	int n = nArgs( command ) ; /* number of arguments in command */
+	int n = nArgs( command ) + 1 ; /* number of arguments in command, remember to add space for NULL */
 
 	glob_t globbuf; /* initialize glob buffer */
 
