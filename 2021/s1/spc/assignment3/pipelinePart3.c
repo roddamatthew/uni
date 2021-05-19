@@ -44,7 +44,7 @@ int pipeline( char ***commands )
 	char **globbedCommand ;
 
 	for( i = 0 ; i < n ; i++ ) {
-
+		/* glob the current command */
 		globbedCommand = globCommand( commands[i] ) ;
 
 		/* If this isn't the last command, create a pipe */
@@ -73,6 +73,7 @@ int pipeline( char ***commands )
 				close( p[1] ) ;
 			}
 
+			/* redirect the current command */
 			globbedCommand = redirect( globbedCommand ) ;
 
 			/* Execute the command */

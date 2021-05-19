@@ -31,31 +31,31 @@ char **removeRedirect( char **args )
  */
 
 char **redirect( char** args ) {
-	char *file ;
+	char *filename ;
 	FILE *fileptr ;
-	char *newstr() ;
+	char *newstr() ; 	/* silence in-line declaration warning */
 
 	int i = 0 ;
-	while( args[i] != NULL ) {
-		if( !strcmp( args[i], "<" ) ) {
-			if( args[i+1] != NULL ) {
-				file = newstr( args[i+1], strlen( args[i+1] ) ) ;
-				close( 0 ) ;
-				fileptr = fopen( file, "r" ) ;
+	while( args[i] != NULL ) { /* loop through current command */
+		if( !strcmp( args[i], "<" ) ) { /* Check if the current argument is a redirect */
+			if( args[i+1] != NULL ) { /* Avoid segfaulting if there is a unexpected input */
+				filename = newstr( args[i+1], strlen( args[i+1] ) ) ; /* store the filename, this is always the next parameter */
+				close( STDIN_FILENO ) ;
+				fileptr = fopen( filename, "r" ) ; /* redirect to the filename, read only */
 			}
 		}
-
-		if( !strcmp( args[i], ">" ) ) {
-			if( args[i+1] != NULL ) {
-				file = newstr( args[i+1], strlen( args[i+1] ) ) ;
-				close( 1 ) ;
-				fileptr = fopen( file, "w" ) ;
+		else if( !strcmp( args[i], ">" ) ) { /* Check if the current argument is a redirect */
+			if( args[i+1] != NULL ) { /* Avoid segfaulting if there is a unexpected input */
+				filename = newstr( args[i+1], strlen( args[i+1] ) ) ; /* store the filename, this is always the next parameter */
+				close( STDOUT_FILENO ) ; 
+				fileptr = fopen( filename, "w" ) ; /* redirect to the filename, write only */
 			}
 		}
 
 		i++ ;
 	}
 
+	/* Remove the redirect from the parameters */
 	args = removeRedirect( args ) ;
 
 	return args;

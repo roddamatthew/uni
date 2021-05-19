@@ -69,6 +69,7 @@ int pipeline( char ***commands )
 				close( p[1] ) ;
 			}
 
+			/* redirect the current command */
 			commands[i] = redirect( commands[i] ) ;
 
 			/* Execute the command */
