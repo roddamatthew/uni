@@ -4,6 +4,10 @@
  **		uses fork, exec, wait, and ignores signals
  **/
 
+/* smsh2.c, smsh3.c and smsh4.c are identical 
+ * differences between the shells are in pipelinePart*.c
+ */
+
 #include	<stdio.h>
 #include	<stdlib.h>
 #include	<unistd.h>
@@ -15,7 +19,7 @@
 int main()
 {
 	char	*cmdline, *prompt, **arglist, ***commands;
-	int	result, n ;
+	int	result, n, i ;
 	void	setup();
 
 	prompt = DFL_PROMPT ;
@@ -23,9 +27,13 @@ int main()
 
 	while ( (cmdline = next_cmd(prompt, stdin)) != NULL ){
 		if ( (arglist = splitline(cmdline)) != NULL ){
-			commands = splitPipes( arglist ) ;
-			result = pipeline( commands ) ;
+			commands = splitPipes( arglist ) ; 	/* split arglist into multiple commands */
+			result = pipeline( commands ) ;		/* Execute the commands, pipeling as necessary */
+			n = nCommands( commands ) ;
+			
 			freelist(arglist);
+			for( i = 0 ; i < n ; i++ )			/* Free each command in commands */
+				freelist( commands[i] ) ;
 		}
 		free(cmdline);
 	}

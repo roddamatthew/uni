@@ -5,13 +5,14 @@
 #include "smsh.h"
 
 char **removeRedirect( char **args )
-/* split a command if a < or > is found
- * Remove the < > and the filename from the command
+/* remove the redirect operator and filename from the argument
+ * If a redirect is read, replace it with a NULL
+ * This functionally removes it from the array for later calling with execvp
+ * Could free the memory after the redirect but this is always two char*
+ * Memory will be freed later so this is unnecessary
  */
 {
-	char *newstr() ;
 	int i = 0 ;
-	int pos = -1 ;
 
 	/* Find the position of the < or > */
 	while( args[i] != NULL ) {

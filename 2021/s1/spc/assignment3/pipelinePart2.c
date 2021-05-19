@@ -1,4 +1,11 @@
 /* pipeline.c - code used by small shell to pipeline commands */
+/* Piping implementation copied from assignment 2 
+ * Only difference from pipelinePart1.c is a call to redirect
+ * If a redirect is present this returns the command with that argument removed, 
+ * and STDIN/STDOUT moved to the filename
+ * If a redirect is not present it simply returns the command
+ */
+
 
 #include	<stdio.h>
 #include	<stdlib.h>

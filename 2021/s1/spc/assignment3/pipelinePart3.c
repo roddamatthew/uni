@@ -1,4 +1,10 @@
 /* pipeline.c - code used by small shell to pipeline commands */
+/* Piping implementation copied from assignment 2 
+ * Only difference from pipelinePart2.c is a call to globCommand
+ * If a globbing character is present, the command will have all matching files stored in the array as arguments
+ * If there is no globbing character, globCommand simply returns the command
+ */
+
 
 #include	<stdio.h>
 #include	<stdlib.h>
@@ -35,14 +41,11 @@ int pipeline( char ***commands )
 	char **redirect() ;
 	char **globCommand() ;
 	void printCommands() ;
+	char **globbedCommand ;
 
 	for( i = 0 ; i < n ; i++ ) {
 
-		char **globbedCommand = globCommand( commands[i] ) ;
-		// if( checkGlob( commands[i] ) > -1 )
-		// 	**globbedCommand = globCommand( commands[i] ) ;
-		// else
-		// 	**globbedCommand = commands[i] ;
+		globbedCommand = globCommand( commands[i] ) ;
 
 		/* If this isn't the last command, create a pipe */
 		if( i != n - 1 )

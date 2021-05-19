@@ -1,8 +1,9 @@
-/* splitline.c - commmand reading and parsing functions for smsh
- *    
- *    char *next_cmd(char *prompt, FILE *fp) - get next command
- *    char **splitline(char *str);           - parse a string
-
+/* Summary:
+ * Added 4 commands:
+ * printCommands()	: Print a 2D NULL terminated string array to terminal
+ * printArgs()		: Print a 1D NULL terminated string array to terminal
+ * splitPipes()		: Split a 1D string array into a 2D string array about each '|' character
+ * newstrArray()	: Allocate memory and elements for 1D NULL terminated string array
  */
 
 #include	<stdio.h>
@@ -106,6 +107,7 @@ char ** splitline(char *line)
 
 void printCommands( char*** commands )
 /* print commands array for debugging */
+/* print until reaching a NULL pointer for each argument and each line */
 {
 	int i = 0 ;
 	int j ;
@@ -125,6 +127,7 @@ void printCommands( char*** commands )
 
 void printArgs( char** args )
 /* print args array for debugging */
+/* print until reaching a NULL pointer */
 {
 	int i = 0 ;
 	while( args[i] != NULL ) {
@@ -146,20 +149,30 @@ char ***splitPipes( char** args )
 	int i = 0, j = 0, l = 0 ;	/* counters */
 	/* i: position in the input array */
 	/* j: row number of the commands array */
-	/* l: length of current command being read */
+	/* l: number of arguments of current command being read */
 
-	commands = malloc( 5 * sizeof( char** ) ) ;
+	/* Find the number of pipes and allocate rows in commands array for each pipe */
+	int nPipes = 0 ;
+	while( args[i] != NULL ) {
+		if( !strcmp( args[i], "|" ) ) {
+			nPipes++ ;
+		}
+		i++ ;
+	}
+	commands = malloc( nPipes * sizeof( char** ) ) ;
+
+	i = 0 ;
 
 	while( args[i] != NULL ) {
 		if( !strcmp( args[i], "|" ) ) {
 			commands[j] = newstrArray( buffer, l ) ; /* add current line to commands */
-			j++ ;
-			l = 0 ;
+			j++ ;	/* increase row counter */
+			l = 0 ;	/* reset argument counter */
 		} else {
 			buffer[l] = newstr( args[i], strlen( args[i] ) ) ; /* add argument to current line */
-			l++ ;
+			l++ ;	/* increase argument counter */
 		}
-		i++ ;
+		i++ ;	/* increase argument in arglist counter */
 	}
 
 	commands[j] = newstrArray( buffer, l ) ; /* remember to add the last command */
@@ -193,7 +206,7 @@ char **newstrArray( char**sArray, int l ) {
 	/* Add each string to the array */
 	for( i = 0 ; i < l ; i++ )
 		array[i] = newstr( sArray[i], strlen( sArray[i] ) ) ;
-	array[l] = NULL ;
+	array[l] = NULL ; /* NULL terminate */
 
 	return array ;
 }
