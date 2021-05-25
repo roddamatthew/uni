@@ -1,62 +1,7 @@
-// #include "slow_functions.h"
 #include <pthread.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-
-// printf( "%d: %s", i, commands[i] ) ;
-		// printf( "Call bad_write with %s", commands[i] ) ;
-		// bad_write( commands[i] ) ;
-		// printf( "get_written is now: %d\n", get_written() ) ;
-		// printf( "call bad_read: " ) ;
-		// bad_read() ;
-		// printf( "get_written is now: %d\n", get_written() ) ;
-
-// void * writer(void * in_ptr)
-// {
-// 	char** commands = in_ptr ;
-
-// 	int i = 0 ;
-
-// 	while( i < total_commands ) {
-// 		pthread_mutex_lock( &lock ) ;
-// 		printf( "W: lock called\n" ) ;
-
-// 		if( get_written() == 1 ) {
-// 			printf( "W: waiting\n" ) ;
-// 			pthread_cond_wait( &cond, &lock ) ;
-// 			printf( "W: finished waiting\n" ) ;
-// 		}
-
-// 		bad_write( commands[i] ) ;
-// 		printf( "W: bad_write called\n" ) ;
-// 		pthread_cond_signal( &cond ) ;
-// 		printf( "W: signal called\n" ) ;
-// 		pthread_mutex_unlock( &lock ) ;
-// 		printf( "W: unlock called\n" ) ;
-// 		i++ ;
-// 	}
-// }
-
-// void * reader(void * empty)
-// {
-// 	int i = 0 ;
-// 	while( i < total_commands ) {
-// 		pthread_mutex_lock( &lock ) ;
-// 		printf( "R: lock called\n" ) ;
-// 		if( get_written() == 0 ) {
-// 			printf( "R: waiting\n" ) ;
-// 			pthread_cond_wait( &cond, &lock ) ;
-// 			printf( "R: finished waiting\n" ) ;
-// 		}
-// 		bad_read() ;
-// 		pthread_cond_signal( &cond ) ;
-// 		printf( "R: bad read called\n" ) ;
-// 		pthread_mutex_unlock( &lock ) ;
-// 		printf( "R: unlock called\n" ) ;
-// 		i++ ;
-// 	}
-// }
 
 // How nice of me to include a global that tells you how many commands there were :)
 int total_commands = 0;
@@ -65,41 +10,53 @@ int total_commands = 0;
 // ####################################################################################
 // ## Please write some code in the following two functions
 
-static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
-static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+// Create static condition and mutex to share between writer and reader
+// Only need a default condition and mutex,
+// So can use the inbuilt macros to shorten code 
+static pthread_cond_t cond = PTHREAD_COND_INITIALIZER ;
+static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER ;
 
 void * writer(void * in_ptr)
 {
+	/* store input in a char** for printing */
 	char** commands = in_ptr ;
+	int i = 0 ; /* line counter */
 
-	int i = 0 ;
-
-	while( i < total_commands ) {
+	while( i < total_commands ) { /* loop over each command */
 		pthread_mutex_lock( &lock ) ;
 
+		/* If the reader is still reading, wait */
 		if( get_written() == 1 ) {
 			pthread_cond_wait( &cond, &lock ) ;
 		}
 
+		/* write the current line into the buffer */
 		bad_write( commands[i] ) ;
+		/* signal reader that we're done */
 		pthread_cond_signal( &cond ) ;
+
 		pthread_mutex_unlock( &lock ) ;
-		i++ ;
+		i++ ; /* increment line counter */
 	}
 }
 
 void * reader(void * empty)
 {
-	int i = 0 ;
-	while( i < total_commands ) {
+	int i = 0 ; /* line counter */
+	while( i < total_commands ) { /* loop over each line */
 		pthread_mutex_lock( &lock ) ;
+
+		/* If the reader isn't done yet, wait */
 		if( get_written() == 0 ) {
 			pthread_cond_wait( &cond, &lock ) ;
 		}
+		/* read the current line */
 		bad_read() ;
+		/* signal the writer that we're done reading */
 		pthread_cond_signal( &cond ) ;
+
 		pthread_mutex_unlock( &lock ) ;
-		i++ ;
+		i++ ; /* increment the line counter */
 	}
 }
 

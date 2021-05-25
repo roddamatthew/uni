@@ -1,4 +1,4 @@
-all: p1 p2
+all: part1 part2
 
 part1:
 	gcc -pthread -o PART1 slow_functions.c part1.c
