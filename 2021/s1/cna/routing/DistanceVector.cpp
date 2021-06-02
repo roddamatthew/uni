@@ -5,6 +5,8 @@
 
 #define INFINITE 1073741823 /* define a constant for infinity (this is INT_MAX / 2) */
 
+static int TRACE = 0 ;
+
 /* Data structure to store a link between two routers */
 struct link {
 	std::string start ;
@@ -46,15 +48,80 @@ void setLinks( std::string router1, std::string router2, int distance, struct ro
 {
 	/* search through all the tables */
 	for( int i = 0 ; i < size ; i++ ) {
+		/* search through all the routes */
 		for( int j = 0 ; j < tables[i].routes.size() ; j++ ) {
 			/* If the router names match, set the distance */
-			if( tables[i].routes[j].start == router1 && tables[i].routes[j].end == router2 )
+			if( tables[i].routes[j].start == router1 && tables[i].routes[j].end == router2 ) {
 				tables[i].routes[j].distance = distance ;
+				if( TRACE > 2 ) std::cout << "In table " << tables[i].name << "set " << tables[i].routes[j].start << " " << tables[i].routes[j].end << " " << tables[i].routes[j].distance << std::endl ;
+			}
 			/* Also check if they're in the reverse order */
-			else if( tables[i].routes[j].start == router2 && tables[i].routes[j].end == router1 )
+			if( tables[i].routes[j].start == router2 && tables[i].routes[j].end == router1 ){
 				tables[i].routes[j].distance = distance ;
+				if( TRACE > 2 ) std::cout << "In table " << tables[i].name << "set " << tables[i].routes[j].start << " " << tables[i].routes[j].end << " " << tables[i].routes[j].distance << std::endl ;
+			}
 		}
 	}
+}
+
+int getDistance( std::string router1, std::string router2, struct routingTable *tables, int size )
+{
+	/* search through all the tables */
+	for( int i = 0 ; i < size ; i++ ) {
+		/* search through all the routes */
+		for( int j = 0 ; j < tables[i].routes.size() ; j++ ) {
+			/* If the router names match, set the distance */
+			if( tables[i].routes[j].start == router1 && tables[i].routes[j].end == router2 ){
+				if( TRACE > 2 ) std::cout << "Found " << tables[i].routes[j].start << " to " << tables[i].routes[j].end << " with cost " << tables[i].routes[j].distance << std::endl ;
+				return tables[i].routes[j].distance ;
+			}
+			/* Also check if they're in the reverse order */
+			else if( tables[i].routes[j].start == router2 && tables[i].routes[j].end == router1 ) {
+				if( TRACE > 2 ) std::cout << "Found " << tables[i].routes[j].start << " to " << tables[i].routes[j].end << " with cost " << tables[i].routes[j].distance << std::endl ;
+				return tables[i].routes[j].distance ;
+			}
+		}
+	}
+
+	return -1 ;
+}
+
+void printTables( struct routingTable *tables, int size, int iteration ) {
+	for( int i = 0 ; i < size ; i++ ) {
+		std::cout << "router " << tables[i].name << " at t=" << iteration << std::endl ;
+		for( int j = 0 ; j < size ; j++ ) {
+			if( i != j ) std::cout << "\t" << tables[j].name ;
+		}
+		std::cout << std::endl ;
+
+		for( int j = 0 ; j < size ; j++ ) {
+			if( i != j ) {
+				std::cout << tables[j].name ;
+				for( int k = 0 ; k < size ; k++ ) {
+					if( i != k ) {
+						int firstHop = getDistance( tables[i].name, tables[k].name, tables, size ) ;
+						if( TRACE > 2 ) std::cout << "firstHop from " << tables[k].name << " to " << tables[j].name << " is " << firstHop ;
+						int nextHop = getDistance( tables[j].name, tables[k].name, tables, size ) ;
+						if( TRACE > 2 ) std::cout << "nextHop from " << tables[j].name << " to " << tables[k].name << " is " << nextHop << std::endl ;
+						if( firstHop + nextHop >= INFINITE )
+							std::cout << "\tINF" ;
+						else
+							std::cout << "\t" << firstHop + nextHop ;
+					}
+				}
+				std::cout << std::endl ;
+			}
+		}
+	}
+
+	// int firstHop = getDistance( tables[i].name, tables[j].name, tables, size ) ;
+	// if( TRACE > 2 ) std::cout << "firstHop from " << tables[i].name << " to " << tables[j].name << " is " << firstHop ;
+	// int nextHop = getDistance( tables[j].name, tables[k].name, tables, size ) ;
+	// if( TRACE > 2 ) std::cout << "nextHop from " << tables[j].name << " to " << tables[k].name << " is " << nextHop << std::endl ;
+	// if( firstHop + nextHop >= INFINITE )
+	// 	std::cout << "\tINF" ;
+	// else
+	// 	std::cout << "\t" << firstHop + nextHop ;
 }
 
 int main() {
@@ -81,9 +148,11 @@ int main() {
 		tables[j].name = names[j] ;
 
 		/* Initialize infinite links between all routers */
-		for( int i = 0 ; i < tablesSize ; i++ )
-			/* Exclude links from router to itself */
+		for( int i = 0 ; i < tablesSize ; i++ ) {
+			/* links from router to itself have zero distance */
 			if( i != j ) tables[j].routes.push_back( link( names[j], names[i] ) ) ;
+			if( i == j ) tables[j].routes.push_back( link( names[j], names[i], 0 ) ) ;
+		}
 	}
 
 
@@ -106,13 +175,7 @@ int main() {
 		std::getline( std::cin, currentLine ) ;
 	}
 
-	/* print for debugging */
-	for( int j = 0 ; j < tablesSize ; j++ ) {
-		std::cout << tables[j].name << std::endl ;
-		for( int i = 0 ; i < tables[j].routes.size() ; i++ ) {
-			std::cout << tables[j].routes[i].start << " " << tables[j].routes[i].end << " " << tables[j].routes[i].distance << std::endl ;
-		}
-	}
+	printTables( tables, tablesSize, 0 ) ;
 
 	return 0 ;
 }
