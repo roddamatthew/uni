@@ -38,10 +38,29 @@ struct routingTable {
 	/* Even if not connected, this will have an entry */
 /* tables is an array storing all of the routing tables of all routers */
 
+void setLinks( std::string router1, std::string router2, int distance, struct routingTable *tables, int size )
+/* set the distance for links between router1 and router2
+ * search through tables for the links
+ * make sure the link is set in both router's routing tables 
+ */
+{
+	/* search through all the tables */
+	for( int i = 0 ; i < size ; i++ ) {
+		for( int j = 0 ; j < tables[i].routes.size() ; j++ ) {
+			/* If the router names match, set the distance */
+			if( tables[i].routes[j].start == router1 && tables[i].routes[j].end == router2 )
+				tables[i].routes[j].distance = distance ;
+			/* Also check if they're in the reverse order */
+			else if( tables[i].routes[j].start == router2 && tables[i].routes[j].end == router1 )
+				tables[i].routes[j].distance = distance ;
+		}
+	}
+}
+
 int main() {
 	std::vector<std::string> names ;
 	std::string currentLine ;
-	int size = 0 ;
+	int tablesSize = 0 ;
 
 	/* Read the router names */
 	std::getline( std::cin, currentLine ) ;
@@ -49,17 +68,23 @@ int main() {
 	while( !currentLine.empty() ) {
 		/* create a routing table for this router */
 		names.push_back( currentLine.substr( 0 ) ) ;
-		size++ ;
+		tablesSize++ ;
 		std::getline( std::cin, currentLine ) ;
 	}
 
 
 	/* Allocate memory for a routing table for each router */
-	routingTable *tables = (routingTable*)malloc( sizeof( routingTable ) * size ) ;
+	routingTable *tables = (routingTable*)malloc( sizeof( routingTable ) * tablesSize ) ;
 
-	/* Put the router names into the routing tables */
-	for( int j = 0 ; j < names.size() ; j++ )
+	for( int j = 0 ; j < tablesSize ; j++ ){
+		/* Put the router names into the routing tables */
 		tables[j].name = names[j] ;
+
+		/* Initialize infinite links between all routers */
+		for( int i = 0 ; i < tablesSize ; i++ )
+			/* Exclude links from router to itself */
+			if( i != j ) tables[j].routes.push_back( link( names[j], names[i] ) ) ;
+	}
 
 
 	/* Read links */
@@ -76,19 +101,13 @@ int main() {
 		
 		int distance = std::stoi( currentLine ) ; /* the rest of the string should now be a number */
 
-		/* Search for routing tables containing the given router names */
-
-		/* read link into the routing table */
-
-		tables[0].routes.push_back( link( router1, router2, distance ) ) ; /* temporary for testing */
+		setLinks( router1, router2, distance, tables, tablesSize ) ;
 
 		std::getline( std::cin, currentLine ) ;
 	}
 
-	/* Fill in the rest of the links with infinity */
-
 	/* print for debugging */
-	for( int j = 0 ; j < size ; j++ ) {
+	for( int j = 0 ; j < tablesSize ; j++ ) {
 		std::cout << tables[j].name << std::endl ;
 		for( int i = 0 ; i < tables[j].routes.size() ; i++ ) {
 			std::cout << tables[j].routes[i].start << " " << tables[j].routes[i].end << " " << tables[j].routes[i].distance << std::endl ;
