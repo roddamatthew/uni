@@ -3,7 +3,7 @@
 #include <iostream>
 #include <cstdlib>
 
-#define INFINITE 100000000
+#define INFINITE 22
 #define NO_LINK -1
 
 /* Data structure to store a link between two routers */
@@ -76,6 +76,16 @@ routingTable* initBroadcast( std::vector<std::string> names )
 	return broadcast ;
 }
 
+void printBroadcast( routingTable *broadcast, int size ) {
+	for( int i = 0 ; i < size ; i++ ) {
+		std::cout << broadcast[i].name << ":\n" ;
+		for( int j = 0 ; j < size ; j++ ) {
+			std::cout << broadcast[i].routes[j].start << " " << broadcast[i].routes[j].end << " " << broadcast[i].routes[j].distance << std::endl ;
+		}
+		std::cout << std::endl ;
+	}
+}
+
 int main() {
 	std::vector<std::string> names ;
 	names.push_back( "A" ) ;
@@ -85,16 +95,12 @@ int main() {
 
 	routingTable* broadcast = initBroadcast( names ) ;
 
-	for( int i = 0 ; i < names.size() ; i++ ) {
-		std::cout << broadcast[i].name << ":\n" ;
-		for( int j = 0 ; j < names.size() ; j++ ) {
-			std::cout << broadcast[i].routes[j].start << " " << broadcast[i].routes[j].end << " " << broadcast[i].routes[j].distance << std::endl ;
-		}
-		std::cout << std::endl ;
-	}
+	printBroadcast( broadcast, names.size() ) ;
 
 	std::cout << "Change distance from A to D to 4" << std::endl ;
 	broadcast[0].routes[3].distance = 4 ;
 
 	std::cout << "Searching using distanceBroadcast: Look for A to D: \n" << distanceBroadcast( "A", "D", broadcast, names.size() ) << std::endl ;
+
+	printBroadcast( broadcast, names.size() ) ;
 }
