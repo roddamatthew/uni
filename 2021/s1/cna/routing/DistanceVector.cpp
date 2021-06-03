@@ -4,6 +4,7 @@
 #include <cstdlib>
 
 #define INFINITE 1073741823 /* define a constant for infinity (this is INT_MAX / 2) */
+#define NO_LINK -1 /* define a constant for no link */
 
 static int TRACE = 0 ;
 
@@ -64,64 +65,46 @@ void setLinks( std::string router1, std::string router2, int distance, struct ro
 	}
 }
 
-int getDistance( std::string router1, std::string router2, struct routingTable *tables, int size )
-{
-	/* search through all the tables */
-	for( int i = 0 ; i < size ; i++ ) {
-		/* search through all the routes */
-		for( int j = 0 ; j < tables[i].routes.size() ; j++ ) {
-			/* If the router names match, set the distance */
-			if( tables[i].routes[j].start == router1 && tables[i].routes[j].end == router2 ){
-				if( TRACE > 2 ) std::cout << "Found " << tables[i].routes[j].start << " to " << tables[i].routes[j].end << " with cost " << tables[i].routes[j].distance << std::endl ;
-				return tables[i].routes[j].distance ;
-			}
-			/* Also check if they're in the reverse order */
-			else if( tables[i].routes[j].start == router2 && tables[i].routes[j].end == router1 ) {
-				if( TRACE > 2 ) std::cout << "Found " << tables[i].routes[j].start << " to " << tables[i].routes[j].end << " with cost " << tables[i].routes[j].distance << std::endl ;
-				return tables[i].routes[j].distance ;
-			}
-		}
+int distance( struct routingTable *table, std::string router1, std::string router2 ) {
+	/* Search a routing table for a link and return the distance */
+	for( int i = 0 ; i < table.routes.size() ; i++ ) {
+		if( router1 == table.routes[i].start && router2 == table.routes[i].end )
+			return table.routes[i].distance ;
+		else if( router1 == table.routes[i].end && router2 == table.routes[i].start )
+			return table.routes[i].distance ;
 	}
-
-	return -1 ;
+	return -100 ;
 }
 
-void printTables( struct routingTable *tables, int size, int iteration ) {
-	for( int i = 0 ; i < size ; i++ ) {
-		std::cout << "router " << tables[i].name << " at t=" << iteration << std::endl ;
-		for( int j = 0 ; j < size ; j++ ) {
-			if( i != j ) std::cout << "\t" << tables[j].name ;
-		}
-		std::cout << std::endl ;
+routingTable* calculateDV( std::string currentTableName, struct routingTable *tables, struct routingTable *broadcast, std::vector<std::string> names, int size ) {
+	routingTable *DV = new routingTable() ;
 
-		for( int j = 0 ; j < size ; j++ ) {
-			if( i != j ) {
-				std::cout << tables[j].name ;
-				for( int k = 0 ; k < size ; k++ ) {
-					if( i != k ) {
-						int firstHop = getDistance( tables[i].name, tables[k].name, tables, size ) ;
-						if( TRACE > 2 ) std::cout << "firstHop from " << tables[k].name << " to " << tables[j].name << " is " << firstHop ;
-						int nextHop = getDistance( tables[j].name, tables[k].name, tables, size ) ;
-						if( TRACE > 2 ) std::cout << "nextHop from " << tables[j].name << " to " << tables[k].name << " is " << nextHop << std::endl ;
-						if( firstHop + nextHop >= INFINITE )
-							std::cout << "\tINF" ;
-						else
-							std::cout << "\t" << firstHop + nextHop ;
+	int i, j ;
+
+	while( i < size ) {
+		if( names[i] != currentTableName ) {
+			while( j < size ) {
+				if( names[j] != currentTableName ) {
+					if( firstHop.exists() ) {
+						int distance = distance( currentTableName, names[i] ) ;
+						distance += distanceBroadcasted( names[i], names[j] ) ;
+						DV->routes.push_back( link( names[i], names[j], distance ) ) ;
+					}
+					else {
+						DV->routes.push_back( link( names[i], names[j], -1 ) ) ;
 					}
 				}
-				std::cout << std::endl ;
+				j++ ;
 			}
 		}
+		i++ ;
 	}
 
-	// int firstHop = getDistance( tables[i].name, tables[j].name, tables, size ) ;
-	// if( TRACE > 2 ) std::cout << "firstHop from " << tables[i].name << " to " << tables[j].name << " is " << firstHop ;
-	// int nextHop = getDistance( tables[j].name, tables[k].name, tables, size ) ;
-	// if( TRACE > 2 ) std::cout << "nextHop from " << tables[j].name << " to " << tables[k].name << " is " << nextHop << std::endl ;
-	// if( firstHop + nextHop >= INFINITE )
-	// 	std::cout << "\tINF" ;
-	// else
-	// 	std::cout << "\t" << firstHop + nextHop ;
+	for( i = 0 ; i < DV->routes.size() ; i++ ) {
+		std::cout << DV->routes[i].start << " " << DV->routes[i].end << " " << DV->routes[i].distance << std::endl ;
+	}
+
+	return DV ;
 }
 
 int main() {
@@ -175,7 +158,15 @@ int main() {
 		std::getline( std::cin, currentLine ) ;
 	}
 
-	printTables( tables, tablesSize, 0 ) ;
+	routingTable *broadcast = (routingTable*)malloc( sizeof( routingTable ) * tablesSize ) ;
+	for( int i = 0 ; i < tablesSize ; i++ ) {
+		broadcast[i].name = names[i] ;
+		for( int j = 0 ; j < tablesSize ; j++ ) {
+			broadcast[i].routes.push_back( link( names[i], names[j], INFINITE ) ) ;
+		}
+	}
+
+	calculateDV( names[0], tables, broadcast, names, tablesSize ) ;
 
 	return 0 ;
 }
