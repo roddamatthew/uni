@@ -177,6 +177,48 @@ routingTable* calculateDV( std::string name, std::vector<std::string> names, rou
 	return DV ;
 }
 
+routingTable* calculateRT( routingTable* DV, std::vector<std::string> names )
+/* Find the routing table from the distance vector table
+ * Result is a routingTable with only names.size() links
+ 	* Each link is the shortest distance currently known from a router to each of its neighbours
+ */
+{
+	routingTable* RT = new routingTable ;
+	RT->name = DV->name ;
+
+	for( int i = 0 ; i < names.size() ; i++ ) {
+		link shortest = link( "Error!", names[i], INFINITE ) ;
+
+		for( int j = 0 ; j < DV->routes.size() ; j++ ) {
+			if( DV->routes[j].end == shortest.end && DV->routes[j].distance <= shortest.distance ) {
+				shortest.distance = DV->routes[j].distance ;
+				shortest.start = DV->routes[j].start ;
+			}
+		}
+		RT->routes.push_back( shortest ) ;
+	}
+
+	return RT ;
+}
+
+routingTable* updateBroadcast( routingTable* broadcast, routingTable* RTArray, std::vector<std::string> names )
+/* Update broadcast to have all the latest routing distances
+ */
+{
+	for( int i = 0 ; i < names.size() ; i++ ) {
+		for( int j = 0 ; j < RTArray[i].routes.size() ; j++ ) {
+			/* if destinations match */
+			/* and distance is less */
+			/* update distance and first hop */
+			if( RTArray[i].routes[j].end == broadcast[i].routes[j].end && RTArray[i].routes[j].distance < broadcast[i].routes[j].distance ) {
+				broadcast[i].routes[j].distance = RTArray[i].routes[j].distance ;
+				broadcast[i].routes[j].start = RTArray[i].routes[j].start ;
+			}
+		}
+	}
+	return broadcast ;
+}
+
 int main() {
 	std::vector<std::string> names ;
 	std::string currentLine ;
@@ -225,13 +267,29 @@ int main() {
 	}
 
 	routingTable *broadcast = initBroadcast( names ) ;
+	printRoutingTableArray( broadcast, names.size() ) ;
 
 	std::cout << "neighbours array: " << std::endl ;
 	printRoutingTableArray( neighbours, names.size() ) ;
 
-	for( int i = 0 ; i < names.size() ; i++ ) {
-		routingTable *DV = calculateDV( names[i], names, neighbours, broadcast ) ;
-		printRoutingTableArray( DV, 1 ) ;
+	for( int p = 0 ; p < 5 ; p++ ) {
+		routingTable* RTArray = (routingTable*)malloc( sizeof( routingTable ) * names.size() ) ;
+
+		for( int i = 0 ; i < names.size() ; i++ ) {
+			routingTable *DV = calculateDV( names[i], names, neighbours, broadcast ) ;
+			std::cout << "DV: " << std::endl ;
+			printRoutingTableArray( DV, 1 ) ;
+			routingTable *RT = calculateRT( DV, names ) ;
+			
+			RTArray[i] = *RT ;
+
+			std::cout << "RT: " << std::endl ;
+			printRoutingTableArray( &RTArray[i], 1 ) ;
+		}
+
+		std::cout << "New broadcast array: " << std::endl ;
+		updateBroadcast( broadcast, RTArray, names ) ;
+		printRoutingTableArray( broadcast, names.size() ) ;
 	}
 
 	return 0 ;
