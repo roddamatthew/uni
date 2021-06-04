@@ -51,18 +51,18 @@ struct routingTable {
  			- The distance attribute is the total cost associated with the trip
  */
 
-void printRoutingTableArray( routingTable* array, int size )
-/* Debugging print command
- * Print any routingTable array
+void printRoutingTableArray( routingTable* array, int size, int iteration )
+ /* Print any routingTable array
  * Can also be called with a size of 1 to print a single routingTable 
  */
 {
 	for( int i = 0 ; i < size ; i++ ) {
-		std::cout << array[i].name << ":\n" ;
+		std::cout << "router " << array[i].name << " at t=" << iteration << std::endl ;
 		for( int j = 0 ; j < array[i].routes.size() ; j++ ) {
 			std::cout << array[i].routes[j].start << " " << array[i].routes[j].end << " " ;
-			if( array[i].routes[j].distance >= INFINITE ) std::cout << "INF\n" ;
-			else std::cout << array[i].routes[j].distance << std::endl ;
+			if( array[i].routes[j].distance >= INFINITE ) std::cout << "INF\n" ; else 
+			if( array[i].routes[j].distance < 0 ) std::cout << "-\n" ; else
+			std::cout << array[i].routes[j].distance << std::endl ;
 		}
 	}
 }
@@ -83,6 +83,47 @@ int distance( std::string router1, std::string router2, routingTable *table )
 			return table->routes[i].distance ;
 	}
 	return NO_LINK ;
+}
+
+int distanceOneWay( std::string router1, std::string router2, routingTable *table )
+/* Find the distance between two routers in a given table
+ * Loop through the routes in the table and check if router names match
+ * If they do, return the distance attribute
+ * If the loop finishes without finding a link, return NO_LINK
+ */
+{
+	for( int i = 0 ; i < table->routes.size() ; i++ ) { /* loop over all the links */
+		/* check if the router names match */
+		if( table->routes[i].start == router1 && table->routes[i].end == router2 )
+			return table->routes[i].distance ;
+	}
+	return NO_LINK ;
+}
+
+void printDV( routingTable* array, std::vector<std::string> names, int iteration ) {
+	std::cout << "router " << array->name << " at t=" << iteration << std::endl ;
+	for( int i = 0 ; i < names.size() ; i++ ) {
+		if( names[i] != array->name )
+			std::cout << "\t" << names[i] ;
+	}
+	std::cout << std::endl ;
+
+	for( int i = 0 ; i < names.size() ; i++ ) {
+		if( names[i] != array->name ) {
+			std::cout << names[i] ;
+			for( int j = 0 ; j < names.size() ; j++ ) {
+				if( names[j] != array->name ) {
+					int d = distanceOneWay( names[j], names[i], array ) ;
+
+					std::cout << "\t" ;
+					if( d >= INFINITE ) std::cout << "INF" ; else 
+					if( d < 0 ) std::cout << "-" ; else
+					std::cout << d ;
+				}
+			}
+			std::cout << std::endl ;
+		}
+	}
 }
 
 int distanceBroadcast( std::string router1, std::string router2, routingTable* broadcast, int size )
@@ -267,29 +308,34 @@ int main() {
 	}
 
 	routingTable *broadcast = initBroadcast( names ) ;
-	printRoutingTableArray( broadcast, names.size() ) ;
-
-	std::cout << "neighbours array: " << std::endl ;
-	printRoutingTableArray( neighbours, names.size() ) ;
+	if( TRACE > 1 ) {
+		printRoutingTableArray( broadcast, names.size(), 0 ) ;
+		std::cout << "neighbours array: " << std::endl ;
+		printRoutingTableArray( neighbours, names.size(), 0 ) ;
+	}
 
 	for( int p = 0 ; p < 5 ; p++ ) {
 		routingTable* RTArray = (routingTable*)malloc( sizeof( routingTable ) * names.size() ) ;
 
 		for( int i = 0 ; i < names.size() ; i++ ) {
 			routingTable *DV = calculateDV( names[i], names, neighbours, broadcast ) ;
-			std::cout << "DV: " << std::endl ;
-			printRoutingTableArray( DV, 1 ) ;
+			std::cout << "DV: t=" << p << std::endl ;
+			printDV( DV, names, p ) ;
 			routingTable *RT = calculateRT( DV, names ) ;
 			
 			RTArray[i] = *RT ;
 
-			std::cout << "RT: " << std::endl ;
-			printRoutingTableArray( &RTArray[i], 1 ) ;
+			if( TRACE > 1 ) {
+				std::cout << "RT: " << std::endl ;
+				printRoutingTableArray( &RTArray[i], 1, p ) ;
+			}
 		}
 
-		std::cout << "New broadcast array: " << std::endl ;
 		updateBroadcast( broadcast, RTArray, names ) ;
-		printRoutingTableArray( broadcast, names.size() ) ;
+		if( TRACE > 1 ) {
+			std::cout << "New broadcast array: " << std::endl ;
+			printRoutingTableArray( broadcast, names.size(), p ) ;
+		}
 	}
 
 	return 0 ;
