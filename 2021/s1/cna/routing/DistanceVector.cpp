@@ -27,7 +27,7 @@ struct link {
 		end = e ;
 		distance = d ;
 	}
-};
+} ;
 
 /* Data structure to represent a routing table */
 /* Has the name of the router with a vector for its links */
@@ -36,108 +36,166 @@ struct routingTable {
 	std::vector<link> routes ;
 } ;
 
-/* link is one router connection to another */
-/* routingTable is all of the links of one router to all other routers */
-	/* Even if not connected, this will have an entry */
-/* tables is an array storing all of the routing tables of all routers */
+/* Data Structures:
+ - names: vector<string> containing all the router names in alphabetical order
+ - neighbours: array of routingTable. 
+ 		- Elements ordered alphabetically by name
+ 		- Each element's name attribute is the name of the router
+ 		- Each element's routes attribute contains the links to its neighbours.
+ - broadcast: array of routingTable.
+ 		- Elements ordered alphabetically by name
+ 		- Each element's name attribute is the name of the router
+ 		- Each element's routes attribute contains its lowest cost trip to each other router
+ 			- The start attribute of a link is the first hop
+ 			- The end attribute of a link is the destination
+ 			- The distance attribute is the total cost associated with the trip
+ */
 
-void setLinks( std::string router1, std::string router2, int distance, struct routingTable *tables, int size )
-/* set the distance for links between router1 and router2
- * search through tables for the links
- * make sure the link is set in both router's routing tables 
+void printRoutingTableArray( routingTable* array, int size )
+/* Debugging print command
+ * Print any routingTable array
+ * Can also be called with a size of 1 to print a single routingTable 
  */
 {
-	/* search through all the tables */
 	for( int i = 0 ; i < size ; i++ ) {
-		/* search through all the routes */
-		for( int j = 0 ; j < tables[i].routes.size() ; j++ ) {
-			/* If the router names match, set the distance */
-			if( tables[i].routes[j].start == router1 && tables[i].routes[j].end == router2 ) {
-				tables[i].routes[j].distance = distance ;
-				if( TRACE > 2 ) std::cout << "In table " << tables[i].name << "set " << tables[i].routes[j].start << " " << tables[i].routes[j].end << " " << tables[i].routes[j].distance << std::endl ;
-			}
-			/* Also check if they're in the reverse order */
-			if( tables[i].routes[j].start == router2 && tables[i].routes[j].end == router1 ){
-				tables[i].routes[j].distance = distance ;
-				if( TRACE > 2 ) std::cout << "In table " << tables[i].name << "set " << tables[i].routes[j].start << " " << tables[i].routes[j].end << " " << tables[i].routes[j].distance << std::endl ;
-			}
+		std::cout << array[i].name << ":\n" ;
+		for( int j = 0 ; j < array[i].routes.size() ; j++ ) {
+			std::cout << array[i].routes[j].start << " " << array[i].routes[j].end << " " ;
+			if( array[i].routes[j].distance >= INFINITE ) std::cout << "INF\n" ;
+			else std::cout << array[i].routes[j].distance << std::endl ;
 		}
 	}
 }
 
-int distance( struct routingTable *table, std::string router1, std::string router2 ) {
-	/* Search a routing table for a link and return the distance */
-	for( int i = 0 ; i < table.routes.size() ; i++ ) {
-		if( router1 == table.routes[i].start && router2 == table.routes[i].end )
-			return table.routes[i].distance ;
-		else if( router1 == table.routes[i].end && router2 == table.routes[i].start )
-			return table.routes[i].distance ;
+int distance( std::string router1, std::string router2, routingTable *table )
+/* Find the distance between two routers in a given table
+ * Loop through the routes in the table and check if router names match
+ * If they do, return the distance attribute
+ * If the loop finishes without finding a link, return NO_LINK
+ */
+{
+	for( int i = 0 ; i < table->routes.size() ; i++ ) { /* loop over all the links */
+		/* check if the router names match */
+		if( table->routes[i].start == router1 && table->routes[i].end == router2 )
+			return table->routes[i].distance ;
+		/* also check if the router names are in the reverse order */
+		if( table->routes[i].start == router2 && table->routes[i].end == router1 )
+			return table->routes[i].distance ;
 	}
-	return -100 ;
+	return NO_LINK ;
 }
 
-routingTable* calculateDV( std::string currentTableName, struct routingTable *tables, struct routingTable *broadcast, std::vector<std::string> names, int size ) {
-	routingTable *DV = new routingTable() ;
+int distanceBroadcast( std::string router1, std::string router2, routingTable* broadcast, int size )
+/* Use the global routingTable *broadcast variable to find the distance between two routers
+ * Parameters:
+ * router1: name of one end of the link
+ * router2: name of the other end of the link
 
-	int i, j ;
+ * Note that links in the broadcast array are different from normal links:
+ * the routingTable name is the link's beginning
+ * routes[i].start is the link's first hop
+ * routes[i].end is the link's destination
 
-	while( i < size ) {
-		if( names[i] != currentTableName ) {
-			while( j < size ) {
-				if( names[j] != currentTableName ) {
-					if( firstHop.exists() ) {
-						int distance = distance( currentTableName, names[i] ) ;
-						distance += distanceBroadcasted( names[i], names[j] ) ;
-						DV->routes.push_back( link( names[i], names[j], distance ) ) ;
-					}
-					else {
-						DV->routes.push_back( link( names[i], names[j], -1 ) ) ;
+ * Result:
+ * Return the int distance between the two routers
+ */
+{
+	for( int i = 0 ; i < size ; i++ ) { /* Loop over the broadcast array */
+		if( broadcast[i].name == router1 ) { /* Check if the routingTable has a matching name */
+			for( int j = 0 ; j < broadcast[i].routes.size() ; j++ ) { /* loop over all the routes in the routingTable */
+				if( broadcast[i].routes[j].end == router2 ) /* Check if the destination matches */
+					return broadcast[i].routes[j].distance ; /* Return the distance */
+			}
+		}
+	}
+	/* Error case */
+	/* Broadcast table should always have a link between every router initialised to INFINITE */
+	return NO_LINK ;
+}
+
+routingTable* initBroadcast( std::vector<std::string> names )
+/* Initialize the broadcast array
+ * All distances are set to INFINITE
+ */
+{
+	routingTable* broadcast = (routingTable*)malloc( sizeof( routingTable ) * names.size() ) ;
+
+	for( int i = 0 ; i < names.size() ; i++ ) { /* loop over each router */
+		for( int j = 0 ; j < names.size() ; j++ ) { /* loop over each router */
+			/* name the routingTable after where each link starts*/
+			broadcast[i].name = names[i] ;
+			/* make a link between all routers with an initial distance of INFINITE */
+			broadcast[i].routes.push_back( link( names[i], names[j], INFINITE ) ) ;
+			/* distance from a router to itself is always zero */
+			if( names[i] == names[j] ) broadcast[i].routes[j].distance = 0 ;
+		}
+	}
+
+	return broadcast ;
+}
+
+routingTable* calculateDV( std::string name, std::vector<std::string> names, routingTable *neighbours, routingTable *broadcast )
+/* Calculate the distance vector for a given router:
+
+ * Parameters:
+ * name: The name of the router who's DV table we're calculating
+ * names: The names of all routers in the network
+ * neighbours: routingTable with all direct links between our router and its neighbours
+
+ * Result:
+ * Return a routing table:
+   - All links start at the router with name accessible by routingTable.name
+   - All links first hop stored in routingTable.routes[i].start
+   - All links destination stored in routingTable.routes[i].end
+   - Total distance of the journey is stored in routingTable.routes[i].distance
+ */
+{
+	int i = 0 , j = 0 ;
+
+	routingTable* DV = new routingTable() ;
+	DV->name = name ;
+
+	while( i < names.size() ) { /* loop over each first hop */
+		if( names[i] != name ) { /* exclude calculating distance to itself */
+			while( j < names.size() ) { /* loop over each destination hop */
+				if( names[j] != name ) { /* exclude calculating distance to itself */
+					if( distance( name, names[i], &neighbours[i] ) != NO_LINK ) { /* check if there is a link between this router and the first hop */
+						int firstHopDistance = distance( name, names[i], &neighbours[i] ) ;
+						int desinationHopDistance = distanceBroadcast( names[i], names[j], broadcast, names.size() ) ;
+						int totalDistance = firstHopDistance + desinationHopDistance ;
+						DV->routes.push_back( link( names[i], names[j], totalDistance ) ) ;
+					} else { /* if there is no link for the first hop */
+						DV->routes.push_back( link( names[i], names[j], NO_LINK ) ) ;
 					}
 				}
 				j++ ;
 			}
 		}
+		j = 0 ;
 		i++ ;
 	}
-
-	for( i = 0 ; i < DV->routes.size() ; i++ ) {
-		std::cout << DV->routes[i].start << " " << DV->routes[i].end << " " << DV->routes[i].distance << std::endl ;
-	}
-
 	return DV ;
 }
 
 int main() {
 	std::vector<std::string> names ;
 	std::string currentLine ;
-	int tablesSize = 0 ;
 
 	/* Read the router names */
 	std::getline( std::cin, currentLine ) ;
-	/* Read router names */
 	while( !currentLine.empty() ) {
-		/* create a routing table for this router */
-		names.push_back( currentLine.substr( 0 ) ) ;
-		tablesSize++ ;
+		/* Copy the name of this router into names */
+		names.push_back( currentLine ) ;
 		std::getline( std::cin, currentLine ) ;
 	}
 
-
 	/* Allocate memory for a routing table for each router */
-	routingTable *tables = (routingTable*)malloc( sizeof( routingTable ) * tablesSize ) ;
+	routingTable *neighbours = (routingTable*)malloc( sizeof( routingTable ) * names.size() ) ;
 
-	for( int j = 0 ; j < tablesSize ; j++ ){
-		/* Put the router names into the routing tables */
-		tables[j].name = names[j] ;
-
-		/* Initialize infinite links between all routers */
-		for( int i = 0 ; i < tablesSize ; i++ ) {
-			/* links from router to itself have zero distance */
-			if( i != j ) tables[j].routes.push_back( link( names[j], names[i] ) ) ;
-			if( i == j ) tables[j].routes.push_back( link( names[j], names[i], 0 ) ) ;
-		}
-	}
-
+	for( int i = 0 ; i < names.size() ; i++ ) {
+		/* Put the router names into the routingTables */
+		neighbours[i].name = names[i] ;
+ 	}
 
 	/* Read links */
 	std::getline( std::cin, currentLine ) ;
@@ -153,20 +211,28 @@ int main() {
 		
 		int distance = std::stoi( currentLine ) ; /* the rest of the string should now be a number */
 
-		setLinks( router1, router2, distance, tables, tablesSize ) ;
+		/* COULD ADD CHECK HERE TO SEE IF THE ROUTER NAMES AND DISTANCE ARE VALID */
+
+		/* Put the link into the correct routingTable */
+		for( int i = 0 ; i < names.size() ; i++ ) {
+			if( router1 == neighbours[i].name )
+				neighbours[i].routes.push_back( link( router1, router2, distance ) ) ;
+			if( router2 == neighbours[i].name )
+				neighbours[i].routes.push_back( link( router2, router1, distance ) ) ;
+ 		}
 
 		std::getline( std::cin, currentLine ) ;
 	}
 
-	routingTable *broadcast = (routingTable*)malloc( sizeof( routingTable ) * tablesSize ) ;
-	for( int i = 0 ; i < tablesSize ; i++ ) {
-		broadcast[i].name = names[i] ;
-		for( int j = 0 ; j < tablesSize ; j++ ) {
-			broadcast[i].routes.push_back( link( names[i], names[j], INFINITE ) ) ;
-		}
-	}
+	routingTable *broadcast = initBroadcast( names ) ;
 
-	calculateDV( names[0], tables, broadcast, names, tablesSize ) ;
+	std::cout << "neighbours array: " << std::endl ;
+	printRoutingTableArray( neighbours, names.size() ) ;
+
+	for( int i = 0 ; i < names.size() ; i++ ) {
+		routingTable *DV = calculateDV( names[i], names, neighbours, broadcast ) ;
+		printRoutingTableArray( DV, 1 ) ;
+	}
 
 	return 0 ;
 }

@@ -184,7 +184,7 @@ int main() {
 	for( int j = 0 ; j < names.size() ; j++ ) {
 
 		routingTable* DV = calculateDV( names[j], names, table[j], broadcast ) ;
-
+		std::cout << "f d D\n" ;
 		for( int i = 0 ; i < DV->routes.size() ; i++ ) {
 			std::cout << DV->routes[i].start << " " << DV->routes[i].end << " " ;
 			if( DV->routes[i].distance < INFINITE ) std::cout << DV->routes[i].distance << std::endl ;
