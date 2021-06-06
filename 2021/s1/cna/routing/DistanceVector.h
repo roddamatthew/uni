@@ -1,7 +1,7 @@
 #define INFINITE 1073741823 /* define a constant for infinity (this is INT_MAX / 2) */
 #define NO_LINK -1 /* define a constant for no link */
 
-static int TRACE = 3 ;
+static int TRACE = 0 ;
 
 using namespace std ;
 
@@ -40,4 +40,5 @@ void calculateDVs( vector<routingTable>*, vector<routingTable>*, vector<routingT
 void printDVs( vector<routingTable>*, int ) ;
 void calculateRTs( vector<routingTable>*, vector<routingTable>* ) ;
 void printRoutingTableArray( vector<routingTable>* ) ;
+void printBroadcast( vector<routingTable>* ) ;
 

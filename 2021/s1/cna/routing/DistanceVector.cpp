@@ -57,7 +57,7 @@ int main() {
 			getline( cin, currentLine ) ;
 		}
 
-		while( iteration < 3 ) { /* set a max iteration of 100 */
+		while( iteration < 100 ) { /* set a max iteration of 100 */
 			vector<routingTable> newRTs ; /* temporary storage for the current iterations routingTables */
 
 			/* Calculate the distance vector table and print it */
@@ -71,45 +71,9 @@ int main() {
 
 			if( updateBroadcast( &newRTs, &broadcast ) == 0 )
 				break ;
-			printRoutingTableArray( &broadcast ) ;
-
 		}
 
-		cout << "New links" << endl << endl ;
-
-	
-	// 			calculateRT( &RTArray[i], &DV, names ) ;
-
-	// 			if( TRACE > 1 ) {
-	// 				cout << "RT: " << endl ;
-	// 				printRoutingTableArray( &RTArray[i], 1, p ) ;
-	// 			}
-
-	// 			DV.routes.clear() ;
-	// 		}
-
-
-	// 		if( updateBroadcast( broadcast, RTArray, names ) == 0 ) {
-	// 			p++ ;
-	// 			break ;
-	// 		}
-
-	// 		for( int i = 0 ; i < names.size() ; i++ )
-	// 			RTArray[i].routes.clear() ;
-
-	// 		if( TRACE > 1 ) {
-	// 			cout << "New broadcast array: " << endl ;
-	// 			printRoutingTableArray( broadcast, names.size(), p ) ;
-	// 		}
-	// 		p++ ;
-	// 	}
-
-	// 	printBroadcast( broadcast, names ) ;
-
-	// 	for( int i = 0 ; i < names.size() ; i++ ) {
-	// 		broadcast[i].routes.clear() ;
-	// 	}
-
+		printBroadcast( &broadcast ) ;
 
 		getline( cin, currentLine ) ;
 	}

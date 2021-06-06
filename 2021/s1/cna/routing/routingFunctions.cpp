@@ -212,3 +212,15 @@ void addNeighbour( vector<routingTable> *neighbours, string router1, string rout
 		}
 	}
 }
+
+void printBroadcast( vector<routingTable> *broadcast ) {
+	for( int i = 0 ; i < broadcast->size() ; i++ ) {
+		for( int j = 0 ; j < broadcast->at(i).routes.size() ; j++ ) {
+			if( i != j ) {
+				std::cout << "router " << broadcast->at(i).name << ": " << broadcast->at(j).name << " is " ;
+				std::cout << broadcast->at(i).routes.at(j).distance << " routing through " << broadcast->at(i).routes.at(j).start << std::endl ;
+			}
+		}
+	}
+	std::cout << std::endl ;
+}
