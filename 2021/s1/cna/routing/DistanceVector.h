@@ -40,4 +40,4 @@ routingTable* calculateDV( routingTable *DV, string name, vector<string> names, 
 void calculateRT( routingTable* RT, routingTable* DV, vector<string> names ) ;
 int updateBroadcast( routingTable* broadcast, routingTable* RTArray, vector<string> names ) ;
 void printBroadcast( routingTable* broadcast, vector<string> names ) ;
-void addNeighbour( routingTable* neighbours, string router1, string router2, int distance, vector<string> names ) ;
+void addNeighbour( vector<routingTable>*, string, string, int ) ;

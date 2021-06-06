@@ -21,37 +21,43 @@ int main() {
 		getline( cin, currentLine ) ;
 	}
 
+	/* sort router names into alphabetical order */
+	/* TO-DO */
+
 	for( int i = 0 ; i < names.size() ; i++ ) {
-		/* Put the router names into the routingTables */
-		neighbours.push_back( routingTable() ) ;
-		neighbours.at(i).name = names.at(i) ;
+		neighbours.push_back( routingTable() ) ; /* create a routing table for each router */
+		neighbours.at(i).name = names.at(i) ; /* add its name attribute */
  	}
 
- 	for( int i = 0 ; i < neighbours.size() ; i++ ) {
- 		std::cout << neighbours.at(i).name << std::endl ;
- 	}
+	/* Read links */
+	getline( cin, currentLine ) ;
+	while( !currentLine.empty() ) {
+		while( !currentLine.empty() ) {
+			int pos = currentLine.find( " " ) ; /* find the position of the first space */
+			string router1 = currentLine.substr( 0, pos ) ; /* copy the first word */
+			currentLine.erase( 0, pos + 1 ) ; /* erase the first word from the string */
 
-	// /* Read links */
-	// getline( cin, currentLine ) ;
-	// while( !currentLine.empty() ) {
-	// 	while( !currentLine.empty() ) {
-	// 		int pos = currentLine.find( " " ) ; /* find the position of the first space */
-	// 		string router1 = currentLine.substr( 0, pos ) ; /* copy the first word */
-	// 		currentLine.erase( 0, pos + 1 ) ; /* erase the first word from the string */
-
-	// 		pos = currentLine.find( " " ) ; /* find the position of the new first space */
-	// 		string router2 = currentLine.substr( 0, pos ) ; /* copy the new first word */
-	// 		currentLine.erase( 0, pos + 1 ) ; /* erase the new word from the string */
+			pos = currentLine.find( " " ) ; /* find the position of the new first space */
+			string router2 = currentLine.substr( 0, pos ) ; /* copy the new first word */
+			currentLine.erase( 0, pos + 1 ) ; /* erase the new word from the string */
 			
-	// 		int distance = stoi( currentLine ) ; /* the rest of the string should now be a number */
+			int distance = stoi( currentLine ) ; /* the rest of the string should now be a number */
 
-	// 		/* COULD ADD CHECK HERE TO SEE IF THE ROUTER NAMES AND DISTANCE ARE VALID */
+			/* COULD ADD CHECK HERE TO SEE IF THE ROUTER NAMES AND DISTANCE ARE VALID */
 
-	// 		/* Put the link into the correct routingTable */
-	// 		addNeighbour( neighbours, router1, router2, distance, names ) ;
+			/* Put the link into the correct routingTable */
+			addNeighbour( &neighbours, router1, router2, distance ) ;
 
-	// 		getline( cin, currentLine ) ;
-	// 	}
+			getline( cin, currentLine ) ;
+		}
+
+		for( int i = 0 ; i < neighbours.size() ; i++ ) {
+			for( int j = 0 ; j < neighbours.at(i).routes.size() ; j++ ) {
+				cout << neighbours.at(i).routes.at(j).start << " " << neighbours.at(i).routes.at(j).end << " " << neighbours.at(i).routes.at(j).distance << endl ;
+			}
+		}
+
+		cout << endl ;
 
 	// 	routingTable *broadcast = initBroadcast( names ) ;
 	// 	if( TRACE > 1 ) {
@@ -101,8 +107,8 @@ int main() {
 	// 	}
 
 
-	// 	getline( cin, currentLine ) ;
-	// }
+		getline( cin, currentLine ) ;
+	}
 
 	return 0 ;
 }

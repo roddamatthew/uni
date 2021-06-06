@@ -11,7 +11,7 @@ static int TRACE = 0 ;
  - neighbours: array of routingTable. 
  		- Elements ordered alphabetically by name
  		- Each element's name attribute is the name of the router
- 		- Each element's routes attribute contains the links to its neighbours.
+ 		- Each element's routes attribute contains the links to its neighbours->
  - broadcast: array of routingTable.
  		- Elements ordered alphabetically by name
  		- Each element's name attribute is the name of the router
@@ -258,37 +258,35 @@ void printBroadcast( routingTable* broadcast, vector<string> names ) {
 	cout << endl ;
 }
 
-void addNeighbour( routingTable* neighbours, string router1, string router2, int distance, vector<string> names )
+void addNeighbour( vector<routingTable> *neighbours, string router1, string router2, int distance )
 /* Add a link to the neighbour array
  * Links are always added to both tables
  * If the link already exists, only update the distance
  */
 {
-	for( int i = 0 ; i < names.size() ; i++ ) { /* loop through each routingTable*/
-		if( neighbours[i].name == router1 ) {
-			bool linkExists = false ;
-			for( int j = 0 ; j < neighbours[i].routes.size() ; j++ ) {
-				if( neighbours[i].routes[j].end == router2 ) {
-					neighbours[i].routes[j].distance = distance ;
-					linkExists = true ;
+	for( int i = 0 ; i < neighbours->size() ; i++ ) {
+		if( neighbours->at(i).name == router1 ) { /* find the right routingTable */
+			bool exists = false ;
+			for( int j = 0 ; j < neighbours->at(i).routes.size() ; j++ ) { /* check if the route already exists */
+				if( neighbours->at(i).routes.at(j).end == router2 ) {
+					exists = true ;
+					neighbours->at(i).routes.at(j).distance = distance ;
 				}
 			}
-
-			if( !linkExists )
-				neighbours[i].routes.push_back( link( router1, router2, distance ) ) ;
+			if( !exists )
+				neighbours->at(i).routes.push_back( link( router1, router2, distance ) ) ;
 		}
-		else if( neighbours[i].name == router2 ) {
-			bool linkExists = false ;
-			for( int j = 0 ; j < neighbours[i].routes.size() ; j++ ) {
-				if( neighbours[i].routes[j].end == router1 ) {
-					neighbours[i].routes[j].distance = distance ;
-					linkExists = true ;
+
+		if( neighbours->at(i).name == router2 ) { /* find the right routingTable */
+			bool exists = false ;
+			for( int j = 0 ; j < neighbours->at(i).routes.size() ; j++ ) { /* check if the route already exists */
+				if( neighbours->at(i).routes.at(j).end == router1 ) {
+					exists = true ;
+					neighbours->at(i).routes.at(j).distance = distance ;
 				}
 			}
-
-			if( !linkExists )
-				neighbours[i].routes.push_back( link( router2, router1, distance ) ) ;
+			if( !exists )
+				neighbours->at(i).routes.push_back( link( router2, router1, distance ) ) ;
 		}
-
 	}
 }
