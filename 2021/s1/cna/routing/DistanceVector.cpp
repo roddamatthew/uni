@@ -356,7 +356,7 @@ int main() {
 			std::string router2 = currentLine.substr( 0, pos ) ; /* copy the new first word */
 			currentLine.erase( 0, pos + 1 ) ; /* erase the new word from the string */
 			
-			int distance = stoi( currentLine ) ; /* the rest of the string should now be a number */
+			int distance = std::stoi( currentLine ) ; /* the rest of the string should now be a number */
 
 			/* COULD ADD CHECK HERE TO SEE IF THE ROUTER NAMES AND DISTANCE ARE VALID */
 
