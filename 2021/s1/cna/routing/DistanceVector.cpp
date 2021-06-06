@@ -9,7 +9,7 @@ static int TRACE = 0 ;
 int main() {
 	vector<string> names ;
 	string currentLine ;
-	int p = 0 ;
+	int iteration = 0 ;
 
 	/* Read the router names */
 	getline( cin, currentLine ) ;
@@ -59,15 +59,18 @@ int main() {
 			getline( cin, currentLine ) ;
 		}
 
-	for( int i = 0 ; i < broadcast.size() ; i++ ) {
-        for( int j = 0 ; j < broadcast.at(i).routes.size() ; j++ ) {
-                cout << broadcast.at(i).routes.at(j).start << " " << broadcast.at(i).routes.at(j).end << " " << broadcast.at(i).routes.at(j).distance << endl ;
-        }
-    }
+		while( iteration < 3 ) { /* set a max iteration of 100 */
+			vector<routingTable> newRTs ; /* temporary storage for the current iterations routingTables */
 
-    cout << endl ;
+			/* Calculate the distance vector table and print it */
+			vector<routingTable> DVs ;
+			calculateDVs( &DVs, &neighbours, &broadcast ) ;
+			printDVs( &DVs, iteration ) ;
 
-	// 	routingTable* RTArray = (routingTable*)malloc( sizeof( routingTable ) * names.size() * names.size() ) ;
+			iteration++ ;
+
+		}
+
 	// 	while( p < 100 ) {
 
 	// 		for( int i = 0 ; i < names.size() ; i++ ) {

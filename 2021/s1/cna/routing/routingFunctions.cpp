@@ -37,21 +37,22 @@ void printRoutingTableArray( routingTable* array, int size, int iteration )
 	}
 }
 
-int distance( string router1, string router2, routingTable *table )
+int distance( vector<routingTable> *vec, string routerName, string firstHop, string destination )
 /* Find the distance between two routers in a given table
  * Loop through the routes in the table and check if router names match
  * If they do, return the distance attribute
  * If the loop finishes without finding a link, return NO_LINK
  */
 {
-	for( int i = 0 ; i < table->routes.size() ; i++ ) { /* loop over all the links */
-		/* check if the router names match */
-		if( table->routes[i].start == router1 && table->routes[i].end == router2 )
-			return table->routes[i].distance ;
-		/* also check if the router names are in the reverse order */
-		if( table->routes[i].start == router2 && table->routes[i].end == router1 )
-			return table->routes[i].distance ;
+	for( int i = 0 ; i < vec->size() ; i++ ) {
+		if( routerName == vec->at(i).name )
+			for( int j = 0 ; j < vec->at(i).routes.size() ; j++ ) {
+				if( vec->at(i).routes.at(j).start == firstHop 
+					&& vec->at(i).routes.at(j).end == destination )
+					return vec->at(i).routes.at(j).distance ;
+			}
 	}
+
 	return NO_LINK ;
 }
 
@@ -70,31 +71,38 @@ int distanceOneWay( string router1, string router2, routingTable *table )
 	return NO_LINK ;
 }
 
-void printDV( routingTable* array, vector<string> names, int iteration ) {
-	cout << "router " << array->name << " at t=" << iteration << endl ;
-	for( int i = 0 ; i < names.size() ; i++ ) {
-		if( names[i] != array->name )
-			cout << "\t" << names[i] ;
-	}
-	cout << endl ;
-
-	for( int i = 0 ; i < names.size() ; i++ ) {
-		if( names[i] != array->name ) {
-			cout << names[i] ;
-			for( int j = 0 ; j < names.size() ; j++ ) {
-				if( names[j] != array->name ) {
-					int d = distanceOneWay( names[j], names[i], array ) ;
-
-					cout << "\t" ;
-					if( d >= INFINITE ) cout << "INF" ; else 
-					if( d < 0 ) cout << "-" ; else
-					cout << d ;
-				}
-			}
-			cout << endl ;
+void printDVs( vector<routingTable> *DVs, int iteration ) {
+	for( int i = 0 ; i < DVs->size() ; i++ ) {
+		cout << "router " << DVs->at(i).name << " at t=" << iteration << endl ;
+		
+		for( int j = 0 ; j < DVs->size() ; j++ ) {
+			if( i != j )
+				cout << "\t" << DVs->at(j).name ;
 		}
+		cout << endl ;
+
+		for( int j = 0 ; j < DVs->size() ; j++ ) {
+			if( i != j ) {
+				cout << DVs->at(j).name ;
+				for( int k = 0 ; k < DVs->size() ; k++ ) {
+					if( j != k ) {
+						// int d = distanceOneWay( names[j], names[i], array ) ;
+						int d = distance( DVs, DVs->at(i).name, DVs->at(j).name, DVs->at(k).name ) ;
+
+						cout << "\t" ;
+						// if( d >= INFINITE ) cout << "INF" ; else 
+						// if( d < 0 ) cout << "-" ; else
+						// cout << d ;
+						std::cout << DVs->at(i).routes.at(j).start ;
+						std::cout << DVs->at(i).routes.at(k).end ;
+						std::cout << d ;
+					}
+				}
+				cout << endl ;
+			}
+		}
+		cout << endl ;
 	}
-	cout << endl ;
 }
 
 int distanceBroadcast( string router1, string router2, routingTable* broadcast, int size )
@@ -125,46 +133,25 @@ int distanceBroadcast( string router1, string router2, routingTable* broadcast, 
 	return NO_LINK ;
 }
 
-routingTable* calculateDV( routingTable *DV, string name, vector<string> names, routingTable *neighbours, routingTable *broadcast )
-/* Calculate the distance vector for a given router:
-
- * Parameters:
- * name: The name of the router who's DV table we're calculating
- * names: The names of all routers in the network
- * neighbours: routingTable with all direct links between our router and its neighbours
-
- * Result:
- * Return a routing table:
-   - All links start at the router with name accessible by routingTable.name
-   - All links first hop stored in routingTable.routes[i].start
-   - All links destination stored in routingTable.routes[i].end
-   - Total distance of the journey is stored in routingTable.routes[i].distance
- */
+void calculateDVs( vector<routingTable> *DVs, vector<routingTable> *neighbours, vector<routingTable> *broadcast )
+/* Calculate the distance vector for a given router */
 {
-	int i = 0 , j = 0 ;
+	for( int i = 0 ; i < neighbours->size() ; i++ ) { /* loop over each router */
+		DVs->push_back( routingTable() ) ;
+		DVs->at(i).name = neighbours->at(i).name ;
 
-	DV->name = name ;
-
-	while( i < names.size() ) { /* loop over each first hop */
-		if( names[i] != name ) { /* exclude calculating distance to itself */
-			while( j < names.size() ) { /* loop over each destination hop */
-				if( names[j] != name ) { /* exclude calculating distance to itself */
-					if( distance( name, names[i], &neighbours[i] ) != NO_LINK ) { /* check if there is a link between this router and the first hop */
-						int firstHopDistance = distance( name, names[i], &neighbours[i] ) ;
-						int desinationHopDistance = distanceBroadcast( names[i], names[j], broadcast, names.size() ) ;
-						int totalDistance = firstHopDistance + desinationHopDistance ;
-						DV->routes.push_back( link( names[i], names[j], totalDistance ) ) ;
-					} else { /* if there is no link for the first hop */
-						DV->routes.push_back( link( names[i], names[j], NO_LINK ) ) ;
-					}
-				}
-				j++ ;
+		for( int j = 0 ; j < neighbours->size() ; j++ ) { /* loop over each first hop */
+			int firstHopDistance = distance( neighbours, neighbours->at(i).name, neighbours->at(i).name, neighbours->at(j).name ) ;
+			
+			for( int k = 0 ; k < neighbours->size() ; k++ ) { /* loop over each final destination */ 
+				int destinationHopDistance = distance( broadcast, broadcast->at(i).name, broadcast->at(j).name, broadcast->at(k).name ) ;
+				int totalDistance = firstHopDistance + destinationHopDistance ;
+				if( firstHopDistance == -1 )
+					totalDistance = -1 ;
+				DVs->at(i).routes.push_back( link( broadcast->at(j).name, broadcast->at(k).name, totalDistance ) ) ;
 			}
 		}
-		j = 0 ;
-		i++ ;
 	}
-	return DV ;
 }
 
 void calculateRT( routingTable* RT, routingTable* DV, vector<string> names )

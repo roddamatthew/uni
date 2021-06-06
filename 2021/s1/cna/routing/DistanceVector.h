@@ -31,12 +31,13 @@ struct routingTable {
 } ;
 
 void printRoutingTableArray( routingTable*, int, int ) ;
-int distance( string, string router2, routingTable *table ) ;
 int distanceOneWay( string router1, string router2, routingTable *table ) ;
-void printDV( routingTable* array, vector<string> names, int iteration ) ;
 int distanceBroadcast( string router1, string router2, routingTable* broadcast, int size ) ;
-routingTable* calculateDV( routingTable *DV, string name, vector<string> names, routingTable *neighbours, routingTable *broadcast ) ;
 void calculateRT( routingTable* RT, routingTable* DV, vector<string> names ) ;
 int updateBroadcast( routingTable* broadcast, routingTable* RTArray, vector<string> names ) ;
 void printBroadcast( routingTable* broadcast, vector<string> names ) ;
+
+int distance( vector<routingTable>*, string, string, string ) ;
 void addNeighbour( vector<routingTable>*, string, string, int ) ;
+void calculateDVs( vector<routingTable>*, vector<routingTable>*, vector<routingTable>* ) ;
+void printDVs( vector<routingTable>*, int ) ;
