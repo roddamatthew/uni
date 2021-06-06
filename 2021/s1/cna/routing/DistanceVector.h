@@ -35,7 +35,6 @@ int distance( string, string router2, routingTable *table ) ;
 int distanceOneWay( string router1, string router2, routingTable *table ) ;
 void printDV( routingTable* array, vector<string> names, int iteration ) ;
 int distanceBroadcast( string router1, string router2, routingTable* broadcast, int size ) ;
-routingTable* initBroadcast( vector<string> names ) ;
 routingTable* calculateDV( routingTable *DV, string name, vector<string> names, routingTable *neighbours, routingTable *broadcast ) ;
 void calculateRT( routingTable* RT, routingTable* DV, vector<string> names ) ;
 int updateBroadcast( routingTable* broadcast, routingTable* RTArray, vector<string> names ) ;

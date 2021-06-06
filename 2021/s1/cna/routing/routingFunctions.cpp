@@ -125,27 +125,6 @@ int distanceBroadcast( string router1, string router2, routingTable* broadcast, 
 	return NO_LINK ;
 }
 
-routingTable* initBroadcast( vector<string> names )
-/* Initialize the broadcast array
- * All distances are set to INFINITE
- */
-{
-	routingTable* broadcast = (routingTable*)malloc( sizeof( routingTable ) * names.size() * names.size() * names.size() ) ;
-
-	for( int i = 0 ; i < names.size() ; i++ ) { /* loop over each router */
-		for( int j = 0 ; j < names.size() ; j++ ) { /* loop over each router */
-			/* name the routingTable after where each link starts*/
-			broadcast[i].name = names[i] ;
-			/* make a link between all routers with an initial distance of INFINITE */
-			broadcast[i].routes.push_back( link( names[i], names[j], INFINITE ) ) ;
-			/* distance from a router to itself is always zero */
-			if( names[i] == names[j] ) broadcast[i].routes[j].distance = 0 ;
-		}
-	}
-
-	return broadcast ;
-}
-
 routingTable* calculateDV( routingTable *DV, string name, vector<string> names, routingTable *neighbours, routingTable *broadcast )
 /* Calculate the distance vector for a given router:
 

@@ -8,8 +8,6 @@ static int TRACE = 0 ;
 
 int main() {
 	vector<string> names ;
-	vector<routingTable> neighbours ;
-	vector<routingTable> broadcast ;
 	string currentLine ;
 	int p = 0 ;
 
@@ -24,9 +22,19 @@ int main() {
 	/* sort router names into alphabetical order */
 	/* TO-DO */
 
+	vector<routingTable> neighbours ;
+	vector<routingTable> broadcast ;
+
 	for( int i = 0 ; i < names.size() ; i++ ) {
 		neighbours.push_back( routingTable() ) ; /* create a routing table for each router */
-		neighbours.at(i).name = names.at(i) ; /* add its name attribute */
+		neighbours.at(i).name = names.at(i) ; /* add its name */
+
+		broadcast.push_back( routingTable() ) ; /* create a routingTable for each router */
+		broadcast.at(i).name = names.at(i) ; /* add its name */
+		for( int j = 0 ; j < names.size() ; j++ ) {
+			broadcast.at(i).routes.push_back( link( names.at(i), names.at(j) ) ) ; /* add an initial infinite link */
+			if( i == j ) broadcast.at(i).routes.at(j).distance = 0 ; /* change this to a zero cost link if going to itself */
+		}
  	}
 
 	/* Read links */
@@ -51,21 +59,13 @@ int main() {
 			getline( cin, currentLine ) ;
 		}
 
-		for( int i = 0 ; i < neighbours.size() ; i++ ) {
-			for( int j = 0 ; j < neighbours.at(i).routes.size() ; j++ ) {
-				cout << neighbours.at(i).routes.at(j).start << " " << neighbours.at(i).routes.at(j).end << " " << neighbours.at(i).routes.at(j).distance << endl ;
-			}
-		}
+	for( int i = 0 ; i < broadcast.size() ; i++ ) {
+        for( int j = 0 ; j < broadcast.at(i).routes.size() ; j++ ) {
+                cout << broadcast.at(i).routes.at(j).start << " " << broadcast.at(i).routes.at(j).end << " " << broadcast.at(i).routes.at(j).distance << endl ;
+        }
+    }
 
-		cout << endl ;
-
-	// 	routingTable *broadcast = initBroadcast( names ) ;
-	// 	if( TRACE > 1 ) {
-	// 		cout << "broadcast array at t=0:" << endl ;
-	// 		printRoutingTableArray( broadcast, names.size(), 0 ) ;
-	// 		cout << "neighbours array at t=0: " << endl ;
-	// 		printRoutingTableArray( neighbours, names.size(), 0 ) ;
-	// 	}
+    cout << endl ;
 
 	// 	routingTable* RTArray = (routingTable*)malloc( sizeof( routingTable ) * names.size() * names.size() ) ;
 	// 	while( p < 100 ) {
