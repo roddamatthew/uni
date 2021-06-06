@@ -1,6 +1,8 @@
 #define INFINITE 1073741823 /* define a constant for infinity (this is INT_MAX / 2) */
 #define NO_LINK -1 /* define a constant for no link */
 
+static int TRACE = 3 ;
+
 using namespace std ;
 
 struct link {
@@ -30,14 +32,12 @@ struct routingTable {
 	vector<struct link> routes ;
 } ;
 
-void printRoutingTableArray( routingTable*, int, int ) ;
-int distanceOneWay( string router1, string router2, routingTable *table ) ;
-int distanceBroadcast( string router1, string router2, routingTable* broadcast, int size ) ;
-void calculateRT( routingTable* RT, routingTable* DV, vector<string> names ) ;
-int updateBroadcast( routingTable* broadcast, routingTable* RTArray, vector<string> names ) ;
-void printBroadcast( routingTable* broadcast, vector<string> names ) ;
-
+int updateBroadcast( vector<routingTable>*, vector<routingTable>* ) ;
 int distance( vector<routingTable>*, string, string, string ) ;
+int distance( vector<routingTable>*, string, string ) ;
 void addNeighbour( vector<routingTable>*, string, string, int ) ;
 void calculateDVs( vector<routingTable>*, vector<routingTable>*, vector<routingTable>* ) ;
 void printDVs( vector<routingTable>*, int ) ;
+void calculateRTs( vector<routingTable>*, vector<routingTable>* ) ;
+void printRoutingTableArray( vector<routingTable>* ) ;
+

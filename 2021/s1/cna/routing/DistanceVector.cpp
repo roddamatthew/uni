@@ -4,8 +4,6 @@
 #include <cstdlib>
 #include "DistanceVector.h"
 
-static int TRACE = 0 ;
-
 int main() {
 	vector<string> names ;
 	string currentLine ;
@@ -67,18 +65,19 @@ int main() {
 			calculateDVs( &DVs, &neighbours, &broadcast ) ;
 			printDVs( &DVs, iteration ) ;
 
+			calculateRTs( &newRTs, &DVs ) ;
+
 			iteration++ ;
+
+			if( updateBroadcast( &newRTs, &broadcast ) == 0 )
+				break ;
+			printRoutingTableArray( &broadcast ) ;
 
 		}
 
 		cout << "New links" << endl << endl ;
 
-	// 	while( p < 100 ) {
-
-	// 		for( int i = 0 ; i < names.size() ; i++ ) {
-	// 			routingTable DV ;
-	// 			calculateDV( &DV, names[i], names, neighbours, broadcast ) ;
-	// 			printDV( &DV, names, p ) ;
+	
 	// 			calculateRT( &RTArray[i], &DV, names ) ;
 
 	// 			if( TRACE > 1 ) {
