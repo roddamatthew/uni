@@ -1,4 +1,4 @@
 all: part1
 
 part1:
-	g++ -o DistanceVector DistanceVector.cpp
+	g++ -std=c++11 -o DistanceVector DistanceVector.cpp
