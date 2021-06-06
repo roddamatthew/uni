@@ -56,21 +56,6 @@ int distance( vector<routingTable> *vec, string routerName, string firstHop, str
 	return NO_LINK ;
 }
 
-int distanceOneWay( string router1, string router2, routingTable *table )
-/* Find the distance between two routers in a given table
- * Loop through the routes in the table and check if router names match
- * If they do, return the distance attribute
- * If the loop finishes without finding a link, return NO_LINK
- */
-{
-	for( int i = 0 ; i < table->routes.size() ; i++ ) { /* loop over all the links */
-		/* check if the router names match */
-		if( table->routes[i].start == router1 && table->routes[i].end == router2 )
-			return table->routes[i].distance ;
-	}
-	return NO_LINK ;
-}
-
 void printDVs( vector<routingTable> *DVs, int iteration ) {
 	for( int i = 0 ; i < DVs->size() ; i++ ) {
 		cout << "router " << DVs->at(i).name << " at t=" << iteration << endl ;
@@ -85,17 +70,14 @@ void printDVs( vector<routingTable> *DVs, int iteration ) {
 			if( i != j ) {
 				cout << DVs->at(j).name ;
 				for( int k = 0 ; k < DVs->size() ; k++ ) {
-					if( j != k ) {
+					if( i != k ) {
 						// int d = distanceOneWay( names[j], names[i], array ) ;
-						int d = distance( DVs, DVs->at(i).name, DVs->at(j).name, DVs->at(k).name ) ;
+						int d = distance( DVs, DVs->at(i).name, DVs->at(k).name, DVs->at(j).name ) ;
 
 						cout << "\t" ;
-						// if( d >= INFINITE ) cout << "INF" ; else 
-						// if( d < 0 ) cout << "-" ; else
-						// cout << d ;
-						std::cout << DVs->at(i).routes.at(j).start ;
-						std::cout << DVs->at(i).routes.at(k).end ;
-						std::cout << d ;
+						if( d >= INFINITE ) cout << "INF" ; else 
+						if( d < 0 ) cout << "-" ; else
+						cout << d ;
 					}
 				}
 				cout << endl ;
@@ -141,14 +123,23 @@ void calculateDVs( vector<routingTable> *DVs, vector<routingTable> *neighbours, 
 		DVs->at(i).name = neighbours->at(i).name ;
 
 		for( int j = 0 ; j < neighbours->size() ; j++ ) { /* loop over each first hop */
-			int firstHopDistance = distance( neighbours, neighbours->at(i).name, neighbours->at(i).name, neighbours->at(j).name ) ;
-			
-			for( int k = 0 ; k < neighbours->size() ; k++ ) { /* loop over each final destination */ 
-				int destinationHopDistance = distance( broadcast, broadcast->at(i).name, broadcast->at(j).name, broadcast->at(k).name ) ;
-				int totalDistance = firstHopDistance + destinationHopDistance ;
-				if( firstHopDistance == -1 )
-					totalDistance = -1 ;
-				DVs->at(i).routes.push_back( link( broadcast->at(j).name, broadcast->at(k).name, totalDistance ) ) ;
+			if( i != j ) {
+				int firstHopDistance = distance( neighbours, neighbours->at(i).name, neighbours->at(i).name, neighbours->at(j).name ) ;
+				
+				for( int k = 0 ; k < neighbours->size() ; k++ ) { /* loop over each final destination */ 
+					if( i != k ) {
+						int destinationHopDistance = distance( broadcast, broadcast->at(j).name, broadcast->at(j).name, broadcast->at(k).name ) ;
+
+						int totalDistance ;
+						if( firstHopDistance == NO_LINK ) totalDistance = NO_LINK ;
+						else totalDistance = firstHopDistance + destinationHopDistance ;
+
+						std::cout << neighbours->at(i).name << " -> " << neighbours->at(j).name << " -> " << neighbours->at(k).name << endl ;
+						std::cout << firstHopDistance << " + " << destinationHopDistance << " = " << totalDistance << endl ;
+
+						DVs->at(i).routes.push_back( link( broadcast->at(j).name, broadcast->at(k).name, totalDistance ) ) ;
+					}
+				}
 			}
 		}
 	}

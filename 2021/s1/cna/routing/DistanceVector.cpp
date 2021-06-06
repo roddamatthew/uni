@@ -32,7 +32,7 @@ int main() {
 		broadcast.push_back( routingTable() ) ; /* create a routingTable for each router */
 		broadcast.at(i).name = names.at(i) ; /* add its name */
 		for( int j = 0 ; j < names.size() ; j++ ) {
-			broadcast.at(i).routes.push_back( link( names.at(i), names.at(j) ) ) ; /* add an initial infinite link */
+			broadcast.at(i).routes.push_back( link( names.at(i), names.at(j), INFINITE ) ) ; /* add an initial infinite link */
 			if( i == j ) broadcast.at(i).routes.at(j).distance = 0 ; /* change this to a zero cost link if going to itself */
 		}
  	}
@@ -70,6 +70,8 @@ int main() {
 			iteration++ ;
 
 		}
+
+		cout << "New links" << endl << endl ;
 
 	// 	while( p < 100 ) {
 
