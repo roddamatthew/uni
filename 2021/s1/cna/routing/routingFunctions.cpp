@@ -143,7 +143,10 @@ void calculateRTs( vector<routingTable> *newRTs, vector<routingTable> *DVs )
 		newRTs->at(i).name = DVs->at(i).name ;
 
 		for( int j = 0 ; j < DVs->size() ; j++ ) {
-			newRTs->at(i).routes.push_back( link( "-", DVs->at(j).name, INFINITE ) ) ;
+			int cost = INFINITE ;
+			if( i == j ) cost = 0 ; 
+
+			newRTs->at(i).routes.push_back( link( DVs->at(i).name, DVs->at(j).name, cost ) ) ;
 
 			for( int k = 0 ; k < DVs->at(i).routes.size() ; k++ ) {
 				if( newRTs->at(i).routes.at(j).end == DVs->at(i).routes.at(k).end
@@ -168,8 +171,9 @@ int updateBroadcast( vector<routingTable>* newRTs, vector<routingTable>* broadca
 			/* and distance is less */
 			/* update distance and first hop */
 			if( newRTs->at(i).routes.at(j).end == broadcast->at(i).routes.at(j).end 
-				&& newRTs->at(i).routes.at(j).distance < broadcast->at(i).routes.at(j).distance 
+				&& newRTs->at(i).routes.at(j).distance != broadcast->at(i).routes.at(j).distance 
 				&& newRTs->at(i).routes.at(j).distance > 0 ) {
+
 				broadcast->at(i).routes.at(j).start = newRTs->at(i).routes.at(j).start ;
 				broadcast->at(i).routes.at(j).distance = newRTs->at(i).routes.at(j).distance ;
 
