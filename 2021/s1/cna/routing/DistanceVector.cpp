@@ -409,8 +409,10 @@ int main() {
 
 		printBroadcast( broadcast, names ) ;
 
-		for( int i = 0 ; i < names.size() ; i++ )
+		for( int i = 0 ; i < names.size() ; i++ ) {
 			broadcast[i].routes.clear() ;
+		}
+
 
 		std::getline( std::cin, currentLine ) ;
 	}
