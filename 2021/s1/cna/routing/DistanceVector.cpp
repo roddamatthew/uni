@@ -33,7 +33,7 @@ struct link {
 /* Has the name of the router with a vector for its links */
 struct routingTable {
 	std::string name ;
-	std::vector<link> routes ;
+	std::vector<struct link> routes ;
 } ;
 
 /* Data Structures:
@@ -124,6 +124,7 @@ void printDV( routingTable* array, std::vector<std::string> names, int iteration
 			std::cout << std::endl ;
 		}
 	}
+	std::cout << std::endl ;
 }
 
 int distanceBroadcast( std::string router1, std::string router2, routingTable* broadcast, int size )
@@ -159,7 +160,7 @@ routingTable* initBroadcast( std::vector<std::string> names )
  * All distances are set to INFINITE
  */
 {
-	routingTable* broadcast = (routingTable*)malloc( sizeof( routingTable ) * names.size() ) ;
+	routingTable* broadcast = (routingTable*)malloc( sizeof( routingTable ) * names.size() * names.size() * names.size() ) ;
 
 	for( int i = 0 ; i < names.size() ; i++ ) { /* loop over each router */
 		for( int j = 0 ; j < names.size() ; j++ ) { /* loop over each router */
@@ -175,7 +176,7 @@ routingTable* initBroadcast( std::vector<std::string> names )
 	return broadcast ;
 }
 
-routingTable* calculateDV( std::string name, std::vector<std::string> names, routingTable *neighbours, routingTable *broadcast )
+routingTable* calculateDV( routingTable *DV, std::string name, std::vector<std::string> names, routingTable *neighbours, routingTable *broadcast )
 /* Calculate the distance vector for a given router:
 
  * Parameters:
@@ -193,7 +194,6 @@ routingTable* calculateDV( std::string name, std::vector<std::string> names, rou
 {
 	int i = 0 , j = 0 ;
 
-	routingTable* DV = new routingTable() ;
 	DV->name = name ;
 
 	while( i < names.size() ) { /* loop over each first hop */
@@ -218,34 +218,49 @@ routingTable* calculateDV( std::string name, std::vector<std::string> names, rou
 	return DV ;
 }
 
-routingTable* calculateRT( routingTable* DV, std::vector<std::string> names )
+void calculateRT( routingTable* RT, routingTable* DV, std::vector<std::string> names )
 /* Find the routing table from the distance vector table
  * Result is a routingTable with only names.size() links
  	* Each link is the shortest distance currently known from a router to each of its neighbours
  */
 {
-	routingTable* RT = new routingTable ;
 	RT->name = DV->name ;
 
+	if( TRACE > 2 )
+		std::cout << "Calculating routing table for router: " << RT->name << std::endl ;
+
+	if( TRACE > 2 )
+		std::cout << "names.size() is " << names.size() << std::endl ;
 	for( int i = 0 ; i < names.size() ; i++ ) {
+		if( TRACE > 2 )
+			std::cout << "names[" << i << "] is " << names[i] << std::endl ;
 		link shortest = link( "Error!", names[i], INFINITE ) ;
 
+		if( TRACE > 2 )
+			std::cout << "DV->routes.size() is " << DV->routes.size() << std::endl ;
 		for( int j = 0 ; j < DV->routes.size() ; j++ ) {
-			if( DV->routes[j].end == shortest.end && DV->routes[j].distance <= shortest.distance ) {
-				shortest.distance = DV->routes[j].distance ;
+			if( TRACE > 2 )
+				std::cout << "j is " << j << std::endl ;
+			if( DV->routes[j].end == shortest.end && DV->routes[j].distance <= shortest.distance && DV->routes[j].distance > 0 ) {
+				if( TRACE > 2 ) {
+					std::cout << "Found new shortest route to " << shortest.end << " through " << DV->routes[j].start ;
+					std::cout << " with distance " << DV->routes[j].distance << std::endl ;
+				}
+ 				shortest.distance = DV->routes[j].distance ;
 				shortest.start = DV->routes[j].start ;
 			}
 		}
+		if( TRACE > 2 )
+			std::cout << "Adding shortest to RT.routes" << std::endl ;
 		RT->routes.push_back( shortest ) ;
 	}
-
-	return RT ;
 }
 
-routingTable* updateBroadcast( routingTable* broadcast, routingTable* RTArray, std::vector<std::string> names )
+int updateBroadcast( routingTable* broadcast, routingTable* RTArray, std::vector<std::string> names )
 /* Update broadcast to have all the latest routing distances
  */
 {
+	int count = 0 ;
 	for( int i = 0 ; i < names.size() ; i++ ) {
 		for( int j = 0 ; j < RTArray[i].routes.size() ; j++ ) {
 			/* if destinations match */
@@ -254,15 +269,64 @@ routingTable* updateBroadcast( routingTable* broadcast, routingTable* RTArray, s
 			if( RTArray[i].routes[j].end == broadcast[i].routes[j].end && RTArray[i].routes[j].distance < broadcast[i].routes[j].distance ) {
 				broadcast[i].routes[j].distance = RTArray[i].routes[j].distance ;
 				broadcast[i].routes[j].start = RTArray[i].routes[j].start ;
+				count++ ;
 			}
 		}
 	}
-	return broadcast ;
+	return count ;
+}
+
+void printBroadcast( routingTable* broadcast, std::vector<std::string> names ) {
+	for( int i = 0 ; i < names.size() ; i++ ) {
+		for( int j = 0 ; j < names.size() ; j++ ) {
+			if( i != j ) {
+				std::cout << "router " << names[i] << ": " << names[j] << " is " ;
+				std::cout << broadcast[i].routes[j].distance << " routing through " << broadcast[i].routes[j].start << std::endl ;
+			}
+		}
+	}
+	std::cout << std::endl ;
+}
+
+void addNeighbour( routingTable* neighbours, std::string router1, std::string router2, int distance, std::vector<std::string> names )
+/* Add a link to the neighbour array
+ * Links are always added to both tables
+ * If the link already exists, only update the distance
+ */
+{
+	for( int i = 0 ; i < names.size() ; i++ ) { /* loop through each routingTable*/
+		if( neighbours[i].name == router1 ) {
+			bool linkExists = false ;
+			for( int j = 0 ; j < neighbours[i].routes.size() ; j++ ) {
+				if( neighbours[i].routes[j].end == router2 ) {
+					neighbours[i].routes[j].distance = distance ;
+					linkExists = true ;
+				}
+			}
+
+			if( !linkExists )
+				neighbours[i].routes.push_back( link( router1, router2, distance ) ) ;
+		}
+		else if( neighbours[i].name == router2 ) {
+			bool linkExists = false ;
+			for( int j = 0 ; j < neighbours[i].routes.size() ; j++ ) {
+				if( neighbours[i].routes[j].end == router1 ) {
+					neighbours[i].routes[j].distance = distance ;
+					linkExists = true ;
+				}
+			}
+
+			if( !linkExists )
+				neighbours[i].routes.push_back( link( router2, router1, distance ) ) ;
+		}
+
+	}
 }
 
 int main() {
 	std::vector<std::string> names ;
 	std::string currentLine ;
+	int p = 0 ;
 
 	/* Read the router names */
 	std::getline( std::cin, currentLine ) ;
@@ -283,59 +347,72 @@ int main() {
 	/* Read links */
 	std::getline( std::cin, currentLine ) ;
 	while( !currentLine.empty() ) {
+		while( !currentLine.empty() ) {
+			int pos = currentLine.find( " " ) ; /* find the position of the first space */
+			std::string router1 = currentLine.substr( 0, pos ) ; /* copy the first word */
+			currentLine.erase( 0, pos + 1 ) ; /* erase the first word from the string */
 
-		int pos = currentLine.find( " " ) ; /* find the position of the first space */
-		std::string router1 = currentLine.substr( 0, pos ) ; /* copy the first word */
-		currentLine.erase( 0, pos + 1 ) ; /* erase the first word from the string */
-
-		pos = currentLine.find( " " ) ; /* find the position of the new first space */
-		std::string router2 = currentLine.substr( 0, pos ) ; /* copy the new first word */
-		currentLine.erase( 0, pos + 1 ) ; /* erase the new word from the string */
-		
-		int distance = std::stoi( currentLine ) ; /* the rest of the string should now be a number */
-
-		/* COULD ADD CHECK HERE TO SEE IF THE ROUTER NAMES AND DISTANCE ARE VALID */
-
-		/* Put the link into the correct routingTable */
-		for( int i = 0 ; i < names.size() ; i++ ) {
-			if( router1 == neighbours[i].name )
-				neighbours[i].routes.push_back( link( router1, router2, distance ) ) ;
-			if( router2 == neighbours[i].name )
-				neighbours[i].routes.push_back( link( router2, router1, distance ) ) ;
- 		}
-
-		std::getline( std::cin, currentLine ) ;
-	}
-
-	routingTable *broadcast = initBroadcast( names ) ;
-	if( TRACE > 1 ) {
-		printRoutingTableArray( broadcast, names.size(), 0 ) ;
-		std::cout << "neighbours array: " << std::endl ;
-		printRoutingTableArray( neighbours, names.size(), 0 ) ;
-	}
-
-	for( int p = 0 ; p < 5 ; p++ ) {
-		routingTable* RTArray = (routingTable*)malloc( sizeof( routingTable ) * names.size() ) ;
-
-		for( int i = 0 ; i < names.size() ; i++ ) {
-			routingTable *DV = calculateDV( names[i], names, neighbours, broadcast ) ;
-			std::cout << "DV: t=" << p << std::endl ;
-			printDV( DV, names, p ) ;
-			routingTable *RT = calculateRT( DV, names ) ;
+			pos = currentLine.find( " " ) ; /* find the position of the new first space */
+			std::string router2 = currentLine.substr( 0, pos ) ; /* copy the new first word */
+			currentLine.erase( 0, pos + 1 ) ; /* erase the new word from the string */
 			
-			RTArray[i] = *RT ;
+			int distance = std::stoi( currentLine ) ; /* the rest of the string should now be a number */
+
+			/* COULD ADD CHECK HERE TO SEE IF THE ROUTER NAMES AND DISTANCE ARE VALID */
+
+			/* Put the link into the correct routingTable */
+			addNeighbour( neighbours, router1, router2, distance, names ) ;
+
+			std::getline( std::cin, currentLine ) ;
+		}
+
+		routingTable *broadcast = initBroadcast( names ) ;
+		if( TRACE > 1 ) {
+			std::cout << "broadcast array at t=0:" << std::endl ;
+			printRoutingTableArray( broadcast, names.size(), 0 ) ;
+			std::cout << "neighbours array at t=0: " << std::endl ;
+			printRoutingTableArray( neighbours, names.size(), 0 ) ;
+		}
+
+		routingTable* RTArray = (routingTable*)malloc( sizeof( routingTable ) * names.size() * names.size() ) ;
+		while( p < 100 ) {
+
+			for( int i = 0 ; i < names.size() ; i++ ) {
+				routingTable DV ;
+				calculateDV( &DV, names[i], names, neighbours, broadcast ) ;
+				printDV( &DV, names, p ) ;
+				calculateRT( &RTArray[i], &DV, names ) ;
+
+				if( TRACE > 1 ) {
+					std::cout << "RT: " << std::endl ;
+					printRoutingTableArray( &RTArray[i], 1, p ) ;
+				}
+
+				DV.routes.clear() ;
+			}
+
+
+			if( updateBroadcast( broadcast, RTArray, names ) == 0 ) {
+				p++ ;
+				break ;
+			}
+
+			for( int i = 0 ; i < names.size() ; i++ )
+				RTArray[i].routes.clear() ;
 
 			if( TRACE > 1 ) {
-				std::cout << "RT: " << std::endl ;
-				printRoutingTableArray( &RTArray[i], 1, p ) ;
+				std::cout << "New broadcast array: " << std::endl ;
+				printRoutingTableArray( broadcast, names.size(), p ) ;
 			}
+			p++ ;
 		}
 
-		updateBroadcast( broadcast, RTArray, names ) ;
-		if( TRACE > 1 ) {
-			std::cout << "New broadcast array: " << std::endl ;
-			printRoutingTableArray( broadcast, names.size(), p ) ;
-		}
+		printBroadcast( broadcast, names ) ;
+
+		for( int i = 0 ; i < names.size() ; i++ )
+			broadcast[i].routes.clear() ;
+
+		std::getline( std::cin, currentLine ) ;
 	}
 
 	return 0 ;
