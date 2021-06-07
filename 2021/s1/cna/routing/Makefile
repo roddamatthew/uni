@@ -6,5 +6,5 @@ part1:
 part2:
 	g++ -std=c++11 -o PoisonedReverse PoisonedReverse.cpp poisoningFunctions.cpp
 
-test: part1
-	./DistanceVector < a.txt
+test: part2
+	./PoisonedReverse < d.txt

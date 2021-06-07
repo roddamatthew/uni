@@ -34,7 +34,7 @@ struct routingTable {
 
 int updateBroadcast( vector<routingTable>*, vector<routingTable>* ) ;
 int distance( vector<routingTable>*, string, string, string ) ;
-int distance( vector<routingTable>*, string, string ) ;
+int distancePoison( vector<routingTable>*, string, string, string ) ;
 void addNeighbour( vector<routingTable>*, string, string, int ) ;
 void calculateDVs( vector<routingTable>*, vector<routingTable>*, vector<routingTable>* ) ;
 void printDVs( vector<routingTable>*, int ) ;

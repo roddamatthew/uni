@@ -55,7 +55,7 @@ int distance( vector<routingTable> *vec, string routerName, string firstHop, str
 	return NO_LINK ;
 }
 
-int distance( vector<routingTable> *vec, string routerName, string destination ) {
+int distance( vector<routingTable> *vec, string routerName, string destination )
 {
 	for( int i = 0 ; i < vec->size() ; i++ ) {
 		if( routerName == vec->at(i).name )
@@ -66,7 +66,6 @@ int distance( vector<routingTable> *vec, string routerName, string destination )
 	}
 
 	return NO_LINK ;
-}
 }
 
 void printDVs( vector<routingTable> *DVs, int iteration ) {

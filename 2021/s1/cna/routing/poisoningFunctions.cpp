@@ -55,18 +55,27 @@ int distance( vector<routingTable> *vec, string routerName, string firstHop, str
 	return NO_LINK ;
 }
 
-int distance( vector<routingTable> *vec, string routerName, string destination ) {
+int distancePoison( vector<routingTable> *vec, string routerAsking, string routerName, string destination )
 {
+	if( routerName == destination ) return 0 ;
+
 	for( int i = 0 ; i < vec->size() ; i++ ) {
 		if( routerName == vec->at(i).name )
 			for( int j = 0 ; j < vec->at(i).routes.size() ; j++ ) {
-				if( vec->at(i).routes.at(j).end == destination )
+				if( vec->at(i).routes.at(j).end == destination ) {
+					if( TRACE > 3 ) {
+						cout << "Current routingTable is " << vec->at(i).name << endl ;
+ 						cout << "Looking for link between " << routerName << " and " << destination << endl ;
+						cout << "Found link: From " <<  vec->at(i).name << " through " <<  vec->at(i).routes.at(j).start ;
+						cout << " to " <<  vec->at(i).routes.at(j).end << " costing " <<  vec->at(i).routes.at(j).distance << endl ;
+					}
+					if( vec->at(i).routes.at(j).start == routerAsking ) return INFINITE ;
 					return vec->at(i).routes.at(j).distance ;
+				}
 			}
 	}
 
 	return NO_LINK ;
-}
 }
 
 void printDVs( vector<routingTable> *DVs, int iteration ) {
@@ -113,7 +122,7 @@ void calculateDVs( vector<routingTable> *DVs, vector<routingTable> *neighbours, 
 				
 				for( int k = 0 ; k < neighbours->size() ; k++ ) { /* loop over each final destination */ 
 					if( i != k ) {
-						int destinationHopDistance = distance( broadcast, broadcast->at(j).name, broadcast->at(k).name ) ;
+						int destinationHopDistance = distancePoison( broadcast, broadcast->at(i).name, broadcast->at(j).name, broadcast->at(k).name ) ;
 
 						int totalDistance ;
 						if( firstHopDistance == NO_LINK ) totalDistance = NO_LINK ;

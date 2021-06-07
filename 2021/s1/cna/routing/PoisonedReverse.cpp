@@ -69,6 +69,9 @@ int main() {
 
 			iteration++ ;
 
+			if( TRACE > 1 )
+			printRoutingTableArray( &broadcast ) ;
+
 			if( updateBroadcast( &newRTs, &broadcast ) == 0 )
 				break ;
 		}
