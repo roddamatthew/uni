@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
+#include <algorithm>
 #include "PoisonedReverse.h"
 
 /* Data Structures:
