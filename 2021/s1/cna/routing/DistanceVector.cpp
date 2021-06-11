@@ -18,7 +18,10 @@ int main() {
 	}
 
 	/* sort router names into alphabetical order */
-	/* TO-DO */
+	/* This was done following the tutorial at:
+		https://www.includehelp.com/cpp-programs/sort-names-in-an-alphabetical-order.aspx
+	*/
+	names = sortAlphabetically( names ) ;
 
 	vector<routingTable> neighbours ;
 	vector<routingTable> broadcast ;

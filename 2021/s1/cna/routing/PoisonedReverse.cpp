@@ -18,7 +18,7 @@ int main() {
 	}
 
 	/* sort router names into alphabetical order */
-	/* TO-DO */
+	names = sortAlphabetically( names ) ;
 
 	vector<routingTable> neighbours ;
 	vector<routingTable> broadcast ;

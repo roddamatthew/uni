@@ -228,3 +228,15 @@ void printBroadcast( vector<routingTable> *broadcast ) {
 	}
 	std::cout << std::endl ;
 }
+
+bool compare( string a, string b ) {
+	/* returns 1 if a is alphabetically less than b */
+	/* otherwise returns zero */
+	return a < b ;
+}
+
+vector<string> sortAlphabetically( vector<string> list )
+{
+	sort( list.begin(), list.end(), compare ) ;
+	return list ;
+}

@@ -231,9 +231,22 @@ void printBroadcast( vector<routingTable> *broadcast ) {
 		for( int j = 0 ; j < broadcast->at(i).routes.size() ; j++ ) {
 			if( i != j ) {
 				std::cout << "router " << broadcast->at(i).name << ": " << broadcast->at(j).name << " is " ;
+				if( broadcast->at(i).routes.at(j).distance >= INFINITE ) std::cout << "unreachable" << std::endl ; else
 				std::cout << broadcast->at(i).routes.at(j).distance << " routing through " << broadcast->at(i).routes.at(j).start << std::endl ;
 			}
 		}
 	}
 	std::cout << std::endl ;
+}
+
+bool compare( string a, string b ) {
+	/* returns 1 if a is alphabetically less than b */
+	/* otherwise returns zero */
+	return a < b ;
+}
+
+vector<string> sortAlphabetically( vector<string> list )
+{
+	sort( list.begin(), list.end(), compare ) ;
+	return list ;
 }
