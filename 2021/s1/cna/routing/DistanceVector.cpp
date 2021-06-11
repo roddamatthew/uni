@@ -49,8 +49,6 @@ int main() {
 			
 			int distance = stoi( currentLine ) ; /* the rest of the string should now be a number */
 
-			/* COULD ADD CHECK HERE TO SEE IF THE ROUTER NAMES AND DISTANCE ARE VALID */
-
 			/* Put the link into the correct routingTable */
 			addNeighbour( &neighbours, router1, router2, distance ) ;
 
