@@ -5,9 +5,8 @@
 #include "DistanceVector.h"
 
 int main() {
-	vector<string> names ;
-	string currentLine ;
-	int iteration = 0 ;
+	vector<string> names ; /* store router names */
+	string currentLine ; /* store current line of input */
 
 	/* Read the router names */
 	getline( cin, currentLine ) ;
@@ -23,6 +22,7 @@ int main() {
 	*/
 	names = sortAlphabetically( names ) ;
 
+	/* Initialize neighbours and broadcast vectors (See poisoningFunctions/routingFunctions for explanation)*/
 	vector<routingTable> neighbours ;
 	vector<routingTable> broadcast ;
 
@@ -37,6 +37,8 @@ int main() {
 			if( i == j ) broadcast.at(i).routes.at(j).distance = 0 ; /* change this to a zero cost link if going to itself */
 		}
  	}
+
+ 	int iteration = 0 ; /* count of how many iterations the algorithm has gone through */
 
 	/* Read links */
 	getline( cin, currentLine ) ;
@@ -58,7 +60,7 @@ int main() {
 			getline( cin, currentLine ) ;
 		}
 
-		while( iteration < 100 ) { /* set a max iteration of 100 */
+		while( iteration < 100 ) { /* set a max iteration of 100 to exit in case of an error */
 			vector<routingTable> newRTs ; /* temporary storage for the current iterations routingTables */
 
 			/* Calculate the distance vector table and print it */
@@ -66,16 +68,20 @@ int main() {
 			calculateDVs( &DVs, &neighbours, &broadcast ) ;
 			printDVs( &DVs, iteration ) ;
 
+			/* Calculate the routing tables, storing the result in newRTs */
 			calculateRTs( &newRTs, &DVs ) ;
 
 			iteration++ ;
 
+			/* Update the broadcast vector, exiting if there is no new information */
 			if( updateBroadcast( &newRTs, &broadcast ) == 0 )
 				break ;
 		}
 
+		/* Print the final routing information */
 		printBroadcast( &broadcast ) ;
 
+		/* Check for new routes given by the user */
 		getline( cin, currentLine ) ;
 	}
 

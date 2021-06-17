@@ -5,9 +5,8 @@
 #include "PoisonedReverse.h"
 
 int main() {
-	vector<string> names ;
-	string currentLine ;
-	int iteration = 0 ;
+	vector<string> names ; /* store router names */
+	string currentLine ; /* store current line of input */
 
 	/* Read the router names */
 	getline( cin, currentLine ) ;
@@ -18,8 +17,12 @@ int main() {
 	}
 
 	/* sort router names into alphabetical order */
+	/* This was done following the tutorial at:
+		https://www.includehelp.com/cpp-programs/sort-names-in-an-alphabetical-order.aspx
+	*/
 	names = sortAlphabetically( names ) ;
 
+	/* Initialize neighbours and broadcast vectors (See poisoningFunctions/routingFunctions for explanation)*/
 	vector<routingTable> neighbours ;
 	vector<routingTable> broadcast ;
 
@@ -35,6 +38,8 @@ int main() {
 		}
  	}
 
+ 	int iteration = 0 ; /* count of how many iterations the algorithm has gone through */
+
 	/* Read links */
 	getline( cin, currentLine ) ;
 	while( !currentLine.empty() ) {
@@ -49,15 +54,13 @@ int main() {
 			
 			int distance = stoi( currentLine ) ; /* the rest of the string should now be a number */
 
-			/* COULD ADD CHECK HERE TO SEE IF THE ROUTER NAMES AND DISTANCE ARE VALID */
-
 			/* Put the link into the correct routingTable */
 			addNeighbour( &neighbours, router1, router2, distance ) ;
 
 			getline( cin, currentLine ) ;
 		}
 
-		while( iteration < 100 ) { /* set a max iteration of 100 */
+		while( iteration < 100 ) { /* set a max iteration of 100 to exit in case of an error */
 			vector<routingTable> newRTs ; /* temporary storage for the current iterations routingTables */
 
 			/* Calculate the distance vector table and print it */
@@ -65,19 +68,20 @@ int main() {
 			calculateDVs( &DVs, &neighbours, &broadcast ) ;
 			printDVs( &DVs, iteration ) ;
 
+			/* Calculate the routing tables, storing the result in newRTs */
 			calculateRTs( &newRTs, &DVs ) ;
 
 			iteration++ ;
 
-			if( TRACE > 1 )
-			printRoutingTableArray( &broadcast ) ;
-
+			/* Update the broadcast vector, exiting if there is no new information */
 			if( updateBroadcast( &newRTs, &broadcast ) == 0 )
 				break ;
 		}
 
+		/* Print the final routing information */
 		printBroadcast( &broadcast ) ;
 
+		/* Check for new routes given by the user */
 		getline( cin, currentLine ) ;
 	}
 
