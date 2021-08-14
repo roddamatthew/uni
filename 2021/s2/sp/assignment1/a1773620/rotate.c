@@ -19,10 +19,3 @@ uint32_t rotate( uint32_t number, uint32_t count )
 
     return number ;
 }
-
-int main() {
-    uint32_t n = 10 ;
-    printf( "%d\n", rotate( n, 1 ) ) ;
-
-    return 0 ;
-}
