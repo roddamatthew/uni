@@ -37,11 +37,11 @@ int main()
     printf("By size: %d\n", sizeof(struct bysize));
     printf("By name: %d\n", sizeof(struct byname));
 
-    printf( "%d\n", O( struct byname, int32 ) ) ;
+    /* Testing macro like function: */
     printf( "%d\n", ( size_t )( & ( a -> int16 ) ) ) ;
     printf( "%d\n", ( size_t )( & ( a -> int32 ) ) ) ;
-    /*
-    printf( "%d\n", O( struct byname, int32 ) ) ;
+
+    printf( "By name: %d\n", O( struct byname, int32 ) ) ;
     printf( "%d\n", O( struct byname, int64 ) ) ;
     printf( "%d\n", O( struct byname, int8 ) ) ;
     printf( "%d\n", O( struct byname, intptr ) ) ;
@@ -50,6 +50,16 @@ int main()
     printf( "%d\n", O( struct byname, uint64 ) ) ;
     printf( "%d\n", O( struct byname, uint8 ) ) ;
     printf( "%d\n", O( struct byname, uintptr ) ) ;
-    */
+
+    printf( "By size: %d\n", O( struct bysize, int8 ) ) ;
+    printf( "%d\n", O( struct bysize, uint8 ) ) ;
+    printf( "%d\n", O( struct bysize, int16 ) ) ;
+    printf( "%d\n", O( struct bysize, uint16 ) ) ;
+    printf( "%d\n", O( struct bysize, int32 ) ) ;
+    printf( "%d\n", O( struct bysize, uint32 ) ) ;
+    printf( "%d\n", O( struct bysize, int64 ) ) ;
+    printf( "%d\n", O( struct bysize, uint64 ) ) ;
+    printf( "%d\n", O( struct bysize, intptr ) ) ;
+    printf( "%d\n", O( struct bysize, uintptr ) ) ;
     
 }
