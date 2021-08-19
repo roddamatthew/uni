@@ -6,7 +6,8 @@
 
 #define MAXDIGITS 100
 
-void karatsuba( int *p, int *a, int *b, int radix ) {
+void karatsuba( int p[], int a[], int b[], int radix ) {
+    /* Find the max digit length of a and b */
     int n ;
     for( int i = MAXDIGITS - 1 ; i >= 0 ; i-- ) {
         // std::cout << "i: " << i << " a: " << a[i] << " b: " << b[i] << std::endl ;
@@ -16,27 +17,40 @@ void karatsuba( int *p, int *a, int *b, int radix ) {
         } 
     }
 
+    /* Base Case: */
+    if( n < 4 ) {
+        school_mult( p, a, b, radix ) ;
+        return ;
+    }
+
+    /* Recursive Case: */
     /* k = ceil( n / 2 ) */
     int k = n / 2 ;
     if( n % 2 > 0 ) k++ ;
 
     std::cout << "n: " << n << " k: " << k << std::endl ;
+    
+    /*
+    int a1[] = 
+    int a2[] = 
 
-    /* Base Case: */
-    // if( n < 4 ) school_mult( p, a, b, radix ) ;
+    int b1[] = 
+    int b2[] = 
 
-    /* Recursive Case: */
+    int z0 = 
+    int z1 =
+    int z2 = 
 
-    // return karatsuba( p, a1, b1, radix ) ;
-
+    return ( z2 * radix ^ ( k * 2 ) ) + ( ( z1 - z2 - z0 ) * radix ^ k ) + z0 ;
+    */
 }
 
-void school_mult( int *p, int *a, int *b, int radix ) {
+void school_mult( int p[], int a[], int b[], int radix ) {
     /* Array to store carries */
     int c[MAXDIGITS] ;
     for( int i = 0 ; i < MAXDIGITS ; i++ ) {
-       c[i] = 0 ;
-   }
+        c[i] = 0 ;
+    }
 
     for( int i = 0 ; i < MAXDIGITS ; i++ ) {
         for( int j = 0 ; j < MAXDIGITS ; j++ ) {
@@ -44,7 +58,7 @@ void school_mult( int *p, int *a, int *b, int radix ) {
             /* add carry */
             p[i+j] += c[j] ;
             c[j] = 0 ;
-            
+
             /* check for overflow */
             while( p[i+j] >= radix ) {
                 c[j]++ ;
@@ -56,47 +70,13 @@ void school_mult( int *p, int *a, int *b, int radix ) {
     return ;
 }
 
-int main() {
-    /* 
-        Read input of form:
-        I1 I2 B
+void school_add( int s[], int a[], int b[], int radix ) {
+    int c[MAXDIGITS] ;
+    /* Set carry array to zeroes */
+    for( int i = 0 ; i < MAXDIGITS ; i++ ) {
+        c[i] = 0 ;
+    }
 
-        Output:
-        I1+I2 I1*I2 I1/I2 all in base B
-    */
-
-   int a[MAXDIGITS], b[MAXDIGITS], c[MAXDIGITS], s[MAXDIGITS], p[MAXDIGITS*MAXDIGITS] ;
-   int radix ;
-   
-   /* Initialize arrays to be empty */
-   for( int i = 0 ; i < MAXDIGITS ; i++ ) {
-       a[i] = 0 ;
-       b[i] = 0 ;
-       c[i] = 0 ;
-       s[i] = 0 ;
-       p[i] = 0 ;
-   }
-   
-
-   /* Read input from command line */
-   int first, second ;
-   char input[300] ;
-   fgets( input, 300, stdin ) ;
-
-   first  = std::stoi( strtok( input, " " ) ) ;
-   second = std::stoi( strtok( NULL, " " ) ) ;
-   radix  = std::stoi( strtok( NULL, " " ) ) ;
-
-   /* Put integers into arrays */
-   for( int i = 0 ; i < MAXDIGITS ; i++ ) {
-       a[i] = first % 10 ;
-       first = first / 10 ;
-
-       b[i] = second % 10 ;
-       second = second / 10 ;
-   }
-
-    /* School Addition Algorithm */
     for( int i = 0 ; i < MAXDIGITS ; i++ ) {
         int sum = a[i] + b[i] ;
         if( i > 0 ) sum += c[i-1] ;
@@ -107,43 +87,77 @@ int main() {
         s[i] = sum ;
     }
 
-    /* Reset carry array to zeroes */
-    for( int i = 0 ; i < MAXDIGITS ; i++ ) {
-       c[i] = 0 ;
-   }
+    return ;
+}
 
-    /* Karatsuba Multiplication Algorithm */
+int main() {
     /* 
-    
+    Read input of form:
+    I1 I2 B
+
+    Output:
+    I1+I2 I1*I2 I1/I2 all in base B
     */
+
+    int a[MAXDIGITS], b[MAXDIGITS], s[MAXDIGITS], p[MAXDIGITS*MAXDIGITS] ;
+    int radix ;
+
+    /* Initialize arrays to be empty */
     for( int i = 0 ; i < MAXDIGITS ; i++ ) {
-        for( int j = 0 ; j < MAXDIGITS ; j++ ) {
-            p[i+j] += a[i] * b[j] ;
-            /* add carry */
-            p[i+j] += c[j] ;
-            c[j] = 0 ;
-            
-            /* check for overflow */
-            while( p[i+j] >= radix ) {
-                c[j]++ ;
-                p[i+j] -= radix ;
-            }
-        }
+        a[i] = 0 ;
+        b[i] = 0 ;
+        s[i] = 0 ;
+        p[i] = 0 ;
     }
 
-    int start = MAXDIGITS ;
+    for( int i = 0 ; i < MAXDIGITS * MAXDIGITS ; i++ )
+        p[i] = 0 ;
+
+
+    /* Read input from command line */
+    std::string first, second ;
+    char input[220] ;
+    fgets( input, 220, stdin ) ;
+
+    first  = strtok( input, " " ) ;
+    second = strtok( NULL, " " ) ;
+    radix  = std::stoi( strtok( NULL, " " ) ) ;
+
+    std::cout << first << std::endl << second << std::endl ;
+
+    /* Put integers into arrays */
+    for( int i = first.length() - 1 ; i >= 0 ; i-- ) {
+        a[first.length() - 1 - i] = first[i] - '0' ;
+    }
+
+    for( int i = second.length() - 1 ; i >= 0 ; i-- ) {
+        b[second.length() - 1 - i] = second[i] - '0' ;
+    }
+
+    for( int i = 0 ; i < MAXDIGITS ; i++ )
+        std::cout << a[i] << " " ;
+    std::cout << std::endl ;
+
+    for( int i = 0 ; i < MAXDIGITS ; i++ )
+        std::cout << b[i] << " " ;
+    std::cout << std::endl ;
+
+    school_add( s, a, b, radix ) ;
+    school_mult( p, a, b, radix ) ;
+    karatsuba( p, a, b, radix ) ;
+
+    /* Print result: */
+    int start = MAXDIGITS - 1 ;
     while( s[start] == 0 ) start-- ;
     for( int i = start ; i >=0 ; i-- )
         std::cout << s[i] << "" ;
     std::cout << " " ;
 
-    start = MAXDIGITS ;
+    start = MAXDIGITS - 1 ;
     while( p[start] == 0 ) start-- ;
     for( int i = start ; i >= 0 ; i-- )
         std::cout << p[i] << "" ;
     std::cout << " 0" << std::endl ;
 
-    karatsuba( p, a, b, radix ) ;
-
-   return 0 ;
+    return 0 ;
 }
