@@ -108,7 +108,7 @@ void power( int p[], int a[], int exp ) {
 
 void karatsuba( int p[], int a[], int b[], int radix ) {
     /* Find the max digit length of a and b */
-    int n ;
+    int n = 0 ;
     for( int i = 2*MAXDIGITS - 1 ; i >= 0 ; i-- ) {
         // std::cout << "i: " << i << " a: " << a[i] << " b: " << b[i] << std::endl ;
         if( a[i] != 0 || b[i] != 0 ) {
@@ -117,22 +117,23 @@ void karatsuba( int p[], int a[], int b[], int radix ) {
         } 
     }
 
-    /* Print result:
-    int start = MAXDIGITS - 1 ;
+    /* Print result: 
+    int start = 2*MAXDIGITS - 1 ;
     while( a[start] == 0 ) start-- ;
     for( int i = start ; i >=0 ; i-- )
         std::cout << a[i] ;
     std::cout << " " ;
 
-    start = MAXDIGITS - 1 ;
+    start = 2*MAXDIGITS - 1 ;
     while( b[start] == 0 ) start-- ;
     for( int i = start ; i >= 0 ; i-- )
         std::cout << b[i] ;
     std::cout << " " << std::endl ;
     */
+    
 
     /* Base Case: */
-    if( n < 4 ) {
+    if( n < 10 ) {
         school_mult( p, a, b, radix ) ;
         return ;
     }
@@ -206,10 +207,6 @@ int main() {
         s[i] = 0 ;
         p[i] = 0 ;
     }
-
-    for( int i = 0 ; i < 2 * MAXDIGITS ; i++ )
-        p[i] = 0 ;
-
 
     /* Read input from command line */
     std::string first, second ;
