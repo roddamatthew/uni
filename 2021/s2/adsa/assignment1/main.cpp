@@ -10,15 +10,15 @@ void split( int high[], int low[], int n[], int digits ) {
     for( int i = 0 ; i < digits ; i++ ) {
         low[i] = n[i] ;
     }
-    for( int i = digits ; i < MAXDIGITS ; i++ ) {
+    for( int i = digits ; i < 2*MAXDIGITS ; i++ ) {
         high[i - digits] = n[i] ;
     }
 }
 
 void school_mult( int p[], int a[], int b[], int radix ) {
     /* Array to store carries */
-    int c[MAXDIGITS] ;
-    for( int i = 0 ; i < MAXDIGITS ; i++ ) {
+    int c[2*MAXDIGITS] ;
+    for( int i = 0 ; i < 2*MAXDIGITS ; i++ ) {
         c[i] = 0 ;
     }
 
@@ -41,13 +41,13 @@ void school_mult( int p[], int a[], int b[], int radix ) {
 }
 
 void school_add( int s[], int a[], int b[], int radix ) {
-    int c[MAXDIGITS] ;
+    int c[2*MAXDIGITS] ;
     /* Set carry array to zeroes */
-    for( int i = 0 ; i < MAXDIGITS ; i++ ) {
+    for( int i = 0 ; i < 2*MAXDIGITS ; i++ ) {
         c[i] = 0 ;
     }
 
-    for( int i = 0 ; i < MAXDIGITS ; i++ ) {
+    for( int i = 0 ; i < 2*MAXDIGITS ; i++ ) {
         int sum = a[i] + b[i] ;
         if( i > 0 ) sum += c[i-1] ;
         if( sum >= radix ) {
@@ -61,13 +61,13 @@ void school_add( int s[], int a[], int b[], int radix ) {
 }
 
 void school_sub( int s[], int a[], int b[], int radix ) {
-    int c[MAXDIGITS] ;
+    int c[2*MAXDIGITS] ;
     /* Set carry array to zeroes */
-    for( int i = 0 ; i < MAXDIGITS ; i++ ) {
+    for( int i = 0 ; i < 2*MAXDIGITS ; i++ ) {
         c[i] = 0 ;
     }
 
-    for( int i = 0 ; i < MAXDIGITS ; i++ ) {
+    for( int i = 0 ; i < 2*MAXDIGITS ; i++ ) {
         int sum = a[i] - b[i] ;
         if( i > 0 ) sum += c[i-1] ;
         if( sum < 0 ) {
@@ -109,7 +109,7 @@ void power( int p[], int a[], int exp ) {
 void karatsuba( int p[], int a[], int b[], int radix ) {
     /* Find the max digit length of a and b */
     int n ;
-    for( int i = MAXDIGITS - 1 ; i >= 0 ; i-- ) {
+    for( int i = 2*MAXDIGITS - 1 ; i >= 0 ; i-- ) {
         // std::cout << "i: " << i << " a: " << a[i] << " b: " << b[i] << std::endl ;
         if( a[i] != 0 || b[i] != 0 ) {
             n = i + 1 ;
@@ -144,15 +144,15 @@ void karatsuba( int p[], int a[], int b[], int radix ) {
 
     // std::cout << "n: " << n << " k: " << k << std::endl ;
     
-    int a1[MAXDIGITS], a2[MAXDIGITS] ;
-    for( int i = 0 ; i < MAXDIGITS ; i++ ) {
+    int a1[2*MAXDIGITS], a2[2*MAXDIGITS] ;
+    for( int i = 0 ; i < 2*MAXDIGITS ; i++ ) {
         a1[i] = 0 ;
         a2[i] = 0 ;
     }
     split( a1, a2, a, k ) ;
 
-    int b1[MAXDIGITS], b2[MAXDIGITS] ;
-    for( int i = 0 ; i < MAXDIGITS ; i++ ) {
+    int b1[2*MAXDIGITS], b2[2*MAXDIGITS] ;
+    for( int i = 0 ; i < 2*MAXDIGITS ; i++ ) {
         b1[i] = 0 ;
         b2[i] = 0 ;
     }
@@ -164,8 +164,8 @@ void karatsuba( int p[], int a[], int b[], int radix ) {
         z1[i] = 0 ;
         z2[i] = 0 ;
     }
-    int s1[MAXDIGITS], s2[MAXDIGITS] ;
-    for( int i = 0 ; i < MAXDIGITS ; i++ ) {
+    int s1[2*MAXDIGITS], s2[2*MAXDIGITS] ;
+    for( int i = 0 ; i < 2*MAXDIGITS ; i++ ) {
         s1[i] = 0 ;
         s2[i] = 0 ;
     }
@@ -178,12 +178,12 @@ void karatsuba( int p[], int a[], int b[], int radix ) {
     karatsuba( z2, a1, b1, radix ) ;
 
     // return ( z2 * pow( 10, 2 * k ) ) + ( ( z1 - z2 - z0 ) * pow( 10, k ) ) + z0 ;
-    int pow1[2*MAXDIGITS], pow2[2*MAXDIGITS], sub1[MAXDIGITS], sub2[MAXDIGITS] ; ;
+    int pow1[2*MAXDIGITS], pow2[2*MAXDIGITS], sub1[2*MAXDIGITS], sub2[2*MAXDIGITS] ; ;
     for( int i = 0 ; i < 2*MAXDIGITS ; i++ ) {
         pow1[i] = 0 ;
         pow2[i] = 0 ;
     }
-    for( int i = 0 ; i < MAXDIGITS ; i++ ) {
+    for( int i = 0 ; i < 2*MAXDIGITS ; i++ ) {
         sub1[i] = 0 ;
         sub2[i] = 0 ;
     }
@@ -196,11 +196,11 @@ void karatsuba( int p[], int a[], int b[], int radix ) {
 }
 
 int main() {
-    int a[MAXDIGITS], b[MAXDIGITS], s[MAXDIGITS], p[2*MAXDIGITS] ;
+    int a[2*MAXDIGITS], b[2*MAXDIGITS], s[2*MAXDIGITS], p[2*MAXDIGITS] ;
     int radix ;
 
     /* Initialize arrays to be empty */
-    for( int i = 0 ; i < MAXDIGITS ; i++ ) {
+    for( int i = 0 ; i < 2*MAXDIGITS ; i++ ) {
         a[i] = 0 ;
         b[i] = 0 ;
         s[i] = 0 ;
@@ -233,13 +233,13 @@ int main() {
     karatsuba( p, a, b, radix ) ;
 
     /* Print result: */
-    int start = MAXDIGITS - 1 ;
+    int start = 2*MAXDIGITS - 1 ;
     while( s[start] == 0 ) start-- ;
     for( int i = start ; i >=0 ; i-- )
         std::cout << s[i] ;
     std::cout << " " ;
 
-    start = MAXDIGITS - 1 ;
+    start = 2*MAXDIGITS - 1 ;
     while( p[start] == 0 ) start-- ;
     for( int i = start ; i >= 0 ; i-- )
         std::cout << p[i] ;
