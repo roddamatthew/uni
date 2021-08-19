@@ -142,7 +142,7 @@ void karatsuba( int p[], int a[], int b[], int radix ) {
     int k = n / 2 ;
     if( n % 2 > 0 ) k++ ;
 
-    std::cout << "n: " << n << " k: " << k << std::endl ;
+    // std::cout << "n: " << n << " k: " << k << std::endl ;
     
     int a1[MAXDIGITS], a2[MAXDIGITS] ;
     for( int i = 0 ; i < MAXDIGITS ; i++ ) {
