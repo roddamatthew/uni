@@ -95,31 +95,34 @@ int getHeight( Node *node )
 Node *balance( Node *start, int value ) {
     /* Find the balanace of the tree */
     int balance = getHeight( start -> lower ) - getHeight( start -> upper ) ;
-    // cout << "After adding: " << value << " balance is: " << balance << endl ;
     // cout << "Shouldn't be zero: " << start << " with value: " << start -> value << endl ;
     // cout << "Lower subtree height is: " << getHeight( start -> lower ) << endl ;
     // cout << "Upper subtree height is: " << getHeight( start -> upper ) << endl ;
 
     if( balance > 1 ) { /* If lower side is unbalanced */
         if( value < start -> lower -> value ){
-            // cout << "R Rotation" << endl ;
+        	cout << "After adding: " << value << " balance is: " << balance << endl ;
+            cout << "R Rotation" << endl ;
             return rightRotation( start ) ;
         }
         else {
             /* LR Rotation */
-            // cout << "LR Rotation" << endl ;
+            cout << "After adding: " << value << " balance is: " << balance << endl ;
+            cout << "LR Rotation" << endl ;
             start -> lower = leftRotation( start -> lower ) ;
             return rightRotation( start ) ;
         }
     }
     else if( balance < -1 ) {
         if( value > start -> upper -> value ){
-            // cout << "L Rotation" << endl ;
+        	cout << "After adding: " << value << " balance is: " << balance << endl ;
+            cout << "L Rotation" << endl ;
             return leftRotation( start ) ;
         }
         else {
             /* RL Rotation */
-            // cout << "RL Rotation" << endl ;
+            cout << "After adding: " << value << " balance is: " << balance << endl ;
+            cout << "RL Rotation" << endl ;
             start -> upper = rightRotation( start -> upper ) ;
             return leftRotation( start ) ;
         }
@@ -135,18 +138,26 @@ Node *balance_remove( Node *start )
 
     if( balance > 1 ) { /* If lower side is unbalanced */
         if( getHeight( start -> lower ) >= getHeight( start -> upper ) ){
+        	cout << "After removing balance is: " << balance << endl ;
+        	cout << "R Rotation" << endl ;
             return rightRotation( start ) ;
         }
         else {
+        	cout << "After removing balance is: " << balance << endl ;
+        	cout << "LR Rotation" << endl ;
             start -> lower = leftRotation( start -> lower ) ;
             return rightRotation( start ) ;
         }
     }
     else if( balance < -1 ) {
         if( getHeight( start -> upper ) >= getHeight( start -> lower ) ){
+        	cout << "After removing balance is: " << balance << endl ;
+        	cout << "L Rotation" << endl ;
             return leftRotation( start ) ;
         }
         else {
+        	cout << "After removing balance is: " << balance << endl ;
+        	cout << "RL Rotation" << endl ;
             start -> upper = rightRotation( start -> upper ) ;
             return leftRotation( start ) ;
         }
@@ -197,9 +208,9 @@ Node *remove( Node *start, int value )
         }
         else { /* Deleted node has two children */
             /* Delete left most child on right side */
-            while( upper -> lower != NULL ) upper = upper -> lower ;
-            start -> value = upper -> value ;
-            start -> upper = remove( start -> upper, upper -> value ) ;
+            while( lower -> upper != NULL ) lower = lower -> upper ;
+            start -> value = lower -> value ;
+            start -> lower = remove( start -> lower, lower -> value ) ;
         }
     }
     if( start == NULL ) return start ; /* If there was no children we don't need to balance */

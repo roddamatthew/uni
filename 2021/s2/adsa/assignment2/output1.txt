@@ -1,1 +1,41 @@
-30 11 4 3 9 5 17 16 15 25 22 28 45 40 34 55 46 47 85 65 62 63 71 68 74 96 86 91 100 98 61 
+After adding: 71 balance is: 2
+R Rotation
+After adding: 60 balance is: 2
+LR Rotation
+After adding: 68 balance is: 2
+LR Rotation
+After adding: 28 balance is: -2
+RL Rotation
+After adding: 86 balance is: 2
+LR Rotation
+After adding: 61 balance is: 2
+R Rotation
+After adding: 62 balance is: -2
+RL Rotation
+After removing balance is: -2
+L Rotation
+After adding: 100 balance is: 2
+LR Rotation
+After adding: 55 balance is: 2
+R Rotation
+After adding: 46 balance is: -2
+RL Rotation
+After adding: 70 balance is: -2
+RL Rotation
+After adding: 25 balance is: 2
+LR Rotation
+After adding: 47 balance is: -2
+L Rotation
+After adding: 63 balance is: 2
+LR Rotation
+After adding: 15 balance is: -2
+L Rotation
+After removing balance is: 2
+R Rotation
+After removing balance is: -2
+L Rotation
+After adding: 9 balance is: -2
+L Rotation
+After adding: 5 balance is: 2
+LR Rotation
+30 16 9 4 3 5 11 15 25 17 22 28 46 40 34 45 55 47 85 68 63 62 65 74 71 96 86 91 100 98 61 
