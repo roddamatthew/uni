@@ -202,7 +202,7 @@ int main()
     token = strtok( input, " " ) ;
     while( token != NULL )
     {
-        cout << token ;
+        // cout << token ;
         // cout << root -> value << endl ;
         if( token[0] == 'A' ) {
             root = insert( root, atoi( token + 1 ) ) ;
