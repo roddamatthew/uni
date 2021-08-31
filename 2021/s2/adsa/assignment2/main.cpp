@@ -178,7 +178,7 @@ Node *insert( Node *start, int value )
     if( value < start -> value ) start -> lower = insert( start -> lower, value ) ; else
     if( value > start -> value ) start -> upper = insert( start -> upper, value ) ;
 
-    start = balance( start, value ) ;
+    start = balance_remove( start ) ;
 
     return start ;
 }
