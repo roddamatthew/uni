@@ -167,10 +167,10 @@ Node *remove( Node *start, int value )
             start = upper ;
         }
         else { /* Deleted node has two children */
-            /* Delete left most child on right side */
-            while( upper -> lower != NULL ) upper = upper -> lower ;
-            start -> value = upper -> value ;
-            start -> upper = remove( start -> upper, upper -> value ) ;
+            /* Delete right most child on left side */
+            while( lower -> upper != NULL ) lower = lower -> upper ;
+            start -> value = lower -> value ;
+            start -> lower = remove( start -> lower, lower -> value ) ;
         }
     }
     if( start == NULL ) return start ; /* If there was no children we don't need to balance */
