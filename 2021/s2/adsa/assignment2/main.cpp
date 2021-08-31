@@ -196,19 +196,19 @@ int main()
 {
     /* Read input from command line */
     std::string token ;
-    char input[310] ;
-    fgets( input, 310, stdin ) ;
+    char input[410] ;
+    fgets( input, 410, stdin ) ;
 
     token = strtok( input, " " ) ;
     while( !token.empty() )
     {
-        // cout << token << ": " << endl ;
+        cout << token ;
         // cout << root -> value << endl ;
         if( token[0] == 'A' ) {
-            root = insert( root, stoi( token.substr( 1 ) ) ) ;
+            root = insert( root, atoi( token.substr( 1 ).c_str() ) ) ;
         }
         else if( token[0] == 'D' ) {
-            root = remove( root, stoi( token.substr( 1 ) ) ) ;
+            root = remove( root, atoi( token.substr( 1 ).c_str() ) ) ;
         }
         else if( token.compare( "PRE" ) == 0 ) {
             if( root == NULL ) cout << "EMPTY" << endl ; else
