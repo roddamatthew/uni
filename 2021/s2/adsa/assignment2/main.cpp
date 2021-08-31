@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string.h>
-#include <stdio.h>
+#include <stdlib.h>
 
 using namespace std ;
 
@@ -195,30 +195,30 @@ Node *remove( Node *start, int value )
 int main() 
 {
     /* Read input from command line */
-    std::string token ;
+    char *token ;
     char input[410] ;
     fgets( input, 410, stdin ) ;
 
     token = strtok( input, " " ) ;
-    while( !token.empty() )
+    while( token != NULL )
     {
-        // cout << token ;
+        cout << token ;
         // cout << root -> value << endl ;
         if( token[0] == 'A' ) {
-            root = insert( root, atoi( token.substr( 1 ).c_str() ) ) ;
+            root = insert( root, atoi( token + 1 ) ) ;
         }
         else if( token[0] == 'D' ) {
-            root = remove( root, atoi( token.substr( 1 ).c_str() ) ) ;
+            root = remove( root, atoi( token + 1 ) ) ;
         }
-        else if( token.compare( "PRE" ) == 0 ) {
+        else if( strncmp( token, "PRE", 3 ) == 0 ) {
             if( root == NULL ) cout << "EMPTY" << endl ; else
             prePrint( root ) ;
         }
-        else if( token.compare( "POST" ) == 0 ) {
+        else if( strncmp( token, "POST", 4 ) == 0 ) {
             if( root == NULL ) cout << "EMPTY" << endl ; else
             postPrint( root ) ;
         }
-        else if( token.compare( "IN" ) == 0 ) {
+        else if( strncmp( token, "IN", 2 ) == 0 ) {
             if( root == NULL ) cout << "EMPTY" << endl ; else
             inorderPrint( root ) ;
         }
