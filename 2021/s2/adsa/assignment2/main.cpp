@@ -158,23 +158,23 @@ Node *insert( Node *start, int value )
 
 Node *remove( Node *start, int value )
 {
+    /* Check if we've reached the end of the tree */
     if( start == NULL ) return NULL ;
+    /* Recursively call down tree until the right node is found */
     if( value < start -> value )
         start -> lower = remove( start -> lower, value ) ; else
     if( value > start -> value )
         start -> upper = remove( start -> upper, value ) ;
-    else {
+    else { /* Current node has value we want to delete */
         Node *lower = start -> lower ;
         Node *upper = start -> upper ;
 
         /* If the deleted node has one or fewer children, replace it with the child */
         if( upper == NULL ) {
-            if( root == start ) root = lower ;
             delete( start ) ;
             start = lower ;
         }
         else if( lower == NULL ) {
-            if( root == start ) root = upper ;
             delete( start ) ;
             start = upper ;
         }
@@ -200,17 +200,15 @@ int main()
     fgets( input, 310, stdin ) ;
 
     token = strtok( input, " " ) ;
-    root = insert( root, stoi( token.substr( 1 ) ) ) ;
-    
     while( !token.empty() )
     {
         // cout << token << ": " << endl ;
         // cout << root -> value << endl ;
         if( token[0] == 'A' ) {
-            insert( root, stoi( token.substr( 1 ) ) ) ;
+            root = insert( root, stoi( token.substr( 1 ) ) ) ;
         }
         else if( token[0] == 'D' ) {
-            remove( root, stoi( token.substr( 1 ) ) ) ;
+            root = remove( root, stoi( token.substr( 1 ) ) ) ;
         }
         else if( token.compare( "PRE" ) == 0 ) {
             if( root == NULL ) cout << "EMPTY" << endl ; else
@@ -223,9 +221,6 @@ int main()
         else if( token.compare( "IN" ) == 0 ) {
             if( root == NULL ) cout << "EMPTY" << endl ; else
             inorderPrint( root ) ;
-        }
-        else {
-            cout << "Invalid Input" << endl ;
         }
         token = strtok( NULL, " \n" ) ;
     }
