@@ -16,8 +16,6 @@ class Node {
     }
 } ;
 
-static Node *root = NULL ;
-
 void prePrint( Node *start )
 {
     if( start == NULL ) return ;
@@ -51,11 +49,6 @@ Node *rightRotation( Node* start ) {
     /* new subtree upper becomes original subtree head */
     newstart -> upper = start ;
 
-    if( start == root ) {
-        // cout << "Changed root node from: " << start -> value << " to " << newstart -> value << endl ;
-        root = newstart ;
-    }
-
     return newstart ;
 }
 
@@ -67,11 +60,6 @@ Node *leftRotation( Node* start ) {
     start -> upper = newstart -> lower ;
     /* new subtree lower becomes original subtree head */
     newstart -> lower = start ;
-
-    if( start == root ) {
-        // cout << "Changed root node from: " << start -> value << " to " << newstart -> value << endl ;
-        root = newstart ;
-    }
 
     return newstart ;
 }
@@ -194,6 +182,7 @@ Node *remove( Node *start, int value )
 
 int main() 
 {
+    Node *root = NULL ;
     /* Read input from command line */
     char *token ;
     char input[410] ;
