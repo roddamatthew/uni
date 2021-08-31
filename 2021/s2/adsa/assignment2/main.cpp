@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string.h>
+#include <stdio.h>
 
 using namespace std ;
 
@@ -14,14 +16,45 @@ class Node {
     }
 } ;
 
+static Node *root = NULL ;
+
+void prePrint( Node *start )
+{
+    if( start == NULL ) return ;
+    cout << start -> value << " " ;
+    prePrint( start -> lower ) ;
+    prePrint( start -> upper ) ;
+}
+
+void postPrint( Node *start )
+{
+    if( start == NULL ) return ;
+    prePrint( start -> lower ) ;
+    prePrint( start -> upper ) ;
+    cout << start -> value << " " ;
+}
+
+void inorderPrint( Node *start )
+{
+    if( start == NULL ) return ;
+    inorderPrint( start -> lower ) ;
+    cout << start -> value << " " ;
+    inorderPrint( start -> upper ) ;
+}
+
 /* Perform a right rotation about node 'start' */
 Node *rightRotation( Node* start ) {
     /* lower of start becomes new subtree head */
     Node *newstart = start -> lower ;
-    /* new subtree upper becomes original subtree head */
-    newstart -> upper = start ;
     /* swap new subtree upper with original subtree lower */
     start -> lower = newstart -> upper ;
+    /* new subtree upper becomes original subtree head */
+    newstart -> upper = start ;
+
+    if( start == root ) {
+        // cout << "Changed root node from: " << start -> value << " to " << newstart -> value << endl ;
+        root = newstart ;
+    }
 
     return newstart ;
 }
@@ -30,10 +63,15 @@ Node *rightRotation( Node* start ) {
 Node *leftRotation( Node* start ) {
     /* upper of start becomes new subtree head */
     Node *newstart = start -> upper ;
-    /* new subtree lower becomes original subtree head */
-    newstart -> lower = start ;
     /* swap new subtree lower with original subtree upper */
     start -> upper = newstart -> lower ;
+    /* new subtree lower becomes original subtree head */
+    newstart -> lower = start ;
+
+    if( start == root ) {
+        // cout << "Changed root node from: " << start -> value << " to " << newstart -> value << endl ;
+        root = newstart ;
+    }
 
     return newstart ;
 }
@@ -64,34 +102,34 @@ int getHeight( Node *node )
     return max( getHeight( node -> lower ), getHeight( node -> upper ) ) + 1 ;
 }
 
-Node *insert( Node *start, int value )
-{
-    /* If subtree is empty, add new node */
-    if( start == NULL ) {
-        Node *temp = new Node( value ) ;
-        return temp ;
-    }
-    /* Recursively search sides of tree */
-    if( value < start -> value ) start = insert( start -> lower, value ) ; else
-    if( value > start -> value ) start = insert( start -> upper, value ) ;
-
+Node *balance( Node *start, int value ) {
     /* Find the balanace of the tree */
     int balance = getHeight( start -> lower ) - getHeight( start -> upper ) ;
+    // cout << "After adding: " << value << " balance is: " << balance << endl ;
+    // cout << "Shouldn't be zero: " << start << " with value: " << start -> value << endl ;
+    // cout << "Lower subtree height is: " << getHeight( start -> lower ) << endl ;
+    // cout << "Upper subtree height is: " << getHeight( start -> upper ) << endl ;
 
     if( balance > 1 ) { /* If lower side is unbalanced */
-        if( value < start -> lower -> value )
+        if( value < start -> lower -> value ){
+            // cout << "R Rotation" << endl ;
             return rightRotation( start ) ;
+        }
         else {
             /* LR Rotation */
+            // cout << "LR Rotation" << endl ;
             start -> lower = leftRotation( start -> lower ) ;
             return rightRotation( start ) ;
         }
     }
     else if( balance < -1 ) {
-        if( value > start -> upper -> value )
+        if( value > start -> upper -> value ){
+            // cout << "L Rotation" << endl ;
             return leftRotation( start ) ;
+        }
         else {
             /* RL Rotation */
+            // cout << "RL Rotation" << endl ;
             start -> upper = rightRotation( start -> upper ) ;
             return leftRotation( start ) ;
         }
@@ -100,32 +138,97 @@ Node *insert( Node *start, int value )
     return start ;
 }
 
-void prePrint( Node *start )
+Node *insert( Node *start, int value )
 {
-    if( start == NULL ) return ;
-    cout << start -> value << " " ;
-    prePrint( start -> lower ) ;
-    prePrint( start -> upper ) ;
+    /* If subtree is empty, add new node */
+    if( start == NULL ) {
+        // cout << "Created new node storing: " << value << endl ;
+        Node *temp = new Node( value ) ;
+        return temp ;
+    }
+
+    /* Recursively search sides of tree */
+    if( value < start -> value ) start -> lower = insert( start -> lower, value ) ; else
+    if( value > start -> value ) start -> upper = insert( start -> upper, value ) ;
+
+    start = balance( start, value ) ;
+
+    return start ;
 }
 
-void inorderPrint( Node *start )
+Node *remove( Node *start, int value )
 {
-    if( start == NULL ) return ;
-    inorderPrint( start -> lower ) ;
-    cout << start -> value << " " ;
-    inorderPrint( start -> upper ) ;
+    if( start == NULL ) return NULL ;
+    if( value < start -> value )
+        start -> lower = remove( start -> lower, value ) ; else
+    if( value > start -> value )
+        start -> upper = remove( start -> upper, value ) ;
+    else {
+        Node *lower = start -> lower ;
+        Node *upper = start -> upper ;
+
+        /* If the deleted node has one or fewer children, replace it with the child */
+        if( upper == NULL ) {
+            if( root == start ) root = lower ;
+            delete( start ) ;
+            start = lower ;
+        }
+        else if( lower == NULL ) {
+            if( root == start ) root = upper ;
+            delete( start ) ;
+            start = upper ;
+        }
+        else { /* Deleted node has two children */
+            /* Delete left most child on right side */
+            while( upper -> lower != NULL ) upper = upper -> lower ;
+            start -> value = upper -> value ;
+            start -> upper = remove( start -> upper, upper -> value ) ;
+        }
+    }
+    if( start == NULL ) return start ; /* If there was no children we don't need to balance */
+
+    start = balance( start, value ) ;
+    
+    return start ;
 }
 
 int main() 
 {
-    Node *node1 = new Node( 1 ) ;
-    Node *node2 = new Node( 2 ) ;
-    Node *node3 = new Node( 3 ) ;
+    /* Read input from command line */
+    std::string token ;
+    char input[310] ;
+    fgets( input, 310, stdin ) ;
 
-    node2 -> lower = node1 ;
-    node2 -> upper = node3 ;
-
-    prePrint( node1 ) ;
+    token = strtok( input, " " ) ;
+    root = insert( root, stoi( token.substr( 1 ) ) ) ;
+    
+    while( !token.empty() )
+    {
+        // cout << token << ": " << endl ;
+        // cout << root -> value << endl ;
+        if( token[0] == 'A' ) {
+            insert( root, stoi( token.substr( 1 ) ) ) ;
+        }
+        else if( token[0] == 'D' ) {
+            remove( root, stoi( token.substr( 1 ) ) ) ;
+        }
+        else if( token.compare( "PRE" ) == 0 ) {
+            if( root == NULL ) cout << "EMPTY" << endl ; else
+            prePrint( root ) ;
+        }
+        else if( token.compare( "POST" ) == 0 ) {
+            if( root == NULL ) cout << "EMPTY" << endl ; else
+            postPrint( root ) ;
+        }
+        else if( token.compare( "IN" ) == 0 ) {
+            if( root == NULL ) cout << "EMPTY" << endl ; else
+            inorderPrint( root ) ;
+        }
+        else {
+            cout << "Invalid Input" << endl ;
+        }
+        token = strtok( NULL, " \n" ) ;
+    }
 
     return 0 ;
 }
