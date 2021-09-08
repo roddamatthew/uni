@@ -196,6 +196,7 @@ Node *remove( Node *start, int value )
     else { /* Current node has value we want to delete */
         Node *lower = start -> lower ;
         Node *upper = start -> upper ;
+        int lowerVal = lower -> value ;
 
         /* If the deleted node has one or fewer children, replace it with the child */
         if( upper == NULL ) {
@@ -209,8 +210,8 @@ Node *remove( Node *start, int value )
         else { /* Deleted node has two children */
             /* Delete left most child on right side */
             while( lower -> upper != NULL ) lower = lower -> upper ;
-            start -> value = lower -> value ;
             start -> lower = remove( start -> lower, lower -> value ) ;
+            start -> value = lowerVal ;
         }
     }
     if( start == NULL ) return start ; /* If there was no children we don't need to balance */
