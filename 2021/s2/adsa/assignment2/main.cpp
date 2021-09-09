@@ -29,8 +29,8 @@ void prePrint( Node *start )
 void postPrint( Node *start )
 {
     if( start == NULL ) return ;
-    prePrint( start -> lower ) ;
-    prePrint( start -> upper ) ;
+    postPrint( start -> lower ) ;
+    postPrint( start -> upper ) ;
     cout << start -> value << " " ;
 }
 
@@ -95,8 +95,9 @@ Node *insert( Node *start, int value )
     int balance = getBalance( start ) ;
 
     if( balance > 1 ) { // Left case
-        if( value < start -> lower -> value ) // Left case
+        if( value < start -> lower -> value ) {
             return rightRotation( start ) ;
+        }
         else if ( value > start -> lower -> value ) // Right case
         {
             start -> lower = leftRotation( start -> lower ) ;
@@ -104,8 +105,9 @@ Node *insert( Node *start, int value )
         }
     }
     if( balance < -1 ) { // Right case
-        if( value > start -> upper -> value ) // Right case
+        if( value > start -> upper -> value ) { // Right case
             return leftRotation( start ) ;
+        }
         else if ( value < start -> upper -> value ) // Left case
         {
             start -> upper = rightRotation( start -> upper ) ;
@@ -140,9 +142,9 @@ Node *remove( Node *start, int value )
         }
         else { /* Deleted node has two children */
             /* Delete largest left descendant */
-            while( upper -> lower != NULL ) upper = upper -> lower ;
-            start -> value = upper -> value ;
-            start -> upper = remove( start -> upper, upper -> value ) ;
+            while( lower -> upper != NULL ) lower = lower -> upper ;
+            start -> value = lower -> value ;
+            start -> lower = remove( start -> lower, lower -> value ) ;
         }
     }
     if( start == NULL ) return start ; /* If there was no children we don't need to balance */
