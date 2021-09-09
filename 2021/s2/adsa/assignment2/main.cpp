@@ -142,25 +142,24 @@ Node *balance_remove( Node *start )
         	// cout << "R Rotation" << endl ;
             return rightRotation( start ) ;
         }
-        // else {
-        // 	// cout << "After removing balance is: " << balance << endl ;
-        // 	// cout << "LR Rotation" << endl ;
-        //     start -> lower = leftRotation( start -> lower ) ;
-        //     return rightRotation( start ) ;
-        // }
+        else {
+        	// cout << "After removing balance is: " << balance << endl ;
+        	// cout << "LR Rotation" << endl ;
+            start -> lower = leftRotation( start -> lower ) ;
+            return rightRotation( start ) ;
+        }
     }
     else if( balance < -1 ) {
-        if( getHeight( start -> upper ) >= getHeight( start -> lower ) ){
-        	// cout << "After removing balance is: " << balance << endl ;
-        	// cout << "L Rotation" << endl ;
+        int balance_sub = getHeight( start -> upper -> lower ) - getHeight( start -> upper -> upper ) ;
+        
+        if( balance_sub > 1 ) {
+            start -> upper = rightRotation( start -> upper ) ;
             return leftRotation( start ) ;
         }
-        // else {
-        // 	// cout << "After removing balance is: " << balance << endl ;
-        // 	// cout << "RL Rotation" << endl ;
-        //     start -> upper = rightRotation( start -> upper ) ;
-        //     return leftRotation( start ) ;
-        // }
+        else
+        {
+            return leftRotation( start ) ;
+        }
     }
 
     return start ;
@@ -255,6 +254,9 @@ int main()
         }
         token = strtok( NULL, " \n" ) ;
     }
+
+    int balance = getHeight( root -> lower ) - getHeight( root -> upper ) ;
+    cout << "Final balance is: " << balance << endl ;
 
     return 0 ;
 }
