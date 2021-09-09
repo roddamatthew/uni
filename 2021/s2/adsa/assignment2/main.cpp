@@ -111,10 +111,8 @@ Node *balance( Node *start, int value ) {
             // cout << "R Rotation" << endl ;
             return rightRotation( start ) ;
         }
-        else {
-            /* LR Rotation */
-            // cout << "After adding: " << value << " balance is: " << balance << endl ;
-            // cout << "LR Rotation" << endl ;
+        else if ( value > start -> lower -> value )
+        {
             start -> lower = leftRotation( start -> lower ) ;
             return rightRotation( start ) ;
         }
@@ -125,7 +123,8 @@ Node *balance( Node *start, int value ) {
             // cout << "L Rotation" << endl ;
             return leftRotation( start ) ;
         }
-        else {
+        else if ( value < start -> upper -> value )
+        {
             /* RL Rotation */
             // cout << "After adding: " << value << " balance is: " << balance << endl ;
             // cout << "RL Rotation" << endl ;
@@ -145,15 +144,15 @@ Node *balance_remove( Node *start )
     // Left left case:
     if( balance > 1 && getBalance( start -> lower ) >= 0 && start -> lower != NULL )
         return rightRotation( start ) ;
-    // // Left right case:
-    if( balance > 1 && getBalance( start -> lower ) < 0 ) {
+    // Left right case:
+    else if( balance > 1 && getBalance( start -> lower ) < 0 ) {
         start -> lower = leftRotation( start -> lower ) ;
         return rightRotation( start ) ;
     }
     // Right right case:
-    // else if( balance < -1 && getBalance( start -> upper ) <= 0 && start -> upper != NULL ) {
-    //     return leftRotation( start ) ;
-    // }
+    else if( balance < -1 && getBalance( start -> upper ) <= 0 && start -> upper != NULL ) {
+        return leftRotation( start ) ;
+    }
     // Right left case:
     else if( balance < -1 && getBalance( start -> upper ) > 0 ) {
         start -> upper = rightRotation( start -> upper ) ;
