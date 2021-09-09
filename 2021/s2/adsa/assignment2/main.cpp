@@ -142,12 +142,12 @@ Node *balance_remove( Node *start )
         	// cout << "R Rotation" << endl ;
             return rightRotation( start ) ;
         }
-        else {
-        	// cout << "After removing balance is: " << balance << endl ;
-        	// cout << "LR Rotation" << endl ;
-            start -> lower = leftRotation( start -> lower ) ;
-            return rightRotation( start ) ;
-        }
+        // else {
+        // 	// cout << "After removing balance is: " << balance << endl ;
+        // 	// cout << "LR Rotation" << endl ;
+        //     start -> lower = leftRotation( start -> lower ) ;
+        //     return rightRotation( start ) ;
+        // }
     }
     else if( balance < -1 ) {
         if( getHeight( start -> upper ) >= getHeight( start -> lower ) ){
@@ -155,12 +155,12 @@ Node *balance_remove( Node *start )
         	// cout << "L Rotation" << endl ;
             return leftRotation( start ) ;
         }
-        else {
-        	// cout << "After removing balance is: " << balance << endl ;
-        	// cout << "RL Rotation" << endl ;
-            start -> upper = rightRotation( start -> upper ) ;
-            return leftRotation( start ) ;
-        }
+        // else {
+        // 	// cout << "After removing balance is: " << balance << endl ;
+        // 	// cout << "RL Rotation" << endl ;
+        //     start -> upper = rightRotation( start -> upper ) ;
+        //     return leftRotation( start ) ;
+        // }
     }
 
     return start ;
@@ -208,13 +208,13 @@ Node *remove( Node *start, int value )
             delete( start ) ;
             start = upper ;
         }
-        // else { /* Deleted node has two children */
-        //     /* Delete largest left descendant */
-        //     while( lower -> upper != NULL ) lower = lower -> upper ;
-        //     // cout << "Replacing node with two children" << endl ;
-        //     start -> value = lower -> value ;
-        //     start -> lower = remove( start -> lower, lower -> value ) ;
-        // }
+        else { /* Deleted node has two children */
+            /* Delete largest left descendant */
+            while( lower -> upper != NULL ) lower = lower -> upper ;
+            // cout << "Replacing node with two children" << endl ;
+            start -> value = lower -> value ;
+            start -> lower = remove( start -> lower, lower -> value ) ;
+        }
     }
     if( start == NULL ) return start ; /* If there was no children we don't need to balance */
 
