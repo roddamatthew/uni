@@ -208,13 +208,13 @@ Node *remove( Node *start, int value )
             delete( start ) ;
             start = upper ;
         }
-        else { /* Deleted node has two children */
-            /* Delete largest left descendant */
-            while( lower -> upper != NULL ) lower = lower -> upper ;
-            // cout << "Replacing node with two children" << endl ;
-            start -> value = lower -> value ;
-            start -> lower = remove( start -> lower, lower -> value ) ;
-        }
+        // else { /* Deleted node has two children */
+        //     /* Delete largest left descendant */
+        //     while( lower -> upper != NULL ) lower = lower -> upper ;
+        //     // cout << "Replacing node with two children" << endl ;
+        //     start -> value = lower -> value ;
+        //     start -> lower = remove( start -> lower, lower -> value ) ;
+        // }
     }
     if( start == NULL ) return start ; /* If there was no children we don't need to balance */
 
