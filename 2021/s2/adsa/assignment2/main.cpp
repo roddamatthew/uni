@@ -78,7 +78,19 @@ int getBalance( Node *node )
     return getHeight( node -> lower ) - getHeight( node -> upper ) ;
 }
 
-Node *balance( Node *start, int value ) {
+Node *insert( Node *start, int value )
+{
+    /* If subtree is empty, add new node */
+    if( start == NULL ) {
+        // cout << "Created new node storing: " << value << endl ;
+        Node *temp = new Node( value ) ;
+        return temp ;
+    }
+
+    /* Recursively search sides of tree */
+    if( value < start -> value ) start -> lower = insert( start -> lower, value ) ; else
+    if( value > start -> value ) start -> upper = insert( start -> upper, value ) ;
+
     /* Find the balanace of the tree */
     int balance = getBalance( start ) ;
 
@@ -100,47 +112,6 @@ Node *balance( Node *start, int value ) {
             return leftRotation( start ) ;
         }
     }
-}
-
-Node *balance_remove( Node *start )
-{
-	/* Find the balance of the tree */
-    int balance = getBalance( start ) ;
-
-    // Left left case:
-    if( balance > 1 && getBalance( start -> lower ) >= 0 && start -> lower != NULL )
-        return rightRotation( start ) ;
-    // Left right case:
-    else if( balance > 1 && getBalance( start -> lower ) < 0 ) {
-        start -> lower = leftRotation( start -> lower ) ;
-        return rightRotation( start ) ;
-    }
-    // Right right case:
-    else if( balance < -1 && getBalance( start -> upper ) <= 0 && start -> upper != NULL ) {
-        return leftRotation( start ) ;
-    }
-    // Right left case:
-    else if( balance < -1 && getBalance( start -> upper ) > 0 ) {
-        start -> upper = rightRotation( start -> upper ) ;
-        return leftRotation( start ) ;
-    }
-}
-
-Node *insert( Node *start, int value )
-{
-    /* If subtree is empty, add new node */
-    if( start == NULL ) {
-        // cout << "Created new node storing: " << value << endl ;
-        Node *temp = new Node( value ) ;
-        return temp ;
-    }
-
-    /* Recursively search sides of tree */
-    if( value < start -> value ) start -> lower = insert( start -> lower, value ) ; else
-    if( value > start -> value ) start -> upper = insert( start -> upper, value ) ; else
-    return start ;
-
-    start = balance( start, value ) ;
 
     return start ;
 }
@@ -179,8 +150,27 @@ Node *remove( Node *start, int value )
     }
     if( start == NULL ) return start ; /* If there was no children we don't need to balance */
 
-    start = balance_remove( start ) ;
-    
+	/* Find the balance of the tree */
+    int balance = getBalance( start ) ;
+
+    // Left left case:
+    if( balance > 1 && getBalance( start -> lower ) >= 0 && start -> lower != NULL )
+        return rightRotation( start ) ;
+    // Left right case:
+    else if( balance > 1 && getBalance( start -> lower ) < 0 ) {
+        start -> lower = leftRotation( start -> lower ) ;
+        return rightRotation( start ) ;
+    }
+    // Right right case:
+    else if( balance < -1 && getBalance( start -> upper ) <= 0 && start -> upper != NULL ) {
+        return leftRotation( start ) ;
+    }
+    // Right left case:
+    else if( balance < -1 && getBalance( start -> upper ) > 0 ) {
+        start -> upper = rightRotation( start -> upper ) ;
+        return leftRotation( start ) ;
+    }
+
     return start ;
 }
 
