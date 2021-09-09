@@ -143,17 +143,17 @@ Node *balance_remove( Node *start )
     int balance = getBalance( start ) ;
 
     // Left left case:
-    // if( balance > 1 && getBalance( start -> lower ) >= 0 && start -> lower != NULL )
-    //     return rightRotation( start ) ;
+    if( balance > 1 && getBalance( start -> lower ) >= 0 && start -> lower != NULL )
+        return rightRotation( start ) ;
     // // Left right case:
     if( balance > 1 && getBalance( start -> lower ) < 0 ) {
         start -> lower = leftRotation( start -> lower ) ;
         return rightRotation( start ) ;
     }
     // Right right case:
-    else if( balance < -1 && getBalance( start -> upper ) <= 0 && start -> upper != NULL ) {
-        return leftRotation( start ) ;
-    }
+    // else if( balance < -1 && getBalance( start -> upper ) <= 0 && start -> upper != NULL ) {
+    //     return leftRotation( start ) ;
+    // }
     // Right left case:
     else if( balance < -1 && getBalance( start -> upper ) > 0 ) {
         start -> upper = rightRotation( start -> upper ) ;
