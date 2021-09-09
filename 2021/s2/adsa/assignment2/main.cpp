@@ -82,14 +82,14 @@ Node *insert( Node *start, int value )
 {
     /* If subtree is empty, add new node */
     if( start == NULL ) {
-        // cout << "Created new node storing: " << value << endl ;
         Node *temp = new Node( value ) ;
         return temp ;
     }
 
     /* Recursively search sides of tree */
     if( value < start -> value ) start -> lower = insert( start -> lower, value ) ; else
-    if( value > start -> value ) start -> upper = insert( start -> upper, value ) ;
+    if( value > start -> value ) start -> upper = insert( start -> upper, value ) ; else
+    return start ;
 
     /* Find the balanace of the tree */
     int balance = getBalance( start ) ;
@@ -131,19 +131,16 @@ Node *remove( Node *start, int value )
 
         /* If the deleted node has one or fewer children, replace it with the child */
         if( upper == NULL ) {
-            // cout << "Replacing lower child" << endl ;
-            delete( start ) ;
+            // delete( start ) ;
             start = lower ;
         }
         else if( lower == NULL ) {
-            // cout << "Replacing upper child" << endl ;
-            delete( start ) ;
+            // delete( start ) ;
             start = upper ;
         }
         else { /* Deleted node has two children */
             /* Delete largest left descendant */
             while( lower -> upper != NULL ) lower = lower -> upper ;
-            // cout << "Replacing node with two children" << endl ;
             start -> value = lower -> value ;
             start -> lower = remove( start -> lower, lower -> value ) ;
         }
