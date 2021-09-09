@@ -92,6 +92,12 @@ int getHeight( Node *node )
     return max( getHeight( node -> lower ), getHeight( node -> upper ) ) + 1 ;
 }
 
+int getBalance( Node *node )
+{
+    if( node == NULL ) return 0 ;
+    return getHeight( node -> lower ) - getHeight( node -> upper ) ;
+}
+
 Node *balance( Node *start, int value ) {
     /* Find the balanace of the tree */
     int balance = getHeight( start -> lower ) - getHeight( start -> upper ) ;
@@ -134,33 +140,24 @@ Node *balance( Node *start, int value ) {
 Node *balance_remove( Node *start )
 {
 	/* Find the balance of the tree */
-    int balance = getHeight( start -> lower ) - getHeight( start -> upper ) ;
+    int balance = getBalance( start ) ;
 
-    if( balance > 1 ) { /* If lower side is unbalanced */
-        if( getHeight( start -> lower -> lower ) - getHeight( start -> lower -> upper ) == -1 ) {
-        	// cout << "After removing balance is: " << balance << endl ;
-        	// cout << "LR Rotation" << endl ;
-            start -> lower = leftRotation( start -> lower ) ;
-            return rightRotation( start ) ;
-        }
-        else {
-        	// cout << "After removing balance is: " << balance << endl ;
-        	// cout << "R Rotation" << endl ;
-            return rightRotation( start ) ;
-        }
+    // Left left case:
+    if( balance > 1 && getBalance( start -> lower ) >= 0 )
+        return rightRotation( start ) ;
+    // Left right case:
+    else if( balance > 1 && getBalance( start -> lower ) < 0 ) {
+        start -> lower = leftRotation( start -> lower ) ;
+        return rightRotation( start ) ;
     }
-    else if( balance < -1 ) {
-        if( getHeight( start -> upper -> lower ) - getHeight( start -> upper -> upper ) == 1 ) {
-        	// cout << "After removing balance is: " << balance << endl ;
-        	// cout << "LR Rotation" << endl ;
-            start -> lower = rightRotation( start -> lower ) ;
-            return leftRotation( start ) ;
-        }
-        else {
-        	// cout << "After removing balance is: " << balance << endl ;
-        	// cout << "R Rotation" << endl ;
-            return leftRotation( start ) ;
-        }
+    // Right right case:
+    else if( balance < -1 && getBalance( start -> upper ) <= 0 ) {
+        return leftRotation( start ) ;
+    }
+    // Right left case:
+    else if( balance < -1 && getBalance( start -> upper ) > 0 ) {
+        start -> upper = rightRotation( start -> upper ) ;
+        return leftRotation( start ) ;
     }
 
     return start ;
