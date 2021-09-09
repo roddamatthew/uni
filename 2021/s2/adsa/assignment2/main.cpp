@@ -114,11 +114,11 @@ Node *balance( Node *start, int value ) {
     if( balance < -1 ) { // Right case
         if( value > start -> upper -> value ) // Right case
             return leftRotation( start ) ;
-        // else if ( value < start -> upper -> value ) // Left case
-        // {
-        //     start -> upper = rightRotation( start -> upper ) ;
-        //     return leftRotation( start ) ;
-        // }
+        else if ( value < start -> upper -> value ) // Left case
+        {
+            start -> upper = rightRotation( start -> upper ) ;
+            return leftRotation( start ) ;
+        }
     }
 
     return start ;
@@ -171,6 +171,7 @@ Node *insert( Node *start, int value )
 
 Node *remove( Node *start, int value )
 {
+    return NULL ;
     /* Check if we've reached the end of the tree */
     if( start == NULL ) return NULL ;
     /* Recursively call down tree until the right node is found */
