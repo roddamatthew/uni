@@ -256,7 +256,7 @@ int main()
     }
 
     int balance = getHeight( root -> lower ) - getHeight( root -> upper ) ;
-    cout << "Final balance is: " << balance << endl ;
+    // cout << "Final balance is: " << balance << endl ;
 
     return 0 ;
 }
