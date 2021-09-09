@@ -171,7 +171,6 @@ Node *insert( Node *start, int value )
 
 Node *remove( Node *start, int value )
 {
-    return start ;
     /* Check if we've reached the end of the tree */
     if( start == NULL ) return NULL ;
     /* Recursively call down tree until the right node is found */
