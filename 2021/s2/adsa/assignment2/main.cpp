@@ -179,7 +179,7 @@ Node *insert( Node *start, int value )
     if( value < start -> value ) start -> lower = insert( start -> lower, value ) ; else
     if( value > start -> value ) start -> upper = insert( start -> upper, value ) ;
 
-    start = balance( start, value ) ;
+    start = balance_remove( start ) ;
 
     return start ;
 }
@@ -199,16 +199,19 @@ Node *remove( Node *start, int value )
 
         /* If the deleted node has one or fewer children, replace it with the child */
         if( upper == NULL ) {
+            cout << "Replacing lower child" << endl ;
             delete( start ) ;
             start = lower ;
         }
         else if( lower == NULL ) {
+            cout << "Replacing upper child" << endl ;
             delete( start ) ;
             start = upper ;
         }
         else { /* Deleted node has two children */
-            /* Delete left most child on right side */
+            /* Delete largest left descendant */
             while( lower -> upper != NULL ) lower = lower -> upper ;
+            cout << "Replacing node with two children" << endl ;
             start -> value = lower -> value ;
             start -> lower = remove( start -> lower, lower -> value ) ;
         }
