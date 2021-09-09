@@ -137,27 +137,28 @@ Node *balance_remove( Node *start )
     int balance = getHeight( start -> lower ) - getHeight( start -> upper ) ;
 
     if( balance > 1 ) { /* If lower side is unbalanced */
-        if( getHeight( start -> lower ) >= getHeight( start -> upper ) ){
-        	// cout << "After removing balance is: " << balance << endl ;
-        	// cout << "R Rotation" << endl ;
-            return rightRotation( start ) ;
-        }
-        else {
+        if( getHeight( start -> lower -> lower ) - getHeight( start -> lower -> upper ) == -1 ) {
         	// cout << "After removing balance is: " << balance << endl ;
         	// cout << "LR Rotation" << endl ;
             start -> lower = leftRotation( start -> lower ) ;
             return rightRotation( start ) ;
         }
+        else {
+        	// cout << "After removing balance is: " << balance << endl ;
+        	// cout << "R Rotation" << endl ;
+            return rightRotation( start ) ;
+        }
     }
     else if( balance < -1 ) {
-        int balance_sub = getHeight( start -> upper -> lower ) - getHeight( start -> upper -> upper ) ;
-        
-        if( balance_sub > 1 ) {
-            start -> upper = rightRotation( start -> upper ) ;
+        if( getHeight( start -> upper -> lower ) - getHeight( start -> upper -> upper ) == 1 ) {
+        	// cout << "After removing balance is: " << balance << endl ;
+        	// cout << "LR Rotation" << endl ;
+            start -> lower = rightRotation( start -> lower ) ;
             return leftRotation( start ) ;
         }
-        else
-        {
+        else {
+        	// cout << "After removing balance is: " << balance << endl ;
+        	// cout << "R Rotation" << endl ;
             return leftRotation( start ) ;
         }
     }
