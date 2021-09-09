@@ -100,34 +100,30 @@ int getBalance( Node *node )
 
 Node *balance( Node *start, int value ) {
     /* Find the balanace of the tree */
-    int balance = getHeight( start -> lower ) - getHeight( start -> upper ) ;
-    // cout << "Shouldn't be zero: " << start << " with value: " << start -> value << endl ;
-    // cout << "Lower subtree height is: " << getHeight( start -> lower ) << endl ;
-    // cout << "Upper subtree height is: " << getHeight( start -> upper ) << endl ;
+    int balance = getBalance( start ) ;
 
-    if( balance > 1 ) { /* If lower side is unbalanced */
-        if( value < start -> lower -> value ){
-        	// cout << "After adding: " << value << " balance is: " << balance << endl ;
-            // cout << "R Rotation" << endl ;
+    // Left left case
+
+    // Right right case
+
+    // Left right case
+
+    // Right left case
+
+    if( balance > 1 ) { // Left case
+        if( value < start -> lower -> value ) // Left case
             return rightRotation( start ) ;
-        }
-        else if ( value > start -> lower -> value )
+        else if ( value > start -> lower -> value ) // Right case
         {
             start -> lower = leftRotation( start -> lower ) ;
             return rightRotation( start ) ;
         }
     }
-    else if( balance < -1 ) {
-        if( value > start -> upper -> value ){
-        	// cout << "After adding: " << value << " balance is: " << balance << endl ;
-            // cout << "L Rotation" << endl ;
+    if( balance < -1 ) { // Right case
+        if( value > start -> upper -> value ) // Right case
             return leftRotation( start ) ;
-        }
-        else if ( value < start -> upper -> value )
+        else if ( value < start -> upper -> value ) // Left case
         {
-            /* RL Rotation */
-            // cout << "After adding: " << value << " balance is: " << balance << endl ;
-            // cout << "RL Rotation" << endl ;
             start -> upper = rightRotation( start -> upper ) ;
             return leftRotation( start ) ;
         }
@@ -173,7 +169,8 @@ Node *insert( Node *start, int value )
 
     /* Recursively search sides of tree */
     if( value < start -> value ) start -> lower = insert( start -> lower, value ) ; else
-    if( value > start -> value ) start -> upper = insert( start -> upper, value ) ;
+    if( value > start -> value ) start -> upper = insert( start -> upper, value ) ; else
+    return start ;
 
     start = balance( start, value ) ;
 
@@ -238,15 +235,15 @@ int main()
             root = remove( root, atoi( token + 1 ) ) ;
         }
         else if( strncmp( token, "PRE", 3 ) == 0 ) {
-            if( root == NULL ) cout << "EMPTY" << endl ; else
+            if( root == NULL ) cout << "EMPTY" ; else
             prePrint( root ) ;
         }
         else if( strncmp( token, "POST", 4 ) == 0 ) {
-            if( root == NULL ) cout << "EMPTY" << endl ; else
+            if( root == NULL ) cout << "EMPTY" ; else
             postPrint( root ) ;
         }
         else if( strncmp( token, "IN", 2 ) == 0 ) {
-            if( root == NULL ) cout << "EMPTY" << endl ; else
+            if( root == NULL ) cout << "EMPTY" ; else
             inorderPrint( root ) ;
         }
         token = strtok( NULL, " \n" ) ;
