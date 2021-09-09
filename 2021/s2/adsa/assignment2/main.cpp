@@ -102,22 +102,14 @@ Node *balance( Node *start, int value ) {
     /* Find the balanace of the tree */
     int balance = getBalance( start ) ;
 
-    // Left left case
-
-    // Right right case
-
-    // Left right case
-
-    // Right left case
-
     if( balance > 1 ) { // Left case
         if( value < start -> lower -> value ) // Left case
             return rightRotation( start ) ;
-        else if ( value > start -> lower -> value ) // Right case
-        {
-            start -> lower = leftRotation( start -> lower ) ;
-            return rightRotation( start ) ;
-        }
+        // else if ( value > start -> lower -> value ) // Right case
+        // {
+        //     start -> lower = leftRotation( start -> lower ) ;
+        //     return rightRotation( start ) ;
+        // }
     }
     if( balance < -1 ) { // Right case
         if( value > start -> upper -> value ) // Right case
@@ -235,15 +227,15 @@ int main()
             root = remove( root, atoi( token + 1 ) ) ;
         }
         else if( strncmp( token, "PRE", 3 ) == 0 ) {
-            if( root == NULL ) cout << "EMPTY" ; else
+            if( root == NULL ) cout << "EMPTY" << endl ; else
             prePrint( root ) ;
         }
         else if( strncmp( token, "POST", 4 ) == 0 ) {
-            if( root == NULL ) cout << "EMPTY" ; else
+            if( root == NULL ) cout << "EMPTY" << endl ; else
             postPrint( root ) ;
         }
         else if( strncmp( token, "IN", 2 ) == 0 ) {
-            if( root == NULL ) cout << "EMPTY" ; else
+            if( root == NULL ) cout << "EMPTY" << endl ; else
             inorderPrint( root ) ;
         }
         token = strtok( NULL, " \n" ) ;
