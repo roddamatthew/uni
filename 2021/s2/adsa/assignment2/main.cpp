@@ -105,20 +105,20 @@ Node *balance( Node *start, int value ) {
     if( balance > 1 ) { // Left case
         if( value < start -> lower -> value ) // Left case
             return rightRotation( start ) ;
-        // else if ( value > start -> lower -> value ) // Right case
-        // {
-        //     start -> lower = leftRotation( start -> lower ) ;
-        //     return rightRotation( start ) ;
-        // }
+        else if ( value > start -> lower -> value ) // Right case
+        {
+            start -> lower = leftRotation( start -> lower ) ;
+            return rightRotation( start ) ;
+        }
     }
     if( balance < -1 ) { // Right case
         if( value > start -> upper -> value ) // Right case
             return leftRotation( start ) ;
-        else if ( value < start -> upper -> value ) // Left case
-        {
-            start -> upper = rightRotation( start -> upper ) ;
-            return leftRotation( start ) ;
-        }
+        // else if ( value < start -> upper -> value ) // Left case
+        // {
+        //     start -> upper = rightRotation( start -> upper ) ;
+        //     return leftRotation( start ) ;
+        // }
     }
 
     return start ;
