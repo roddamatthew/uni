@@ -66,26 +66,6 @@ Node *leftRotation( Node* start ) {
     return newstart ;
 }
 
-/* 
-    Traverses tree, returning pointer to Node with value == n
-    If nothing found, return NULL
- */
-Node *search( Node *start, int n )
-{
-    /* If searching empty Node, return NULLPTR */
-    if( start == NULL ) return NULL ;
-
-    /* Get the current nodes value */
-    int value = start -> value ;
-
-    /* Test if we've found the search value */
-    if( n == value ) return start ;
-
-    /* Otherwise keep going down the tree*/
-    if( value < n ) return search( start -> upper, n ) ;
-    if( value > n ) return search( start -> lower, n ) ;
-}
-
 int getHeight( Node *node ) 
 {
     if( node == NULL ) return 0 ;
@@ -120,8 +100,6 @@ Node *balance( Node *start, int value ) {
             return leftRotation( start ) ;
         }
     }
-
-    return start ;
 }
 
 Node *balance_remove( Node *start )
@@ -146,8 +124,6 @@ Node *balance_remove( Node *start )
         start -> upper = rightRotation( start -> upper ) ;
         return leftRotation( start ) ;
     }
-
-    return start ;
 }
 
 Node *insert( Node *start, int value )
