@@ -7,7 +7,6 @@
 
 #include "rsa.h"
 
-
 int num_inc(num_t n) {
   uint32_t c = 1;
   for (int i = 0; i < WORDSIZE; i++) {
