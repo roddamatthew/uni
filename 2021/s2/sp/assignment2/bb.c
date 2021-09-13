@@ -230,7 +230,7 @@ int bb_step0(num_t low, num_t high, num_t si, const num_t c0, const num_t e, con
     printf( "high = %s\n", num_toString( high ) ) ;
 }
 
-void calculate_B( num_t B, num_t n ) {
+void calculate_B( num_t B, const num_t n ) {
     bignum_t product ;
     num_t two ;
     
@@ -273,7 +273,7 @@ void range_init( range_t* ptr, num_t B )
     num_add( ptr -> high, threeBminusOne, zero ) ;
 }
 
-void step2a( num_t s1, num_t c0, num_t B, num_t e, num_t n )
+void step2a( num_t s1, num_t c0, num_t B, const num_t e, const num_t n )
 {
     num_t remainder, one, three, threeB ;
     bignum_t n_big, product, quotient ;
@@ -340,6 +340,4 @@ void bleichenbacher( num_t m, const num_t c, const num_t e, const num_t n ) {
 
         // step3() ;
     }
-
-    return 1 ;
 }
