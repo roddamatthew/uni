@@ -62,26 +62,32 @@ int main() {
   return 0;
 }
 
+
 // int main() {
 //   num_t one ;
 //   num_fromString( one, "00000001" ) ;
 //   num_t two ;
 //   num_fromString( two, "00000002" ) ;
 
-//   range_t *head = (range_t*)malloc( sizeof( range_t ) ) ;
-//   num_add( head -> low, one, one ) ;
-//   num_add( head -> high, one, one ) ;
-//   head -> next = NULL ;
+//   range_t head ;
 
-//   range_push( head, one, two ) ;
-//   range_push( head, one, one ) ;
-//   range_push( head, two, two ) ;
+//   num_add( head.low, one, one ) ;
+//   num_add( head.high, one, one ) ;
+//   head.next = NULL ;
 
-//   printf( "length of range = %d\n", range_length( head ) ) ;
-//   while( head != NULL ) {
-//     printf( "%s %s\n", num_toString( head -> low ), num_toString( head -> high ) ) ;
-//     head = head -> next ;
-//   }
+//   range_print( &head ) ;
+
+  // head -> next = NULL ;
+
+  // range_push( head, one, two ) ;
+  // range_push( head, one, one ) ;
+  // range_push( head, two, two ) ;
+
+  // printf( "length of range = %d\n", range_length( head ) ) ;
+  // while( head != NULL ) {
+  //   printf( "%s %s\n", num_toString( head -> low ), num_toString( head -> high ) ) ;
+  //   head = head -> next ;
+  // }
 
 //   return 0 ;
 // }

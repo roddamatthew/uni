@@ -14,6 +14,8 @@ typedef struct range{
 
 int range_push( range_t* ptr, num_t low, num_t high ) ;
 
+void range_print( range_t* ptr ) ;
+
 // Bonus function
 void bleichenbacher(num_t m, const num_t c, const num_t e, const num_t n);
 

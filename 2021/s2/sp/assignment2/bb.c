@@ -24,6 +24,7 @@ int range_push( range_t* ptr, num_t low, num_t high )
 }
 
 int range_length( range_t* ptr ) {
+    if( ptr == NULL ) return 0 ;
     int size = 1 ;
     while( ptr -> next != NULL ) {
         ptr = ptr -> next ;
@@ -55,7 +56,7 @@ int range_converged( range_t* ptr ) {
 
 void range_print( range_t* ptr )
 {
-    while( ptr -> next != NULL ) {
+    while( ptr != NULL ) {
         printf( "%s %s\n", num_toString( ptr -> low ), num_toString( ptr -> high ) ) ;
         ptr = ptr -> next ;
     }
@@ -252,7 +253,7 @@ void calculate_B( num_t B, const num_t n ) {
 }
 
 // M0 = { [ 2B, 3B - 1 ] }
-void range_init( range_t* ptr, num_t B )
+void range_init( range_t* ptr, const num_t B )
 {
     num_t twoB, threeB, threeBminusOne, zero, one, two, three ;
     bignum_t product ;
@@ -271,9 +272,10 @@ void range_init( range_t* ptr, num_t B )
     
     num_add( ptr -> low, twoB, zero) ;
     num_add( ptr -> high, threeBminusOne, zero ) ;
+    ptr -> next = NULL ;
 }
 
-void step2a( num_t s1, num_t c0, num_t B, const num_t e, const num_t n )
+void step2a( num_t s1, num_t c0, const num_t B, const num_t e, const num_t n )
 {
     num_t remainder, one, three, threeB ;
     bignum_t n_big, product, quotient ;
@@ -312,6 +314,197 @@ void step2a( num_t s1, num_t c0, num_t B, const num_t e, const num_t n )
     }
 }
 
+// Calculate range for r values
+void calculate_r( num_t r_min, num_t r_max, num_t a, num_t b, num_t si, const num_t B, const num_t n ) {
+    num_t one, two, three ;
+    num_fromString( one, "00000001" ) ;
+    num_fromString( two, "00000002" ) ;
+    num_fromString( three, "00000003" ) ;
+    
+    num_t twoB, threeB, threeBminusOne ;
+    bignum_t big_r, big_low, big_high, product, remainder ;
+
+    // Store 2B and 3B
+    num_mul( product, three, B ) ;
+    num_trim( threeB, product ) ;
+
+    num_mul( product, two, B ) ;
+    num_trim( twoB, product ) ;
+
+    // ( 3B - 1 )
+    num_sub( threeBminusOne, threeB, one ) ;
+
+    // r_min = ceil( ( a * si - ( 3B - 1 ) ) / n )
+    num_mul( product, a, si ) ;
+    num_sub( product, product, threeBminusOne ) ;
+    num_div( big_r, remainder, product, n ) ;
+    num_trim( r_min, big_r ) ;
+
+    // If remainder > 0, increment r
+    num_ceil( r_min, remainder ) ;
+
+    // r_max = floor( ( b * si - 2B ) / n )
+    num_mul( product, b, si ) ;
+    num_sub( product, product, twoB ) ;
+    num_div( big_r, remainder, product, n ) ;
+    num_trim( r_max, big_r ) ;
+}
+
+void num_max( num_t max, num_t a, num_t b ) {
+    num_t zero ;
+    num_fromString( zero, "00000000" ) ;
+
+    for( int i = 0 ; i < WORDSIZE ; i++ ) {
+        if( a[i] > b[i] ) {
+            num_add( max, a, zero ) ;
+            return ;
+        }
+        else if( b[i] > a[i] ) {
+            num_add( max, b, zero ) ;
+            return ;
+        }
+    }
+    num_add( max, a, zero ) ;
+    return ;
+}
+
+// Starting at most significant bits check if either number is larger
+// If so, return the smaller number
+// If the numbers are equal, return a
+void num_min( num_t min, num_t a, num_t b ) {
+    num_t zero ;
+    num_fromString( zero, "00000000" ) ;
+
+    for( int i = 0 ; i < WORDSIZE ; i++ ) {
+        if( a[i] < b[i] ) {
+            num_add( min, a, zero ) ;
+            return ;
+        }
+        else if( b[i] < a[i] ) {
+            num_add( min, b, zero ) ;
+            return ;
+        }
+    }
+    num_add( min, a, zero ) ;
+    return ;
+}
+
+int valid_range( num_t r_min, num_t r_max ) {
+    num_t res ;
+    num_min( res, r_min, r_max ) ;
+    for( int i = 0 ; i < WORDSIZE ; i++ ) {
+        if( res[i] != r_min[i] )
+            return 0 ;
+    }
+    return 1 ;
+}
+
+void calculate_range( num_t newa, num_t newb, num_t a, num_t b, num_t r, num_t si, const num_t B, const num_t n ) {
+    bignum_t product, remainder, newa_big, newb_big ;
+    num_t one, two, three, twoB, threeB, threeBminusOne ;
+
+    num_fromString( one, "00000001" ) ;
+    num_fromString( two, "00000002" ) ;
+    num_fromString( three, "00000003" ) ;
+
+    // Store 2B and 3B
+    num_mul( product, three, B ) ;
+    num_trim( threeB, product ) ;
+
+    num_mul( product, two, B ) ;
+    num_trim( twoB, product ) ;
+
+    // ( 3B - 1 )
+    num_sub( threeBminusOne, threeB, one ) ;
+
+    // newa = ( 2B + r*n ) / si
+    num_mul( product, r, n ) ;
+    num_add( product, product, twoB ) ;
+    num_div( newa_big, remainder, product, si ) ;
+    num_trim( newa, newa_big ) ;
+    
+    // If remainder > 0, increment low
+    num_ceil( newa, remainder ) ;
+
+    // check if a was bigger
+    num_max( newa, a, newa ) ;
+
+    // newb = ( 3B-1 + r*n ) / si
+    num_mul( product, r, n ) ;
+    num_add( product, threeBminusOne, product ) ;
+    num_div( newb_big, remainder, product, si ) ;
+    num_trim( newb, newb_big ) ;
+
+    num_min( newb, b, newb ) ;
+}
+
+void step3( range_t* new, range_t* old, num_t si, const num_t B, const num_t e, const num_t n ) {
+    num_t zero ;
+    num_fromString( zero, "00000000" ) ;
+
+    new = NULL ;
+
+    // Loop over all intervals in Mi-1
+    while( old != NULL ) {
+        num_t r_min, r_max ;
+        calculate_r( r_min, r_max, old -> low, old -> high, si, B, n ) ;
+
+        // Loop over range for r
+        while( valid_range( r_min, r_max ) == 1 )  {
+            num_t a, b ;
+            calculate_range( a, b, old -> low, old -> high, r_min, si, B, n ) ;
+            
+            if( new == NULL ) {
+                new = (range_t*)malloc( sizeof( range_t ) ) ;
+                num_add( new -> low, a, zero ) ;
+                num_add( new -> high, b, zero ) ;
+                new -> next = NULL ;
+                printf( "filled first element: " ) ;
+                range_print( new ) ;
+            } else {
+                range_push( new, a, b ) ;
+                printf( "pushed new element: " ) ;
+                range_print( new ) ;
+            }
+            
+            num_inc( r_min ) ;
+        }
+        old = old -> next ;
+    }
+}
+
+void step2b( num_t s_current, num_t s_last, num_t c0, const num_t e, const num_t n ) {
+    num_t remainder, one, three, threeB ;
+    bignum_t n_big, product, quotient ;
+
+    num_fromString( one, "00000001" ) ;
+
+    // Set ci to zeros so while loop starts
+    num_t ci, partial_one, partial_two ;
+    num_fromString( ci, "00000000" ) ;
+    num_sub( s_current, s_last, one ) ;
+    
+    // While c0( s1 )^e mod N is not PKCS, increment s1
+    while( !oracle( ci ) ) {
+        num_inc( s_current ) ;
+
+        // partial_one = c0 mod n
+        num_modexp( partial_one, c0, one, n ) ;
+
+        // partial_two = s^e mod n
+        num_modexp( partial_two, s_current, e, n ) ;
+
+        // product = ( c mod n ) * ( s^e mod n )
+        num_mul( product, c0, partial_two ) ;
+        // c0 = ( ( c mod n ) * ( s^e mod n ) ) mod n
+        num_div( quotient, ci, product, n ) ;
+    }
+}
+
+void step2c() {
+    printf( "attempted to do step2c\n" ) ;
+}
+
 void bleichenbacher( num_t m, const num_t c, const num_t e, const num_t n ) {
     num_t c0, s_current, s_last ;
     int i = 1 ;
@@ -324,20 +517,28 @@ void bleichenbacher( num_t m, const num_t c, const num_t e, const num_t n ) {
     calculate_B( B, n ) ;
 
     range_t *M_last = (range_t*)malloc( sizeof( range_t ) ) ;
+    range_t *M_current ;
+
     // M0 = { [ 2B, 3B - 1 ] }
     range_init( M_last, B ) ;
 
-    range_print( M_last ) ;
-
     while( range_converged( M_last ) != 1 ) {
-        if( i == 1 )
+        if( i == 1 ) {
             step2a( s_current, c0, B, e, n ) ;
-        printf( "s = %s", num_toString( s_current ) ) ;
-        // else if( range_length( M_last ) > 1 )
-        //     step2b() ;
-        // else if( range_length( M_last ) == 1 )
-        //     step2c() ;
+            printf( "s = %s\n", num_toString( s_current ) ) ;
+        }
+        else if( range_length( M_last ) > 1 ) {
+            step2b( s_current, s_last, c0, e, n ) ;
+        }
+        else if( range_length( M_last ) == 1 ) {
+            step2c() ;
+        }
 
-        // step3() ;
+        step3( M_current, M_last, s_current, B, e, n ) ;
+        range_print( M_current ) ;
+        free( M_last ) ;
+        M_last = M_current ;
+
+        i++ ;
     }
 }
