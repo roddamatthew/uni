@@ -111,7 +111,7 @@ int bb_blind(num_t c0, num_t s0, const num_t c, const num_t e, const num_t n)
     c0 : ciphertext
     e, n : public key
     si : minimum value for which 
-    si * m0 => oracke returns true.
+    si * m0 => oracle returns true.
 */
 
 int bb_step0(num_t low, num_t high, num_t si, const num_t c0, const num_t e, const num_t n)
@@ -436,35 +436,40 @@ void calculate_range( num_t newa, num_t newb, num_t a, num_t b, num_t r, num_t s
     num_trim( newb, newb_big ) ;
 
     num_min( newb, b, newb ) ;
+
+    // printf( "In calculate_range: %s %s\n", num_toString( newa ), num_toString( newb ) ) ;
 }
 
 void step3( range_t* new, range_t* old, num_t si, const num_t B, const num_t e, const num_t n ) {
     num_t zero ;
     num_fromString( zero, "00000000" ) ;
-
-    new = NULL ;
+    int empty = 1 ;
 
     // Loop over all intervals in Mi-1
     while( old != NULL ) {
         num_t r_min, r_max ;
         calculate_r( r_min, r_max, old -> low, old -> high, si, B, n ) ;
+        printf( "r range: %s %s\n", num_toString( r_min ), num_toString( r_max ) ) ;
 
         // Loop over range for r
         while( valid_range( r_min, r_max ) == 1 )  {
             num_t a, b ;
             calculate_range( a, b, old -> low, old -> high, r_min, si, B, n ) ;
+            // printf( "a b: %s %s\n", num_toString( a ), num_toString( b ) ) ;
             
-            if( new == NULL ) {
-                new = (range_t*)malloc( sizeof( range_t ) ) ;
-                num_add( new -> low, a, zero ) ;
-                num_add( new -> high, b, zero ) ;
-                new -> next = NULL ;
-                printf( "filled first element: " ) ;
-                range_print( new ) ;
-            } else {
-                range_push( new, a, b ) ;
-                printf( "pushed new element: " ) ;
-                range_print( new ) ;
+            if( valid_range( a, b ) == 1 ) {
+                if( empty > 0 ) {
+                    empty = 0 ;
+                    num_add( new -> low, a, zero ) ;
+                    num_add( new -> high, b, zero ) ;
+                    new -> next = NULL ;
+                    printf( "filled first element: \n" ) ;
+                    // range_print( new ) ;
+                } else {
+                    printf( "pushed new element: \n" ) ;
+                    range_push( new, a, b ) ;
+                    // range_print( new ) ;
+                }
             }
             
             num_inc( r_min ) ;
@@ -501,12 +506,96 @@ void step2b( num_t s_current, num_t s_last, num_t c0, const num_t e, const num_t
     }
 }
 
-void step2c() {
-    printf( "attempted to do step2c\n" ) ;
+void calculate_rc( num_t r, num_t b, num_t s_last, const num_t B, const num_t n ) {
+    num_t two, twob, twoB, fourB, remainder ;
+    bignum_t product, productB, quotient ;
+    num_fromString( two, "00000002" ) ;
+    num_mul( product, two, b ) ;
+    num_trim( twob, product ) ;
+    num_mul( product, twob, s_last ) ;
+
+    num_mul( productB, two, B ) ;
+    num_trim( twoB, productB ) ;
+    num_mul( productB, two, twoB ) ;
+    num_trim( fourB, productB ) ;
+
+    num_sub( product, product, fourB ) ;
+    num_div( quotient, remainder, product, n ) ;
+    num_trim( r, quotient ) ;
+}
+
+void calculate_s_min( num_t s, num_t r, num_t b, const num_t B, const num_t n ) {
+    num_t two, twoB, remainder ;
+    bignum_t product, quotient ;
+
+    num_fromString( two, "00000002" ) ;
+    num_mul( product, two, B ) ;
+    num_trim( twoB, product ) ;
+
+    num_mul( product, r, n ) ;
+    num_add( product, product, twoB ) ;
+    num_div( quotient, remainder, product, b ) ;
+    num_trim( s, quotient ) ;
+}
+
+void calculate_s_max( num_t s, num_t r, num_t a, const num_t B, const num_t n ) {
+    num_t one, three, threeB, threeBminusOne, remainder ;
+    bignum_t product, quotient ;
+
+    num_fromString( one, "00000001" ) ;
+    num_fromString( three, "00000003" ) ;
+    num_mul( product, three, B ) ;
+    num_trim( threeB, product ) ;
+    num_sub( threeBminusOne, threeB, one ) ;
+
+    num_mul( product, r, n ) ;
+    num_add( product, product, threeBminusOne ) ;
+    num_div( quotient, remainder, product, a ) ;
+    num_trim( s, quotient ) ;
+}
+
+void step2c( num_t s_current, num_t s_last, num_t a, num_t b, num_t c0, const num_t B, const num_t e, const num_t n ) {
+    // find r = ( 2*b*s_last - 4B ) / n
+    num_t r, one ;
+    num_fromString( one, "00000001" ) ;
+    calculate_rc( r, b, s_last, B, n ) ;
+
+    while( 1 ) {
+        // printf( "rc = %s\n", num_toString( r ) ) ;
+        num_t s_min, s_max ;
+        // find s_min = ( r*n + 2B ) / b
+        calculate_s_min( s_min, r, b, B, n ) ;
+        // find s_max = ( r*n + 3B - 1 ) / a
+        calculate_s_max( s_max, r, a, B, n ) ;
+
+        while( valid_range( s_min, s_max ) ) {
+            num_t partial_one, partial_two, ci ;
+            bignum_t product, quotient ;
+
+            // partial_one = c0 mod n
+            num_modexp( partial_one, c0, one, n ) ;
+
+            // partial_two = s^e mod n
+            num_modexp( partial_two, s_min, e, n ) ;
+
+            // product = ( c mod n ) * ( s^e mod n )
+            num_mul( product, c0, partial_two ) ;
+            // c0 = ( ( c mod n ) * ( s^e mod n ) ) mod n
+            num_div( quotient, ci, product, n ) ;
+
+            if( oracle( ci ) )
+                return ;
+            num_inc( s_min ) ;
+        }
+
+        num_inc( r ) ;
+    }
+
 }
 
 void bleichenbacher( num_t m, const num_t c, const num_t e, const num_t n ) {
-    num_t c0, s_current, s_last ;
+    num_t c0, s_current, s_last, zero ;
+    num_fromString( zero, "00000000" ) ;
     int i = 1 ;
     
     // Step 1: Blinding
@@ -517,28 +606,41 @@ void bleichenbacher( num_t m, const num_t c, const num_t e, const num_t n ) {
     calculate_B( B, n ) ;
 
     range_t *M_last = (range_t*)malloc( sizeof( range_t ) ) ;
-    range_t *M_current ;
+    range_t *M_current = NULL ;
 
     // M0 = { [ 2B, 3B - 1 ] }
     range_init( M_last, B ) ;
 
-    while( range_converged( M_last ) != 1 ) {
+    while( range_converged( M_last ) != 1 && i < 5 ) {
         if( i == 1 ) {
             step2a( s_current, c0, B, e, n ) ;
-            printf( "s = %s\n", num_toString( s_current ) ) ;
+            printf( "Step 2A: %s\n", num_toString( s_current ) ) ;
         }
         else if( range_length( M_last ) > 1 ) {
             step2b( s_current, s_last, c0, e, n ) ;
+            printf( "Step 2B: %s\n", num_toString( s_current ) ) ;
         }
         else if( range_length( M_last ) == 1 ) {
-            step2c() ;
+            step2c( s_current, s_last, M_last -> low, M_last -> high, c0, B, e, n ) ;
+            printf( "Step 2C: %s\n", num_toString( s_current ) ) ;
         }
 
+        M_current = (range_t*)malloc( sizeof( range_t ) ) ;
         step3( M_current, M_last, s_current, B, e, n ) ;
+        
+        printf( "All current ranges for M are: \n" ) ;
         range_print( M_current ) ;
         free( M_last ) ;
         M_last = M_current ;
 
+        // s_current becomes s_last
+        num_add( s_last, s_current, zero ) ;
+        
+        if( i % 1000 == 0 ) {
+            printf( "%d\n", i ) ;
+            range_print( M_last ) ;
+        }
         i++ ;
     }
+    range_print( M_last ) ;
 }

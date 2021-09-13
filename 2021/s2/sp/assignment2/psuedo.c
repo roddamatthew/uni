@@ -1,31 +1,20 @@
-int bleichenbacher( m, c, e, n ) {
-    int intervals ;
-    
-    // Step 1: Blinding
-    bb_blind( c0, s0, c, e, n ) ;
+r = ( 2bsi-1 - 4B ) / n
+while( true ) {
+    s_min = ( 2B + rn ) / b ;
+    s_max = ( 3B + rn ) / a ;
 
-    if( i == 1 )
-        step2a() ;
-    else if( range_size( M ) > 1 )
-        step2b() ;
-    else if( range_size( M ) == 1 )
-    
-    
-    // Step 2: Search for PKCS
-    step2a( low, high, si, e, n ) ;
-    range_push( M, low, high ) ;
-
-    step2b( si, sprevious )
-    if( intervals > 1 ) {
-        // Search for new s value
-        while( oracle( s ) ) increment( s ) ;
+    while( valid_range( s_min, s_max ) ) {
+        ci = c0(s_min)^e modN ;
+        if( oracle( ci ) )
+            return ;
     }
-    // Step 2c:
-    else if( intervals == 1 ) {
+    num_inc( r ) ;
+}
 
-    }
 
-    // Step 3"
 
-    return 1 ;
+void s_min( num_t s, num_t r, num_t b, const num_t B, const num_t n ) {
+    num_mul( product, r, n ) ;
+    num_add( product, product, twoB ) ;
+    num_div( s, remainder, product, b ) ;
 }
