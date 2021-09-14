@@ -355,7 +355,7 @@ void num_max( num_t max, num_t a, num_t b ) {
     num_t zero ;
     num_fromString( zero, "00000000" ) ;
 
-    for( int i = 0 ; i < WORDSIZE ; i++ ) {
+    for( int i = WORDSIZE - 1 ; i >= 0 ; i-- ) {
         if( a[i] > b[i] ) {
             num_add( max, a, zero ) ;
             return ;
@@ -376,8 +376,8 @@ void num_min( num_t min, num_t a, num_t b ) {
     num_t zero ;
     num_fromString( zero, "00000000" ) ;
 
-    for( int i = 0 ; i < WORDSIZE ; i++ ) {
-        // printf( "num min: a[i]: %u b[i] %u\n", a[i], b[i] ) ;
+    for( int i = WORDSIZE - 1 ; i >= 0 ; i--) {
+        printf( "num min: a[i]: %u b[i] %u\n", a[i], b[i] ) ;
         if( a[i] < b[i] ) {
             num_add( min, a, zero ) ;
             return ;
@@ -395,7 +395,7 @@ int valid_range( num_t r_min, num_t r_max ) {
     num_t res ;
     num_min( res, r_min, r_max ) ;
     printf( "min of %s and %s: %s", num_toString( r_min ), num_toString( r_max ), num_toString( res ) ) ;
-    for( int i = 0 ; i < WORDSIZE ; i++ ) {
+    for( int i = WORDSIZE - 1 ; i >= 0 ; i--) {
         if( res[i] != r_min[i] ) {
             printf( "INVALID\n" ) ;
             return 0 ;
@@ -564,8 +564,9 @@ void calculate_s_max( num_t s, num_t r, num_t a, const num_t B, const num_t n ) 
 
 void step2c( num_t s_current, num_t s_last, num_t a, num_t b, num_t c0, const num_t B, const num_t e, const num_t n ) {
     // find r = ( 2*b*s_last - 4B ) / n
-    num_t r, one ;
+    num_t r, one, zero ;
     num_fromString( one, "00000001" ) ;
+    num_fromString( zero, "00000000" ) ;
     calculate_rc( r, b, s_last, B, n ) ;
 
     while( 1 ) {
@@ -591,8 +592,10 @@ void step2c( num_t s_current, num_t s_last, num_t a, num_t b, num_t c0, const nu
             // c0 = ( ( c mod n ) * ( s^e mod n ) ) mod n
             num_div( quotient, ci, product, n ) ;
 
-            if( oracle( ci ) )
+            if( oracle( ci ) ) {
+                num_add( s_current, s_min, zero ) ;
                 return ;
+            }
             num_inc( s_min ) ;
         }
 
@@ -602,13 +605,13 @@ void step2c( num_t s_current, num_t s_last, num_t a, num_t b, num_t c0, const nu
 }
 
 void bleichenbacher( num_t m, const num_t c, const num_t e, const num_t n ) {
-    num_t c0, s_current, s_last, zero ;
+    num_t c0, s_current, s_last, zero, s0 ;
     num_fromString( zero, "00000000" ) ;
     int i = 1 ;
     
     // Step 1: Blinding
     printf( "1" ) ;
-    bb_blind( c0, s_last, c, e, n ) ;
+    bb_blind( c0, s0, c, e, n ) ;
 
     // Find B
     num_t B ;
@@ -622,7 +625,7 @@ void bleichenbacher( num_t m, const num_t c, const num_t e, const num_t n ) {
     printf( "1" ) ;
     range_init( M_last, B ) ;
 
-    while( range_converged( M_last ) != 1 && i < 5 ) {
+    while( range_converged( M_last ) != 1 ) {
         if( i == 1 ) {
             step2a( s_current, c0, B, e, n ) ;
             printf( "Step 2A: %s\n", num_toString( s_current ) ) ;
@@ -654,4 +657,5 @@ void bleichenbacher( num_t m, const num_t c, const num_t e, const num_t n ) {
         i++ ;
     }
     range_print( M_last ) ;
+    printf( "s0: %s\n", num_toString( s0 ) ) ;
 }

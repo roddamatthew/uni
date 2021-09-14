@@ -14,13 +14,19 @@ int main() {
   num_t m, e, c, n; 
   oracle_gete(e);
   oracle_getn(n);
-  num_fromString(m, "2B0");
+  num_fromString(m, "deadbeef");
   num_modexp(c, m, e, n);
 
   // Blind key
   num_t c0, s0, si;
 
   bleichenbacher( m, c, e, n ) ;
+
+  num_t expected, d ;
+  num_fromString( d, "87ef3a5190a9f05fe720391ab48b9ceeca2327633200e475" ) ;
+  num_modexp( expected, c, d, n ) ;
+  printf( "expected = %s\n", num_toString( expected ) ) ;
+
 
   // int a = bb_blind(c0, s0, c, e, n);
   // printf("Blinded:\n    ciphertext=%s\n    factor=%s\n", num_toString(c0), num_toString(s0));
