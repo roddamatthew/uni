@@ -14,7 +14,7 @@ int main() {
   num_t m, e, c, n; 
   oracle_gete(e);
   oracle_getn(n);
-  num_fromString(m, "deadbeef");
+  num_fromString(m, "2B0");
   num_modexp(c, m, e, n);
 
   // Blind key

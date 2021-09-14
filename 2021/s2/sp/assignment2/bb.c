@@ -102,6 +102,7 @@ int bb_blind(num_t c0, num_t s0, const num_t c, const num_t e, const num_t n)
         num_mul( product, partial_one, partial_two ) ;
         // c0 = ( ( c mod n ) * ( s^e mod n ) ) mod n
         num_div( q, c0, product, n ) ;
+        // printf( "c0: %s s0: %s\n", num_toString( c0 ), num_toString( s0 ) ) ;
     }
     
     return 1 ;
@@ -376,6 +377,7 @@ void num_min( num_t min, num_t a, num_t b ) {
     num_fromString( zero, "00000000" ) ;
 
     for( int i = 0 ; i < WORDSIZE ; i++ ) {
+        // printf( "num min: a[i]: %u b[i] %u\n", a[i], b[i] ) ;
         if( a[i] < b[i] ) {
             num_add( min, a, zero ) ;
             return ;
@@ -392,10 +394,14 @@ void num_min( num_t min, num_t a, num_t b ) {
 int valid_range( num_t r_min, num_t r_max ) {
     num_t res ;
     num_min( res, r_min, r_max ) ;
+    printf( "min of %s and %s: %s", num_toString( r_min ), num_toString( r_max ), num_toString( res ) ) ;
     for( int i = 0 ; i < WORDSIZE ; i++ ) {
-        if( res[i] != r_min[i] )
+        if( res[i] != r_min[i] ) {
+            printf( "INVALID\n" ) ;
             return 0 ;
+        }
     }
+    printf( "VALID\n" ) ;
     return 1 ;
 }
 
@@ -453,9 +459,10 @@ void step3( range_t* new, range_t* old, num_t si, const num_t B, const num_t e, 
 
         // Loop over range for r
         while( valid_range( r_min, r_max ) == 1 )  {
+            printf( "Step 3 with r = %s\n", num_toString( r_min ) ) ;
             num_t a, b ;
             calculate_range( a, b, old -> low, old -> high, r_min, si, B, n ) ;
-            // printf( "a b: %s %s\n", num_toString( a ), num_toString( b ) ) ;
+            printf( "a b: %s %s\n", num_toString( a ), num_toString( b ) ) ;
             
             if( valid_range( a, b ) == 1 ) {
                 if( empty > 0 ) {
@@ -471,6 +478,7 @@ void step3( range_t* new, range_t* old, num_t si, const num_t B, const num_t e, 
                     // range_print( new ) ;
                 }
             }
+            else printf( "Valid range failed with newa: %s and newb: %s\n", num_toString( a ), num_toString( b ) ) ;
             
             num_inc( r_min ) ;
         }
@@ -599,16 +607,19 @@ void bleichenbacher( num_t m, const num_t c, const num_t e, const num_t n ) {
     int i = 1 ;
     
     // Step 1: Blinding
+    printf( "1" ) ;
     bb_blind( c0, s_last, c, e, n ) ;
 
     // Find B
     num_t B ;
     calculate_B( B, n ) ;
+    printf( "B: %s", num_toString( B ) ) ;
 
     range_t *M_last = (range_t*)malloc( sizeof( range_t ) ) ;
     range_t *M_current = NULL ;
 
     // M0 = { [ 2B, 3B - 1 ] }
+    printf( "1" ) ;
     range_init( M_last, B ) ;
 
     while( range_converged( M_last ) != 1 && i < 5 ) {

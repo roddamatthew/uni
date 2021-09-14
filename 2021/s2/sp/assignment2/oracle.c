@@ -19,6 +19,9 @@ void oracle_init() {
   num_fromString(key.n, "9e09a0f8b28b8f66b7e5ce7dd71adea72b825901e45eeb1d");
   num_fromString(key.e, "10001");
   num_fromString(key.d, "87ef3a5190a9f05fe720391ab48b9ceeca2327633200e475");
+  // num_fromString(key.n, "D09");
+  // num_fromString(key.e, "4F");
+  // num_fromString(key.d, "3FB");
 }
 
 
