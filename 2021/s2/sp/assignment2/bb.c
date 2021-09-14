@@ -377,7 +377,7 @@ void num_min( num_t min, num_t a, num_t b ) {
     num_fromString( zero, "00000000" ) ;
 
     for( int i = WORDSIZE - 1 ; i >= 0 ; i--) {
-        printf( "num min: a[i]: %u b[i] %u\n", a[i], b[i] ) ;
+        // printf( "num min: a[i]: %u b[i] %u\n", a[i], b[i] ) ;
         if( a[i] < b[i] ) {
             num_add( min, a, zero ) ;
             return ;
@@ -394,14 +394,14 @@ void num_min( num_t min, num_t a, num_t b ) {
 int valid_range( num_t r_min, num_t r_max ) {
     num_t res ;
     num_min( res, r_min, r_max ) ;
-    printf( "min of %s and %s: %s", num_toString( r_min ), num_toString( r_max ), num_toString( res ) ) ;
+    // printf( "min of %s and %s: %s", num_toString( r_min ), num_toString( r_max ), num_toString( res ) ) ;
     for( int i = WORDSIZE - 1 ; i >= 0 ; i--) {
         if( res[i] != r_min[i] ) {
-            printf( "INVALID\n" ) ;
+            // printf( "INVALID\n" ) ;
             return 0 ;
         }
     }
-    printf( "VALID\n" ) ;
+    // printf( "VALID\n" ) ;
     return 1 ;
 }
 
@@ -459,10 +459,10 @@ void step3( range_t* new, range_t* old, num_t si, const num_t B, const num_t e, 
 
         // Loop over range for r
         while( valid_range( r_min, r_max ) == 1 )  {
-            printf( "Step 3 with r = %s\n", num_toString( r_min ) ) ;
+            // printf( "Step 3 with r = %s\n", num_toString( r_min ) ) ;
             num_t a, b ;
             calculate_range( a, b, old -> low, old -> high, r_min, si, B, n ) ;
-            printf( "a b: %s %s\n", num_toString( a ), num_toString( b ) ) ;
+            // printf( "a b: %s %s\n", num_toString( a ), num_toString( b ) ) ;
             
             if( valid_range( a, b ) == 1 ) {
                 if( empty > 0 ) {
@@ -470,15 +470,14 @@ void step3( range_t* new, range_t* old, num_t si, const num_t B, const num_t e, 
                     num_add( new -> low, a, zero ) ;
                     num_add( new -> high, b, zero ) ;
                     new -> next = NULL ;
-                    printf( "filled first element: \n" ) ;
+                    // printf( "filled first element: \n" ) ;
                     // range_print( new ) ;
                 } else {
-                    printf( "pushed new element: \n" ) ;
+                    // printf( "pushed new element: \n" ) ;
                     range_push( new, a, b ) ;
                     // range_print( new ) ;
                 }
             }
-            else printf( "Valid range failed with newa: %s and newb: %s\n", num_toString( a ), num_toString( b ) ) ;
             
             num_inc( r_min ) ;
         }
@@ -495,7 +494,7 @@ void step2b( num_t s_current, num_t s_last, num_t c0, const num_t e, const num_t
     // Set ci to zeros so while loop starts
     num_t ci, partial_one, partial_two ;
     num_fromString( ci, "00000000" ) ;
-    num_sub( s_current, s_last, one ) ;
+    num_add( s_current, s_last, ci ) ;
     
     // While c0( s1 )^e mod N is not PKCS, increment s1
     while( !oracle( ci ) ) {
@@ -644,18 +643,16 @@ void bleichenbacher( num_t m, const num_t c, const num_t e, const num_t n ) {
         
         printf( "All current ranges for M are: \n" ) ;
         range_print( M_current ) ;
+        printf( "\n" ) ;
         free( M_last ) ;
         M_last = M_current ;
 
         // s_current becomes s_last
         num_add( s_last, s_current, zero ) ;
         
-        if( i % 1000 == 0 ) {
-            printf( "%d\n", i ) ;
-            range_print( M_last ) ;
-        }
         i++ ;
     }
-    range_print( M_last ) ;
+    printf( "Final M: %s\n", num_toString( M_last -> low ) ) ;
     printf( "s0: %s\n", num_toString( s0 ) ) ;
+    printf( "Ran out of time. Original message M could be computed using a modular inverse algorithm." ) ;
 }
