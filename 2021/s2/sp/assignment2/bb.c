@@ -7,6 +7,8 @@
 #include "oracle.h"
 #include "bb.h"
 
+// Push a new range node onto the linked list
+// Assumes the list already has one value
 int range_push( range_t* ptr, num_t low, num_t high )
 {
     num_t zero ;
@@ -23,6 +25,7 @@ int range_push( range_t* ptr, num_t low, num_t high )
     return 1 ; 
 }
 
+// Return the number of nodes in the linked list
 int range_length( range_t* ptr ) {
     if( ptr == NULL ) return 0 ;
     int size = 1 ;
@@ -33,6 +36,7 @@ int range_length( range_t* ptr ) {
     return size ;
 }
 
+// Delete the linked list
 void range_delete( range_t* ptr ) {
     range_t *next ;
     while( ptr != NULL ) {
@@ -54,6 +58,7 @@ int range_converged( range_t* ptr ) {
     return 0 ;
 }
 
+// Print the range
 void range_print( range_t* ptr )
 {
     while( ptr != NULL ) {
@@ -63,6 +68,7 @@ void range_print( range_t* ptr )
     return ;
 }
 
+// Check if a remainder is non-zero, if so increment n
 void num_ceil( num_t n, num_t remainder ) {
     for( int i = 0 ; i < WORDSIZE ; i++ ) {
         if( remainder[i] != 0 ) {
@@ -114,7 +120,6 @@ int bb_blind(num_t c0, num_t s0, const num_t c, const num_t e, const num_t n)
     si : minimum value for which 
     si * m0 => oracle returns true.
 */
-
 int bb_step0(num_t low, num_t high, num_t si, const num_t c0, const num_t e, const num_t n)
 {
     // Create constants for later calculations
@@ -158,12 +163,6 @@ int bb_step0(num_t low, num_t high, num_t si, const num_t c0, const num_t e, con
     num_div( s1_big, remainder, n_big, threeB ) ;
     num_trim( s1, s1_big ) ;
 
-    printf( "s1_big before increment: %s\n", num_toString( s1_big ) ) ;
-    printf( "s1 before increment: %s\n", num_toString( s1 ) ) ;
-
-    num_mul( product, B, three ) ;
-    num_trim( threeB, product ) ;
-
     // Set ci to zeros so while loop starts
     num_t ci, partial_one, partial_two ;
     num_fromString( ci, "00000000" ) ;
@@ -179,7 +178,7 @@ int bb_step0(num_t low, num_t high, num_t si, const num_t c0, const num_t e, con
         num_modexp( partial_two, s1, e, n ) ;
 
         // product = ( c mod n ) * ( s^e mod n )
-        num_mul( product, c0, partial_two ) ;
+        num_mul( product, partial_one, partial_two ) ;
         // c0 = ( ( c mod n ) * ( s^e mod n ) ) mod n
         num_div( quotient, ci, product, n ) ;
     }
@@ -193,6 +192,7 @@ int bb_step0(num_t low, num_t high, num_t si, const num_t c0, const num_t e, con
     // ( 3B - 1 )
     num_sub( threeBminusOne, threeB, one ) ;
 
+    // Want lowest interval so only calculate minimum r value
     // r = ceil( ( 2B * s1 - 3B + 1 ) / n )
     num_mul( product, twoB, s1 ) ;
     num_sub( product, product, threeBminusOne ) ;
@@ -202,16 +202,7 @@ int bb_step0(num_t low, num_t high, num_t si, const num_t c0, const num_t e, con
     // If remainder > 0, increment r
     num_ceil( r, remainder ) ;
 
-    num_t r_max ;
-    bignum_t big_r_max ;
-    // r = floor( ( (3B -1)*s1 - 2B ) / n )
-    num_mul( product, threeBminusOne, s1 ) ;
-    num_sub( product, product, twoB ) ;
-    num_div( big_r, remainder, product, n ) ;
-    num_trim( r_max, big_r_max ) ;
-
     printf( "r = %s\n", num_toString( r ) ) ;
-    printf( "r_max = %s\n", num_toString( r_max ) ) ;
 
     // low = ( 2B + r*n ) / s1
     num_mul( product, r, n ) ;
@@ -232,6 +223,10 @@ int bb_step0(num_t low, num_t high, num_t si, const num_t c0, const num_t e, con
     printf( "high = %s\n", num_toString( high ) ) ;
 }
 
+// FUNCTIONS FOR BLEICHENBACHER FULL ATTACK
+
+// Calculate B from N
+// This is a copy from step0
 void calculate_B( num_t B, const num_t n ) {
     bignum_t product ;
     num_t two ;
@@ -276,6 +271,7 @@ void range_init( range_t* ptr, const num_t B )
     ptr -> next = NULL ;
 }
 
+// step2a from Bleichenbacher paper
 void step2a( num_t s1, num_t c0, const num_t B, const num_t e, const num_t n )
 {
     num_t remainder, one, three, threeB ;
@@ -315,7 +311,7 @@ void step2a( num_t s1, num_t c0, const num_t B, const num_t e, const num_t n )
     }
 }
 
-// Calculate range for r values
+// Calculate range for r values for step 3
 void calculate_r( num_t r_min, num_t r_max, num_t a, num_t b, num_t si, const num_t B, const num_t n ) {
     num_t one, two, three ;
     num_fromString( one, "00000001" ) ;
@@ -351,10 +347,12 @@ void calculate_r( num_t r_min, num_t r_max, num_t a, num_t b, num_t si, const nu
     num_trim( r_max, big_r ) ;
 }
 
+// Return the max of two num_t
 void num_max( num_t max, num_t a, num_t b ) {
     num_t zero ;
     num_fromString( zero, "00000000" ) ;
 
+    // Starting at most significant bit, return if one number is larger
     for( int i = WORDSIZE - 1 ; i >= 0 ; i-- ) {
         if( a[i] > b[i] ) {
             num_add( max, a, zero ) ;
@@ -391,6 +389,7 @@ void num_min( num_t min, num_t a, num_t b ) {
     return ;
 }
 
+// Check if r_min to r_max is a valid range
 int valid_range( num_t r_min, num_t r_max ) {
     num_t res ;
     num_min( res, r_min, r_max ) ;
@@ -405,6 +404,7 @@ int valid_range( num_t r_min, num_t r_max ) {
     return 1 ;
 }
 
+// Calculate new range for M in step3
 void calculate_range( num_t newa, num_t newb, num_t a, num_t b, num_t r, num_t si, const num_t B, const num_t n ) {
     bignum_t product, remainder, newa_big, newb_big ;
     num_t one, two, three, twoB, threeB, threeBminusOne ;
@@ -446,6 +446,7 @@ void calculate_range( num_t newa, num_t newb, num_t a, num_t b, num_t r, num_t s
     // printf( "In calculate_range: %s %s\n", num_toString( newa ), num_toString( newb ) ) ;
 }
 
+// Step3 from Bleichenbacher paper
 void step3( range_t* new, range_t* old, num_t si, const num_t B, const num_t e, const num_t n ) {
     num_t zero ;
     num_fromString( zero, "00000000" ) ;
@@ -485,6 +486,7 @@ void step3( range_t* new, range_t* old, num_t si, const num_t B, const num_t e, 
     }
 }
 
+// Step 2b from Bleichenbacher paper
 void step2b( num_t s_current, num_t s_last, num_t c0, const num_t e, const num_t n ) {
     num_t remainder, one, three, threeB ;
     bignum_t n_big, product, quotient ;
@@ -513,6 +515,7 @@ void step2b( num_t s_current, num_t s_last, num_t c0, const num_t e, const num_t
     }
 }
 
+// Calculate minimum r_value for step 2c
 void calculate_rc( num_t r, num_t b, num_t s_last, const num_t B, const num_t n ) {
     num_t two, twob, twoB, fourB, remainder ;
     bignum_t product, productB, quotient ;
@@ -531,6 +534,7 @@ void calculate_rc( num_t r, num_t b, num_t s_last, const num_t B, const num_t n 
     num_trim( r, quotient ) ;
 }
 
+// Calculate minimum s value in step 2c
 void calculate_s_min( num_t s, num_t r, num_t b, const num_t B, const num_t n ) {
     num_t two, twoB, remainder ;
     bignum_t product, quotient ;
@@ -545,6 +549,7 @@ void calculate_s_min( num_t s, num_t r, num_t b, const num_t B, const num_t n ) 
     num_trim( s, quotient ) ;
 }
 
+// Calculate maximum s value in step 2c
 void calculate_s_max( num_t s, num_t r, num_t a, const num_t B, const num_t n ) {
     num_t one, three, threeB, threeBminusOne, remainder ;
     bignum_t product, quotient ;
@@ -603,6 +608,7 @@ void step2c( num_t s_current, num_t s_last, num_t a, num_t b, num_t c0, const nu
 
 }
 
+// Full Bleichenbacher attack:
 void bleichenbacher( num_t m, const num_t c, const num_t e, const num_t n ) {
     num_t c0, s_current, s_last, zero, s0 ;
     num_fromString( zero, "00000000" ) ;
@@ -617,11 +623,11 @@ void bleichenbacher( num_t m, const num_t c, const num_t e, const num_t n ) {
     calculate_B( B, n ) ;
     printf( "B: %s", num_toString( B ) ) ;
 
+    // Create linked lists storing current and previous range
     range_t *M_last = (range_t*)malloc( sizeof( range_t ) ) ;
     range_t *M_current = NULL ;
 
     // M0 = { [ 2B, 3B - 1 ] }
-    printf( "1" ) ;
     range_init( M_last, B ) ;
 
     while( range_converged( M_last ) != 1 ) {
@@ -638,13 +644,17 @@ void bleichenbacher( num_t m, const num_t c, const num_t e, const num_t n ) {
             printf( "Step 2C: %s\n", num_toString( s_current ) ) ;
         }
 
+        // Allocate memory for the new range
         M_current = (range_t*)malloc( sizeof( range_t ) ) ;
         step3( M_current, M_last, s_current, B, e, n ) ;
         
         printf( "All current ranges for M are: \n" ) ;
         range_print( M_current ) ;
         printf( "\n" ) ;
-        free( M_last ) ;
+
+        // Free all nodes in the old range
+        range_delete( M_last ) ;
+        // Switch lists for next iteration
         M_last = M_current ;
 
         // s_current becomes s_last
