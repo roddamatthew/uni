@@ -95,7 +95,7 @@ Node *insert( Node *start, int value )
     int balance = getBalance( start ) ;
 
     if( balance > 1 ) { // Left case
-        if( value < start -> lower -> value ) {
+        if( value < start -> lower -> value ) { // Left case
             return rightRotation( start ) ;
         }
         else if ( value > start -> lower -> value ) // Right case
@@ -153,8 +153,9 @@ Node *remove( Node *start, int value )
     int balance = getBalance( start ) ;
 
     // Left left case:
-    if( balance > 1 && getBalance( start -> lower ) >= 0 && start -> lower != NULL )
+    if( balance > 1 && getBalance( start -> lower ) >= 0 && start -> lower != NULL ){
         return rightRotation( start ) ;
+    }
     // Left right case:
     else if( balance > 1 && getBalance( start -> lower ) < 0 ) {
         start -> lower = leftRotation( start -> lower ) ;
@@ -183,8 +184,6 @@ int main()
     token = strtok( input, " " ) ;
     while( token != NULL )
     {
-        // cout << token ;
-        // cout << root -> value << endl ;
         if( token[0] == 'A' ) {
             root = insert( root, atoi( token + 1 ) ) ;
         }
@@ -205,9 +204,6 @@ int main()
         }
         token = strtok( NULL, " \n" ) ;
     }
-
-    int balance = getHeight( root -> lower ) - getHeight( root -> upper ) ;
-    // cout << "Final balance is: " << balance << endl ;
 
     return 0 ;
 }
