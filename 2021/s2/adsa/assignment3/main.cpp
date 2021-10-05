@@ -3,15 +3,17 @@
 
 using namespace std ;
 
+// Enumerate the 3 different states that an element may have
 enum state { never_used, tombstone, occupied } ;
-// enum keys { a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z } ;
 
+// Create a class for a hash table element
 class Element {
     public:
     string value ;
-    int state = never_used ;
+    int state = never_used ; // Default state to never used
 } ;
 
+// Create a class for the whole hash table
 class HashTable {
     private:
     Element* table ;
@@ -23,12 +25,16 @@ class HashTable {
         table = new Element[size_] ;
     } ;
 
+    // Insert a new value into the hash table
+    // If it is a duplicate, ignore it
+    // If the position is already taken, check the next until an empty one is found
     int insert( string value ) {
         // Check for a duplicate insertion
         if( search( value ) != -1 ) return 0 ;
 
         // Key is the last character of the passed string
         char key = value.back() ;
+        // Convert key to array index
         int index = key - 97 ; // Dangerous line!
 
         // Loop over the size of the hash table
