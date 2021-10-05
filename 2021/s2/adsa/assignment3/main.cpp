@@ -73,7 +73,7 @@ class HashTable {
     void print() {
         for( int i = 0 ; i < size ; i++ ) {
             if( table[i].state == occupied )
-                cout << i << ": " << table[i].value << " " ;
+                cout << table[i].value << " " ;
         }
         cout << endl ;
         return ;
@@ -84,7 +84,7 @@ int main() {
     HashTable table = HashTable( 26 ) ;
 
     string input ;
-    
+
     while( cin >> input ) {
         switch( input[0] ) {
             case 'A':
